@@ -1,6 +1,7 @@
 package modelo.investigacion;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
@@ -18,4 +19,6 @@ public class Proyecto {
 	private LocalDate fechaFin;
 	private EstadoProyecto estado;
 	
+	private ArrayList<IIntegrante> integrantes;
+	private ArrayList
 }
