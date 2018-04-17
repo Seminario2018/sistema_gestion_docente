@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import modelo.auxiliares.EstadoDocente;
-import modelo.auxiliares.dinamico.CategoriaInvestigacion;
-import modelo.auxiliares.dinamico.TipoDocumento;
+import modelo.auxiliares.CategoriaInvestigacion;
+import modelo.auxiliares.TipoDocumento;
 
 public class Docente implements IDocente {
 
