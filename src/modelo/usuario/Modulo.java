@@ -1,6 +1,14 @@
 package modelo.usuario;
 
 
-public class Modulo {
-
+public enum Modulo {
+	GENERAL,
+	ESTACION,
+	GRUPOS,
+	USUARIOS,
+	CARGOS,
+	DOCENTES,
+	INVESTIGACION,
+	VER_INFORMES,
+	EDIT_INFORMES;
 }

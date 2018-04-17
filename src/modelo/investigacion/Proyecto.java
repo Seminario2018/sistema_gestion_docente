@@ -20,5 +20,6 @@ public class Proyecto {
 	private EstadoProyecto estado;
 	
 	private ArrayList<IIntegrante> integrantes;
-	private ArrayList
+	private ArrayList<ISubsidio> subsidios;
+	private ArrayList<IProrroga> prorrogas;
 }

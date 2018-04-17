@@ -7,7 +7,7 @@ import modelo.auxiliares.TipoCargo;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
 
-public class Planta {
+public class Planta implements IPlanta {
 	private IArea area;
 	private ICargo cargo;
 	private TipoCargo tipoCargo;

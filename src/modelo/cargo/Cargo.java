@@ -1,7 +1,7 @@
 package modelo.cargo;
 
 
-public class Cargo {
+public class Cargo implements ICargo {
 	private int codigo;
 	private String descripcion;
 	private int cargaHoraria;
