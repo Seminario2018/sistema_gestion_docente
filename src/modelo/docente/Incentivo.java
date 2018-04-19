@@ -1,7 +1,26 @@
 package modelo.docente;
 
-import java.time.LocalDate;
+import java.time.Year;
 
-public class Incentivo {
-	private LocalDate fecha; // Solo año
+public class Incentivo implements IIncentivo {
+	private Year fecha; // Solo año
+
+	public Incentivo(Year fecha) {
+	    this.fecha = fecha;
+	}
+
+    @Override
+    public IIncentivo clone() {
+        return (IIncentivo) new Incentivo(this.fecha);
+    }
+
+    @Override
+    public Year getFecha() {
+        return this.fecha;
+    }
+
+    @Override
+    public void setFecha(Year fecha) {
+        this.fecha = fecha;
+    }
 }
