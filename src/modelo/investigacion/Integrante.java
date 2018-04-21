@@ -16,10 +16,10 @@ public class Integrante implements IIntegrante {
 		this.horasSemanales = horasSemanales;
 	}
 
-	public Integrante(String apellidoNombre, String cargo, int horasSemanales) {
+	public Integrante(String apellidoNombre, String cargo, String institucion, int horasSemanales) {;
 	    this.apellidoNombre = apellidoNombre;
         this.cargo = cargo;
-        this.institucion = "UNLu";
+        this.institucion = institucion;
         this.horasSemanales = horasSemanales;
 	}
 
@@ -28,6 +28,7 @@ public class Integrante implements IIntegrante {
         return (IIntegrante) new Integrante(
             this.apellidoNombre,
             this.cargo,
+            this.institucion,
             this.horasSemanales
             );
     }
@@ -38,8 +39,8 @@ public class Integrante implements IIntegrante {
     }
 
     @Override
-    public void setApellidoNombre(IDocente docente) {
-        this.apellidoNombre = docente.getApellidoNombre();
+    public void setApellidoNombre(String apellidoNombre) {
+        this.apellidoNombre = apellidoNombre;
     }
 
     @Override
@@ -48,8 +49,8 @@ public class Integrante implements IIntegrante {
     }
 
     @Override
-    public void setCargo(IPlanta planta) {
-        this.cargo = planta.getCargo().getDescripcion();
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
     }
 
     @Override
