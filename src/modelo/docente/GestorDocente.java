@@ -32,6 +32,30 @@ public class GestorDocente {
 		return null;
 	}
 
+	public EstadoOperacion agregarTitulo(IDocente docente, ITitulo planta) {
+        // TODO actualizar BD
+        return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
+                "El titulo se agregó correctamente");
+    }
+
+    public EstadoOperacion quitarTitulo(IDocente docente, ITitulo planta) {
+        // TODO actualizar BD
+        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
+                "El titulo se quitó correctamente");
+    }
+
+    public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo planta) {
+        // TODO actualizar BD
+        return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
+                "El incentivo se agregó correctamente");
+    }
+
+    public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo planta) {
+        // TODO actualizar BD
+        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
+                "El incentivo se quitó correctamente");
+    }
+
 	public EstadoOperacion agregarPlanta(IDocente docente, IPlanta planta) {
 		// TODO actualizar BD
 		return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,

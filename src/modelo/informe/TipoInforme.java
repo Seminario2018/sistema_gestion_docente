@@ -1,14 +1,14 @@
 package modelo.informe;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class TipoInforme {
-	
+public class TipoInforme implements ITipoInforme {
+
 	// Estos atributos se levantan de la BD
-	private ArrayList<ColumnaInforme> columnas;
+	private List<ColumnaInforme> columnas;
 	private String from; // solo from con joins
-	
-	public ArrayList<ArrayList<String>> armarConsulta() {
+
+	public List<List<String>> armarConsulta() {
 		String select = "SELECT";
 		String where = "\r\nWHERE";
 		String groupby = "\r\nGROUP BY";
@@ -16,7 +16,7 @@ public class TipoInforme {
 		boolean b_where = false;
 		boolean b_groupby = false;
 		boolean b_orderby = false;
-		
+
 		for (ColumnaInforme columna: columnas) {
 
 			// Armar el SELECT
@@ -28,7 +28,7 @@ public class TipoInforme {
 				// PLANTA.ULTIMO_COSTO
 				select += " " + columna.getAtributo();
 			}
-			
+
 			// Armar el WHERE
 			if (columna.getFiltro() != null) {
 				b_where = true;
@@ -36,14 +36,14 @@ public class TipoInforme {
 				where += " " +columna.getAtributo()
 						+ columna.getFiltro().getCondicion();
 			}
-			
+
 			// Armar el GROUP BY
 			if (columna.getCalculo() != null) {
 				b_groupby = true;
 				// GROUPBY DOCENTE.LEGAJO
 				groupby += " " + columna.getAtributo();
 			}
-			
+
 			// Armar el ORDER BY
 			if (columna.getOrdenar() != ColumnaInforme.SIN_ORDEN) {
 				b_orderby = true;
@@ -62,7 +62,7 @@ public class TipoInforme {
 				}
 			}
 		}
-		
+
 		String consulta = select + this.from;
 		if (b_where) {
 			consulta += where;
@@ -73,9 +73,9 @@ public class TipoInforme {
 		if (b_orderby) {
 			consulta += orderby;
 		}
-		
+
 		// TODO enviar consulta a la BD
-		
+
 		return null;
 	}
 	/*
