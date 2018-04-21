@@ -1,6 +1,6 @@
 package modelo.division;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
 
@@ -24,7 +24,7 @@ public class GestorArea {
                 "El área se eliminó correctamente");
     }
 
-    public ArrayList<IArea> listarArea(IArea area) {
+    public List<IArea> listarArea(IArea area) {
         if (area != null) {
             // TODO Filtrar por los campos que ingresan
         }

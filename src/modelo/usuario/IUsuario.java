@@ -1,6 +1,6 @@
 package modelo.usuario;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface IUsuario {
     public IUsuario clone();
@@ -13,7 +13,7 @@ public interface IUsuario {
     public String getDescripcion();
     public void setDescripcion(String descripcion);
 
-    public ArrayList<IGrupo> getGrupos();
+    public List<IGrupo> getGrupos();
     public void agregarGrupo(IGrupo grupo);
     public void quitarGrupo(IGrupo grupo);
 }

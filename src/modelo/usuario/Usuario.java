@@ -1,6 +1,7 @@
 package modelo.usuario;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario implements IUsuario {
 	private int id;
@@ -8,16 +9,16 @@ public class Usuario implements IUsuario {
 	private String pass;
 	private String descripcion;
 
-	private ArrayList<IGrupo> grupos;
+	private List<IGrupo> grupos;
 
 	public Usuario(int id, String user, String pass, String descripcion,
-	        ArrayList<IGrupo> grupos) {
+	        List<IGrupo> grupos) {
 
 	    this.id = id;
 	    this.user = user;
 	    this.pass = pass;
 	    this.descripcion = descripcion;
-	    this.grupos = grupos;
+	    this.grupos = new ArrayList<IGrupo>(grupos);
 	}
 
     @Override
@@ -72,7 +73,7 @@ public class Usuario implements IUsuario {
     }
 
     @Override
-    public ArrayList<IGrupo> getGrupos() {
+    public List<IGrupo> getGrupos() {
         return this.grupos;
     }
 

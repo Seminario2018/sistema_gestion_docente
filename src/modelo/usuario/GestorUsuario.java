@@ -1,6 +1,6 @@
 package modelo.usuario;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
 
@@ -24,7 +24,7 @@ public class GestorUsuario {
                 "El usuario se eliminó correctamente");
     }
 
-    public ArrayList<IUsuario> listarUsuario(IUsuario usuario) {
+    public List<IUsuario> listarUsuario(IUsuario usuario) {
         if (usuario != null) {
             // TODO Filtrar por los campos que ingresan
         }

@@ -1,14 +1,14 @@
 package modelo.docente;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.TipoDocumento;
 
 public interface IDocente {
-	
+
 	public IDocente clone();
 	public int getLegajo();
 	public void setLegajo(int legajo);
@@ -43,13 +43,16 @@ public interface IDocente {
 			CategoriaInvestigacion categoriaInvestigacion);
 	public EstadoDocente getEstado();
 	public void setEstado(EstadoDocente estado);
-	public ArrayList<ITitulo> getTitulos();
+
+	public List<ITitulo> getTitulos();
 	public void agregarTitulo(ITitulo titulo);
 	public void quitarTitulo(ITitulo titulo);
-	public ArrayList<IIncentivo> getIncentivos();
+
+	public List<IIncentivo> getIncentivos();
 	public void agregarIncentivo(IIncentivo incentivo);
 	public void quitarIncentivo(IIncentivo incentivo);
-	public ArrayList<IPlanta> getPlanta();
+
+	public List<IPlanta> getPlanta();
 	public void agregarPlanta(IPlanta planta);
 	public void quitarPlanta(IPlanta planta);
 

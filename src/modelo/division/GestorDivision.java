@@ -1,6 +1,6 @@
 package modelo.division;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
 
@@ -24,7 +24,7 @@ public class GestorDivision {
                 "La división se eliminó correctamente");
     }
 
-    public ArrayList<IDivision> listarDivision(IDivision division) {
+    public List<IDivision> listarDivision(IDivision division) {
         if (division != null) {
             // TODO Filtrar por los campos que ingresan
         }

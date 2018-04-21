@@ -1,6 +1,6 @@
 package modelo.cargo;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
 
@@ -23,7 +23,7 @@ public class GestorCargo {
                 "El cargo se eliminó correctamente");
     }
 
-    public ArrayList<ICargo> listarCargo(ICargo cargo) {
+    public List<ICargo> listarCargo(ICargo cargo) {
         if (cargo != null) {
             // TODO Filtrar por los campos que ingresan
         }
