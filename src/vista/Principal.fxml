@@ -8,7 +8,6 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-
 <BorderPane prefHeight="569.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
@@ -37,7 +36,6 @@
             <Menu mnemonicParsing="false" text="Archivo">
                <items>
                   <MenuItem mnemonicParsing="false" text="Configuración general" />
-                  <MenuItem mnemonicParsing="false" text="Configurar impresora" />
                   <MenuItem mnemonicParsing="false" text="Configurar estación de trabajo" />
                   <Menu mnemonicParsing="false" text="Opciones de Administración">
                      <items>
