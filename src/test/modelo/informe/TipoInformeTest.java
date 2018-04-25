@@ -11,8 +11,12 @@ import modelo.informe.TipoInforme;
  * @version 1.0, 25 de abr. de 2018
  */
 public class TipoInformeTest {
-
+	
 	public static void main(String[] args) {
+		prueba1();
+	}
+	
+	private static void prueba1() {
 		/*
 		SELECT DOCENTE.LEGAJO, DOCENTE.APYNOM, SUM(PLANTA.ULTIMO_COSTO)
 		FROM DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO
@@ -20,7 +24,6 @@ public class TipoInformeTest {
 		GROUPBY DOCENTE.LEGAJO
 		ORDERBY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
 		*/
-		
 		List<String> filtro = new ArrayList<String>();
 		filtro.add("> 140000");
 		
@@ -53,4 +56,5 @@ public class TipoInformeTest {
 		
 		System.out.println(impactoDocente.armarConsulta());
 	}
+
 }
