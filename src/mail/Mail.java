@@ -2,8 +2,10 @@ package mail;
 
 import java.util.Properties;
 
+import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -16,23 +18,35 @@ public class Mail implements IMail {
      */
     @Override
     public void enviarEmail(String mailDesde, String mailHasta, String asunto,
-        String mensaje) {
+                            String mensaje, String contrasena) {
 
         // Propiedades del sistema:
-        Properties propiedades = System.getProperties();
-
-        // Configurar servidor de email:
-        propiedades.setProperty("smtp.gmail.com", "localhost");
+        Properties propiedades = new Properties();
+        propiedades.put("mail.smtp.auth", "true");
+        propiedades.put("mail.smtp.host", "smtp.gmail.com");
+        propiedades.put("mail.smtp.port", "587");
+        propiedades.put("mail.smtp.starttls.enable", "true");
+        propiedades.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
         // Obtener el objeto de sesión por defecto:
-        Session session = Session.getDefaultInstance(propiedades);
+        Session session = Session.getInstance(propiedades,
+                                              new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(mailDesde, contrasena);
+            }
+        });
 
         try {
            // Crear un objeto MimeMessage por defecto:
-           MimeMessage mensajeMime = new MimeMessage(session);
+           Message mensajeMime = new MimeMessage(session);
 
+           // Emisor:
            mensajeMime.setFrom(new InternetAddress(mailDesde));
-           mensajeMime.addRecipient(Message.RecipientType.TO, new InternetAddress(mailHasta));
+
+           // Receptor:
+           mensajeMime.setRecipients(Message.RecipientType.TO,
+                                    InternetAddress.parse(mailHasta));
 
            // Asunto:
            mensajeMime.setSubject(asunto);
@@ -43,8 +57,8 @@ public class Mail implements IMail {
            // Enviar mensaje:
            Transport.send(mensajeMime);
 
-        } catch (MessagingException mex) {
-           mex.printStackTrace();
+        } catch (MessagingException e) {
+           e.printStackTrace();
         }
     }
 
