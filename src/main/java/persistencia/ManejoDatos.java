@@ -1,10 +1,12 @@
-package persistencia;
+package main.java.persistencia;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import java.sql.Connection;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -42,31 +44,23 @@ public class ManejoDatos {
 		
 	}
 	
-	public ArrayList<String> select(String tabla, String campos) {
+	public ArrayList<Hashtable<String, String>> select(String tabla, String campos) {
 		estado = true;
-		ArrayList<String> res = new ArrayList<>();
-		String[] fields = campos.split(", ");
+		ArrayList<Hashtable<String,String>> res = new ArrayList<>();
 		Connection c = con.conectar();
 		try {
 			Statement st = c.createStatement();
 			System.out.println("select " + campos + " from " + tabla);
 			ResultSet resultSet = st.executeQuery("select " + campos + " from " + tabla);
+			String[] fields = this.getCampos(resultSet, campos);
+			System.out.println(fields[1]);
 			while (resultSet.next())
 			{
-				String res1 = "";
-				if (campos.equals("*")){
-					res1 += 
-					res1 += "\n";
-				}else{
-					for (String s : fields){
-
-						res1 += resultSet.getString(s) + " -- ";
-
-						res1 += resultSet.getString(s) + ",";
-					}
-					res.add(res1);					 
+				Hashtable<String, String> reg = new Hashtable<String, String>();
+				for (String s : fields){
+					reg.put(s, resultSet.getString(s));
 				}
-				 
+				res.add(reg);		 
 			}
 		} catch (SQLException e) {
 			estado = false;
@@ -78,53 +72,36 @@ public class ManejoDatos {
 		return res;
 	}
 	
-	public ArrayList<String> select(String tabla, String campos, String condicion){
+	public ArrayList<Hashtable<String, String>> select(String tabla, String campos, String condicion){
 		estado = true;
-		String[] fields = new String[1];
-		ArrayList<String> res = new ArrayList<>();
-		if (!(campos.equals("*"))) {
-			fields = campos.split(", ");
-		}
+		ArrayList<Hashtable<String,String>> res = new ArrayList<>();
 		Connection c = con.conectar();
 		try {
 			Statement st = c.createStatement();
 			String query = "select " + campos + " from " + tabla + " where " + condicion;
-			System.out.println(query);
 			ResultSet resultSet = st.executeQuery(query);
+			String[] fields = this.getCampos(resultSet, campos);
+			System.out.println(fields[1]);
 			while (resultSet.next())
 			{
-				String res1 = "";
-				if (campos.equals("*")){
-					res1 += resultSet.toString();
-					res1 += "\n";
-				}else{
-					for (String s : fields){
-						res1 += resultSet.getString(s) + " -- ";
-					}
-					res.add(res1);
-					System.out.println(res1);
+				Hashtable<String, String> reg = new Hashtable<String, String>();
+				for (String s : fields){
+					reg.put(s, resultSet.getString(s));
 				}
-				 
+				res.add(reg);		 
 			}
 		} catch (SQLException e) {
 			estado = false;
 			e.printStackTrace();
+		}finally {
+			c = null;
+			con.desconectar();
 		}
 		return res;
 	}
 	
 	
-	public ArrayList<String> parsear(String s){
-		 ArrayList<String> campos = new ArrayList<String>();
-		 while  (!s.equals("")){
-			 int j = s.indexOf(" ");
-			 String st = s.substring(j);
-			 campos.add(st);
-			 s = s.substring(j + 1);
-		 }
-		 return campos;
-	 }
-	
+
 	public String update(String tabla,String campos) {
 		String s = "Se actualizo correctamente la tabla";
 		Connection c = con.conectar();
@@ -161,6 +138,26 @@ public class ManejoDatos {
 		}
 		return s;
 
+	}
+	
+	private String[] getCampos(ResultSet resultSet, String campos) {
+		String[] fields;
+		try {
+			if (campos.equals("*")) {
+				ResultSetMetaData rsmd = resultSet.getMetaData();
+				int columnCount = rsmd.getColumnCount();
+				fields = new String[columnCount];
+				for (int i = 1; i <= columnCount; i++ ) {
+				  fields[i-1]= rsmd.getColumnName(i);
+				  //System.out.println(fields[i-1]);
+				}
+			}else {
+				fields = campos.split(", ");
+			}
+		}catch (SQLException e) {
+			fields = new String[1];
+		}
+		return fields;
 	}
 	
 }

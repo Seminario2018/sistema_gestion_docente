@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<base>
+	<driver>com.mysql.jdbc.Driver</driver>
+	<usr>root</usr>
+	<password>ljm123ljm</password>
+	<url>jdbc:mysql://localhost:3306/adm-usuarios</url>
+</base>
