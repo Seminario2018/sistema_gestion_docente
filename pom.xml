@@ -5,16 +5,8 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Sistema Gestión Docente</name>
   <description>Sistema de Gestión Docente - Departamento de Ciencias Básicas - UNLu</description>
+  
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -26,26 +18,44 @@
       </plugin>
     </plugins>
   </build>
+  
   <dependencies>
-	<!-- https://mvnrepository.com/artifact/junit/junit -->
+	<!-- https://mvnrepository.com/artifact/junit/junit/4.12 -->
 	<dependency>
 	    <groupId>junit</groupId>
 	    <artifactId>junit</artifactId>
 	    <version>4.12</version>
 	    <scope>test</scope>
 	</dependency>
-  	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	
+  	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.46 -->
 	<dependency>
 		<groupId>mysql</groupId>
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.46</version>
 	</dependency>
-	<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+	
+	<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.1 -->
   	<dependency>
   		<groupId>com.sun.mail</groupId>
   		<artifactId>javax.mail</artifactId>
   		<version>1.6.1</version>
   	</dependency>
+  	
+  	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi/3.9 -->
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi</artifactId>
+	    <version>3.9</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/3.9 -->
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi-ooxml</artifactId>
+	    <version>3.9</version>
+	</dependency>
+
   </dependencies>
   <url>https://github.com/Seminario2018/sistema_gestion_docente</url>
 </project>
