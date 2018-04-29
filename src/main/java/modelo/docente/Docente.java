@@ -22,56 +22,27 @@ public class Docente implements IDocente {
 	private List<ICargoDocente> cargosDocentes;
 
 	@Override
-    public IDocente clone() {
-		return (IDocente) new Docente(
-				this.legajo,
-				this.apellidoNombre,
-				this.fechaNacimiento,
-				this.tipoDocumento,
-				this.numDocumento,
-				this.domicilio,
-				this.localidad,
-				this.codigoPostal,
-				this.telParticular,
-				this.telLaboral,
-				this.telCelular,
-				this.mailPersonal,
-				this.mailLaboral,
-				this.observaciones,
-				this.categoriaInvestigacion,
-				this.estado,
-				this.titulos,
-				this.incentivos,
-				this.cargosDocentes
-				);
+	public IDocente clone() {
+		return new Docente(persona, legajo, observaciones, categoriaInvestigacion, estado, titulos, incentivos, cargosDocentes);
 	}
 
-	public Docente(int legajo, String apellidoNombre, LocalDate fechaNacimiento, TipoDocumento tipoDocumento,
-			int numDocumento, String domicilio, String localidad, String codigoPostal, String telParticular,
-			String telLaboral, String telCelular, String mailPersonal, String mailLaboral, String observaciones,
-			CategoriaInvestigacion categoriaInvestigacion, EstadoDocente estado, List<ITitulo> titulos,
-			List<IIncentivo> incentivos, List<ICargoDocente> planta) {
+	
+
+	public Docente(Persona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
+			EstadoDocente estado, List<ITitulo> titulos, List<IIncentivo> incentivos,
+			List<ICargoDocente> cargosDocentes) {
 		super();
+		this.persona = persona;
 		this.legajo = legajo;
-		this.apellidoNombre = apellidoNombre;
-		this.fechaNacimiento = fechaNacimiento;
-		this.tipoDocumento = tipoDocumento;
-		this.numDocumento = numDocumento;
-		this.domicilio = domicilio;
-		this.localidad = localidad;
-		this.codigoPostal = codigoPostal;
-		this.telParticular = telParticular;
-		this.telLaboral = telLaboral;
-		this.telCelular = telCelular;
-		this.mailPersonal = mailPersonal;
-		this.mailLaboral = mailLaboral;
 		this.observaciones = observaciones;
 		this.categoriaInvestigacion = categoriaInvestigacion;
 		this.estado = estado;
-		this.titulos = new ArrayList<ITitulo>(titulos);
-		this.incentivos = new ArrayList<IIncentivo>(incentivos);
-		this.cargosDocentes = new ArrayList<ICargoDocente>(planta);
+		this.titulos = titulos;
+		this.incentivos = incentivos;
+		this.cargosDocentes = cargosDocentes;
 	}
+
+
 
 	@Override
     public int getLegajo() {
@@ -83,125 +54,7 @@ public class Docente implements IDocente {
 		this.legajo = legajo;
 	}
 
-	@Override
-    public String getApellidoNombre() {
-		return apellidoNombre;
-	}
 
-	@Override
-    public void setApellidoNombre(String apellidoNombre) {
-		this.apellidoNombre = apellidoNombre;
-	}
-
-	@Override
-    public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-	@Override
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	@Override
-    public TipoDocumento getTipoDocumento() {
-		return tipoDocumento;
-	}
-
-	@Override
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-		this.tipoDocumento = tipoDocumento;
-	}
-
-	@Override
-    public int getNumDocumento() {
-		return numDocumento;
-	}
-
-	@Override
-    public void setNumDocumento(int numDocumento) {
-		this.numDocumento = numDocumento;
-	}
-
-	@Override
-    public String getDomicilio() {
-		return domicilio;
-	}
-
-	@Override
-    public void setDomicilio(String domicilio) {
-		this.domicilio = domicilio;
-	}
-
-	@Override
-    public String getLocalidad() {
-		return localidad;
-	}
-
-	@Override
-    public void setLocalidad(String localidad) {
-		this.localidad = localidad;
-	}
-
-	@Override
-    public String getCodigoPostal() {
-		return codigoPostal;
-	}
-
-	@Override
-    public void setCodigoPostal(String codigoPostal) {
-		this.codigoPostal = codigoPostal;
-	}
-
-	@Override
-    public String getTelParticular() {
-		return telParticular;
-	}
-
-	@Override
-    public void setTelParticular(String telParticular) {
-		this.telParticular = telParticular;
-	}
-
-	@Override
-    public String getTelLaboral() {
-		return telLaboral;
-	}
-
-	@Override
-    public void setTelLaboral(String telLaboral) {
-		this.telLaboral = telLaboral;
-	}
-
-	@Override
-    public String getTelCelular() {
-		return telCelular;
-	}
-
-	@Override
-    public void setTelCelular(String telCelular) {
-		this.telCelular = telCelular;
-	}
-
-	@Override
-    public String getMailPersonal() {
-		return mailPersonal;
-	}
-
-	@Override
-    public void setMailPersonal(String mailPersonal) {
-		this.mailPersonal = mailPersonal;
-	}
-
-	@Override
-    public String getMailLaboral() {
-		return mailLaboral;
-	}
-
-	@Override
-    public void setMailLaboral(String mailLaboral) {
-		this.mailLaboral = mailLaboral;
-	}
 
 	@Override
     public String getObservaciones() {
@@ -244,28 +97,8 @@ public class Docente implements IDocente {
 		this.titulos.add(titulo);
 	}
 
-	@Override
-    public void quitarTitulo(ITitulo titulo) {
-		// TODO actualizar BD
-		this.titulos.remove(titulo);
-	}
 
-	@Override
-    public List<IIncentivo> getIncentivos() {
-		return incentivos;
-	}
-
-	@Override
-    public void agregarIncentivo(IIncentivo incentivo) {
-		// TODO actualizar BD
-		this.incentivos.add(incentivo);
-	}
-
-	@Override
-    public void quitarIncentivo(IIncentivo incentivo) {
-		// TODO actualizar BD
-		this.incentivos.remove(incentivo);
-	}
+	
 
 	@Override
     public List<ICargoDocente> getPlanta() {
@@ -283,5 +116,40 @@ public class Docente implements IDocente {
 		// TODO actualizar BD
 		this.cargosDocentes.remove(planta);
 	}
+
+
+
+	@Override
+	public void quitarTitulo(ITitulo titulo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public List<IIncentivo> getIncentivos() {
+		// TODO Auto-generated method stub
+		return incentivos;
+	}
+
+
+
+	@Override
+	public void agregarIncentivo(IIncentivo incentivo) {
+		// TODO Auto-generated method stub
+		this.incentivos.add(incentivo);
+	}
+
+
+
+	@Override
+	public void quitarIncentivo(IIncentivo incentivo) {
+		// TODO Auto-generated method stub
+		this.incentivos.remove(incentivo);
+	}
+	
+	
+	
 
 }
