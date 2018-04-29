@@ -4,6 +4,9 @@ Sistema de Gestión Docente - Departamento de Básicas UNLu
 
 Dependencias de Maven:
 
+JUnit 4.12
+https://mvnrepository.com/artifact/junit/junit
+
 Javax Mail 1.6.1
 https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.1
 
