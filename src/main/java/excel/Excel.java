@@ -60,4 +60,8 @@ public class Excel {
 		}
 	}
 	
+	public static boolean exportar(String path, List<String> encabezados, List<List<String>> grilla) {
+		return true;
+	}
+	
 }
