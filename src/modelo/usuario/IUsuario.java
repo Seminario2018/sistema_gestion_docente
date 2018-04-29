@@ -13,7 +13,7 @@ public interface IUsuario {
     public String getDescripcion();
     public void setDescripcion(String descripcion);
 
-    public List<IGrupo> getGrupos();
-    public void agregarGrupo(IGrupo grupo);
-    public void quitarGrupo(IGrupo grupo);
+    public List<IRol> getGrupos();
+    public void agregarGrupo(IRol grupo);
+    public void quitarGrupo(IRol grupo);
 }

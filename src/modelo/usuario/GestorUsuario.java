@@ -32,13 +32,13 @@ public class GestorUsuario {
         return null;
     }
 
-    public EstadoOperacion agregarGrupo(IUsuario usuario, IGrupo grupo) {
+    public EstadoOperacion agregarGrupo(IUsuario usuario, IRol grupo) {
         // TODO actualizar BD
         return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
                 "El grupo se agregó correctamente");
     }
 
-    public EstadoOperacion quitarGrupo(IUsuario usuario, IGrupo grupo) {
+    public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
         // TODO actualizar BD
         return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
                 "El grupo se quitó correctamente");

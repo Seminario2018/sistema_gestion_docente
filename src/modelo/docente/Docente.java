@@ -7,29 +7,19 @@ import java.util.List;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.TipoDocumento;
+import modelo.persona.Persona;
 
 public class Docente implements IDocente {
 
+	private Persona persona;
 	private int legajo;
-	private String apellidoNombre;
-	private LocalDate fechaNacimiento;
-	private TipoDocumento tipoDocumento;
-	private int numDocumento;
-	private String domicilio;
-	private String localidad;
-	private String codigoPostal;
-	private String telParticular;
-	private String telLaboral;
-	private String telCelular;
-	private String mailPersonal;
-	private String mailLaboral;
 	private String observaciones;
 	private CategoriaInvestigacion categoriaInvestigacion;
 	private EstadoDocente estado;
 
 	private List<ITitulo> titulos;
 	private List<IIncentivo> incentivos;
-	private List<IPlanta> planta;
+	private List<ICargoDocente> cargosDocentes;
 
 	@Override
     public IDocente clone() {
@@ -52,7 +42,7 @@ public class Docente implements IDocente {
 				this.estado,
 				this.titulos,
 				this.incentivos,
-				this.planta
+				this.cargosDocentes
 				);
 	}
 
@@ -60,7 +50,7 @@ public class Docente implements IDocente {
 			int numDocumento, String domicilio, String localidad, String codigoPostal, String telParticular,
 			String telLaboral, String telCelular, String mailPersonal, String mailLaboral, String observaciones,
 			CategoriaInvestigacion categoriaInvestigacion, EstadoDocente estado, List<ITitulo> titulos,
-			List<IIncentivo> incentivos, List<IPlanta> planta) {
+			List<IIncentivo> incentivos, List<ICargoDocente> planta) {
 		super();
 		this.legajo = legajo;
 		this.apellidoNombre = apellidoNombre;
@@ -80,7 +70,7 @@ public class Docente implements IDocente {
 		this.estado = estado;
 		this.titulos = new ArrayList<ITitulo>(titulos);
 		this.incentivos = new ArrayList<IIncentivo>(incentivos);
-		this.planta = new ArrayList<IPlanta>(planta);
+		this.cargosDocentes = new ArrayList<ICargoDocente>(planta);
 	}
 
 	@Override
@@ -278,20 +268,20 @@ public class Docente implements IDocente {
 	}
 
 	@Override
-    public List<IPlanta> getPlanta() {
-		return planta;
+    public List<ICargoDocente> getPlanta() {
+		return cargosDocentes;
 	}
 
 	@Override
-    public void agregarPlanta(IPlanta planta) {
+    public void agregarPlanta(ICargoDocente planta) {
 		// TODO actualizar BD
-		this.planta.add(planta);
+		this.cargosDocentes.add(planta);
 	}
 
 	@Override
-    public void quitarPlanta(IPlanta planta) {
+    public void quitarPlanta(ICargoDocente planta) {
 		// TODO actualizar BD
-		this.planta.remove(planta);
+		this.cargosDocentes.remove(planta);
 	}
 
 }

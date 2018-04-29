@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="569.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <bottom>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="613.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label contentDisplay="CENTER" text="01/01/2018" GridPane.columnIndex="1" />
+            <Label text="00:00 a.m." GridPane.columnIndex="2" />
+            <Label text="Mensajes dirigidos al usuario">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+         </children>
+      </GridPane>
+   </bottom>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+         <menus>
+            <Menu mnemonicParsing="false" text="Archivo">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Configuración general" />
+                  <MenuItem mnemonicParsing="false" text="Configurar estación de trabajo" />
+                  <Menu mnemonicParsing="false" text="Opciones de Administración">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Administrar grupos de Usuarios" />
+                        <MenuItem mnemonicParsing="false" text="Administrar Usuarios" />
+                     </items>
+                  </Menu>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Acerca de ..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Salir" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Auxiliares">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Estado de los cargos" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Tipos de documentos" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Docencia">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Docentes (RRHH)" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Programas de investigación" />
+                  <MenuItem mnemonicParsing="false" text="Proyectos de investigación" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Informes" />
+         </menus>
+      </MenuBar>
+   </top>
+</BorderPane>

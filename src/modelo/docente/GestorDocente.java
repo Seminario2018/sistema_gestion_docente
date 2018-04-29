@@ -56,13 +56,13 @@ public class GestorDocente {
                 "El incentivo se quitó correctamente");
     }
 
-	public EstadoOperacion agregarPlanta(IDocente docente, IPlanta planta) {
+	public EstadoOperacion agregarPlanta(IDocente docente, ICargoDocente planta) {
 		// TODO actualizar BD
 		return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
 				"El cargo se agregó correctamente");
 	}
 
-	public EstadoOperacion quitarPlanta(IDocente docente, IPlanta planta) {
+	public EstadoOperacion quitarPlanta(IDocente docente, ICargoDocente planta) {
 		// TODO actualizar BD
 		return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
 				"El cargo se quitó correctamente");

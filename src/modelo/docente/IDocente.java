@@ -52,8 +52,8 @@ public interface IDocente {
 	public void agregarIncentivo(IIncentivo incentivo);
 	public void quitarIncentivo(IIncentivo incentivo);
 
-	public List<IPlanta> getPlanta();
-	public void agregarPlanta(IPlanta planta);
-	public void quitarPlanta(IPlanta planta);
+	public List<ICargoDocente> getPlanta();
+	public void agregarPlanta(ICargoDocente planta);
+	public void quitarPlanta(ICargoDocente planta);
 
 }

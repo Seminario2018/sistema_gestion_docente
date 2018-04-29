@@ -3,22 +3,25 @@ package modelo.usuario;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.persona.Persona;
+
 public class Usuario implements IUsuario {
 	private int id;
+	private Persona persona;
 	private String user;
 	private String pass;
 	private String descripcion;
 
-	private List<IGrupo> grupos;
+	private List<IRol> roles;
 
 	public Usuario(int id, String user, String pass, String descripcion,
-	        List<IGrupo> grupos) {
+	        List<IRol> roles) {
 
 	    this.id = id;
 	    this.user = user;
 	    this.pass = pass;
 	    this.descripcion = descripcion;
-	    this.grupos = new ArrayList<IGrupo>(grupos);
+	    this.roles = new ArrayList<IRol>(roles);
 	}
 
     @Override
@@ -28,7 +31,7 @@ public class Usuario implements IUsuario {
             this.user,
             this.pass,
             this.descripcion,
-            this.grupos
+            this.roles
             );
     }
 
@@ -73,18 +76,18 @@ public class Usuario implements IUsuario {
     }
 
     @Override
-    public List<IGrupo> getGrupos() {
-        return this.grupos;
+    public List<IRol> getGrupos() {
+        return this.roles;
     }
 
     @Override
-    public void agregarGrupo(IGrupo grupo) {
-        this.grupos.add(grupo);
+    public void agregarGrupo(IRol grupo) {
+        this.roles.add(grupo);
     }
 
     @Override
-    public void quitarGrupo(IGrupo grupo) {
-        this.grupos.remove(grupo);
+    public void quitarGrupo(IRol grupo) {
+        this.roles.remove(grupo);
     }
 
 }

@@ -2,8 +2,8 @@ package modelo.usuario;
 
 import java.util.List;
 
-public interface IGrupo {
-    public IGrupo clone();
+public interface IRol {
+    public IRol clone();
     public int getId();
     public void setId(int id);
     public String getNombre();

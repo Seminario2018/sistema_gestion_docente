@@ -1,7 +1,7 @@
 package modelo.investigacion;
 
 import modelo.docente.IDocente;
-import modelo.docente.IPlanta;
+import modelo.docente.ICargoDocente;
 
 public class Integrante implements IIntegrante {
 	private String apellidoNombre;
@@ -9,7 +9,7 @@ public class Integrante implements IIntegrante {
 	private String institucion;
 	private int horasSemanales;
 
-	public Integrante(IDocente docente, IPlanta planta, int horasSemanales) {
+	public Integrante(IDocente docente, ICargoDocente planta, int horasSemanales) {
 		this.apellidoNombre = docente.getApellidoNombre();
 		this.cargo = planta.getCargo().getDescripcion();
 		this.institucion = "UNLu";
