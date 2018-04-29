@@ -16,9 +16,10 @@ public class Persona {
 	private String nombre;
 	private LocalDate fechaNacimiento;
 	private TipoDocumento tipoDocumento;
-	private String documento;
+	private int nroDocumento;
 	private List<Domicilio> domicilios;
 	private List<Contacto> contactos;
+	private List<ITitulo> titulos;	
 	private EstadoPersona estado;
 	
 }

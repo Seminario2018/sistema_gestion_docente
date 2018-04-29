@@ -7,6 +7,7 @@ import java.util.List;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.TipoDocumento;
+import modelo.persona.ITitulo;
 import modelo.persona.Persona;
 
 public class Docente implements IDocente {
@@ -17,7 +18,6 @@ public class Docente implements IDocente {
 	private CategoriaInvestigacion categoriaInvestigacion;
 	private EstadoDocente estado;
 
-	private List<ITitulo> titulos;
 	private List<IIncentivo> incentivos;
 	private List<ICargoDocente> cargosDocentes;
 

@@ -1,4 +1,4 @@
-package modelo.docente;
+package modelo.persona;
 
 
 public interface ITitulo {

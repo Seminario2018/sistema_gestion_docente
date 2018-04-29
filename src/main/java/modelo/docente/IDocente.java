@@ -6,6 +6,7 @@ import java.util.List;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.TipoDocumento;
+import modelo.persona.ITitulo;
 
 public interface IDocente {
 
