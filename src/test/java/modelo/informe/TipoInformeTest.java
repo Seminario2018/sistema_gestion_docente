@@ -3,6 +3,9 @@ package modelo.informe;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import modelo.informe.ColumnaInforme;
 import modelo.informe.TipoInforme;
 
@@ -12,17 +15,14 @@ import modelo.informe.TipoInforme;
  */
 public class TipoInformeTest {
 	
-	public static void main(String[] args) {
-		prueba1();
-	}
-	
-	private static void prueba1() {
+	@Test
+	public void armarConsulta1() {
 		/*
 		SELECT DOCENTE.LEGAJO, DOCENTE.APYNOM, SUM(PLANTA.ULTIMO_COSTO)
 		FROM DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO
 		WHERE DOCENTE.LEGAJO > 140000
-		GROUPBY DOCENTE.LEGAJO
-		ORDERBY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
+		GROUP BY DOCENTE.LEGAJO
+		ORDER BY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
 		*/
 		List<String> filtro = new ArrayList<String>();
 		filtro.add("> 140000");
@@ -54,7 +54,13 @@ public class TipoInformeTest {
 				"DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO",
 				"DOCENTE.LEGAJO");
 		
-		System.out.println(impactoDocente.armarConsulta());
+		String consulta = "SELECT DOCENTE.LEGAJO, DOCENTE.APYNOM, SUM(PLANTA.ULTIMO_COSTO)\r\n"
+				+ "FROM DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO\r\n" 
+				+ "WHERE DOCENTE.LEGAJO > 140000\r\n"
+				+ "GROUP BY DOCENTE.LEGAJO\r\n"
+				+ "ORDER BY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC";
+		
+		Assert.assertEquals(consulta, impactoDocente.armarConsulta());
 	}
 
 }

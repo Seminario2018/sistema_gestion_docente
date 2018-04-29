@@ -94,7 +94,7 @@ public class TipoInforme implements ITipoInforme {
 			consulta += where;
 		}
 		
-		consulta += "\r\nGROUPBY " + this.groupby;
+		consulta += "\r\nGROUP BY " + this.groupby;
 		
 		if (b_orderby) {
 			consulta += orderby;

@@ -17,7 +17,7 @@ public class Mail implements IMail {
      * @see mail.IMail#enviarEmail(mail.IDocente, mail.ICargo)
      */
     @Override
-    public void enviarEmail(String mailDesde, String mailHasta, String asunto,
+    public boolean enviarEmail(String mailDesde, String mailHasta, String asunto,
                             String mensaje, String contrasena) {
 
         // Propiedades del sistema:
@@ -56,9 +56,13 @@ public class Mail implements IMail {
 
            // Enviar mensaje:
            Transport.send(mensajeMime);
+           
+           return true;
 
         } catch (MessagingException e) {
            e.printStackTrace();
+           
+           return false;
         }
     }
 

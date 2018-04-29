@@ -1,5 +1,8 @@
 package mail;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import mail.IMail;
 import mail.Mail;
 
@@ -8,15 +11,34 @@ import mail.Mail;
  * @version 1.0, 28 de abr. de 2018
  */
 public class MailTest {
-	public static void main(String[] args) {
+	
+	@Test
+	public void enviarMail1() {
+		
 		String mailDesde = "semint2018@gmail.com";
 		String contrasena = "semintunlu";
-		String mailHasta = "tomasjuran96@gmail.com";
-		String asunto = "Prueba 1";
-		String mensaje = "Prueba de mail #1";
+		String mailHasta = "nadie";
+		String asunto = "Prueba";
+		String mensaje = "Prueba de mail";
 		
 		IMail m = new Mail();
 		
-		m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
+		boolean enviado = m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
+		Assert.assertFalse(enviado);
+	}
+	
+	@Test
+	public void enviarMail2() {
+		
+		String mailDesde = "semint2018@gmail.com";
+		String contrasena = "semintunlu";
+		String mailHasta = "tomasjuran96@gmail.com";
+		String asunto = "Prueba";
+		String mensaje = "Prueba de mail";
+		
+		IMail m = new Mail();
+		
+		boolean enviado = m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
+		Assert.assertTrue(enviado);
 	}
 }
