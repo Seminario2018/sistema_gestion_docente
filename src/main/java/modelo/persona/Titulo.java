@@ -1,4 +1,4 @@
-package modelo.docente;
+package modelo.persona;
 
 
 public class Titulo implements ITitulo {

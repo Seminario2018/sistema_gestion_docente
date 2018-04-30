@@ -3,6 +3,7 @@ package modelo.docente;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
+import modelo.persona.ITitulo;
 
 public class GestorDocente {
 
