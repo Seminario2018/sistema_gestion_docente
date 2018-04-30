@@ -1,4 +1,4 @@
-package main.java.persistencia;
+package persistencia;
 
 import java.io.File;
 import java.sql.DriverManager;

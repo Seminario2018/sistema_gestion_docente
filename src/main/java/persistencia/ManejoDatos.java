@@ -1,4 +1,4 @@
-package main.java.persistencia;
+package persistencia;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

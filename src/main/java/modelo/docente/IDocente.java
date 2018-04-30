@@ -4,6 +4,7 @@ import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
+import modelo.persona.Persona;
 
 public interface IDocente {
 
@@ -25,6 +26,6 @@ public interface IDocente {
 	public List<ICargoDocente> getCargosDocentes();
 	public void agregarCargoDocente(ICargoDocente cargoDocente);
 	public void quitarCargoDocente(ICargoDocente cargoDocente);
-	Persona getPersona();
+	public Persona getPersona();
 	
 }

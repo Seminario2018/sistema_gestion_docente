@@ -10,7 +10,7 @@ import modelo.auxiliares.TipoDocumento;
  * @author Martín Tomás Juran
  * @version 1.0, 28 de abr. de 2018
  */
-public class Persona {
+public class Persona implements IPersona{
 
 	private String apellido;
 	private String nombre;
