@@ -19,10 +19,10 @@ https://mvnrepository.com/artifact/mysql/mysql-connector-java/5.1.46
 https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.1
 <br>
 <br>
-<b>Apache POI 3.9</b>
+<b>Apache POI 3.17</b>
 <br>
-https://mvnrepository.com/artifact/org.apache.poi/poi/3.9
+https://mvnrepository.com/artifact/org.apache.poi/poi/3.17
 <br>
-https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/3.9
+https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/3.17
 
 *******************************************************************************
