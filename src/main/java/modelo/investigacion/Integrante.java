@@ -4,13 +4,15 @@ import modelo.docente.IDocente;
 import modelo.docente.ICargoDocente;
 
 public class Integrante implements IIntegrante {
+	private int id;
 	private String apellido;
 	private String nombre;
 	private String cargo;
 	private String institucion;
 	private int horasSemanales;
 
-	public Integrante(IDocente docente, ICargoDocente cargoDocente, int horasSemanales) {
+	public Integrante(int id, IDocente docente, ICargoDocente cargoDocente, int horasSemanales) {
+		this.id = id;
 		this.apellido = docente.getPersona().getApellido();
 		this.nombre = docente.getPersona().getNombre();
 		this.cargo = cargoDocente.getCargo().getDescripcion();
