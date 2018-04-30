@@ -23,6 +23,9 @@ https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.1
 <br>
 https://mvnrepository.com/artifact/org.apache.poi/poi/3.17
 <br>
-https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/3.17
+<br>
+<b>Apache POI OOXML 3.9</b>
+<br>
+https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml/3.9
 
 *******************************************************************************
