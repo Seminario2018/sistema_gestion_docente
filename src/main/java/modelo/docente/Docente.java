@@ -1,13 +1,10 @@
 package modelo.docente;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
-import modelo.auxiliares.TipoDocumento;
-import modelo.persona.ITitulo;
 import modelo.persona.Persona;
 
 public class Docente implements IDocente {
