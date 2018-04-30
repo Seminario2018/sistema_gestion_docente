@@ -1,12 +1,9 @@
 package modelo.docente;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
-import modelo.auxiliares.TipoDocumento;
-import modelo.persona.ITitulo;
 
 public interface IDocente {
 
@@ -21,16 +18,12 @@ public interface IDocente {
 	public EstadoDocente getEstado();
 	public void setEstado(EstadoDocente estado);
 
-	public List<ITitulo> getTitulos();
-	public void agregarTitulo(ITitulo titulo);
-	public void quitarTitulo(ITitulo titulo);
-
 	public List<IIncentivo> getIncentivos();
 	public void agregarIncentivo(IIncentivo incentivo);
 	public void quitarIncentivo(IIncentivo incentivo);
 
-	public List<ICargoDocente> getPlanta();
-	public void agregarPlanta(ICargoDocente planta);
-	public void quitarPlanta(ICargoDocente planta);
+	public List<ICargoDocente> getCargosDocentes();
+	public void agregarCargoDocente(ICargoDocente cargoDocente);
+	public void quitarCargoDocente(ICargoDocente cargoDocente);
 	
 }

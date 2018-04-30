@@ -23,13 +23,13 @@ public class Docente implements IDocente {
 
 	@Override
 	public IDocente clone() {
-		return new Docente(persona, legajo, observaciones, categoriaInvestigacion, estado, titulos, incentivos, cargosDocentes);
+		return new Docente(persona, legajo, observaciones, categoriaInvestigacion, estado, incentivos, cargosDocentes);
 	}
 
 	
 
 	public Docente(Persona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
-			EstadoDocente estado, List<ITitulo> titulos, List<IIncentivo> incentivos,
+			EstadoDocente estado, List<IIncentivo> incentivos,
 			List<ICargoDocente> cargosDocentes) {
 		super();
 		this.persona = persona;
@@ -37,7 +37,6 @@ public class Docente implements IDocente {
 		this.observaciones = observaciones;
 		this.categoriaInvestigacion = categoriaInvestigacion;
 		this.estado = estado;
-		this.titulos = titulos;
 		this.incentivos = incentivos;
 		this.cargosDocentes = cargosDocentes;
 	}
@@ -87,52 +86,27 @@ public class Docente implements IDocente {
 	}
 
 	@Override
-    public List<ITitulo> getTitulos() {
-		return titulos;
-	}
-
-	@Override
-    public void agregarTitulo(ITitulo titulo) {
-		// TODO actualizar BD
-		this.titulos.add(titulo);
-	}
-
-
-	
-
-	@Override
-    public List<ICargoDocente> getPlanta() {
+    public List<ICargoDocente> getCargosDocentes() {
 		return cargosDocentes;
 	}
 
 	@Override
-    public void agregarPlanta(ICargoDocente planta) {
+    public void agregarCargoDocente(ICargoDocente planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.add(planta);
 	}
 
 	@Override
-    public void quitarPlanta(ICargoDocente planta) {
+    public void quitarCargoDocente(ICargoDocente planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.remove(planta);
 	}
-
-
-
-	@Override
-	public void quitarTitulo(ITitulo titulo) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 	@Override
 	public List<IIncentivo> getIncentivos() {
 		// TODO Auto-generated method stub
 		return incentivos;
 	}
-
 
 
 	@Override
