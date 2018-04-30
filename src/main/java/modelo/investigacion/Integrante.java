@@ -4,20 +4,23 @@ import modelo.docente.IDocente;
 import modelo.docente.ICargoDocente;
 
 public class Integrante implements IIntegrante {
-	private String apellidoNombre;
+	private String apellido;
+	private String nombre;
 	private String cargo;
 	private String institucion;
 	private int horasSemanales;
 
-	public Integrante(IDocente docente, ICargoDocente planta, int horasSemanales) {
-		this.apellidoNombre = docente.getApellidoNombre();
-		this.cargo = planta.getCargo().getDescripcion();
+	public Integrante(IDocente docente, ICargoDocente cargoDocente, int horasSemanales) {
+		this.apellido = docente.getPersona().getApellido();
+		this.nombre = docente.getPersona().getNombre();
+		this.cargo = cargoDocente.getCargo().getDescripcion();
 		this.institucion = "UNLu";
 		this.horasSemanales = horasSemanales;
 	}
 
-	public Integrante(String apellidoNombre, String cargo, String institucion, int horasSemanales) {;
-	    this.apellidoNombre = apellidoNombre;
+	public Integrante(String apellido, String nombre, String cargo, String institucion, int horasSemanales) {;
+	    this.apellido = apellido;
+	    this.nombre = nombre;
         this.cargo = cargo;
         this.institucion = institucion;
         this.horasSemanales = horasSemanales;

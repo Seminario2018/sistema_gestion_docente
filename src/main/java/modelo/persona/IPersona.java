@@ -6,23 +6,26 @@ import java.util.List;
 import modelo.auxiliares.EstadoPersona;
 import modelo.auxiliares.TipoDocumento;
 
-/**
- * @author Martín Tomás Juran
- * @version 1.0, 28 de abr. de 2018
- */
-public class Persona {
-
+public interface IPersona {
+	
+	
+	public String getApellido();
+	public String getNombre();
+	public LocalDate getFechaNacimiento;
+	public TipoDocumento getTipoDocumento;
+	public String getDocumento;
+	public List<Domicilio> getDomicilios();
+	public List<Contacto> getContactos();
+	public EstadoPersona estado;
+	
+	
 	private String apellido;
 	private String nombre;
 	private LocalDate fechaNacimiento;
 	private TipoDocumento tipoDocumento;
-	private int nroDocumento;
+	private String documento;
 	private List<Domicilio> domicilios;
 	private List<Contacto> contactos;
-	private List<ITitulo> titulos;	
 	private EstadoPersona estado;
-	
-	
-	
-	
+
 }
