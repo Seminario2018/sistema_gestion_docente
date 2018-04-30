@@ -8,7 +8,6 @@ import modelo.auxiliares.EstadoDocente;
 import modelo.persona.Persona;
 
 public class Docente implements IDocente {
-
 	private Persona persona;
 	private int legajo;
 	private String observaciones;
@@ -39,6 +38,7 @@ public class Docente implements IDocente {
 	}
 
 
+	
 
 	@Override
     public int getLegajo() {
@@ -119,6 +119,16 @@ public class Docente implements IDocente {
 		// TODO Auto-generated method stub
 		this.incentivos.remove(incentivo);
 	}
+
+
+	@Override
+	public Persona getPersona() {
+		// TODO Auto-generated method stub
+		return persona;
+	}
+
+
+
 	
 	
 	

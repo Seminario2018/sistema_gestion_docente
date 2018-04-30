@@ -25,5 +25,6 @@ public interface IDocente {
 	public List<ICargoDocente> getCargosDocentes();
 	public void agregarCargoDocente(ICargoDocente cargoDocente);
 	public void quitarCargoDocente(ICargoDocente cargoDocente);
+	Persona getPersona();
 	
 }
