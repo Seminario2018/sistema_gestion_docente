@@ -4,22 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modelo.persona.Persona;
+import modelo.auxiliares.hash.*;
 
-public class Usuario implements IUsuario {
-	private int id;
+public class Usuario implements IUsuario{
 	private Persona persona;
 	private String user;
-	private String pass;
+	private HashSalt hash;
 	private String descripcion;
 
 	private List<IRol> roles;
-
-	public Usuario(int id, String user, String pass, String descripcion,
+	
+	public Usuario(String user, HashSalt hash, String descripcion,
 	        List<IRol> roles) {
 
-	    this.id = id;
 	    this.user = user;
-	    this.pass = pass;
+	    this.hash = hash;
+	    this.descripcion = descripcion;
+	    this.roles = new ArrayList<IRol>(roles);
+	}
+
+	public Usuario(String user, String pass, String descripcion,
+	        List<IRol> roles) {
+
+	    this.user = user;
+	    this.setPass(pass);
 	    this.descripcion = descripcion;
 	    this.roles = new ArrayList<IRol>(roles);
 	}
@@ -27,22 +35,11 @@ public class Usuario implements IUsuario {
     @Override
     public IUsuario clone() {
         return (IUsuario) new Usuario(
-            this.id,
             this.user,
-            this.pass,
+            this.hash,
             this.descripcion,
             this.roles
-            );
-    }
-
-    @Override
-    public int getId() {
-        return this.id;
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
+         );
     }
 
     @Override
@@ -56,13 +53,17 @@ public class Usuario implements IUsuario {
     }
 
     @Override
-    public String getPass() {
-        return this.pass;
+    public HashSalt getHash() {
+        return this.hash;
     }
 
     @Override
     public void setPass(String pass) {
-        this.pass = pass;
+        try {
+			this.hash = PasswordUtil.getHash(pass);
+		} catch (Exception e) {
+			this.hash = new HashSalt();
+		}
     }
 
     @Override
@@ -89,5 +90,13 @@ public class Usuario implements IUsuario {
     public void quitarGrupo(IRol grupo) {
         this.roles.remove(grupo);
     }
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
 
 }

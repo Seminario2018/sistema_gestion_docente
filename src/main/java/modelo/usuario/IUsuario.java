@@ -2,16 +2,19 @@ package modelo.usuario;
 
 import java.util.List;
 
+import modelo.auxiliares.hash.HashSalt;
+import modelo.persona.Persona;
+
 public interface IUsuario {
     public IUsuario clone();
-    public int getId();
-    public void setId(int id);
     public String getUser();
     public void setUser(String user);
-    public String getPass();
+    public HashSalt getHash();
     public void setPass(String pass);
     public String getDescripcion();
     public void setDescripcion(String descripcion);
+	public Persona getPersona();
+	public void setPersona(Persona persona);
 
     public List<IRol> getGrupos();
     public void agregarGrupo(IRol grupo);

@@ -23,12 +23,30 @@ public class ManejoDatos {
 		con = new Conexion();
 	}
 	
+	public boolean delete(String tabla, String condicion) {
+		estado = true;
+		Connection c = con.conectar();
+		String query = "DELETE FROM " + tabla + " WHERE " + condicion;	
+		try {
+			Statement st = c.createStatement();
+			st.execute(query);
+		}
+		catch(Exception e){
+			estado = false;
+			e.printStackTrace();
+		}finally {
+			con.desconectar();
+		}
+		return estado;
+	}
+	
+	
 	public String insertar(String tabla, String campos, String valores) {
 		estado = true;
 		String s = "Se inserto la fila correctamente";
 		Connection c = con.conectar();
 		String query = "insert into " + tabla + " (" + campos + ") values (" + valores + ")";	
-		System.out.println(query);
+		//System.out.println(query);
 		try {
 			Statement st = c.createStatement();
 			st.execute(query);
@@ -50,10 +68,10 @@ public class ManejoDatos {
 		Connection c = con.conectar();
 		try {
 			Statement st = c.createStatement();
-			System.out.println("select " + campos + " from " + tabla);
+			//System.out.println("select " + campos + " from " + tabla);
 			ResultSet resultSet = st.executeQuery("select " + campos + " from " + tabla);
 			String[] fields = this.getCampos(resultSet, campos);
-			System.out.println(fields[1]);
+			//System.out.println(fields[1]);
 			while (resultSet.next())
 			{
 				Hashtable<String, String> reg = new Hashtable<String, String>();
@@ -81,7 +99,7 @@ public class ManejoDatos {
 			String query = "select " + campos + " from " + tabla + " where " + condicion;
 			ResultSet resultSet = st.executeQuery(query);
 			String[] fields = this.getCampos(resultSet, campos);
-			System.out.println(fields[1]);
+			//System.out.println(fields[1]);
 			while (resultSet.next())
 			{
 				Hashtable<String, String> reg = new Hashtable<String, String>();

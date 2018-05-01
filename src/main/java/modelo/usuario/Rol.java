@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rol implements IRol {
-	private int id;
 	private String nombre;
 
 	private List<IPermiso> permisos;
 
-	public Rol(int id, String nombre) {
-		this.id = id;
+	public Rol(String nombre) {
 		this.nombre = nombre;
 		this.permisos = new ArrayList<IPermiso>();
 		for (Modulo m: Modulo.values()) {
@@ -19,8 +17,7 @@ public class Rol implements IRol {
 		}
 	}
 
-	public Rol(int id, String nombre, List<IPermiso> permisos) {
-	    this.id = id;
+	public Rol(String nombre, List<IPermiso> permisos) {
         this.nombre = nombre;
         this.permisos = new ArrayList<IPermiso>(permisos);
 	}
@@ -28,21 +25,12 @@ public class Rol implements IRol {
     @Override
     public IRol clone() {
         return (IRol) new Rol(
-            this.id,
             this.nombre,
             this.permisos
             );
     }
 
-    @Override
-    public int getId() {
-        return this.id;
-    }
 
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Override
     public String getNombre() {
