@@ -9,7 +9,9 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -67,10 +69,16 @@ public class Excel {
 		Sheet hoja = libro.createSheet("Hoja1");
 
 		// Encabezados
-		// TODO agregar estilo a los encabezados (para eso es la diferenciación)
+		Font fuenteEncabezados = libro.createFont();
+		fuenteEncabezados.setBold(true);
+		CellStyle estiloEncabezados = libro.createCellStyle();
+		estiloEncabezados.setFont(fuenteEncabezados);
+
 		Row filaEncabezados = hoja.createRow(0);
 		for (int i = 0; i < encabezados.size(); i++) {
-		    filaEncabezados.createCell(i).setCellValue(encabezados.get(i));
+		    Cell celdaEncabezado = filaEncabezados.createCell(i);
+		    celdaEncabezado.setCellValue(encabezados.get(i));
+		    celdaEncabezado.setCellStyle(estiloEncabezados);
 		}
 
 		// Grilla
