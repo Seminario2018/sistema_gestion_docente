@@ -1,5 +1,7 @@
 package mail;
 
+import java.util.Scanner;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,32 +15,38 @@ import mail.Mail;
 public class MailTest {
 	
 	@Test
-	public void enviarMail1() {
+	public void enviarMailGenerico() {
 		
-		String mailDesde = "semint2018@gmail.com";
-		String contrasena = "semintunlu";
-		String mailHasta = "nadie";
-		String asunto = "Prueba";
-		String mensaje = "Prueba de mail";
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Desde:");
+		String mailDesde = sc.nextLine();
+		
+		System.out.println("Contraseña:");
+		String contrasena = sc.nextLine();
+		
+		System.out.println("Hasta:");
+		String mailHasta = sc.nextLine();
+		
+		System.out.println("Asunto:");
+		String asunto = sc.nextLine();
+		
+		System.out.println("Mensaje:");
+		String mensaje = "";
+		String chunk = sc.nextLine();
+		while (!chunk.equals("")) {
+			mensaje += chunk + "\r\n";
+			chunk = sc.nextLine();
+		}
+		
+		System.out.println("Enviando mensaje...");
 		
 		IMail m = new Mail();
 		
-		boolean enviado = m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
-		Assert.assertFalse(enviado);
-	}
-	
-	@Test
-	public void enviarMail2() {
+		m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
 		
-		String mailDesde = "semint2018@gmail.com";
-		String contrasena = "semintunlu";
-		String mailHasta = "tomasjuran96@gmail.com";
-		String asunto = "Prueba";
-		String mensaje = "Prueba de mail";
+		System.out.println("Enviado exitosamente");
 		
-		IMail m = new Mail();
-		
-		boolean enviado = m.enviarEmail(mailDesde, mailHasta, asunto, mensaje, contrasena);
-		Assert.assertTrue(enviado);
+		sc.close();
 	}
 }
