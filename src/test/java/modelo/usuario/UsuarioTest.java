@@ -57,7 +57,6 @@ public class UsuarioTest {
 		
 		Usuario u = (Usuario) gu.listarUsuario(user).get(0);
 		
-		
 		String hash = u.getHash().getHash();
 		String salt = u.getHash().getSalt();
 		
