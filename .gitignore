@@ -1,6 +1,8 @@
 .classpath
 .project
+.settings/
 *.class
 bin/
 target/
 .classpath
+Base.xml

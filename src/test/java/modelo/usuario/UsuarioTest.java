@@ -1,4 +1,4 @@
-package personaUsuarios;
+package modelo.usuario;
 
 import org.junit.Assert;
 
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import modelo.auxiliares.EstadoPersona;
 import modelo.auxiliares.TipoDocumento;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.hash.PasswordUtil;
 import modelo.persona.GestorPersona;
 import modelo.persona.Persona;
@@ -18,12 +19,13 @@ import modelo.usuario.Permiso;
 import modelo.usuario.Rol;
 import modelo.usuario.Usuario;
 
-public class PersonaUsuarios {
+public class UsuarioTest {
 
 	@Test
-	public void AgregarPersonaUsuarioRol() {
+	public void agregarPersonaUsuarioRol() {
 		Persona p = new Persona("Marazzo", "Leonardo", LocalDate.of(1997, 6, 22),
 				TipoDocumento.DNI, 40455634, null, null, null, EstadoPersona.ACTIVO);
+		
 		GestorPersona gp = new GestorPersona();
 		System.out.println(gp.nuevoUsuario(p).getMensaje());
 		
@@ -41,17 +43,19 @@ public class PersonaUsuarios {
 		per.setListar(true);
 		r.agregarPermiso(per);
 		
-		System.out.println(gu.agregarGrupo(u, r).getMensaje());
-		
-		
+		EstadoOperacion eo = gu.agregarRol(u, r);
+		System.out.println(eo.getMensaje());
+		Assert.assertEquals(eo.getEstado(), EstadoOperacion.CodigoEstado.INSERT_OK);
 	}
 	
 	@Test
-	public void validarContraseña() {
+	public void validarContrasena() {
 		GestorUsuario gu = new GestorUsuario();
-		Usuario user = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
-		Usuario u = (Usuario) gu.listarUsuario(user).get(0);
 		
+		Usuario user = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
+		gu.nuevoUsuario(user);
+		
+		Usuario u = (Usuario) gu.listarUsuario(user).get(0);
 		
 		String hash = u.getHash().getHash();
 		String salt = u.getHash().getSalt();
@@ -60,9 +64,7 @@ public class PersonaUsuarios {
 		
 		boolean estado1 = PasswordUtil.ValidatePass("leonardomarazzo", hash, salt);
 		
-		
 		Assert.assertTrue(estado1);
-		
 	}
 
 }

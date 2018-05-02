@@ -257,8 +257,11 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Columna 1" />
-                                    <TableColumn prefWidth="75.0" text="Columna 2" />
+                                    <TableColumn prefWidth="75.0" text="Apellido" />
+                                    <TableColumn prefWidth="75.0" text="Nombre" />
+                                    <TableColumn prefWidth="75.0" text="Cargo" />
+                                    <TableColumn prefWidth="75.0" text="Unidad Académica o Institución" />
+                                    <TableColumn prefWidth="75.0" text="Horas semanales dedicadas" />
                                  </columns>
                               </TableView>
                            </center>
@@ -327,118 +330,7 @@
                <content>
                   <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                      <content>
-                        <BorderPane>
-                           <bottom>
-                              <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
-                                 <children>
-                                    <Label text="Área">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="Cargo" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="Tipo de cargo" GridPane.rowIndex="2" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Disposición" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <Label text="Resolución" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                                    <Label text="Último costo" GridPane.rowIndex="5">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                                 </children>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="NEVER" />
-                                    <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                    <ColumnConstraints />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </BorderPane.margin>
-                              </GridPane>
-                           </bottom>
-                           <center>
-                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="Columna 1" />
-                                    <TableColumn prefWidth="75.0" text="Columna 2" />
-                                 </columns>
-                                 <BorderPane.margin>
-                                    <Insets left="10.0" right="10.0" />
-                                 </BorderPane.margin>
-                              </TableView>
-                           </center>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <top>
                               <GridPane BorderPane.alignment="CENTER">
                                  <children>
@@ -477,6 +369,83 @@
                                  </BorderPane.margin>
                               </GridPane>
                            </top>
+                           <center>
+                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Columna 1" />
+                                    <TableColumn prefWidth="75.0" text="Columna 2" />
+                                 </columns>
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                           <bottom>
+                              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <top>
+                                    <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
+                                       <children>
+                                          <Label text="Año">
+                                             <GridPane.margin>
+                                                <Insets right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField GridPane.columnIndex="1" />
+                                          <Label text="Monto total" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Label text="Disposición" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                          <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="NEVER" />
+                                          <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="NEVER" />
+                                          <ColumnConstraints />
+                                          <ColumnConstraints hgrow="NEVER" />
+                                          <ColumnConstraints />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <BorderPane.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </BorderPane.margin>
+                                    </GridPane>
+                                 </top>
+                                 <bottom>
+                                    <TextArea promptText="Observaciones" BorderPane.alignment="CENTER">
+                                       <BorderPane.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" />
+                                       </BorderPane.margin>
+                                    </TextArea>
+                                 </bottom>
+                              </BorderPane>
+                           </bottom>
                         </BorderPane>
                      </content>
                   </ScrollPane>

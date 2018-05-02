@@ -129,18 +129,18 @@ public class GestorUsuario {
         
     }
 
-    public EstadoOperacion agregarGrupo(IUsuario usuario, IRol grupo) {
+    public EstadoOperacion agregarRol(IUsuario usuario, IRol rol) {
     	ManejoDatos md = new ManejoDatos();	
     	GestorRol gr = new GestorRol();
-    	ArrayList<IRol> roles = (ArrayList<IRol>) gr.listarGrupo(grupo);
+    	ArrayList<IRol> roles = (ArrayList<IRol>) gr.listarGrupo(rol);
     	
     	if (roles.isEmpty()) {
-    		gr.nuevoGrupo(grupo);
+    		gr.nuevoGrupo(rol);
     	}
 
     	String tabla = "RolesXUsuario";
     	String campos = "Usuario, Rol";
-    	String valores = "'" + usuario.getUser() + "', '" + grupo.getNombre() + "'";  
+    	String valores = "'" + usuario.getUser() + "', '" + rol.getNombre() + "'";  
     	
     	md.insertar(tabla, campos, valores);
     	

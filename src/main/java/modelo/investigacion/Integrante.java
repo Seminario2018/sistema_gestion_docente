@@ -5,14 +5,17 @@ import modelo.docente.ICargoDocente;
 
 public class Integrante implements IIntegrante {
     private int id;
+    private int legajo;
     private String apellido;
     private String nombre;
     private String cargo;
     private String institucion;
     private int horasSemanales;
 
+    /* Constructor para docentes de la UNLu */
     public Integrante(int id, IDocente docente, ICargoDocente cargoDocente, int horasSemanales) {
-        this.setId(id);
+        this.id = id;
+        this.legajo = docente.getLegajo();
         this.apellido = docente.getPersona().getApellido();
         this.nombre = docente.getPersona().getNombre();
         this.cargo = cargoDocente.getCargo().getDescripcion();
@@ -20,7 +23,9 @@ public class Integrante implements IIntegrante {
         this.horasSemanales = horasSemanales;
     }
 
-    public Integrante(String apellido, String nombre, String cargo, String institucion, int horasSemanales) {
+    /* Constructor para no docentes / docentes que no son de la UNLu */
+    public Integrante(int id, String apellido, String nombre, String cargo, String institucion, int horasSemanales) {
+    	this.id = id;
         this.apellido = apellido;
         this.nombre = nombre;
         this.cargo = cargo;
@@ -28,26 +33,34 @@ public class Integrante implements IIntegrante {
         this.horasSemanales = horasSemanales;
     }
 
-    @Override
+    /* Constructor para el clone() */
+    public Integrante(int id, int legajo, String apellido, String nombre, String cargo, String institucion,
+			int horasSemanales) {
+		super();
+		this.id = id;
+		this.legajo = legajo;
+		this.apellido = apellido;
+		this.nombre = nombre;
+		this.cargo = cargo;
+		this.institucion = institucion;
+		this.horasSemanales = horasSemanales;
+	}
+
+	@Override
     public IIntegrante clone() {
-        return (IIntegrante) new Integrante(
-            this.apellido,
-            this.nombre,
-            this.cargo,
-            this.institucion,
-            this.horasSemanales
-            );
+        return (IIntegrante) new Integrante(this.id,
+        		this.legajo,
+        		this.apellido,
+        		this.nombre,
+        		this.cargo,
+        		this.institucion,
+        		this.horasSemanales);
     }
 
     @Override
     public String getApellido() {
         return this.apellido;
     }
-
-   // @Override
-   // public void setApellidoNombre(String apellido) {
-    //    this.apellido = apellido;
-   // }
 
     @Override
     public String getCargo() {
@@ -73,12 +86,6 @@ public class Integrante implements IIntegrante {
     public void setHorasSemanales(int horasSemanales) {
         this.horasSemanales = horasSemanales;
     }
-
-    /*@Override
-    public String getApellidoNombre() {
-        // TODO Auto-generated method stub
-        return this.nombre;
-    } */
 
     @Override
     public String getNombre() {
