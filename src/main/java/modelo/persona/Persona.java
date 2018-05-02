@@ -40,6 +40,19 @@ public class Persona implements IPersona{
 		this.estado = estado;
 	}
 	
+	public Persona() {
+		super();
+		this.apellido = null;
+		this.nombre = null;
+		this.fechaNacimiento = null;
+		this.tipoDocumento = null;
+		this.nroDocumento = 0;
+		this.domicilios = null;
+		this.contactos = null;
+		this.titulos = null;
+		this.estado = null;
+	}
+
 	@Override
 	public String getApellido() {
 		return apellido;
