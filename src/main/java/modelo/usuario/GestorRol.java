@@ -19,9 +19,15 @@ public class GestorRol {
 				int eliminar = p.getCrear() ? 1 : 0;
 				int modificar = p.getCrear() ? 1 : 0;
 				int listar = p.getListar() ? 1 : 0;
+				if (md.select("modulo", "*","Descripcion = '" + p.getModulo().name() + "'").isEmpty()) {
+					md.insertar("modulo", "idmodulo, Descripcion",
+							p.getModulo().ordinal() + ", '" + p.getModulo().name() + "'");
+				}
+				
 				String valores = crear + ", " + eliminar + ", "
 						+  modificar + ", " + listar + ", '"
-						+ grupo.getNombre() + "', " + p.getModulo();
+						+ grupo.getNombre() + "', " + p.getModulo().ordinal();
+				
 				md.insertar(tabla, campos, valores);
 			}
 			

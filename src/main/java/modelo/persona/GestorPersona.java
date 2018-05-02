@@ -46,8 +46,8 @@ public class GestorPersona {
 
 			table = "Persona";
 			campos = "`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`";
-			valores = persona.getTipoDocumento().ordinal() + ", '" + persona.getNroDocumento() + "',"
-					+ " '" + persona.getApellido() + "', '" + persona.getNombre() + "',"
+			valores = tipoDoc + ", '" + nroDoc + "'," + " '" + persona.getApellido() + "', "
+					+ "'" + persona.getNombre() + "',"
 					+ " '" + fechaNac + "', " + estado;
 			
 			md.insertar(table, campos, valores);

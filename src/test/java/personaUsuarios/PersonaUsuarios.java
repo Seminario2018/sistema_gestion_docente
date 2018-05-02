@@ -13,12 +13,15 @@ import modelo.persona.GestorPersona;
 import modelo.persona.Persona;
 import modelo.usuario.GestorUsuario;
 import modelo.usuario.IRol;
+import modelo.usuario.Modulo;
+import modelo.usuario.Permiso;
+import modelo.usuario.Rol;
 import modelo.usuario.Usuario;
 
 public class PersonaUsuarios {
 
 	@Test
-	public void test() {
+	public void AgregarPersonaUsuarioRol() {
 		Persona p = new Persona("Marazzo", "Leonardo", LocalDate.of(1997, 6, 22),
 				TipoDocumento.DNI, 40455634, null, null, null, EstadoPersona.ACTIVO);
 		GestorPersona gp = new GestorPersona();
@@ -27,15 +30,24 @@ public class PersonaUsuarios {
 		Usuario u = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
 		u.setPersona(p);
 		
-		System.out.println(u.getHash().getHash());
-		
 		GestorUsuario gu = new GestorUsuario();
 		System.out.println(gu.nuevoUsuario(u).getMensaje());
+		
+		Rol r = new Rol("su");
+		Permiso per  = new Permiso(Modulo.CARGOS);
+		per.setCrear(true);
+		per.setEliminar(true);
+		per.setModificar(true);
+		per.setListar(true);
+		r.agregarPermiso(per);
+		
+		System.out.println(gu.agregarGrupo(u, r).getMensaje());
+		
 		
 	}
 	
 	@Test
-	public void test2() {
+	public void validarContraseña() {
 		GestorUsuario gu = new GestorUsuario();
 		Usuario user = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
 		Usuario u = (Usuario) gu.listarUsuario(user).get(0);
