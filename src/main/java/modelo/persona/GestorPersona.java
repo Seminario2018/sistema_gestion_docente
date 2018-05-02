@@ -89,17 +89,48 @@ public class GestorPersona {
 	}
 
 	private void insertarTitulos(IPersona persona) {
-		//TODO insertar titulos
+		ManejoDatos md = new ManejoDatos();
+		for (ITitulo titulo : persona.getTitulos()) {
+			int esMayor = titulo.isEsMayor() ? 1 : 0;
+			String table = "titulos";
+			String campos = "`idtitulos`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
+			String valores = titulo.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+					+ "'" + persona.getNroDocumento() + "', '" + titulo.getNombre() + "', " + esMayor ;
+			
+			md.insertar(table, campos, valores);
+		}
+		
+		
 		
 	}
 
 	private void insetarDomicilios(IPersona persona) {
-		// TODO insertar domicilios
+		ManejoDatos md = new ManejoDatos();
+		for (IDomicilio domicilio : persona.getDomicilios()) {
+			String table = "domicilios";
+			String campos = "`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`,"
+					+ "`CodigoPostal`, `Domicilio`";
+			String valores = domicilio.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+					+ "'" + persona.getNroDocumento() + "', '" + domicilio.getProvincia() + "', "
+					+ "'" + domicilio.getCiudad() + "', '" + domicilio.getCodigoPostal() + "', "
+					+ "'" + domicilio.getDireccion() + "'";
+			
+			md.insertar(table, campos, valores);
+		}
 		
 	}
 
 	private void insertarContactos(IPersona persona) {
-		// TODO insertar contactos
+		ManejoDatos md = new ManejoDatos();
+		for (IContacto contacto : persona.getContactos()) {
+			String table = "contacto";
+			String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Nombre`, `Tipo`, `Valor`";
+			String valores = contacto.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+					+ "'" + persona.getNroDocumento() + "', '" + contacto.getNombre() + "', "
+					+ "'" + contacto.getTipo() + "', '" + contacto.getValor() + "'";
+			
+			md.insertar(table, campos, valores);
+		}
 		
 	}
 

@@ -7,4 +7,6 @@ public interface ITitulo {
     public void setId(int id);
     public String getNombre();
     public void setNombre(String nombre);
+    public boolean isEsMayor();
+    public void setEsMayor(boolean esMayor);
 }
