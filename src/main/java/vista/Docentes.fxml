@@ -20,6 +20,8 @@
                 <ColumnConstraints hgrow="NEVER" />
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" prefWidth="100.0" />
                   <ColumnConstraints hgrow="NEVER" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                  <ColumnConstraints hgrow="NEVER" />
                   <ColumnConstraints hgrow="ALWAYS" />
               </columnConstraints>
               <rowConstraints>
@@ -32,7 +34,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <Label text="Apellido y Nombre" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
+                  <Label text="Nombre" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
@@ -42,12 +44,25 @@
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
+                  <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="5">
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </GridPane.margin>
+                  </TextField>
                   <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label text="Apellido" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </Label>
                </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
             </GridPane>
             <GridPane alignment="BOTTOM_LEFT">
                <children>
@@ -77,14 +92,158 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets bottom="15.0" />
                </VBox.margin>
             </GridPane>
             <TabPane tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab closable="false" text="Datos">
                      <content>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0" />
+                        <BorderPane>
+                           <top>
+                              <GridPane>
+                                 <children>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </top>
+                           <center>
+                              <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label text="Documento" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Fecha de nacimiento" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Dirección" GridPane.rowIndex="3" />
+                                    <Label text="Provincia" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Código postal" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <Label text="Estado" />
+                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <DatePicker maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </DatePicker>
+                                    <TableView prefHeight="100.0" GridPane.columnSpan="4" GridPane.rowIndex="6">
+                                      <columns>
+                                        <TableColumn prefWidth="668.0" text="Título" />
+                                        <TableColumn prefWidth="108.0" text="Checkbox?" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label layoutX="10.0" layoutY="255.0" text="Localidad" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField layoutX="148.0" layoutY="251.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TextField layoutX="495.0" layoutY="251.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <TableView layoutX="10.0" layoutY="246.0" prefHeight="100.0" GridPane.columnSpan="4" GridPane.rowIndex="8">
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                       <columns>
+                                          <TableColumn prefWidth="253.0" text="Tipo" />
+                                          <TableColumn prefWidth="523.0" />
+                                       </columns>
+                                    </TableView>
+                                    <Label opacity="0.5" text="Títulos" GridPane.rowIndex="5" />
+                                    <Label opacity="0.5" text="Contacto" GridPane.rowIndex="7" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" />
+                                    <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
+                                    <ColumnConstraints maxWidth="223.0" minWidth="180.0" prefWidth="190.0" />
+                                    <ColumnConstraints maxWidth="251.0" minWidth="208.0" prefWidth="241.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </center>
+                        </BorderPane>
                      </content></Tab>
                   <Tab closable="false" text="Cargos">
                      <content>
@@ -144,18 +303,7 @@
                            <bottom>
                               <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label text="Área">
-                                       <GridPane.margin>
-                                          <Insets right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="Cargo" GridPane.rowIndex="1">
+                                    <Label text="Área" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
@@ -166,27 +314,20 @@
                                           <Insets left="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Label text="Tipo de cargo" GridPane.rowIndex="2" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Disposición" GridPane.rowIndex="3">
+                                    <Label text="Cargo" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                        <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
+                                          <Insets left="10.0" />
                                        </GridPane.margin>
-                                    </Label>
-                                    <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <Label text="Resolución" GridPane.rowIndex="4">
+                                    </Button>
+                                    <Label text="Tipo de cargo" GridPane.rowIndex="3" />
+                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Disposición" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
@@ -197,25 +338,45 @@
                                           <Insets left="20.0" right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                     <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets left="20.0" right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                                    <Label text="Último costo" GridPane.rowIndex="5">
+                                    <Label text="Resolución" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets left="20.0" right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                    <Label text="Último costo" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                    <Label text="Estado" />
+                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" />
@@ -232,6 +393,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -241,12 +403,160 @@
                         </BorderPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Investigación" />
-                  <Tab closable="false" text="Incentivos" />
+                  <Tab closable="false" text="Investigación">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <GridPane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </top>
+                           <center>
+                              <GridPane alignment="TOP_CENTER" vgap="5.0" BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="NEVER" maxWidth="382.0" minWidth="10.0" prefWidth="93.0" />
+                                  <ColumnConstraints hgrow="ALWAYS" maxWidth="685.0" minWidth="10.0" prefWidth="685.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="-Infinity" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Categoría" />
+                                    <Label text="Descripción" GridPane.rowIndex="1" />
+                                    <ComboBox prefHeight="28.0" prefWidth="265.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
+                                    <TextField focusTraversable="false" minWidth="-Infinity" mouseTransparent="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                                 </children>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </center>
+                        </BorderPane>
+                     </content></Tab>
+                  <Tab closable="false" text="Incentivos">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <top>
+                              <GridPane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </top>
+                           <center>
+                              <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="Identificador" />
+                                  <TableColumn prefWidth="75.0" text="Disposición" />
+                                    <TableColumn prefWidth="75.0" text="Desde" />
+                                    <TableColumn prefWidth="75.0" text="Hasta" />
+                                    <TableColumn prefWidth="75.0" text="Monto" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </TableView>
+                           </center>
+                        </BorderPane>
+                     </content></Tab>
                   <Tab closable="false" text="Observaciones">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                    </content>
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </TextArea>
+                           </center>
+                           <top>
+                              <GridPane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </GridPane>
+                           </top>
+                        </BorderPane>
+                     </content>
                   </Tab>
                </tabs>
                <VBox.margin>
