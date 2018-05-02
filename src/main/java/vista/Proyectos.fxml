@@ -116,7 +116,7 @@
                            <center>
 	                      	   <GridPane alignment="TOP_CENTER" BorderPane.alignment="CENTER">
 	                              <children>
-	                                 <Label text="Área">
+	                                 <Label text="Director/a">
 	                                    <GridPane.margin>
 	                                       <Insets right="10.0" />
 	                                    </GridPane.margin>
@@ -127,7 +127,7 @@
 	                                       <Insets left="10.0" />
 	                                    </GridPane.margin>
 	                                 </Button>
-	                                 <Label text="Cargo" GridPane.rowIndex="1">
+	                                 <Label text="Codirector/a" GridPane.rowIndex="1">
 	                                    <GridPane.margin>
 	                                       <Insets right="10.0" />
 	                                    </GridPane.margin>
@@ -138,7 +138,7 @@
 	                                       <Insets left="10.0" />
 	                                    </GridPane.margin>
 	                                 </Button>
-	                                 <Label text="Tipo de cargo" GridPane.rowIndex="2" />
+	                                 <Label text="Estado" GridPane.rowIndex="2" />
 	                                 <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 	                                 <Label text="Disposición" GridPane.rowIndex="3">
 	                                    <GridPane.margin>
@@ -146,48 +146,26 @@
 	                                    </GridPane.margin>
 	                                 </Label>
 	                                 <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-	                                 <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-	                                    <GridPane.margin>
-	                                       <Insets left="20.0" right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
-	                                 <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-	                                 <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-	                                    <GridPane.margin>
-	                                       <Insets left="20.0" right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
-	                                 <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-	                                 <Label text="Resolución" GridPane.rowIndex="4">
+	                                 <Label text="Fecha de presentación" GridPane.rowIndex="4">
 	                                    <GridPane.margin>
 	                                       <Insets right="10.0" />
 	                                    </GridPane.margin>
 	                                 </Label>
-	                                 <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-	                                 <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-	                                    <GridPane.margin>
-	                                       <Insets left="20.0" right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
+	                                 <DatePicker prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label layoutX="67.0" layoutY="137.0" text="Fecha de aprobación" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
 	                                 <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-	                                 <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-	                                    <GridPane.margin>
-	                                       <Insets left="20.0" right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
-	                                 <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-	                                 <Label text="Último costo" GridPane.rowIndex="5">
-	                                    <GridPane.margin>
-	                                       <Insets right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
-	                                 <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-	                                 <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-	                                    <GridPane.margin>
-	                                       <Insets left="20.0" right="10.0" />
-	                                    </GridPane.margin>
-	                                 </Label>
-	                                 <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                    <Label layoutX="127.0" layoutY="137.0" text="Fecha de inicio" GridPane.rowIndex="5" />
+                                    <DatePicker layoutX="587.0" layoutY="133.0" prefWidth="105.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label layoutX="466.0" layoutY="137.0" text="Fecha de finalización" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker layoutX="256.0" layoutY="133.0" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
 	                              </children>
 	                              <columnConstraints>
 	                                 <ColumnConstraints hgrow="NEVER" />
