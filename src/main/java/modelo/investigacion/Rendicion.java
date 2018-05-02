@@ -3,11 +3,13 @@ package modelo.investigacion;
 import java.time.LocalDate;
 
 public class Rendicion implements IRendicion {
+	private int id;
 	private LocalDate fecha;
 	private float monto;
 	private String observaciones;
 
-	public Rendicion(LocalDate fecha, float monto, String observaciones) {
+	public Rendicion(int id, LocalDate fecha, float monto, String observaciones) {
+		this.id = id;
 	    this.fecha = fecha;
 	    this.monto = monto;
 	    this.observaciones = observaciones;
@@ -16,13 +18,22 @@ public class Rendicion implements IRendicion {
     @Override
     public IRendicion clone() {
         return (IRendicion) new Rendicion(
-            this.fecha,
-            this.monto,
-            this.observaciones
-            );
+        		this.id,
+        		this.fecha,
+        		this.monto,
+        		this.observaciones
+        		);
     }
 
-    @Override
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
     public LocalDate getFecha() {
         return this.fecha;
     }
