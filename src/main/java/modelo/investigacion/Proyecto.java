@@ -14,6 +14,8 @@ public class Proyecto implements IProyecto {
 	private LocalDate fechaPresentacion;
 	private LocalDate fechaAprobacion;
 	private String disposicion;
+	private LocalDate dispDesde;
+	private LocalDate dispHasta;
 	private IDocente director;
 	private IDocente codirector;
 	private LocalDate fechaInicio;
@@ -24,201 +26,204 @@ public class Proyecto implements IProyecto {
 	private List<ISubsidio> subsidios;
 	private List<IProrroga> prorrogas;
 
-	public Proyecto(int id, String nombre, String resumen,
-	        LocalDate fechaPresentacion, LocalDate fechaAprobacion,
-	        String disposicion, IDocente director, IDocente codirector,
-	        LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado,
-	        List<IIntegrante> integrantes, List<ISubsidio> subsidios,
-	        List<IProrroga> prorrogas) {
-
-	    this.id = id;
-	    this.nombre = nombre;
-	    this.resumen = resumen;
-	    this.fechaPresentacion = fechaPresentacion;
-	    this.fechaAprobacion = fechaAprobacion;
-	    this.disposicion = disposicion;
-	    this.director = director;
-	    this.codirector = codirector;
-	    this.fechaInicio = fechaInicio;
-	    this.fechaFin = fechaFin;
-	    this.estado = estado;
-	    this.integrantes = new ArrayList<IIntegrante>(integrantes);
-	    this.subsidios = new ArrayList<ISubsidio>(subsidios);
-	    this.prorrogas = new ArrayList<IProrroga>(prorrogas);
+	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
+			String disposicion, LocalDate dispDesde, LocalDate dispHasta, IDocente director, IDocente codirector,
+			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
+			List<ISubsidio> subsidios, List<IProrroga> prorrogas) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.resumen = resumen;
+		this.fechaPresentacion = fechaPresentacion;
+		this.fechaAprobacion = fechaAprobacion;
+		this.disposicion = disposicion;
+		this.dispDesde = dispDesde;
+		this.dispHasta = dispHasta;
+		this.director = director;
+		this.codirector = codirector;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.estado = estado;
+		this.integrantes = new ArrayList<IIntegrante>(integrantes);
+		this.subsidios = new ArrayList<ISubsidio>(subsidios);
+		this.prorrogas = new ArrayList<IProrroga>(prorrogas);
 	}
 
-    @Override
-    public IProyecto clone() {
-        return (IProyecto) new Proyecto(
-            this.id,
-            this.nombre,
-            this.resumen,
-            this.fechaPresentacion,
-            this.fechaAprobacion,
-            this.disposicion,
-            this.director,
-            this.codirector,
-            this.fechaInicio,
-            this.fechaFin,
-            this.estado,
-            this.integrantes,
-            this.subsidios,
-            this.prorrogas
-            );
-    }
+	@Override
+	public IProyecto clone() {
+		return (IProyecto) new Proyecto(this.id, this.nombre, this.resumen, this.fechaPresentacion,
+				this.fechaAprobacion, this.disposicion, this.dispDesde, this.dispHasta, this.director, this.codirector, this.fechaInicio, this.fechaFin,
+				this.estado, this.integrantes, this.subsidios, this.prorrogas);
+	}
 
-    @Override
-    public int getId() {
-        return this.id;
-    }
+	@Override
+	public int getId() {
+		return this.id;
+	}
 
-    @Override
-    public void setId(int id) {
-        this.id = id;
-    }
+	@Override
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @Override
-    public String getNombre() {
-        return this.nombre;
-    }
+	@Override
+	public String getNombre() {
+		return this.nombre;
+	}
 
-    @Override
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+	@Override
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
-    @Override
-    public String getResumen() {
-        return this.resumen;
-    }
+	@Override
+	public String getResumen() {
+		return this.resumen;
+	}
 
-    @Override
-    public void setResumen(String resumen) {
-        this.resumen = resumen;
-    }
+	@Override
+	public void setResumen(String resumen) {
+		this.resumen = resumen;
+	}
 
-    @Override
-    public LocalDate getFechaPresentacion() {
-        return this.fechaPresentacion;
-    }
+	@Override
+	public LocalDate getFechaPresentacion() {
+		return this.fechaPresentacion;
+	}
 
-    @Override
-    public void setFechaPresentacion(LocalDate fechaPresentacion) {
-        this.fechaPresentacion = fechaPresentacion;
-    }
+	@Override
+	public void setFechaPresentacion(LocalDate fechaPresentacion) {
+		this.fechaPresentacion = fechaPresentacion;
+	}
 
-    @Override
-    public LocalDate getFechaAprobacion() {
-        return this.fechaAprobacion;
-    }
+	@Override
+	public LocalDate getFechaAprobacion() {
+		return this.fechaAprobacion;
+	}
 
-    @Override
-    public void setFechaAprobacion(LocalDate fechaAprobacion) {
-        this.fechaAprobacion = fechaAprobacion;
-    }
+	@Override
+	public void setFechaAprobacion(LocalDate fechaAprobacion) {
+		this.fechaAprobacion = fechaAprobacion;
+	}
 
-    @Override
-    public String getDisposicion() {
-        return this.disposicion;
-    }
+	@Override
+	public String getDisposicion() {
+		return this.disposicion;
+	}
 
-    @Override
-    public void setDisposicion(String disposicion) {
-        this.disposicion = disposicion;
-    }
+	@Override
+	public void setDisposicion(String disposicion) {
+		this.disposicion = disposicion;
+	}
 
-    @Override
-    public IDocente getDirector() {
-        return this.director;
-    }
+	public LocalDate getDispDesde() {
+		return dispDesde;
+	}
 
-    @Override
-    public void setDirector(IDocente director) {
-        this.director = director;
-    }
+	public void setDispDesde(LocalDate dispDesde) {
+		this.dispDesde = dispDesde;
+	}
 
-    @Override
-    public IDocente getCodirector() {
-        return this.codirector;
-    }
+	public LocalDate getDispHasta() {
+		return dispHasta;
+	}
 
-    @Override
-    public void setCodirector(IDocente codirector) {
-        this.codirector = codirector;
-    }
+	public void setDispHasta(LocalDate dispHasta) {
+		this.dispHasta = dispHasta;
+	}
 
-    @Override
-    public LocalDate getFechaInicio() {
-        return this.fechaInicio;
-    }
+	@Override
+	public IDocente getDirector() {
+		return this.director;
+	}
 
-    @Override
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
+	@Override
+	public void setDirector(IDocente director) {
+		this.director = director;
+	}
 
-    @Override
-    public LocalDate getFechaFin() {
-        return this.fechaFin;
-    }
+	@Override
+	public IDocente getCodirector() {
+		return this.codirector;
+	}
 
-    @Override
-    public void setFechaFin(LocalDate fechaFin) {
-        this.fechaFin = fechaFin;
-    }
+	@Override
+	public void setCodirector(IDocente codirector) {
+		this.codirector = codirector;
+	}
 
-    @Override
-    public EstadoProyecto getEstado() {
-        return this.estado;
-    }
+	@Override
+	public LocalDate getFechaInicio() {
+		return this.fechaInicio;
+	}
 
-    @Override
-    public void setEstado(EstadoProyecto estado) {
-        this.estado = estado;
-    }
+	@Override
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
 
-    @Override
-    public List<IIntegrante> getIntegrantes() {
-        return this.integrantes;
-    }
+	@Override
+	public LocalDate getFechaFin() {
+		return this.fechaFin;
+	}
 
-    @Override
-    public void agregarIntegrante(IIntegrante integrante) {
-        this.integrantes.add(integrante);
-    }
+	@Override
+	public void setFechaFin(LocalDate fechaFin) {
+		this.fechaFin = fechaFin;
+	}
 
-    @Override
-    public void quitarIntegrante(IIntegrante integrante) {
-        this.integrantes.remove(integrante);
-    }
+	@Override
+	public EstadoProyecto getEstado() {
+		return this.estado;
+	}
 
-    @Override
-    public List<ISubsidio> getSubsidios() {
-        return this.subsidios;
-    }
+	@Override
+	public void setEstado(EstadoProyecto estado) {
+		this.estado = estado;
+	}
 
-    @Override
-    public void agregarSubsidio(ISubsidio subsidio) {
-        this.subsidios.add(subsidio);
-    }
+	@Override
+	public List<IIntegrante> getIntegrantes() {
+		return this.integrantes;
+	}
 
-    @Override
-    public void quitarSubsidio(ISubsidio subsidio) {
-        this.subsidios.remove(subsidio);
-    }
+	@Override
+	public void agregarIntegrante(IIntegrante integrante) {
+		this.integrantes.add(integrante);
+	}
 
-    @Override
-    public List<IProrroga> getProrrogas() {
-        return this.prorrogas;
-    }
+	@Override
+	public void quitarIntegrante(IIntegrante integrante) {
+		this.integrantes.remove(integrante);
+	}
 
-    @Override
-    public void agregarProrroga(IProrroga prorroga) {
-        this.prorrogas.add(prorroga);
-    }
+	@Override
+	public List<ISubsidio> getSubsidios() {
+		return this.subsidios;
+	}
 
-    @Override
-    public void quitarProrroga(IProrroga prorroga) {
-        this.prorrogas.remove(prorroga);
-    }
+	@Override
+	public void agregarSubsidio(ISubsidio subsidio) {
+		this.subsidios.add(subsidio);
+	}
+
+	@Override
+	public void quitarSubsidio(ISubsidio subsidio) {
+		this.subsidios.remove(subsidio);
+	}
+
+	@Override
+	public List<IProrroga> getProrrogas() {
+		return this.prorrogas;
+	}
+
+	@Override
+	public void agregarProrroga(IProrroga prorroga) {
+		this.prorrogas.add(prorroga);
+	}
+
+	@Override
+	public void quitarProrroga(IProrroga prorroga) {
+		this.prorrogas.remove(prorroga);
+	}
 }

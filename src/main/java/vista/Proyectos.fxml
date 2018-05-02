@@ -11,78 +11,79 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
-   <content>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
+   <children>
+      <GridPane VBox.vgrow="NEVER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" prefWidth="100.0" />
+            <ColumnConstraints hgrow="NEVER" />
+            <ColumnConstraints hgrow="ALWAYS" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
+            <RowConstraints vgrow="NEVER" />
+        </rowConstraints>
          <children>
-            <GridPane VBox.vgrow="NEVER">
-              <columnConstraints>
-                <ColumnConstraints hgrow="NEVER" />
-                  <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="NEVER" />
-                  <ColumnConstraints hgrow="ALWAYS" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="35.0" vgrow="NEVER" />
-                  <RowConstraints vgrow="NEVER" />
-              </rowConstraints>
-               <children>
-                  <Label text="ID" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <Label text="Nombre" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </Label>
-                  <TextField editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="80.0" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </TextField>
-                  <TextField editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="3">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </TextField>
-               </children>
-            </GridPane>
-            <GridPane alignment="BOTTOM_LEFT">
-               <children>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar" GridPane.columnIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" GridPane.columnIndex="2">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </Button>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
-                     <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </GridPane.margin>
-                  </Button>
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <VBox.margin>
-                  <Insets bottom="5.0" />
-               </VBox.margin>
-            </GridPane>
-            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
-               <tabs>
-                  <Tab closable="false" text="Datos">
+            <Label text="ID" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="Nombre" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets left="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="80.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="200.0" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
+      <GridPane alignment="BOTTOM_LEFT">
+         <children>
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" GridPane.columnIndex="2">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </GridPane>
+      <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="SOMETIMES">
+         <tabs>
+            <Tab closable="false" text="Datos">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="504.0" prefViewportWidth="785.0">
                      <content>
                         <BorderPane>
                            <top>
@@ -106,7 +107,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -146,6 +147,18 @@
 	                                    </GridPane.margin>
 	                                 </Label>
 	                                 <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets left="20.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
 	                                 <Label text="Fecha de presentación" GridPane.rowIndex="4">
 	                                    <GridPane.margin>
 	                                       <Insets right="10.0" />
@@ -176,12 +189,12 @@
 	                                 <ColumnConstraints />
 	                              </columnConstraints>
 	                              <rowConstraints>
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-	                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
+	                                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" />
 	                              </rowConstraints>
 	                              <BorderPane.margin>
 	                                 <Insets />
@@ -189,8 +202,13 @@
 	                           </GridPane>
                            </center>
                         </BorderPane>
-                     </content></Tab>
-                  <Tab closable="false" text="Integrantes">
+                     </content>
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Integrantes">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                      <content>
                         <BorderPane>
                            <top>
@@ -224,7 +242,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -232,9 +250,9 @@
                               </GridPane>
                            </top>
                            <center>
-                              <TableView prefHeight="150.0" BorderPane.alignment="CENTER">
+                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                                  <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </BorderPane.margin>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -289,12 +307,12 @@
                                     <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -303,8 +321,12 @@
                            </bottom>
                         </BorderPane>
                      </content>
-                  </Tab>
-                  <Tab closable="false" text="Subsidios">
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Subsidios">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                      <content>
                         <BorderPane>
                            <bottom>
@@ -392,12 +414,12 @@
                                     <ColumnConstraints />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -405,7 +427,7 @@
                               </GridPane>
                            </bottom>
                            <center>
-                              <TableView prefHeight="150.0" BorderPane.alignment="CENTER">
+                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
@@ -414,7 +436,7 @@
                                     <TableColumn prefWidth="75.0" text="Columna 2" />
                                  </columns>
                                  <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </BorderPane.margin>
                               </TableView>
                            </center>
@@ -449,7 +471,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -458,8 +480,12 @@
                            </top>
                         </BorderPane>
                      </content>
-                  </Tab>
-                  <Tab closable="false" text="Rendiciones">
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Rendiciones">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                      <content>
                         <BorderPane>
                            <bottom>
@@ -547,12 +573,12 @@
                                     <ColumnConstraints />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -560,7 +586,7 @@
                               </GridPane>
                            </bottom>
                            <center>
-                              <TableView prefHeight="150.0" BorderPane.alignment="CENTER">
+                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
@@ -569,7 +595,7 @@
                                     <TableColumn prefWidth="75.0" text="Columna 2" />
                                  </columns>
                                  <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </BorderPane.margin>
                               </TableView>
                            </center>
@@ -581,7 +607,7 @@
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="btnCargosGuardar21" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" GridPane.columnIndex="1">
+                                    <Button fx:id="btnCargosGuardar23" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
@@ -604,7 +630,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -613,8 +639,12 @@
                            </top>
                         </BorderPane>
                      </content>
-                  </Tab>
-                  <Tab closable="false" text="Prórrogas">
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Prórrogas">
+               <content>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                      <content>
                         <BorderPane>
                            <bottom>
@@ -702,12 +732,12 @@
                                     <ColumnConstraints />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -715,7 +745,7 @@
                               </GridPane>
                            </bottom>
                            <center>
-                              <TableView prefHeight="150.0" BorderPane.alignment="CENTER">
+                              <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
@@ -724,7 +754,7 @@
                                     <TableColumn prefWidth="75.0" text="Columna 2" />
                                  </columns>
                                  <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets left="10.0" right="10.0" />
                                  </BorderPane.margin>
                               </TableView>
                            </center>
@@ -736,7 +766,7 @@
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="btnCargosGuardar22" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" GridPane.columnIndex="1">
+                                    <Button fx:id="btnCargosGuardar24" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
@@ -759,7 +789,7 @@
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <BorderPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
@@ -768,22 +798,26 @@
                            </top>
                         </BorderPane>
                      </content>
-                  </Tab>
-                  <Tab closable="false" text="Resumen">
-                     <content>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <center>
-                              <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                           </center>
-                        </BorderPane>
-                     </content>
-                  </Tab>
-               </tabs>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </TabPane>
-         </children>
-      </VBox>
-   </content>
-</ScrollPane>
+                  </ScrollPane>
+               </content>
+            </Tab>
+            <Tab closable="false" text="Resumen">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </BorderPane.margin>
+                        </TextArea>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+         </tabs>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </TabPane>
+   </children>
+</VBox>
