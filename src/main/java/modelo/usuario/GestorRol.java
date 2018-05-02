@@ -13,20 +13,21 @@ public class GestorRol {
 			ManejoDatos md = new ManejoDatos();
 			md.insertar("roles", "nombre", "'"+grupo.getNombre()+"'");
 			String tabla = "permisos";
-			String campos = "`crear`, `eliminar`, `modificar`, `listar`, `rol`";
+			String campos = "`crear`, `eliminar`, `modificar`, `listar`, `rol`, `modulo`";
 			for (IPermiso p : grupo.getPermisos()) {
 				int crear = p.getCrear() ? 1 : 0;
 				int eliminar = p.getCrear() ? 1 : 0;
 				int modificar = p.getCrear() ? 1 : 0;
 				int listar = p.getListar() ? 1 : 0;
-				String valores = crear + ", " + eliminar + ", " + modificar + ", " + listar + ", '" + grupo.getNombre() + "'";
+				String valores = crear + ", " + eliminar + ", "
+						+  modificar + ", " + listar + ", '"
+						+ grupo.getNombre() + "', " + p.getModulo();
 				md.insertar(tabla, campos, valores);
 			}
 			
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
 			        "El rol se creó correctamente");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,
 			        "No se pudo crear el rol");
 		}
@@ -85,7 +86,7 @@ public class GestorRol {
 			res = md.select(tabla, "*", condicion);
 			
 			
-			for (Hashtable reg : res) {
+			for (Hashtable<String, String> reg : res) {
 				Rol rol = new Rol(reg.get("nombre").toString());
 				tabla = "permisos";
 	            campos = "*";
@@ -107,10 +108,7 @@ public class GestorRol {
 					}
 					rol.agregarPermiso(p);
 				}
-	            
-	            
 			}
-			
 			return roles;
 		} catch (Exception e) {
 			return null;

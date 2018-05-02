@@ -46,14 +46,13 @@ public class ManejoDatos {
 		String s = "Se inserto la fila correctamente";
 		Connection c = con.conectar();
 		String query = "insert into " + tabla + " (" + campos + ") values (" + valores + ")";	
-		//System.out.println(query);
+		System.out.println(query);
 		try {
 			Statement st = c.createStatement();
 			st.execute(query);
 		}
 		catch(Exception e){
 			estado = false;
-			e.printStackTrace();
 			s = "Error al insertar la fila"; 
 		}finally {
 			con.desconectar();

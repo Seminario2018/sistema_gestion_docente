@@ -32,9 +32,9 @@ public class MailTest {
 		
 		String mailDesde = "semint2018@gmail.com";
 		String contrasena = "semintunlu";
-		String mailHasta = "tomasjuran96@gmail.com";
-		String asunto = "Prueba";
-		String mensaje = "Prueba de mail";
+		String mailHasta = "sescudero2011@gmail.com";
+		String asunto = "Hola";
+		String mensaje = "Holaaaaa!!!";
 		
 		IMail m = new Mail();
 		
