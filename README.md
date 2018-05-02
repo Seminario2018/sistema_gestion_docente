@@ -2,11 +2,25 @@ Sistema de Gestión Docente - Departamento de Básicas UNLu
 
 *******************************************************************************
 
-Dependencias de Maven:
-
+Librerías utilizadas:
+<br>
+<br>
+<b>JavaFX SDK</b>
+<br>
+<br>
 <b>JUnit 4.12</b>
 <br>
 https://mvnrepository.com/artifact/junit/junit/4.12
+<br>
+<br>
+<b>Hamcrest All 1.3</b>
+<br>
+https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all/1.3
+<br>
+<br>
+<b>JFXtras Labs 8.0-r6</b>
+<br>
+https://mvnrepository.com/artifact/org.jfxtras/jfxtras-labs/8.0-r6
 <br>
 <br>
 <b>MySQL Connector 5.1.46</b>
