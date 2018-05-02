@@ -18,11 +18,11 @@ public class GestorUsuario {
     	try {
     		ManejoDatos md = new ManejoDatos();
         	String table = "Usuario";
-        	String campos = "`idUsuario`, `Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
+        	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
         	String valores = "'" + usuario.getUser() + "', '" +
         			usuario.getHash().getHash() + "', '" +
-        			usuario.getHash().getSalt() + "', '" +
-        			usuario.getPersona().getTipoDocumento().toString() + "', '" +
+        			usuario.getHash().getSalt() + "', " +
+        			usuario.getPersona().getTipoDocumento().ordinal() + ", '" +
         			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
         			usuario.getDescripcion() + "'";
         	
@@ -36,8 +36,12 @@ public class GestorUsuario {
             	md.insertar(table, campos, valores);
         	}
         	
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-                    "El usuario se creó correctamente");
+            if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
+						"El usuario se creó correctamente");
+			}else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el usuario");
+			}
     	}catch (Exception e) {
     		return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el usuario");
     		
@@ -126,13 +130,32 @@ public class GestorUsuario {
     }
 
     public EstadoOperacion agregarGrupo(IUsuario usuario, IRol grupo) {
-        // TODO actualizar BD
+    	ManejoDatos md = new ManejoDatos();	
+    	GestorRol gr = new GestorRol();
+    	ArrayList<IRol> roles = (ArrayList<IRol>) gr.listarGrupo(grupo);
+    	
+    	if (roles.isEmpty()) {
+    		gr.nuevoGrupo(grupo);
+    	}
+
+    	String tabla = "RolesXUsuario";
+    	String campos = "Usuario, Rol";
+    	String valores = "'" + usuario.getUser() + "', '" + grupo.getNombre() + "'";  
+    	
+    	md.insertar(tabla, campos, valores);
+    	
         return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
                 "El grupo se agregó correctamente");
     }
 
     public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
-        // TODO actualizar BD
+    	
+    	ManejoDatos md = new ManejoDatos();
+    	String tabla = "RolesXUsuario";
+    	String condicion = " Usuario = '" + usuario.getUser() + "', '" + grupo.getNombre() + "'"; 
+    	
+    	md.delete(tabla, condicion);
+    	
         return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
                 "El grupo se quitó correctamente");
     }
@@ -172,12 +195,13 @@ public class GestorUsuario {
         	
         	
         	ManejoDatos md = new ManejoDatos();	
-    		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*");
+    		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
     		for (Hashtable<String, String> reg : res) {
 				Rol r = new Rol(reg.get("Rol"));
+				GestorRol gr = new GestorRol();
+				r = (Rol) gr.listarGrupo(r).get(0);
 				usuario.agregarGrupo(r);
 			}
-    		
     	}catch (Exception e) {
     		e.printStackTrace();
     	}
