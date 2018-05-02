@@ -67,6 +67,7 @@ public class Excel {
 		Sheet hoja = libro.createSheet("Hoja1");
 
 		// Encabezados
+		// TODO agregar estilo a los encabezados (para eso es la diferenciación)
 		Row filaEncabezados = hoja.createRow(0);
 		for (int i = 0; i < encabezados.size(); i++) {
 		    filaEncabezados.createCell(i).setCellValue(encabezados.get(i));
