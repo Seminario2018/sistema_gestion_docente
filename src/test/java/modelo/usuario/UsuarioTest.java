@@ -25,6 +25,7 @@ public class UsuarioTest {
 	public void agregarPersonaUsuarioRol() {
 		Persona p = new Persona("Marazzo", "Leonardo", LocalDate.of(1997, 6, 22),
 				TipoDocumento.DNI, 40455634, null, null, null, EstadoPersona.ACTIVO);
+		
 		GestorPersona gp = new GestorPersona();
 		System.out.println(gp.nuevoUsuario(p).getMensaje());
 		
@@ -42,9 +43,7 @@ public class UsuarioTest {
 		per.setListar(true);
 		r.agregarPermiso(per);
 		
-		
 		EstadoOperacion eo = gu.agregarRol(u, r);
-		
 		System.out.println(eo.getMensaje());
 		Assert.assertEquals(eo.getEstado(), EstadoOperacion.CodigoEstado.INSERT_OK);
 	}
@@ -52,7 +51,10 @@ public class UsuarioTest {
 	@Test
 	public void validarContrasena() {
 		GestorUsuario gu = new GestorUsuario();
+		
 		Usuario user = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
+		gu.nuevoUsuario(user);
+		
 		Usuario u = (Usuario) gu.listarUsuario(user).get(0);
 		
 		
