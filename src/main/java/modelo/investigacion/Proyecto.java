@@ -14,8 +14,6 @@ public class Proyecto implements IProyecto {
 	private LocalDate fechaPresentacion;
 	private LocalDate fechaAprobacion;
 	private String disposicion;
-	private LocalDate dispDesde;
-	private LocalDate dispHasta;
 	private IDocente director;
 	private IDocente codirector;
 	private LocalDate fechaInicio;
@@ -27,7 +25,7 @@ public class Proyecto implements IProyecto {
 	private List<IProrroga> prorrogas;
 
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
-			String disposicion, LocalDate dispDesde, LocalDate dispHasta, IDocente director, IDocente codirector,
+			String disposicion, IDocente director, IDocente codirector,
 			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
 			List<ISubsidio> subsidios, List<IProrroga> prorrogas) {
 		super();
@@ -37,8 +35,6 @@ public class Proyecto implements IProyecto {
 		this.fechaPresentacion = fechaPresentacion;
 		this.fechaAprobacion = fechaAprobacion;
 		this.disposicion = disposicion;
-		this.dispDesde = dispDesde;
-		this.dispHasta = dispHasta;
 		this.director = director;
 		this.codirector = codirector;
 		this.fechaInicio = fechaInicio;
@@ -52,7 +48,7 @@ public class Proyecto implements IProyecto {
 	@Override
 	public IProyecto clone() {
 		return (IProyecto) new Proyecto(this.id, this.nombre, this.resumen, this.fechaPresentacion,
-				this.fechaAprobacion, this.disposicion, this.dispDesde, this.dispHasta, this.director, this.codirector, this.fechaInicio, this.fechaFin,
+				this.fechaAprobacion, this.disposicion, this.director, this.codirector, this.fechaInicio, this.fechaFin,
 				this.estado, this.integrantes, this.subsidios, this.prorrogas);
 	}
 
@@ -114,22 +110,6 @@ public class Proyecto implements IProyecto {
 	@Override
 	public void setDisposicion(String disposicion) {
 		this.disposicion = disposicion;
-	}
-
-	public LocalDate getDispDesde() {
-		return dispDesde;
-	}
-
-	public void setDispDesde(LocalDate dispDesde) {
-		this.dispDesde = dispDesde;
-	}
-
-	public LocalDate getDispHasta() {
-		return dispHasta;
-	}
-
-	public void setDispHasta(LocalDate dispHasta) {
-		this.dispHasta = dispHasta;
 	}
 
 	@Override

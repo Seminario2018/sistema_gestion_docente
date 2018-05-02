@@ -20,10 +20,6 @@ public interface IProyecto {
     public void setFechaAprobacion(LocalDate fechaAprobacion);
     public String getDisposicion();
     public void setDisposicion(String disposicion);
-    public LocalDate getDispDesde();
-	public void setDispDesde(LocalDate dispDesde);
-	public LocalDate getDispHasta();
-	public void setDispHasta(LocalDate dispHasta);
     public IDocente getDirector();
     public void setDirector(IDocente director);
     public IDocente getCodirector();

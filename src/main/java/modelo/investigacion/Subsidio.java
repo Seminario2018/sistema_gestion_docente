@@ -1,6 +1,5 @@
 package modelo.investigacion;
 
-import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +7,6 @@ import java.util.List;
 public class Subsidio implements ISubsidio {
 	private Year fecha; // Solo año
 	private String disposicion;
-	private LocalDate dispDesde;
-	private LocalDate dispHasta;
 	private float montoTotal;
 	private String observaciones;
 
