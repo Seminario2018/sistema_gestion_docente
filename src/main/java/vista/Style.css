@@ -12,3 +12,15 @@
 	-fx-border-radius: 5 5 0 0;
 	-fx-padding: 0 5;
 }
+
+.button {
+	-fx-text-overrun: clip;
+}
+
+.button-agregar {
+	-fx-text-overrun: leading-word-ellipsis;
+}
+
+.button-quitar {
+	-fx-text-overrun: word-ellipsis;
+}

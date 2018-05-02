@@ -10,8 +10,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?scenebuilder-stylesheet Style.css?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
+<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
    <children>
       <GridPane VBox.vgrow="NEVER">
         <columnConstraints>
@@ -256,7 +257,7 @@
                            <bottom>
                               <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Seleccionar un docente" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                                    <Button mnemonicParsing="false" text="Seleccionar docente" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
