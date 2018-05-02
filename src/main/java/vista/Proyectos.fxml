@@ -80,7 +80,7 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </GridPane>
-            <TabPane tabClosingPolicy="UNAVAILABLE">
+            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                <tabs>
                   <Tab closable="false" text="Datos">
                      <content>
@@ -248,86 +248,45 @@
                            <bottom>
                               <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <Label text="Área">
+                                    <Button mnemonicParsing="false" text="Seleccionar un docente" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Label text="Apellido" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="Cargo" GridPane.rowIndex="1">
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="Nombre" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Label text="Tipo de cargo" GridPane.rowIndex="2" />
-                                    <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Disposición" GridPane.rowIndex="3">
+                                    <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Cargo" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <Label text="Resolución" GridPane.rowIndex="4">
+                                    <Label text="Unidad Académica o Institución" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                                    <Label text="Último costo" GridPane.rowIndex="5">
+                                    <Label text="Horas semanales dedicadas" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets right="10.0" />
                                        </GridPane.margin>
                                     </Label>
                                     <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                    <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
-                                       <GridPane.margin>
-                                          <Insets left="20.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" />
                                     <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                    <ColumnConstraints />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
