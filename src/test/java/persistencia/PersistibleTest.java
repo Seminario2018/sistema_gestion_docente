@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import modelo.informe.ColumnaInforme;
-import modelo.informe.TipoInforme;
-
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 3 de may. de 2018

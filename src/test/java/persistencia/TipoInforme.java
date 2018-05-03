@@ -1,8 +1,10 @@
-package modelo.informe;
+package persistencia;
 
 import java.util.List;
 
-public class TipoInforme implements ITipoInforme {
+import persistencia.Persistible;
+
+public class TipoInforme extends Persistible {
 
 	private int id;
 	private String nombre;

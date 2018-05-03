@@ -3,7 +3,6 @@ package persistencia;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +33,7 @@ public abstract class Persistible {
 			} else {
 				where += " AND ";
 			}
-			where += entrada.getKey() + " = " + entrada.getValue();
+			where += entrada.getKey() + " = " + campoParametrizado(entrada.getValue());
 		}
 		return where;
 	}
@@ -99,11 +98,11 @@ public abstract class Persistible {
 	}
 	
 	/* Parametrización casera */
-	private String campoParametrizado(Object campo) {
+	private Object campoParametrizado(Object campo) {
 		if (campo instanceof String) {
 			return (String) "'" + campo + "'";
 		} else {
-			return (String) campo;
+			return campo;
 		}
 	}
 }
