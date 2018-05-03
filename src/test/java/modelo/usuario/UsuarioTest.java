@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.estatico.TipoDocumento;
+import modelo.auxiliares.TipoDocumento;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.hash.PasswordUtil;
 import modelo.persona.GestorPersona;
@@ -23,9 +23,16 @@ public class UsuarioTest {
 
 	@Test
 	public void agregarPersonaUsuarioRol() {
-		Persona p = new Persona("Marazzo", "Leonardo", LocalDate.of(1997, 6, 22),
-				TipoDocumento.DNI, 40455634, null, null, null, EstadoPersona.ACTIVO);
 		
+		EstadoPersona ep = EstadoPersona.ACTIVO;
+		
+//		TipoDocumento td = TipoDocumento.DNI;
+		TipoDocumento td = new TipoDocumento();
+		td.setId(0);
+		
+		Persona p = new Persona("Marazzo", "Leonardo", LocalDate.of(1997, 6, 22),
+				td, 40455634, null, null, null, ep);
+				
 		GestorPersona gp = new GestorPersona();
 		System.out.println(gp.nuevoUsuario(p).getMensaje());
 		
