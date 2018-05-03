@@ -12,7 +12,6 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-
 <ScrollPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
    <content>
       <VBox alignment="CENTER_LEFT" prefHeight="477.0" prefWidth="776.0">
@@ -49,7 +48,7 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </GridPane>
-            <Label focusTraversable="false" mouseTransparent="true" opacity="0.5" styleClass="label-border" stylesheets="@Style.css" text="Datos personales">
+            <Label focusTraversable="false" mouseTransparent="true" styleClass="label-border" stylesheets="@Style.css" text="Datos personales">
                <VBox.margin>
                   <Insets left="10.0" />
                </VBox.margin>
@@ -195,7 +194,7 @@
                   </GridPane>
                </top>
             </BorderPane>
-            <Label opacity="0.5" styleClass="label-border" stylesheets="@Style.css" text="Contactos">
+            <Label styleClass="label-border" stylesheets="@Style.css" text="Contactos">
                <VBox.margin>
                   <Insets left="10.0" right="10.0" top="10.0" />
                </VBox.margin>

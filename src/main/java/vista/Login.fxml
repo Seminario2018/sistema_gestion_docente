@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?scenebuilder-stylesheet Style.css?>
+
+<GridPane prefHeight="300.0" prefWidth="300.0" stylesheets="@Style.css" vgap="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+    <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" />
+      <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="NEVER" />
+    <RowConstraints vgrow="NEVER" />
+      <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints vgrow="NEVER" />
+  </rowConstraints>
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <children>
+      <Label styleClass="login-title" text="Ingresar a Plumas" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" text="X" GridPane.halignment="RIGHT">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Button>
+      <Label styleClass="login-label" text="Usuario" GridPane.rowIndex="3" />
+      <Label styleClass="login-label" text="Contraseña" GridPane.rowIndex="6" />
+      <TextField styleClass="login-field" GridPane.rowIndex="4" />
+      <TextField styleClass="login-field" GridPane.rowIndex="7" />
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="login-submit" text="Ingresar" GridPane.rowIndex="9" />
+   </children>
+</GridPane>

@@ -1,6 +1,7 @@
 package vista;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 import javafx.application.Application;
@@ -28,6 +29,8 @@ public class Pantalla extends Application {
 	private static final String NODE_NAME = "Main";
 
 	private String fxmlURL;
+	private String titulo;
+	private boolean sinDecorar = false;
 
 	/*
 	 * (non-Javadoc)
@@ -36,13 +39,21 @@ public class Pantalla extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
 		
-		Parameters params = getParameters();
-		setFxmlURL(params.getRaw().get(0));
+		List<String> params = getParameters().getRaw();
+		if (params.size() < 2) {
+			throw new IllegalArgumentException(
+					"Se deben recibir al menos dos parámetros: fxmlURL y titulo");
+		}
+		setFxmlURL(params.get(0));
+		setTitulo(params.get(1));
+		if (params.size() > 2) {
+			setSinDecorar(true);
+		}
 		
 		if (this.fxmlURL != null && !this.fxmlURL.equals("")) {
 			Parent root = FXMLLoader.load(getClass().getResource(this.fxmlURL));
 
-			if (fxmlURL.equals("Login.xml")) {
+			if (this.sinDecorar) {
 				stage.initStyle(StageStyle.UNDECORATED);
 			}
 
@@ -81,6 +92,22 @@ public class Pantalla extends Application {
 
 	public void setFxmlURL(String fxmlURL) {
 		this.fxmlURL = fxmlURL;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public boolean isSinDecorar() {
+		return sinDecorar;
+	}
+
+	public void setSinDecorar(boolean sinDecorar) {
+		this.sinDecorar = sinDecorar;
 	}
 
 }
