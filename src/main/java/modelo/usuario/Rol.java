@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rol implements IRol {
+	
+	private int id;
 	private String nombre;
+	private String descripcion;
 
 	private List<IPermiso> permisos;
 
