@@ -7,15 +7,16 @@ public class ColumnaInforme {
 	public static final int ASCENDENTE = 1;
 	public static final int DESCENDENTE = 2;
 	
+	private boolean visible;
 	private String atributo; // PLANTA.ULTIMO_COSTO
 	private List<String> filtros; // >= 2017
 	private String calculo; // COUNT
-//	GrupoColumna grupo;
 	private int ordenar; // SIN_ORDEN, ASCENDENTE O DESCENDENTE
 	private int posicion; // Posición de la columna en el informe
 	
-	public ColumnaInforme(String atributo, List<String> filtros, String calculo, int ordenar, int posicion) {
+	public ColumnaInforme(boolean visible, String atributo, List<String> filtros, String calculo, int ordenar, int posicion) {
 		super();
+		this.visible = visible;
 		this.atributo = atributo;
 		this.filtros = filtros;
 		this.calculo = calculo;
@@ -23,6 +24,12 @@ public class ColumnaInforme {
 		this.posicion = posicion;
 	}
 	
+	public boolean isVisible() {
+		return visible;
+	}
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 	public String getAtributo() {
 		return atributo;
 	}

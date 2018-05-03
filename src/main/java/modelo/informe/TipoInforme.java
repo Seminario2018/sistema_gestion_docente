@@ -6,12 +6,14 @@ public class TipoInforme implements ITipoInforme {
 
 	// Estos atributos se levantan de la BD
 	private List<ColumnaInforme> columnas;
+	private boolean editable;
 	private String from; // solo from con joins
 	private String groupby; // groupby prearmado
 
-	public TipoInforme(List<ColumnaInforme> columnas, String from, String groupby) {
+	public TipoInforme(List<ColumnaInforme> columnas, boolean editable, String from, String groupby) {
 		super();
 		this.columnas = columnas;
+		this.editable = editable;
 		this.from = from;
 		this.groupby = groupby;
 	}
