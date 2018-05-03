@@ -7,7 +7,7 @@ import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.cargo.ICargo;
 import modelo.persona.Persona;
-import modelo.cargo.*;
+
 public class Docente implements IDocente {
 	private Persona persona;
 	private int legajo;

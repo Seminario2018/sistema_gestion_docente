@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Hashtable;
 
 import modelo.auxiliares.EstadoOperacion;
-import modelo.auxiliares.dinamico.TipoDocumento;
+import modelo.auxiliares.TipoDocumento;
 import modelo.auxiliares.hash.HashSalt;
 import modelo.persona.GestorPersona;
 import modelo.persona.Persona;

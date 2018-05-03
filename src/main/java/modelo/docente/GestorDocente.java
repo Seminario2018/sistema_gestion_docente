@@ -2,8 +2,6 @@ package modelo.docente;
 
 import java.util.List;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import modelo.auxiliares.EstadoOperacion;
@@ -15,11 +13,10 @@ import modelo.usuario.GestorRol;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import persistencia.ManejoDatos;
-import modelo.docente.*;
 
 public class GestorDocente {
 
-	public EstadoOperacion nuevoDocente(IDocente docente) {
+	public EstadoOperacion nuevoDocente(IPersona persona, IDocente docente) {
 		// TODO actualizar BD
 		try {
 			ManejoDatos md=new ManejoDatos();
@@ -58,7 +55,7 @@ public class GestorDocente {
 		}
 	}
 
-	public EstadoOperacion modificarDocente(IDocente docente) {
+	public EstadoOperacion modificarDocente(IPersona persona, IDocente docente) {
 		// TODO actualizar BD
 		  try {
 	        	ManejoDatos md = new ManejoDatos();
@@ -87,9 +84,7 @@ public class GestorDocente {
 				"El docente se eliminó correctamente");
 	}
 
-	public List<IDocente> listarDocente(IDocente docente) {
-		
-		
+	public List<IDocente> listarDocente(IPersona persona, IDocente docente) {
 		
 		if (docente != null) {
 			// TODO Filtrar por los campos que ingresan
@@ -97,17 +92,6 @@ public class GestorDocente {
 		// TODO select BD
 		return null;
 	}
-
-/**	public EstadoOperacion agregarTitulo(IDocente docente, ITitulo planta) {
-		ERT_OManejoDatos md = new ManejoDatos();	
-    	
-                "El grupo se agregó correctamente");    }
-
-    public EstadoOperacion quitarTitulo(IDocente docente, ITitulo planta) {
-        // TODO actualizar BD
-        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                "El titulo se quitó correctamente");
-    }  */
 
     public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo planta) {
         // TODO actualizar BD

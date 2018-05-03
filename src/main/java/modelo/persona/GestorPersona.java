@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.dinamico.TipoDocumento;
+import modelo.auxiliares.TipoDocumento;
 import persistencia.ManejoDatos;
 
 public class GestorPersona {

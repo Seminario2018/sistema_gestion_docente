@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.TipoDocumento;
+import modelo.auxiliares.estatico.TipoDocumento;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.hash.PasswordUtil;
 import modelo.persona.GestorPersona;

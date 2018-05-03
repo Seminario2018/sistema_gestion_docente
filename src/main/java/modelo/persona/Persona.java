@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.dinamico.TipoDocumento;;
+import modelo.auxiliares.TipoDocumento;;
 
 /**
  * @author Martín Tomás Juran
@@ -21,9 +21,6 @@ public class Persona implements IPersona{
 	private List<Contacto> contactos;
 	private List<ITitulo> titulos;	
 	private EstadoPersona estado;
-	
-	
-	
 	
 	public Persona(String apellido, String nombre, LocalDate fechaNacimiento, TipoDocumento tipoDocumento,
 			int nroDocumento, List<Domicilio> domicilios, List<Contacto> contactos, List<ITitulo> titulos,
@@ -151,9 +148,5 @@ public class Persona implements IPersona{
 	public IPersona clone(){
 		return new Persona(apellido, nombre, fechaNacimiento, tipoDocumento, nroDocumento, domicilios, contactos, titulos, estado);
 	}
-
-	
-
-	
 	
 }
