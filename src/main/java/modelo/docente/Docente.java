@@ -5,8 +5,9 @@ import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
+import modelo.cargo.ICargo;
 import modelo.persona.Persona;
-
+import modelo.cargo.*;
 public class Docente implements IDocente {
 	private Persona persona;
 	private int legajo;
@@ -15,7 +16,7 @@ public class Docente implements IDocente {
 	private EstadoDocente estado;
 
 	private List<IIncentivo> incentivos;
-	private List<ICargoDocente> cargosDocentes;
+	private List<ICargo> cargosDocentes;
 
 	@Override
 	public IDocente clone() {
@@ -26,7 +27,7 @@ public class Docente implements IDocente {
 
 	public Docente(Persona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
 			EstadoDocente estado, List<IIncentivo> incentivos,
-			List<ICargoDocente> cargosDocentes) {
+			List<ICargo> cargosDocentes) {
 		super();
 		this.persona = persona;
 		this.legajo = legajo;
@@ -83,18 +84,18 @@ public class Docente implements IDocente {
 	}
 
 	@Override
-    public List<ICargoDocente> getCargosDocentes() {
+    public List<ICargo> getCargosDocentes() {
 		return cargosDocentes;
 	}
 
 	@Override
-    public void agregarCargoDocente(ICargoDocente planta) {
+    public void agregarCargoDocente(ICargo planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.add(planta);
 	}
 
 	@Override
-    public void quitarCargoDocente(ICargoDocente planta) {
+    public void quitarCargoDocente(ICargo planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.remove(planta);
 	}
