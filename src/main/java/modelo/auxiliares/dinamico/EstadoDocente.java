@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @version 1.0, 17 de abr. de 2018
  */
 public class EstadoDocente {
+	
 	int id;
 	String descripcion;
 	
