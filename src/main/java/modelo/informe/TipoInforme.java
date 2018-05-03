@@ -2,7 +2,9 @@ package modelo.informe;
 
 import java.util.List;
 
-public class TipoInforme implements ITipoInforme {
+import persistencia.Persistible;
+
+public class TipoInforme extends Persistible implements ITipoInforme {
 
 	private int id;
 	private String nombre;
@@ -10,21 +12,8 @@ public class TipoInforme implements ITipoInforme {
 	private boolean editable;
 
 	private List<ColumnaInforme> columnas;
-	private String from; // solo from con joins
-	private String groupby; // groupby prearmado
-
-	public TipoInforme(int id, String nombre, String descripcion,
-			boolean editable, List<ColumnaInforme> columnas,
-			String from, String groupby) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		this.editable = editable;
-		this.columnas = columnas;
-		this.from = from;
-		this.groupby = groupby;
-	}
+	private String fromString; // solo from con joins
+	private String groupByString; // groupby prearmado
 
 	public String armarConsulta() {
 		String select = "SELECT";
@@ -97,13 +86,13 @@ public class TipoInforme implements ITipoInforme {
 			}
 		}
 
-		String consulta = select + "\r\nFROM " + this.from;
+		String consulta = select + "\r\nFROM " + this.fromString;
 
 		if (b_where) {
 			consulta += where;
 		}
 
-		consulta += "\r\nGROUP BY " + this.groupby;
+		consulta += "\r\nGROUP BY " + this.groupByString;
 
 		if (b_orderby) {
 			consulta += orderby;
@@ -117,4 +106,76 @@ public class TipoInforme implements ITipoInforme {
 	 * DOCENTE.LEGAJO > 140000 GROUPBY DOCENTE.LEGAJO ORDERBY DOCENTE.LEGAJO
 	 * ASC, DOCENTE.APYNOM DESC
 	 */
+	
+	public TipoInforme() {	
+	}
+	
+	public TipoInforme(int id, String nombre, String descripcion,
+			boolean editable, List<ColumnaInforme> columnas,
+			String from, String groupby) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.editable = editable;
+		this.columnas = columnas;
+		this.fromString = from;
+		this.groupByString = groupby;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public List<ColumnaInforme> getColumnas() {
+		return columnas;
+	}
+
+	public void setColumnas(List<ColumnaInforme> columnas) {
+		this.columnas = columnas;
+	}
+
+	public String getFromString() {
+		return fromString;
+	}
+
+	public void setFrom(String from) {
+		this.fromString = from;
+	}
+
+	public String getGroupby() {
+		return groupByString;
+	}
+
+	public void setGroupby(String groupby) {
+		this.groupByString = groupby;
+	}
 }
