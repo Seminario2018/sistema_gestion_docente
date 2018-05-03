@@ -15,7 +15,7 @@
    <rowConstraints>
       <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
       <RowConstraints minHeight="-Infinity" prefHeight="200.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
       <TextField promptText="Ingrese el criterio de búsqueda" GridPane.columnSpan="2147483647">
@@ -26,6 +26,16 @@
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </TextField>
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </Button>
+      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </Button>
       <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
         <columns>
           <TableColumn prefWidth="75.0" text="Columna 1" />
@@ -41,16 +51,6 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </GridPane.margin>
-      </Button>
-      <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
-         <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
-         </GridPane.margin>
-      </Button>
    </children>
    <padding>
       <Insets bottom="10.0" top="10.0" />
