@@ -4,16 +4,24 @@ import java.util.List;
 
 public class TipoInforme implements ITipoInforme {
 
-	// Estos atributos se levantan de la BD
-	private List<ColumnaInforme> columnas;
+	private int id;
+	private String nombre;
+	private String descripcion;
 	private boolean editable;
+
+	private List<ColumnaInforme> columnas;
 	private String from; // solo from con joins
 	private String groupby; // groupby prearmado
 
-	public TipoInforme(List<ColumnaInforme> columnas, boolean editable, String from, String groupby) {
+	public TipoInforme(int id, String nombre, String descripcion,
+			boolean editable, List<ColumnaInforme> columnas,
+			String from, String groupby) {
 		super();
-		this.columnas = columnas;
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
 		this.editable = editable;
+		this.columnas = columnas;
 		this.from = from;
 		this.groupby = groupby;
 	}
@@ -26,10 +34,10 @@ public class TipoInforme implements ITipoInforme {
 		boolean b_where = false;
 		boolean b_orderby = false;
 
-		for (ColumnaInforme columna: columnas) {
+		for (ColumnaInforme columna : columnas) {
 
 			String atributo = columna.getAtributo();
-			
+
 			// Armar el SELECT
 			if (first_select) {
 				select += " ";
@@ -37,7 +45,7 @@ public class TipoInforme implements ITipoInforme {
 			} else {
 				select += ", ";
 			}
-			
+
 			if (columna.getCalculo() != null) {
 				// SUM(PLANTA.ULTIMO_COSTO)
 				select += columna.getCalculo() + "(" + atributo + ")";
@@ -46,21 +54,20 @@ public class TipoInforme implements ITipoInforme {
 				select += atributo;
 			}
 
-			// Armar el WHERE			
-			if (columna.getFiltros() != null 
-					&& !columna.getFiltros().isEmpty()) {
-				
+			// Armar el WHERE
+			if (columna.getFiltros() != null && !columna.getFiltros().isEmpty()) {
+
 				int i = 0;
 				List<String> filtros = columna.getFiltros();
-				
+
 				if (!b_where) {
 					// DOCENTE.LEGAJO > 140000
 					where += " " + atributo + " " + filtros.get(i);
 					b_where = true;
 					i++;
 				}
-				
-				while(i < filtros.size()) {
+
+				while (i < filtros.size()) {
 					where += " AND " + atributo + filtros.get(i);
 					i++;
 				}
@@ -74,7 +81,7 @@ public class TipoInforme implements ITipoInforme {
 				} else {
 					orderby += ", " + atributo;
 				}
-				
+
 				switch (columna.getOrdenar()) {
 				case ColumnaInforme.ASCENDENTE:
 					// ORDERBY DOCENTE.LEGAJO ASC
@@ -91,24 +98,23 @@ public class TipoInforme implements ITipoInforme {
 		}
 
 		String consulta = select + "\r\nFROM " + this.from;
-		
+
 		if (b_where) {
 			consulta += where;
 		}
-		
+
 		consulta += "\r\nGROUP BY " + this.groupby;
-		
+
 		if (b_orderby) {
 			consulta += orderby;
 		}
-		
+
 		return consulta;
 	}
 	/*
-	SELECT DOCENTE.LEGAJO, DOCENTE.APYNOM, SUM(PLANTA.ULTIMO_COSTO)
-	FROM DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO
-	WHERE DOCENTE.LEGAJO > 140000
-	GROUPBY DOCENTE.LEGAJO
-	ORDERBY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
-	*/
+	 * SELECT DOCENTE.LEGAJO, DOCENTE.APYNOM, SUM(PLANTA.ULTIMO_COSTO) FROM
+	 * DOCENTE INNER JOIN PLANTA ON DOCENTE.LEGAJO = PLANTA.LEGAJO WHERE
+	 * DOCENTE.LEGAJO > 140000 GROUPBY DOCENTE.LEGAJO ORDERBY DOCENTE.LEGAJO
+	 * ASC, DOCENTE.APYNOM DESC
+	 */
 }
