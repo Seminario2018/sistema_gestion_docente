@@ -20,13 +20,13 @@ public class Pantalla extends Application {
 
 	private static final String WINDOW_POSITION_X = "Window_Position_X";
 	private static final String WINDOW_POSITION_Y = "Window_Position_Y";
-	private static final String WINDOW_WIDTH = "Window_Width";
-	private static final String WINDOW_HEIGHT = "Window_Height";
+	
 	private static final double DEFAULT_X = 10;
 	private static final double DEFAULT_Y = 10;
-	private static final double DEFAULT_WIDTH = 800;
-	private static final double DEFAULT_HEIGHT = 600;
-	private static final String NODE_NAME = "Main";
+	
+	private static final String WINDOW_WIDTH = "Window_Width";
+	private static final String WINDOW_HEIGHT = "Window_Height";
+	
 
 	private String fxmlURL;
 	private String titulo;
@@ -62,25 +62,36 @@ public class Pantalla extends Application {
 			stage.setScene(scene);
 			stage.show();
 
-			/* Cargar el tamaño de ventana anterior */
-			Preferences pref = Preferences.userRoot().node(NODE_NAME);
+			// Cargar el tamaño de ventana anterior 
+			Preferences pref = Preferences.userRoot().node(this.fxmlURL);
+			
 			double x = pref.getDouble(WINDOW_POSITION_X, DEFAULT_X);
 			double y = pref.getDouble(WINDOW_POSITION_Y, DEFAULT_Y);
-			double width = pref.getDouble(WINDOW_WIDTH, DEFAULT_WIDTH);
-			double height = pref.getDouble(WINDOW_HEIGHT, DEFAULT_HEIGHT);
+			
 			stage.setX(x);
 			stage.setY(y);
-			stage.setWidth(width);
-			stage.setHeight(height);
+			
+			double width = pref.getDouble(WINDOW_WIDTH, 0);
+			double height = pref.getDouble(WINDOW_HEIGHT, 0);
+			
+			if (width != 0) {
+				stage.setWidth(width);
+			}
+			
+			if (height != 0) {
+				stage.setHeight(height);
+			}
+ 
 
-			/* Guardar el tamaño de ventana */
+			// Guardar el tamaño de ventana
 			stage.setOnCloseRequest((final WindowEvent event) -> {
-				Preferences preferences = Preferences.userRoot().node(NODE_NAME);
+				Preferences preferences = Preferences.userRoot().node(this.fxmlURL);
 				preferences.putDouble(WINDOW_POSITION_X, stage.getX());
 				preferences.putDouble(WINDOW_POSITION_Y, stage.getY());
 				preferences.putDouble(WINDOW_WIDTH, stage.getWidth());
 				preferences.putDouble(WINDOW_HEIGHT, stage.getHeight());
 			});
+
 		} else {
 			throw new IOException("No se ha definido la URL de la pantalla.");
 		}

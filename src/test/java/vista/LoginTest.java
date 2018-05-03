@@ -15,7 +15,7 @@ public class LoginTest {
 	public void prueba() {
 				
 		try {
-			Application.launch(Pantalla.class, "Login.fxml", "Ingresar");
+			Application.launch(Pantalla.class, "Login.fxml", "Ingresar", "false");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
