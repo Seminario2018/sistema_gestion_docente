@@ -13,6 +13,12 @@
 	-fx-padding: 0 5;
 }
 
+.filter-pane {
+	-fx-border-color: lightgray;
+	-fx-border-width: 2;
+	-fx-border-radius: 5;
+}
+
 .button {
 	-fx-text-overrun: clip;
 }
