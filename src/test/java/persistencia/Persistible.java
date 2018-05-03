@@ -98,11 +98,11 @@ public abstract class Persistible {
 	}
 	
 	/* Parametrización casera */
-	private Object campoParametrizado(Object campo) {
+	private String campoParametrizado(Object campo) {
 		if (campo instanceof String) {
 			return (String) "'" + campo + "'";
 		} else {
-			return campo;
+			return String.valueOf(campo);
 		}
 	}
 }
