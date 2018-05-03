@@ -30,3 +30,13 @@
 .button-quitar {
 	-fx-text-overrun: word-ellipsis;
 }
+
+.login-pane {
+	-fx-background-color: lightblue;
+}
+
+.login-border-pane {
+	-fx-border-color: lightgray;
+	-fx-border-width: 2;
+	-fx-border-radius: 5;
+}
