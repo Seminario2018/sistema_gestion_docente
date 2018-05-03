@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.TipoDocumento;
+import modelo.auxiliares.dinamico.TipoDocumento;
 
 public interface IPersona {
 	

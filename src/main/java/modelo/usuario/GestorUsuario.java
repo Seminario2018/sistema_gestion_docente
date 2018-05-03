@@ -1,13 +1,13 @@
 package modelo.usuario;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Hashtable;
 
 import modelo.auxiliares.EstadoOperacion;
-import modelo.auxiliares.TipoDocumento;
+import modelo.auxiliares.dinamico.TipoDocumento;
 import modelo.auxiliares.hash.HashSalt;
+import modelo.persona.GestorPersona;
 import modelo.persona.Persona;
 import persistencia.ManejoDatos;
 
@@ -22,7 +22,7 @@ public class GestorUsuario {
         	String valores = "'" + usuario.getUser() + "', '" +
         			usuario.getHash().getHash() + "', '" +
         			usuario.getHash().getSalt() + "', " +
-        			usuario.getPersona().getTipoDocumento().ordinal() + ", '" +
+        			usuario.getPersona().getTipoDocumento().getId() + ", '" +
         			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
         			usuario.getDescripcion() + "'";
         	
@@ -107,14 +107,12 @@ public class GestorUsuario {
 							reg.get("Descripcion").toString(),
 							new ArrayList<IRol>()
 						);
-				String[] fnac = reg.get("FechaNacimiento").split("-");
 				
-				
-				Persona p = new Persona(reg.get("Apellido").toString(),
-						reg.get("Nombre").toString(),
-						LocalDate.of(Integer.parseInt(fnac[0]), Integer.parseInt(fnac[1]), Integer.parseInt(fnac[2])),
-						TipoDocumento.values()[Integer.parseInt(reg.get("TipoDocumento").toString())],
-						Integer.parseInt(reg.get("NroDocumento").toString()), null, null, null, null);
+				GestorPersona gp = new GestorPersona();
+				Persona p = new Persona();
+				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
+				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
+				p = (Persona) gp.listarPersonas(p).get(0);
 				user.setPersona(p);
 				this.setRoles(user);
 				

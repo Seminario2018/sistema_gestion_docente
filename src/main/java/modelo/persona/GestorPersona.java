@@ -8,8 +8,7 @@ import java.time.LocalDate;
 
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.TipoDocumento;
-import modelo.usuario.IUsuario;
+import modelo.auxiliares.dinamico.TipoDocumento;
 import persistencia.ManejoDatos;
 
 public class GestorPersona {
@@ -30,22 +29,9 @@ public class GestorPersona {
 			ArrayList<Hashtable<String, String>> res = md.select(table, "*", condicion);
 			String estado = res.get(0).get("idEstado");
 			
-			table = "tipos_documentos";
-			campos = "idTipo, Descripcion";
-			valores = persona.getTipoDocumento().ordinal() + ", '" + persona.getTipoDocumento().name() + "'";
-			condicion = "Descripcion = '" + persona.getTipoDocumento().name() + "'";
+			persona.getTipoDocumento().guardarTipoDocumento();
 			
-			if (md.select(table, "*", condicion).isEmpty()) {
-				md.insertar(table, campos, valores);
-			}
-			
-			
-			table = "tipos_documentos";
-			campos = "idTipo, Descripcion";
-			valores = persona.getTipoDocumento().ordinal() + ", '" + persona.getTipoDocumento().name() + "'";
-			
-			res = md.select(table, "*", condicion);
-			String tipoDoc = res.get(0).get("idTipo");
+			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 			String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
 
@@ -99,7 +85,7 @@ public class GestorPersona {
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			String table = "titulos";
 			String campos = "`idtitulos`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
-			String valores = titulo.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+			String valores = titulo.getId() + ", " + persona.getTipoDocumento().getId() + ", "
 					+ "'" + persona.getNroDocumento() + "', '" + titulo.getNombre() + "', " + esMayor ;
 			
 			md.insertar(table, campos, valores);
@@ -115,7 +101,7 @@ public class GestorPersona {
 			String table = "domicilios";
 			String campos = "`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`,"
 					+ "`CodigoPostal`, `Domicilio`";
-			String valores = domicilio.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+			String valores = domicilio.getId() + ", " + persona.getTipoDocumento().getId() + ", "
 					+ "'" + persona.getNroDocumento() + "', '" + domicilio.getProvincia() + "', "
 					+ "'" + domicilio.getCiudad() + "', '" + domicilio.getCodigoPostal() + "', "
 					+ "'" + domicilio.getDireccion() + "'";
@@ -130,7 +116,7 @@ public class GestorPersona {
 		for (IContacto contacto : persona.getContactos()) {
 			String table = "contacto";
 			String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Nombre`, `Tipo`, `Valor`";
-			String valores = contacto.getId() + ", " + persona.getTipoDocumento().ordinal() + ", "
+			String valores = contacto.getId() + ", " + persona.getTipoDocumento().getId() + ", "
 					+ "'" + persona.getNroDocumento() + "', '" + contacto.getNombre() + "', "
 					+ "'" + contacto.getTipo() + "', '" + contacto.getValor() + "'";
 			
@@ -170,7 +156,7 @@ public class GestorPersona {
 			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", "
 					+ "NroDocumento = '" + persona.getNroDocumento() + "'";
 			
-			String campos = "`TipoDocumento` = " + persona.getTipoDocumento().ordinal() +  ", "
+			String campos = "`TipoDocumento` = " + persona.getTipoDocumento().getId() +  ", "
 					+ "`NroDocumento` = '" + persona.getNroDocumento() + "', "
 					+ "`Apellido` = '" + persona.getApellido() + "', `Nombre` = '" + persona.getNombre() + "', "
 					+ "`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "', "
@@ -205,7 +191,7 @@ public class GestorPersona {
 			
 			for (Hashtable<String, String> reg : res) {
 				Persona p = new Persona();
-				p.setTipoDocumento(TipoDocumento.values()[Integer.parseInt(reg.get("TipoDocumento"))]);
+				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p.setApellido(reg.get("Apellido"));
 				p.setNombre("Nombre");
@@ -253,7 +239,7 @@ public class GestorPersona {
 		String condicion = "TRUE";
 		if (p != null) {
 			condicion = "";
-			condicion += " `TipoDocumento` = " + p.getTipoDocumento().ordinal();
+			condicion += " `TipoDocumento` = " + p.getTipoDocumento().getId();
 			condicion += " `NroDocumento` = '" + p.getNroDocumento() + "'";
 			
 		}
@@ -306,7 +292,7 @@ public class GestorPersona {
 			condicion = "";
 			//usuario
 			if (persona.getTipoDocumento() != null) {
-				condicion += " `TipoDocumento` = " + persona.getTipoDocumento().ordinal();
+				condicion += " `TipoDocumento` = " + persona.getTipoDocumento().getId();
 			}
 			if (persona.getNroDocumento() != 0) {
 				condicion += " `NroDocumento` = '" + persona.getNroDocumento() + "'";
