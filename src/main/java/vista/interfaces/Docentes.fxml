@@ -316,32 +316,34 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="Columna 1" />
-                                          <TableColumn prefWidth="75.0" text="Columna 2" />
+                                          <TableColumn prefWidth="75.0" text="ID" />
+                                          <TableColumn prefWidth="75.0" text="Área" />
+                                          <TableColumn prefWidth="75.0" text="Cargo" />
+                                          <TableColumn prefWidth="75.0" text="Estado" />
                                        </columns>
                                     </TableView>
                                  </center>
                                  <bottom>
                                     <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Label text="Área" GridPane.rowIndex="1">
+                                          <Label text="Área">
+                                             <GridPane.margin>
+                                                <Insets right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
+                                          <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
+                                             <GridPane.margin>
+                                                <Insets left="10.0" />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <Label text="Cargo" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
                                           <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Button>
-                                          <Label text="Cargo" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets right="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -396,8 +398,8 @@
                                              </GridPane.margin>
                                           </Label>
                                           <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                                          <Label text="Estado" />
-                                          <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" />
+                                          <Label text="Estado" GridPane.rowIndex="2" />
+                                          <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" />
@@ -479,11 +481,6 @@
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
                                     <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
@@ -507,11 +504,7 @@
                            <center>
                               <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Identificador" />
-                                  <TableColumn prefWidth="75.0" text="Disposición" />
-                                    <TableColumn prefWidth="75.0" text="Desde" />
-                                    <TableColumn prefWidth="75.0" text="Hasta" />
-                                    <TableColumn prefWidth="75.0" text="Monto" />
+                                  <TableColumn prefWidth="75.0" text="Año" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
