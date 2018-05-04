@@ -85,7 +85,7 @@
                <children>
                   <Label styleClass="label-border" text="Información del programa">
                      <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
                   <BorderPane styleClass="pane-border">
@@ -198,7 +198,7 @@
                   </BorderPane>
                   <Label layoutX="20.0" layoutY="20.0" styleClass="label-border" text="Proyectos">
                      <VBox.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </VBox.margin>
                   </Label>
                   <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="pane-border">
