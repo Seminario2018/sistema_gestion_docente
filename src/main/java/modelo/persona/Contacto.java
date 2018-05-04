@@ -6,7 +6,6 @@ package modelo.persona;
  */
 
 public class Contacto implements IContacto{
-	private int id;
 	private String tipo; //FACE
 	private String nombre; //pagina de facebook
 	private String valor; //https://facebook.com/usuario
