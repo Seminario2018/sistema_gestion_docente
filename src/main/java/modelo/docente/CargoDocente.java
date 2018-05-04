@@ -8,6 +8,7 @@ import modelo.cargo.ICargo;
 import modelo.division.IArea;
 
 public class CargoDocente implements ICargoDocente {
+	private int id;
 	private IArea area;
 	private ICargo cargo;
 	private TipoCargo tipoCargo;
