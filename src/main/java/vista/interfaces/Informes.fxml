@@ -91,7 +91,7 @@
                <children>
                   <Label styleClass="label-border" text="Vista previa">
                      <GridPane.margin>
-                        <Insets left="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Label>
                   <GridPane styleClass="pane-border" GridPane.rowIndex="1">
@@ -111,14 +111,14 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                            <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets />
                            </GridPane.margin>
                         </TableView>
                      </children>
                   </GridPane>
                </children>
                <GridPane.margin>
-                  <Insets top="10.0" />
+                  <Insets left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </GridPane>
             <GridPane minHeight="-Infinity" prefHeight="200.0" GridPane.rowIndex="2">
