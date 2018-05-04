@@ -10,20 +10,11 @@ public class Contacto implements IContacto{
 	private String nombre; //pagina de facebook
 	private String valor; //https://facebook.com/usuario
 	
-	public Contacto(int id, String tipo, String nombre, String valor) {
+	public Contacto(String tipo, String nombre, String valor) {
 		super();
-		this.id = id;
 		this.tipo = tipo;
 		this.nombre = nombre;
 		this.valor = valor;
-	}
-		
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	@Override
@@ -60,7 +51,7 @@ public class Contacto implements IContacto{
 	
 	@Override
 	public IContacto clone() {
-		return new Contacto(id, tipo, nombre, valor);
+		return new Contacto(tipo, nombre, valor);
 	}
 
 }
