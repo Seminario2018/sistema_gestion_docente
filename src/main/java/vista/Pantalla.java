@@ -2,7 +2,6 @@ package vista;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import javafx.application.Application;
@@ -58,7 +57,7 @@ public class Pantalla extends Application {
 		
 		if (this.fxmlURL != null && !this.fxmlURL.equals("")) {
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxmlURL));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxmlURL + ".fxml"));
 			Parent root = loader.load();
 			Scene scene = new Scene(root);
 
@@ -153,8 +152,8 @@ public class Pantalla extends Application {
 		return fxmlURL;
 	}
 
-	public void setFxmlURL(String fxmlURL) {
-		this.fxmlURL = fxmlURL;
+	public void setFxmlURL(String name) {
+		this.fxmlURL = "interfaces/" + name + ".fxml";
 	}
 
 	public String getTitulo() {

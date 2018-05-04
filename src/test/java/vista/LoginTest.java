@@ -13,9 +13,8 @@ public class LoginTest {
 	
 	@Test
 	public void prueba() {
-				
 		try {
-			Application.launch(Pantalla.class, "Login.fxml", "Ingresar"
+			Application.launch(Pantalla.class, "Login", "Ingresar"
 					,"false"
 					);
 		} catch (Exception e) {
