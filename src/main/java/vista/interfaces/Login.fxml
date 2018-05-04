@@ -21,9 +21,10 @@
     <RowConstraints vgrow="NEVER" />
       <RowConstraints minHeight="0.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="NEVER" />
+      <RowConstraints minHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+      <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
    </padding>
    <children>
       <Label styleClass="login-title" text="Ingresar a Plumas" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
@@ -37,5 +38,6 @@
       <TextField styleClass="login-field" GridPane.rowIndex="4" />
       <TextField styleClass="login-field" GridPane.rowIndex="7" />
       <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="login-submit" text="Ingresar" GridPane.rowIndex="9" />
+      <Label styleClass="login-title" text="¿Necesitas ayuda?" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
    </children>
 </GridPane>
