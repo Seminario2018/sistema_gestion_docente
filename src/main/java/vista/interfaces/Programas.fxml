@@ -170,6 +170,8 @@
                                  </GridPane.margin>
                               </Label>
                               <DatePicker layoutX="256.0" layoutY="133.0" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                              <Label text="Nombre" />
+                              <TextField promptText="Ingrese el nombre del programa" GridPane.columnIndex="1" />
       	                              </children>
       	                              <columnConstraints>
       	                                 <ColumnConstraints hgrow="NEVER" />

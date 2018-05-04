@@ -57,7 +57,7 @@ public class Pantalla extends Application {
 		
 		if (this.fxmlURL != null && !this.fxmlURL.equals("")) {
 			
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxmlURL + ".fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxmlURL));
 			Parent root = loader.load();
 			Scene scene = new Scene(root);
 
@@ -153,7 +153,9 @@ public class Pantalla extends Application {
 	}
 
 	public void setFxmlURL(String name) {
-		this.fxmlURL = "interfaces/" + name + ".fxml";
+		if (name != null && !name.equals("")) {
+			this.fxmlURL = "interfaces/" + name + ".fxml";
+		}
 	}
 
 	public String getTitulo() {

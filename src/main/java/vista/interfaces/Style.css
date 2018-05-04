@@ -1,7 +1,6 @@
 .pane-border {
 	-fx-border-color: lightgray;
 	-fx-border-width: 2;
-	-fx-border-insets: 0 10 10 10;
 	-fx-border-radius: 0 5 5 5;
 }
 
