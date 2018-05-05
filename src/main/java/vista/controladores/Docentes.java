@@ -1,4 +1,4 @@
-package vista.interfaces;
+package vista.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;

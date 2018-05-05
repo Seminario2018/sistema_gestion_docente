@@ -14,8 +14,8 @@ public class LoginTest {
 	@Test
 	public void prueba() {
 		try {
-			Application.launch(Pantalla.class, "Login", "Ingresar"
-					,"false"
+			Application.launch(Pantalla.class, "Busqueda", "Ingresar"
+//					,"false"
 					);
 		} catch (Exception e) {
 			e.printStackTrace();

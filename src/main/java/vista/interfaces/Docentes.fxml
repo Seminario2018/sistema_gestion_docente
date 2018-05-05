@@ -12,7 +12,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Docentes">
    <content>
       <GridPane vgap="5.0">
          <columnConstraints>
@@ -63,17 +63,17 @@
             </GridPane>
             <GridPane alignment="BOTTOM_LEFT" GridPane.rowIndex="1">
                <children>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar">
+                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar docente">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" GridPane.columnIndex="1">
+                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo docente" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="2">
+                  <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar docente" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
@@ -114,12 +114,12 @@
                                  <children>
                                     <GridPane hgap="10.0">
                                        <children>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="1">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="2">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -159,7 +159,7 @@
                                              </GridPane.margin>
                                           </Button>
                                           <Label text="Legajo" GridPane.rowIndex="3" />
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                          <TextField promptText="Ingrese el legajo" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -218,22 +218,22 @@
                                  <top>
                                     <GridPane BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo cargo">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnCargosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" GridPane.columnIndex="1">
+                                          <Button fx:id="btnCargosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar cambios" GridPane.columnIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="2">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar cargo" GridPane.columnIndex="3">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -262,7 +262,7 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="ID" />
+                                          <TableColumn prefWidth="75.0" text="ID cargo" />
                                           <TableColumn prefWidth="75.0" text="Área" />
                                           <TableColumn prefWidth="75.0" text="Cargo" />
                                           <TableColumn prefWidth="75.0" text="Estado" />
@@ -301,7 +301,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <TextField promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                           <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
@@ -319,7 +319,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <TextField promptText="Ingrese la resolución" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
@@ -337,7 +337,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <TextField promptText="Ingrese el último costo del cargo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                           <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
@@ -417,17 +417,17 @@
                            <top>
                               <GridPane BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="1">
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="2">
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" GridPane.columnIndex="3">
+                                    <Button contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar incentivo" GridPane.columnIndex="3">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
@@ -476,12 +476,12 @@
                            <top>
                               <GridPane BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="1">
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" GridPane.columnIndex="2">
+                                    <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
