@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class CategoriaInvestigacion {
 	
-	int id;
-	String descripcion;
+	private int id;
+	private String descripcion;
 	
 	/**
 	 * @return la lista de categorías de investigación de la BD

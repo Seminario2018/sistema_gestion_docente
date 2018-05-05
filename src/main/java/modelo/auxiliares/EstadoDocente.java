@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class EstadoDocente {
 	
-	int id;
-	String descripcion;
+	private int id;
+	private String descripcion;
 	
 	/**
 	 * @return la lista de estados del docente de la BD

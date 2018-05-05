@@ -8,8 +8,8 @@ import java.util.ArrayList;
  */
 public class EstadoCargo {
 	
-	int id;
-	String descripcion;
+	private int id;
+	private String descripcion;
 	
 	/**
 	 * @return la lista de estados de los cargos de la BD
