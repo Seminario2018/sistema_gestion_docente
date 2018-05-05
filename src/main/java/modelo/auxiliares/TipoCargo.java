@@ -1,6 +1,6 @@
 package modelo.auxiliares;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Martín Tomás Juran
@@ -10,13 +10,6 @@ public class TipoCargo {
 
 	private int id;
 	private String descripcion;
-
-	/**
-	 * @return la lista de estados del docente de la BD
-	 */
-	public static ArrayList<TipoCargo> getLista() {
-		return null;
-	}
 
 	public int getId() {
         return this.id;
@@ -33,4 +26,12 @@ public class TipoCargo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    /**
+     * @return la lista de estados del docente de la BD
+     */
+    public static List<TipoCargo> getLista() {
+        return null;
+    }
+
 }
