@@ -24,9 +24,11 @@ public class UsuarioTest {
 	@Test
 	public void agregarPersonaUsuarioRol() {
 		
-		EstadoPersona ep = EstadoPersona.ACTIVO;
-		
+//		EstadoPersona ep = EstadoPersona.ACTIVO;
 //		TipoDocumento td = TipoDocumento.DNI;
+		
+		EstadoPersona ep = new EstadoPersona();
+		ep.setId(0);
 		TipoDocumento td = new TipoDocumento();
 		td.setId(0);
 		

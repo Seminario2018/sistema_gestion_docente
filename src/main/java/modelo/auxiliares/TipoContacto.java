@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author Martín Tomás Juran
  * @version 1.0, 17 de abr. de 2018
  */
-public class EstadoPersona {
+public class TipoContacto {
 	
 	private int id;
 	private String descripcion;
@@ -14,11 +14,7 @@ public class EstadoPersona {
 	/**
 	 * @return la lista de estados del docente de la BD
 	 */
-	public static ArrayList<EstadoPersona> getLista() {
+	public static ArrayList<TipoContacto> getLista() {
 		return null;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 }

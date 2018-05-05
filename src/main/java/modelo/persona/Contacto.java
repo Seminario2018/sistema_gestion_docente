@@ -1,20 +1,22 @@
 package modelo.persona;
 
+import modelo.auxiliares.TipoContacto;
+
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 28 de abr. de 2018
  */
 
 public class Contacto implements IContacto{
-	private String tipo; //FACE
-	private String nombre; //pagina de facebook
-	private String valor; //https://facebook.com/usuario
+	private int id;
+	private TipoContacto tipo;
+	private String dato; //https://facebook.com/usuario
 	
 	public Contacto(String tipo, String nombre, String valor) {
 		super();
 		this.tipo = tipo;
 		this.nombre = nombre;
-		this.valor = valor;
+		this.dato = valor;
 	}
 
 	@Override
@@ -39,19 +41,19 @@ public class Contacto implements IContacto{
 	
 	@Override
 	public String getValor() {
-		return valor;
+		return dato;
 	}
 	
 	
 	@Override
 	public void setValor(String valor) {
-		this.valor = valor;
+		this.dato = valor;
 	}
 	
 	
 	@Override
 	public IContacto clone() {
-		return new Contacto(tipo, nombre, valor);
+		return new Contacto(tipo, nombre, dato);
 	}
 
 }
