@@ -4,6 +4,7 @@ import java.util.List;
 
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import modelo.persona.Contacto;
 import modelo.persona.IContacto;
 
 public class NotificacionCargo {
@@ -16,7 +17,7 @@ public class NotificacionCargo {
                 + "\tLegajo: %d\n"
                 + "\tApellido: %s\n"
                 + "\tNombre: %s\n"
-                + "el siguiente cargo:"
+                + "el siguiente cargo:\n"
                 + "\tCargo: %s\n"
                 + "\tÁrea: %d\n"
                 + "\tDivisión: %d\n"
@@ -32,7 +33,7 @@ public class NotificacionCargo {
                 cargoDocente.getEstado().getDescripcion()
         );
 
-        List<IContacto> contactosJefe = cargoDocente
+        List<Contacto> contactosJefe = cargoDocente
                 .getArea()
                 .getDivision()
                 .getJefe()
@@ -47,7 +48,7 @@ public class NotificacionCargo {
                         .append(",");
             }
         }
-        destinos.setLength(destinos.length());
+        destinos.setLength(destinos.length() - 1);
 
         mail.enviarEmail(destinos.toString(), asunto, mensaje);
     }
