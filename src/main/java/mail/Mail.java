@@ -13,12 +13,11 @@ import javax.mail.internet.MimeMessage;
 
 public class Mail implements IMail {
 
-    /* (non-Javadoc)
-     * @see mail.IMail#enviarEmail(mail.IDocente, mail.ICargo)
-     */
+    private String mailDesde = "semint2018@gmail.com";
+    private String contrasena = "semintunlu";
+
     @Override
-    public boolean enviarEmail(String mailDesde, String mailHasta, String asunto,
-                            String mensaje, String contrasena) {
+    public boolean enviarEmail(String mailHasta, String asunto, String mensaje) {
 
         // Propiedades del sistema:
         Properties propiedades = new Properties();
@@ -56,12 +55,12 @@ public class Mail implements IMail {
 
            // Enviar mensaje:
            Transport.send(mensajeMime);
-           
+
            return true;
 
         } catch (MessagingException e) {
            e.printStackTrace();
-           
+
            return false;
         }
     }

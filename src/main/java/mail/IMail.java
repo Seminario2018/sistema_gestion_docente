@@ -1,6 +1,5 @@
 package mail;
 
 public interface IMail {
-    public boolean enviarEmail(String mailDesde, String mailHasta, String asunto,
-                            String mensaje, String contrasena);
+    public boolean enviarEmail(String mailHasta, String asunto, String mensaje);
 }
