@@ -4,7 +4,6 @@ import java.util.List;
 
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
-import modelo.persona.Contacto;
 import modelo.persona.IContacto;
 
 public class NotificacionCargo {
@@ -33,7 +32,7 @@ public class NotificacionCargo {
                 cargoDocente.getEstado().getDescripcion()
         );
 
-        List<Contacto> contactosJefe = cargoDocente
+        List<IContacto> contactosJefe = cargoDocente
                 .getArea()
                 .getDivision()
                 .getJefe()
