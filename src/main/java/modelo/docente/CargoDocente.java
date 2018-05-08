@@ -22,6 +22,11 @@ public class CargoDocente implements ICargoDocente {
 	private LocalDate resHasta;
 	private EstadoCargo estado;
 
+
+	public CargoDocente() {
+		
+	}
+	
 	public CargoDocente(IArea area, ICargo cargo, TipoCargo tipoCargo,
 	        String disposicion, LocalDate dispDesde, LocalDate dispHasta,
 	        float ultimoCosto, LocalDate fechaUltCost, String resolucion,
@@ -41,7 +46,7 @@ public class CargoDocente implements ICargoDocente {
 	    this.estado = estado;
 	}
 
-    @Override
+	@Override
     public ICargoDocente clone() {
         return (ICargoDocente) new CargoDocente(
             this.area,

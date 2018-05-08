@@ -23,8 +23,10 @@ public class Docente implements IDocente {
 		return new Docente(persona, legajo, observaciones, categoriaInvestigacion, estado, incentivos, cargosDocentes);
 	}
 
+	public Docente() {
+		
+	}
 	
-
 	public Docente(Persona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
 			EstadoDocente estado, List<IIncentivo> incentivos,
 			List<ICargo> cargosDocentes) {

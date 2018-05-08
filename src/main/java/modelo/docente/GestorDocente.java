@@ -3,15 +3,10 @@ package modelo.docente;
 import java.util.List;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
 import modelo.persona.IPersona;
-import modelo.persona.ITitulo;
-import modelo.usuario.GestorRol;
-import modelo.usuario.IPermiso;
-import modelo.usuario.IRol;
 import persistencia.ManejoDatos;
 
 public class GestorDocente {
@@ -156,5 +151,13 @@ public class GestorDocente {
 		
 		return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
 				"El cargo se quitó correctamente");
+	}
+	
+	public IDocente getIDocente() {
+		return (IDocente) new Docente();
+	}
+
+	public ICargoDocente getICargoDocente() {
+		return (ICargoDocente) new CargoDocente();
 	}
 }
