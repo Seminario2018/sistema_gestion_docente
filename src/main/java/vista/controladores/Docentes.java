@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoCargo;
@@ -53,8 +54,19 @@ public class Docentes {
 		// TODO Enviar a eliminar el cargoDocenteSeleccionado
 	}
 	
-	@FXML private TableView tblCargoDocente;
-	private List<ICargoDocente> listaCargoDocente;
+	public class FilaCargo {
+		private int idCargo;
+		private String area;
+		private String cargo;
+		private String estado;
+	}
+	
+	@FXML private TableView<FilaCargo> tblCargosDocentes;
+	@FXML private TableColumn colCargosID;
+	@FXML private TableColumn colCargosArea;
+	@FXML private TableColumn colCargosCargo;
+	@FXML private TableColumn colCargosEstado;
+	private List<ICargoDocente> listaCargosDocentes;
 	private ICargoDocente cargoDocenteSeleccionado;
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
