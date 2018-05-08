@@ -8,6 +8,9 @@ import modelo.persona.IContacto;
 
 public class NotificacionCargo {
     private static IMail mail = new Mail();
+    
+    private static String mailDesde = "semint2018@gmail.com";
+    private static String contrasena = "semintunlu";
 
     public static void notificar(IDocente docente, ICargoDocente cargoDocente) {
         String asunto = "Actualización de cargo";
@@ -42,13 +45,13 @@ public class NotificacionCargo {
         // Se envía un mail a cada contacto del tipo MailLaboral del jefe:
         StringBuilder destinos = new StringBuilder();
         for (IContacto contacto : contactosJefe) {
-            if (contacto.getTipo() == "MailLaboral") {
-                destinos.append(contacto.getValor())
+            if (contacto.getTipo().getDescripcion().equals("MailLaboral")) {
+                destinos.append(contacto.getDato())
                         .append(",");
             }
         }
         destinos.setLength(destinos.length() - 1);
 
-        mail.enviarEmail(destinos.toString(), asunto, mensaje);
+        mail.enviarEmail(mailDesde, destinos.toString(), asunto, mensaje, contrasena);
     }
 }

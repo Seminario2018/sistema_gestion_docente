@@ -11,49 +11,41 @@ public class Contacto implements IContacto{
 	private int id;
 	private TipoContacto tipo;
 	private String dato; //https://facebook.com/usuario
-	
-	public Contacto(String tipo, String nombre, String valor) {
+
+	public Contacto(int id, TipoContacto tipo, String dato) {
 		super();
+		this.id = id;
 		this.tipo = tipo;
-		this.nombre = nombre;
-		this.dato = valor;
+		this.dato = dato;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public TipoContacto getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoContacto tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getDato() {
+		return dato;
+	}
+
+	public void setDato(String dato) {
+		this.dato = dato;
 	}
 
 	@Override
-	public String getTipo() {
-		return tipo;
-	}
-	
-	@Override
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-	
-	@Override
-	public String getNombre() {
-		return nombre;
-	}
-	
-	@Override
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	@Override
-	public String getValor() {
-		return dato;
-	}
-	
-	
-	@Override
-	public void setValor(String valor) {
-		this.dato = valor;
-	}
-	
-	
-	@Override
 	public IContacto clone() {
-		return new Contacto(tipo, nombre, dato);
+		return new Contacto(this.id, this.tipo, this.dato);
 	}
 
 }
