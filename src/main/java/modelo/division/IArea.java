@@ -6,8 +6,8 @@ import modelo.docente.IDocente;
 
 public interface IArea {
     public IArea clone();
-    public int getCodigo();
-    public void setCodigo(int codigo);
+    public String getCodigo();
+    public void setCodigo(String codigo);
     public String getDescripcion();
     public void setDescripcion(String descripcion);
     public IDivision getDivision();
