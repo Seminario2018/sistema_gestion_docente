@@ -8,7 +8,7 @@ import modelo.cargo.ICargo;
 import modelo.division.IArea;
 
 public class CargoDocente implements ICargoDocente {
-	private int id;
+	private int id = -1;
 	private IArea area;
 	private ICargo cargo;
 	private TipoCargo tipoCargo;
@@ -27,11 +27,12 @@ public class CargoDocente implements ICargoDocente {
 		
 	}
 	
-	public CargoDocente(IArea area, ICargo cargo, TipoCargo tipoCargo,
+	public CargoDocente(int id, IArea area, ICargo cargo, TipoCargo tipoCargo,
 	        String disposicion, LocalDate dispDesde, LocalDate dispHasta,
 	        float ultimoCosto, LocalDate fechaUltCost, String resolucion,
 	        LocalDate resDesde, LocalDate resHasta, EstadoCargo estado) {
-
+		
+		this.id = id;
 	    this.area = area;
 	    this.cargo = cargo;
 	    this.tipoCargo = tipoCargo;
@@ -49,6 +50,7 @@ public class CargoDocente implements ICargoDocente {
 	@Override
     public ICargoDocente clone() {
         return (ICargoDocente) new CargoDocente(
+        	this.id,
             this.area,
             this.cargo,
             this.tipoCargo,
@@ -64,7 +66,15 @@ public class CargoDocente implements ICargoDocente {
             );
     }
 
-    @Override
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
     public IArea getArea() {
         return this.area;
     }
