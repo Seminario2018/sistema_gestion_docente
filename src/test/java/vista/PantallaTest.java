@@ -13,7 +13,7 @@ public class PantallaTest {
 	
 	@Test
 	public void prueba() {
-		String name = "Login";
+		String name = "Docentes";
 		String titulo = name;
 		
 		try {

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import controlador.ControlDocente;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -15,7 +17,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
+import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
+import modelo.division.Area;
 import modelo.division.IArea;
 import modelo.docente.CargoDocente;
 import modelo.docente.ICargoDocente;
@@ -27,7 +31,18 @@ import modelo.docente.ICargoDocente;
 public class Docentes {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-
+		/* Prueba */
+		Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
+		Cargo c = new Cargo(1, "Profesor adjunto semiexclusivo", 40);
+		EstadoCargo ec = new EstadoCargo(0, "Activo");
+		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
+				0.0f, null, null, null, null, ec);
+		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
+				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
+		
+		this.filasCargosDocentes.add(fc);
+		this.tblCargosDocentes.setItems(this.filasCargosDocentes);
+		this.tblCargosDocentes.refresh();
 	}
 
 	private ControlDocente control = new ControlDocente();
@@ -39,13 +54,45 @@ public class Docentes {
         public String area;
         public String cargo;
         public String estado;
+        
+		public FilaCargo(int idCargo, String area, String cargo, String estado) {
+			super();
+			this.idCargo = idCargo;
+			this.area = area;
+			this.cargo = cargo;
+			this.estado = estado;
+		}
+		public int getIdCargo() {
+			return idCargo;
+		}
+		public void setIdCargo(int idCargo) {
+			this.idCargo = idCargo;
+		}
+		public String getArea() {
+			return area;
+		}
+		public void setArea(String area) {
+			this.area = area;
+		}
+		public String getCargo() {
+			return cargo;
+		}
+		public void setCargo(String cargo) {
+			this.cargo = cargo;
+		}
+		public String getEstado() {
+			return estado;
+		}
+		public void setEstado(String estado) {
+			this.estado = estado;
+		}
     }
 
+	private ObservableList<FilaCargo> filasCargosDocentes = FXCollections.observableArrayList();
 	private List<ICargoDocente> listaCargosDocentes;
     private ICargoDocente cargoDocenteSeleccionado;
     private IArea areaSeleccionada;
     private ICargo cargoSeleccionado;
-    private TipoCargo tipoCargoSeleccionado;
 
     private void vaciarCampos() {
         txtCargosArea.clear();
@@ -63,13 +110,13 @@ public class Docentes {
 	@FXML private Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
-		cargoDocenteSeleccionado = control.getICargoDocente();
-		vaciarCampos();
+		cargoDocenteSeleccionado = this.control.getICargoDocente();
+//		vaciarCampos();
+		initialize(null, null);
 	}
 
 	@FXML private Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
-		// TODO Enviar a persistir el cargoDocenteSeleccionado
 	    String disposicion = txtCargosDisp.getText();
         LocalDate dispDesde = dtpCargosDispDesde.getValue();
         LocalDate dispHasta = dtpCargosDispHasta.getValue();
@@ -78,31 +125,28 @@ public class Docentes {
         String resolucion = txtCargosRes.getText();
         LocalDate resDesde = dtpCargosResDesde.getValue();
         LocalDate resHasta = dtpCargosResHasta.getValue();
-        EstadoCargo estado = new EstadoCargo();
+        EstadoCargo estado = cmbCargosEstado.getValue();
+        TipoCargo tipoCargo = cmbCargosTipo.getValue();
 
-		if (cargoDocenteSeleccionado.getCargo().getCodigo() == 0) {
-		    // TODO CargoDocente id?
-		    ICargoDocente cargoDocente = new CargoDocente(
-	                areaSeleccionada,
-	                cargoSeleccionado, tipoCargoSeleccionado,
-	                disposicion, dispDesde, dispHasta,
-	                ultimoCosto, fechaUltCost,
-	                resolucion, resDesde, resHasta,
-	                estado);
-		    // TODO CargoDocente nuevo
+		cargoDocenteSeleccionado.setArea(areaSeleccionada);
+	    cargoDocenteSeleccionado.setCargo(cargoSeleccionado);
+	    cargoDocenteSeleccionado.setDispDesde(dispDesde);
+	    cargoDocenteSeleccionado.setDispHasta(dispHasta);
+	    cargoDocenteSeleccionado.setDisposicion(disposicion);
+	    cargoDocenteSeleccionado.setEstado(estado);
+	    cargoDocenteSeleccionado.setFechaUltCost(fechaUltCost);
+	    cargoDocenteSeleccionado.setResolucion(resolucion);
+	    cargoDocenteSeleccionado.setResDesde(resDesde);
+	    cargoDocenteSeleccionado.setResHasta(resHasta);
+	    cargoDocenteSeleccionado.setTipoCargo(tipoCargo);
+	    cargoDocenteSeleccionado.setUltimoCosto(ultimoCosto);
+
+	    if (cargoDocenteSeleccionado.getId() == -1) {
+	    	// Se agrega un nuevo Cargo Docente
+	    	//this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
 		} else {
-		    cargoDocenteSeleccionado.setArea(areaSeleccionada);
-		    cargoDocenteSeleccionado.setCargo(cargoSeleccionado);
-		    cargoDocenteSeleccionado.setDispDesde(dispDesde);
-		    cargoDocenteSeleccionado.setDispHasta(dispHasta);
-		    cargoDocenteSeleccionado.setDisposicion(disposicion);
-		    cargoDocenteSeleccionado.setEstado(estado);
-		    cargoDocenteSeleccionado.setFechaUltCost(fechaUltCost);
-		    cargoDocenteSeleccionado.setResDesde(resDesde);
-		    cargoDocenteSeleccionado.setResHasta(resHasta);
-		    cargoDocenteSeleccionado.setTipoCargo(tipoCargoSeleccionado);
-		    cargoDocenteSeleccionado.setUltimoCosto(ultimoCosto);
-		    // TODO Actualizar CargoDocente
+			// Se modifica un Cargo Docente anterior
+			//this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
 		}
 	}
 
