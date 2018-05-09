@@ -42,6 +42,13 @@ public class Docentes {
 	@FXML private Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
 		// TODO Enviar a persistir el cargoDocenteSeleccionado
+		/* 
+		if (cargoDocenteSeleccionado.getId == null) {
+			insertar
+		} else {
+		 	update
+		}
+		*/
 	}
 	
 	@FXML private Button btnCargosDescartar;
