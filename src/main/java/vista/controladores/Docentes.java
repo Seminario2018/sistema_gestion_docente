@@ -35,10 +35,10 @@ public class Docentes {
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
 	public class FilaCargo {
-        private int idCargo;
-        private String area;
-        private String cargo;
-        private String estado;
+        public int idCargo;
+        public String area;
+        public String cargo;
+        public String estado;
     }
 
 	private List<ICargoDocente> listaCargosDocentes;
@@ -80,9 +80,8 @@ public class Docentes {
         LocalDate resHasta = dtpCargosResHasta.getValue();
         EstadoCargo estado = new EstadoCargo();
 
-//      if (cargoDocenteSeleccionado.getId == null) {
-		if (cargoDocenteSeleccionado == null) {
-		    // TODO CargoDocente null?
+		if (cargoDocenteSeleccionado.getCargo().getCodigo() == 0) {
+		    // TODO CargoDocente id?
 		    ICargoDocente cargoDocente = new CargoDocente(
 	                areaSeleccionada,
 	                cargoSeleccionado, tipoCargoSeleccionado,
@@ -125,6 +124,8 @@ public class Docentes {
 
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
+	    FilaCargo fila = tblCargosDocentes.getSelectionModel().getSelectedItem();
+
 	}
 
 	@FXML private TextField txtCargosArea;
