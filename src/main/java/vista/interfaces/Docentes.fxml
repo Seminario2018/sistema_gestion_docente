@@ -218,7 +218,7 @@
                                  <top>
                                     <GridPane BorderPane.alignment="CENTER">
                                        <children>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo cargo">
+                                          <Button fx:id="btnCargosNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoCargo" text="Nuevo cargo">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -228,12 +228,12 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnCargosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarCargo" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar cargo" GridPane.columnIndex="3">
+                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarCargo" text="Eliminar cargo" GridPane.columnIndex="3">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -277,8 +277,8 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                          <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
+                                          <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
+                                          <Button fx:id="btnCargosArea" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -288,26 +288,26 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Button mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Button fx:id="btnCargosCargo" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
                                           </Button>
                                           <Label text="Tipo de cargo" GridPane.rowIndex="3" />
-                                          <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="cmbCargosTipo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label text="Disposición" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <TextField fx:id="txtCargosDisp" promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                           <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <DatePicker maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                          <DatePicker fx:id="dtpCargosDispDesde" maxWidth="-Infinity" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                           <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
@@ -319,7 +319,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField promptText="Ingrese la resolución" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <TextField fx:id="txtCargosRes" promptText="Ingrese la resolución" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
@@ -337,15 +337,15 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField promptText="Ingrese el último costo del cargo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <TextField fx:id="txtCargosCosto" promptText="Ingrese el último costo del cargo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                           <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <DatePicker prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                          <DatePicker fx:id="dtpCargosCosto" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                                           <Label text="Estado" GridPane.rowIndex="2" />
-                                          <ComboBox maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="cmbCargosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" />

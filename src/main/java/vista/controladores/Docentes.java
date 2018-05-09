@@ -1,6 +1,7 @@
 package vista.controladores;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -16,6 +17,7 @@ import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
+import modelo.docente.CargoDocente;
 import modelo.docente.ICargoDocente;
 
 /**
@@ -23,83 +25,127 @@ import modelo.docente.ICargoDocente;
  * @version 1.0, 1 de may. de 2018
  */
 public class Docentes {
-	
+
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		
+
 	}
-	
+
 	private ControlDocente control = new ControlDocente();
-	
-	
+
+
 // ----------------------------- Pestaña Cargos ----------------------------- //
+	public class FilaCargo {
+        private int idCargo;
+        private String area;
+        private String cargo;
+        private String estado;
+    }
+
+	private List<ICargoDocente> listaCargosDocentes;
+    private ICargoDocente cargoDocenteSeleccionado;
+    private IArea areaSeleccionada;
+    private ICargo cargoSeleccionado;
+    private TipoCargo tipoCargoSeleccionado;
+
+    private void vaciarCampos() {
+        txtCargosArea.clear();
+        txtCargosCargo.clear();
+        txtCargosDisp.clear();
+        dtpCargosDispDesde.getEditor().clear();
+        dtpCargosDispHasta.getEditor().clear();
+        txtCargosRes.clear();
+        dtpCargosResDesde.getEditor().clear();
+        dtpCargosResHasta.getEditor().clear();
+        txtCargosCosto.clear();
+        dtpCargosCosto.getEditor().clear();
+    }
+
 	@FXML private Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
 		cargoDocenteSeleccionado = control.getICargoDocente();
-		// TODO Vaciar todos los campos
+		vaciarCampos();
 	}
-	
+
 	@FXML private Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
 		// TODO Enviar a persistir el cargoDocenteSeleccionado
-		/* 
-		if (cargoDocenteSeleccionado.getId == null) {
-			insertar
+	    String disposicion = txtCargosDisp.getText();
+        LocalDate dispDesde = dtpCargosDispDesde.getValue();
+        LocalDate dispHasta = dtpCargosDispHasta.getValue();
+        float ultimoCosto = Float.parseFloat(txtCargosCosto.getText());
+        LocalDate fechaUltCost = dtpCargosCosto.getValue();
+        String resolucion = txtCargosRes.getText();
+        LocalDate resDesde = dtpCargosResDesde.getValue();
+        LocalDate resHasta = dtpCargosResHasta.getValue();
+        EstadoCargo estado = new EstadoCargo();
+
+//      if (cargoDocenteSeleccionado.getId == null) {
+		if (cargoDocenteSeleccionado == null) {
+		    // TODO CargoDocente null?
+		    ICargoDocente cargoDocente = new CargoDocente(
+	                areaSeleccionada,
+	                cargoSeleccionado, tipoCargoSeleccionado,
+	                disposicion, dispDesde, dispHasta,
+	                ultimoCosto, fechaUltCost,
+	                resolucion, resDesde, resHasta,
+	                estado);
+		    // TODO CargoDocente nuevo
 		} else {
-		 	update
+		    cargoDocenteSeleccionado.setArea(areaSeleccionada);
+		    cargoDocenteSeleccionado.setCargo(cargoSeleccionado);
+		    cargoDocenteSeleccionado.setDispDesde(dispDesde);
+		    cargoDocenteSeleccionado.setDispHasta(dispHasta);
+		    cargoDocenteSeleccionado.setDisposicion(disposicion);
+		    cargoDocenteSeleccionado.setEstado(estado);
+		    cargoDocenteSeleccionado.setFechaUltCost(fechaUltCost);
+		    cargoDocenteSeleccionado.setResDesde(resDesde);
+		    cargoDocenteSeleccionado.setResHasta(resHasta);
+		    cargoDocenteSeleccionado.setTipoCargo(tipoCargoSeleccionado);
+		    cargoDocenteSeleccionado.setUltimoCosto(ultimoCosto);
+		    // TODO Actualizar CargoDocente
 		}
-		*/
 	}
-	
+
 	@FXML private Button btnCargosDescartar;
 	@FXML public void descartarCargo() {
-		// TODO Vaciar todos los campos
+	    vaciarCampos();
 	}
-	
+
 	@FXML private Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
 		// TODO Enviar a eliminar el cargoDocenteSeleccionado
 	}
-	
-	public class FilaCargo {
-		private int idCargo;
-		private String area;
-		private String cargo;
-		private String estado;
-	}
-	
+
 	@FXML private TableView<FilaCargo> tblCargosDocentes;
 	@FXML private TableColumn colCargosID;
 	@FXML private TableColumn colCargosArea;
 	@FXML private TableColumn colCargosCargo;
 	@FXML private TableColumn colCargosEstado;
-	private List<ICargoDocente> listaCargosDocentes;
-	private ICargoDocente cargoDocenteSeleccionado;
+
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 	}
-	
+
 	@FXML private TextField txtCargosArea;
 	@FXML private Button btnCargosArea;
-	private IArea areaSeleccionada;
-	
+
 	@FXML private TextField txtCargosCargo;
 	@FXML private Button btnCargosCargo;
-	private ICargo cargoSeleccionado;
-	
+
 	@FXML private ComboBox<EstadoCargo> cmbCargosEstado;
-	
+
 	@FXML private ComboBox<TipoCargo> cmbCargosTipo;
-	
+
 	@FXML private TextField txtCargosDisp;
 	@FXML private DatePicker dtpCargosDispDesde;
 	@FXML private DatePicker dtpCargosDispHasta;
-	
+
 	@FXML private TextField txtCargosRes;
 	@FXML private DatePicker dtpCargosResDesde;
 	@FXML private DatePicker dtpCargosResHasta;
-	
+
 	@FXML private TextField txtCargosCosto;
 	@FXML private DatePicker dtpCargosCosto;
-	
+
 }
