@@ -210,7 +210,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Cargos">
+                  <Tab closable="false" onSelectionChanged="#inicializarTablaCargos" text="Cargos">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="486.0" prefViewportWidth="798.0">
                            <content>
@@ -262,10 +262,10 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="ID cargo" />
-                                          <TableColumn prefWidth="75.0" text="Área" />
-                                          <TableColumn prefWidth="75.0" text="Cargo" />
-                                          <TableColumn prefWidth="75.0" text="Estado" />
+                                          <TableColumn fx:id="colCargosID" prefWidth="75.0" text="ID cargo" />
+                                          <TableColumn fx:id="colCargosArea" prefWidth="75.0" text="Área" />
+                                          <TableColumn fx:id="colCargosCargo" prefWidth="75.0" text="Cargo" />
+                                          <TableColumn fx:id="colCargosEstado" prefWidth="75.0" text="Estado" />
                                        </columns>
                                     </TableView>
                                  </center>

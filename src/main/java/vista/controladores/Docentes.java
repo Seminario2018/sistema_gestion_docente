@@ -15,6 +15,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
@@ -31,18 +32,7 @@ import modelo.docente.ICargoDocente;
 public class Docentes {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		/* Prueba */
-		Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
-		Cargo c = new Cargo(1, "Profesor adjunto semiexclusivo", 40);
-		EstadoCargo ec = new EstadoCargo(0, "Activo");
-		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
-				0.0f, null, null, null, null, ec);
-		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
-				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
-		
-		this.filasCargosDocentes.add(fc);
-		this.tblCargosDocentes.setItems(this.filasCargosDocentes);
-		this.tblCargosDocentes.refresh();
+	
 	}
 
 	private ControlDocente control = new ControlDocente();
@@ -50,22 +40,22 @@ public class Docentes {
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
 	public class FilaCargo {
-        public int idCargo;
+        public Integer idCargo;
         public String area;
         public String cargo;
         public String estado;
         
-		public FilaCargo(int idCargo, String area, String cargo, String estado) {
+		public FilaCargo(Integer idCargo, String area, String cargo, String estado) {
 			super();
 			this.idCargo = idCargo;
 			this.area = area;
 			this.cargo = cargo;
 			this.estado = estado;
 		}
-		public int getIdCargo() {
+		public Integer getIdCargo() {
 			return idCargo;
 		}
-		public void setIdCargo(int idCargo) {
+		public void setIdCargo(Integer idCargo) {
 			this.idCargo = idCargo;
 		}
 		public String getArea() {
@@ -88,7 +78,7 @@ public class Docentes {
 		}
     }
 
-	private ObservableList<FilaCargo> filasCargosDocentes = FXCollections.observableArrayList();
+	private ObservableList<FilaCargo> filasCargosDocentes;
 	private List<ICargoDocente> listaCargosDocentes;
     private ICargoDocente cargoDocenteSeleccionado;
     private IArea areaSeleccionada;
@@ -112,7 +102,17 @@ public class Docentes {
 		// Obtener un ICargoDocente vacío
 		cargoDocenteSeleccionado = this.control.getICargoDocente();
 //		vaciarCampos();
-		initialize(null, null);
+		/* Prueba */
+		Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
+		Cargo c = new Cargo(1, "Profesor adjunto semiexclusivo", 40);
+		EstadoCargo ec = new EstadoCargo(0, "Activo");
+		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
+				0.0f, null, null, null, null, ec);
+		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
+				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
+		
+		this.filasCargosDocentes.add(fc);
+		
 	}
 
 	@FXML private Button btnCargosGuardar;
@@ -160,6 +160,20 @@ public class Docentes {
 		// TODO Enviar a eliminar el cargoDocenteSeleccionado
 	}
 
+	@FXML public void inicializarTablaCargos() {
+		this.colCargosID.setCellValueFactory(
+				new PropertyValueFactory<FilaCargo,Integer>("idCargo"));
+		this.colCargosArea.setCellValueFactory(
+				new PropertyValueFactory<FilaCargo,String>("area"));
+		this.colCargosCargo.setCellValueFactory(
+				new PropertyValueFactory<FilaCargo,String>("cargo"));
+		this.colCargosEstado.setCellValueFactory(
+				new PropertyValueFactory<FilaCargo,String>("estado"));
+		
+		this.filasCargosDocentes = FXCollections.observableArrayList();
+		this.tblCargosDocentes.setItems(this.filasCargosDocentes);
+	}
+	
 	@FXML private TableView<FilaCargo> tblCargosDocentes;
 	@FXML private TableColumn colCargosID;
 	@FXML private TableColumn colCargosArea;
