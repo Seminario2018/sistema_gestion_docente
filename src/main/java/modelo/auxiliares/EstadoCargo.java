@@ -11,6 +11,12 @@ public class EstadoCargo {
 	private int id;
 	private String descripcion;
 
+	public EstadoCargo(int id, String descripcion) {
+		super();
+		this.id = id;
+		this.descripcion = descripcion;
+	}
+
 	public int getId() {
         return this.id;
     }
