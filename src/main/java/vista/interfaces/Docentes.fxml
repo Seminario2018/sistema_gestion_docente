@@ -262,7 +262,7 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                        <columns>
-                                          <TableColumn fx:id="colCargosID" prefWidth="75.0" text="ID cargo" />
+                                          <TableColumn fx:id="colCargosId" prefWidth="75.0" text="ID cargo" />
                                           <TableColumn fx:id="colCargosArea" prefWidth="75.0" text="Área" />
                                           <TableColumn fx:id="colCargosCargo" prefWidth="75.0" text="Cargo" />
                                           <TableColumn fx:id="colCargosEstado" prefWidth="75.0" text="Estado" />
