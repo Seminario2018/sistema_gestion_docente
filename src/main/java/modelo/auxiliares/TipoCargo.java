@@ -34,9 +34,10 @@ public class TipoCargo {
     }
 
     /**
-     * @return la lista de estados del docente de la BD
+     * @return la lista de tipos de cargo de la BD
      */
     public static List<TipoCargo> getLista() {
+        // TODO Cargar tipos de cargo de la BD
         return new ArrayList<TipoCargo>();
     }
 

@@ -37,6 +37,7 @@ public class EstadoCargo {
 	 * @return la lista de estados de los cargos de la BD
 	 */
 	public static List<EstadoCargo> getLista() {
+	    // TODO Cargar estados de la BD.
 		return new ArrayList<EstadoCargo>();
 	}
 
