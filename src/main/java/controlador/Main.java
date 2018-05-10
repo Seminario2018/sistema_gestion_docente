@@ -1,7 +1,7 @@
 package controlador;
 
-import auxiliares.Numeros;
 import modelo.usuario.Modulo;
+import utilidades.Utilidades;
 
 /**
  * @author Martín Tomás Juran
@@ -21,27 +21,27 @@ public class Main {
 		System.out.println(String.valueOf(n));
 
 		try {
-			System.out.println(Numeros.stringToFloat("0.1"));
+			System.out.println(Utilidades.stringToFloat("0.1"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		try {
-			System.out.println(Numeros.stringToFloat("0,1"));
+			System.out.println(Utilidades.stringToFloat("0,1"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		try {
-			System.out.println(Numeros.stringToFloat("0,,,2"));
+			System.out.println(Utilidades.stringToFloat("0,,,2"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		try {
-			System.out.println(Numeros.stringToFloat("20,1"));
+			System.out.println(Utilidades.stringToFloat("20,1"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		try {
-			System.out.println(Numeros.stringToFloat("hola"));
+			System.out.println(Utilidades.stringToFloat("hola"));
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
