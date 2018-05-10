@@ -39,11 +39,11 @@ public class Docentes extends ControladorVista {
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
 	public class FilaCargo {
-		public String id;
+		public int id;
 		public String area;
 		public String cargo;
 		public String estado;
-		public FilaCargo(String id, String area,
+		public FilaCargo(int id, String area,
 				String cargo, String estado) {
 			super();
 			this.id = id;
@@ -51,8 +51,8 @@ public class Docentes extends ControladorVista {
 			this.cargo = cargo;
 			this.estado = estado;
 		}
-		public String getId() { return id; }
-		public void setId(String idCargo) { this.id = idCargo; }
+		public int getId() { return id; }
+		public void setId(int idCargo) { this.id = idCargo; }
 		public String getArea() { return area; }
 		public void setArea(String area) { this.area = area; }
 		public String getCargo() { return cargo; }
@@ -82,17 +82,13 @@ public class Docentes extends ControladorVista {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
 		ICargoDocente cd = this.control.getICargoDocente();
-		try {
-			cd.setId(Integer.valueOf(fila.getId()));
-		} catch (Exception e) {
-			
-		}
+		cd.setId(fila.getId());
 		// Recuperar de la BD fila.getId()
 		// cargoDocenteSeleccionado
 	}
 	
 	@FXML public void inicializarTablaCargos() {
-		inicializarTabla(FilaCargo.class, "Cargos");
+		inicializarTabla("Cargos");
 	}
 
 	@FXML public TableView tblCargos;
@@ -115,9 +111,9 @@ public class Docentes extends ControladorVista {
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
 		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
 				0.0f, null, null, null, null, ec);
-		FilaCargo fc = new FilaCargo(String.valueOf(cd.getId()), cd.getArea().getDescripcion(),
+		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
 				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
-		
+
 		this.filasCargos.add(fc);
 		
 	}

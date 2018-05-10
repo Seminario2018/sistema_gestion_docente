@@ -1,7 +1,6 @@
 package vista.controladores;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +19,22 @@ public abstract class ControladorVista {
 	/**
 	 * Inicializa una tabla genérica, obteniendo con Reflection el nombre
 	 * de la variables TableView, TableColumn y ObservableList que se quieren
-	 * inicializar  
+	 * inicializar.
+	 * <br>
+	 * Es necesario seguir cierta convención de nombres para que funcione:
+	 * <ul>
+	 * 	<li>TableColumn: col + nombre + campo, e.g. colCargosId</li>
+	 * 	<li>TableView: tbl + nombre, e.g. tblCargos</li>
+	 * 	<li>ObservableList: filas + nombre, e.g. filasCargos</li>
+	 * </ul>
+	 * @param <T> el Type de fila
 	 * @param fila la Class que funciona como fila de la tabla,
 	 * e.g. <i>FilaCargos</i>.
 	 * @param nombre el String que sigue a la declaración del objeto gráfico,
 	 * e.g. col<i>Cargos</i>X. 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public <T> void inicializarTabla(T fila, String nombre) {
+	public void inicializarTabla(String nombre) {
 
 		try {
 
@@ -44,10 +51,10 @@ public abstract class ControladorVista {
 			}
 
 			for (Field columna : columnas) {
-				TableColumn col;
-				col = (TableColumn) columna.get(this);
-				String varName = columna.getName().replace("col" + nombre, "").toLowerCase();
-				col.setCellValueFactory(new PropertyValueFactory<T, String>(varName));
+				TableColumn col = (TableColumn) columna.get(this);
+				String varName = columna.getName()
+						.replace("col" + nombre, "").toLowerCase();
+				col.setCellValueFactory(new PropertyValueFactory(varName));
 			}
 			
 			Field campoTabla = clase.getDeclaredField("tbl" + nombre);
@@ -56,13 +63,9 @@ public abstract class ControladorVista {
 			campoFilas.set(this, FXCollections.observableArrayList()); 
 			
 			TableView tabla = (TableView) campoTabla.get(this);
-			ObservableList<T> filas = (ObservableList<T>) campoFilas.get(this);
+			ObservableList filas = (ObservableList) campoFilas.get(this);
 			
-			Method metodo = tabla.getClass().getDeclaredMethod("setItems", ObservableList.class);
-			
-			metodo.invoke(tabla, filas);
-		
-					
+			tabla.setItems(filas);
 			
 			/*
 			this.colCargosId.setCellValueFactory(
