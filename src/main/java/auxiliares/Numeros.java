@@ -5,6 +5,14 @@ package auxiliares;
  * @version 1.0, 10 de may. de 2018
  */
 public class Numeros {
+	/**
+	 * Obtiene un número con decimal de un String, donde el separador puede ser
+	 * una coma o un punto  
+	 * @param s el String del cual se obtiene el número
+	 * @return el valor obtenido almacenado en un float
+	 * @throws IllegalArgumentException si el String no tiene formato de número
+	 * con decimal
+	 */
 	public static float stringToFloat(String s) throws IllegalArgumentException {
 		String ss = s.replace(",", ".");
 		try {
