@@ -1,5 +1,6 @@
 package modelo.auxiliares;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,11 @@ public class TipoCargo {
 
 	private int id;
 	private String descripcion;
+
+	public TipoCargo(int id, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+    }
 
 	public int getId() {
         return this.id;
@@ -31,7 +37,11 @@ public class TipoCargo {
      * @return la lista de estados del docente de la BD
      */
     public static List<TipoCargo> getLista() {
-        return null;
+        return new ArrayList<TipoCargo>();
     }
 
+    @Override
+    public String toString() {
+        return this.descripcion;
+    }
 }

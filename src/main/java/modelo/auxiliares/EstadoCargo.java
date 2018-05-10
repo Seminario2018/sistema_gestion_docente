@@ -1,5 +1,6 @@
 package modelo.auxiliares;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,6 @@ public class EstadoCargo {
 	private String descripcion;
 
 	public EstadoCargo(int id, String descripcion) {
-		super();
 		this.id = id;
 		this.descripcion = descripcion;
 	}
@@ -37,7 +37,11 @@ public class EstadoCargo {
 	 * @return la lista de estados de los cargos de la BD
 	 */
 	public static List<EstadoCargo> getLista() {
-		return null;
+		return new ArrayList<EstadoCargo>();
 	}
 
+	@Override
+    public String toString() {
+        return this.descripcion;
+    }
 }
