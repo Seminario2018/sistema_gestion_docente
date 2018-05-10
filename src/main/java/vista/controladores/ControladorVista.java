@@ -23,7 +23,7 @@ public abstract class ControladorVista {
 	 * inicializar  
 	 * @param fila la Class que funciona como fila de la tabla,
 	 * e.g. <i>FilaCargos</i>.
-	 * @param nombre el String que sigue a la declaración del objeto visual,
+	 * @param nombre el String que sigue a la declaración del objeto gráfico,
 	 * e.g. col<i>Cargos</i>X. 
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -31,8 +31,8 @@ public abstract class ControladorVista {
 
 		try {
 
-			Class<? extends ControladorVista> c = this.getClass();
-			Field[] campos = c.getDeclaredFields();
+			Class<? extends ControladorVista> clase = this.getClass();
+			Field[] campos = clase.getDeclaredFields();
 
 			List<Field> columnas = new ArrayList<Field>();
 
@@ -50,17 +50,17 @@ public abstract class ControladorVista {
 				col.setCellValueFactory(new PropertyValueFactory<T, String>(varName));
 			}
 			
-			Field campoTabla = c.getDeclaredField("tbl" + nombre);
-			Field campoFilas = c.getDeclaredField("filas" + nombre);
+			Field campoTabla = clase.getDeclaredField("tbl" + nombre);
+			Field campoFilas = clase.getDeclaredField("filas" + nombre);
+			
+			campoFilas.set(this, FXCollections.observableArrayList()); 
 			
 			TableView tabla = (TableView) campoTabla.get(this);
 			ObservableList<T> filas = (ObservableList<T>) campoFilas.get(this);
 			
-			campoFilas.set(this, FXCollections.observableArrayList()); 
+			Method metodo = tabla.getClass().getDeclaredMethod("setItems", ObservableList.class);
 			
-			Method metodo = tabla.getClass().getDeclaredMethod("setItems", filas.getClass());
-			
-			metodo.invoke(tabla);
+			metodo.invoke(tabla, filas);
 		
 					
 			
