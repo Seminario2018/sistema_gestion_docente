@@ -254,7 +254,7 @@
                                     </GridPane>
                                  </top>
                                  <center>
-                                    <TableView fx:id="tblCargosDocentes" minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="tblCargos" minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </BorderPane.margin>

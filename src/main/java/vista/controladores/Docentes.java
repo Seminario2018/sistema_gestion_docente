@@ -1,13 +1,10 @@
 package vista.controladores;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import auxiliares.Numeros;
 import controlador.ControlDocente;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -16,7 +13,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
@@ -25,13 +21,14 @@ import modelo.division.Area;
 import modelo.division.IArea;
 import modelo.docente.CargoDocente;
 import modelo.docente.ICargoDocente;
+import utilidades.Utilidades;
 
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 1 de may. de 2018
  */
 @SuppressWarnings("rawtypes")
-public class Docentes {
+public class Docentes extends ControladorVista {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	
@@ -42,11 +39,11 @@ public class Docentes {
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
 	public class FilaCargo {
-		public Integer id;
+		public String id;
 		public String area;
 		public String cargo;
 		public String estado;
-		public FilaCargo(Integer id, String area,
+		public FilaCargo(String id, String area,
 				String cargo, String estado) {
 			super();
 			this.id = id;
@@ -54,8 +51,8 @@ public class Docentes {
 			this.cargo = cargo;
 			this.estado = estado;
 		}
-		public Integer getId() { return id; }
-		public void setId(Integer idCargo) { this.id = idCargo; }
+		public String getId() { return id; }
+		public void setId(String idCargo) { this.id = idCargo; }
 		public String getArea() { return area; }
 		public void setArea(String area) { this.area = area; }
 		public String getCargo() { return cargo; }
@@ -64,11 +61,11 @@ public class Docentes {
 		public void setEstado(String estado) { this.estado = estado; }
 	}
 
-	private ICargoDocente cargoDocenteSeleccionado;
-	private List<ICargoDocente> listaCargosDocentes;
-	private ObservableList<FilaCargo> filasCargosDocentes;
+	public ICargoDocente cargoDocenteSeleccionado;
+	public List<ICargoDocente> listaCargos;
+	public ObservableList<FilaCargo> filasCargos;
 
-	private void vaciarCamposCargos() {
+	public void vaciarCamposCargos() {
 		txtCargosArea.clear();
 		txtCargosCargo.clear();
 		txtCargosDisp.clear();
@@ -80,39 +77,33 @@ public class Docentes {
 		txtCargosCosto.clear();
 		dtpCargosCosto.getEditor().clear();
 	}
-
-	@SuppressWarnings("unchecked")
-	@FXML public void inicializarTablaCargos() {
-
-		this.colCargosId.setCellValueFactory(
-				new PropertyValueFactory<FilaCargo,Integer>("id"));
-		this.colCargosArea.setCellValueFactory(
-				new PropertyValueFactory<FilaCargo,String>("area"));
-		this.colCargosCargo.setCellValueFactory(
-				new PropertyValueFactory<FilaCargo,String>("cargo"));
-		this.colCargosEstado.setCellValueFactory(
-				new PropertyValueFactory<FilaCargo,String>("estado"));
-
-		this.filasCargosDocentes = FXCollections.observableArrayList();
-		this.tblCargosDocentes.setItems(this.filasCargosDocentes);
-	}
-
-	@FXML private TableView tblCargosDocentes;
-	@FXML private TableColumn colCargosId;
-	@FXML private TableColumn colCargosArea;
-	@FXML private TableColumn colCargosCargo;
-	@FXML private TableColumn colCargosEstado;
-
+	
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
-		FilaCargo fila = (FilaCargo) tblCargosDocentes.getSelectionModel().getSelectedItem();
+		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
 		ICargoDocente cd = this.control.getICargoDocente();
-		cd.setId(fila.getId());
+		try {
+			cd.setId(Integer.valueOf(fila.getId()));
+		} catch (Exception e) {
+			
+		}
 		// Recuperar de la BD fila.getId()
 		// cargoDocenteSeleccionado
 	}
+	
+	@FXML public void inicializarTablaCargos() {
+		inicializarTabla(FilaCargo.class, "Cargos");
+	}
 
-	@FXML private Button btnCargosNuevo;
+	@FXML public TableView tblCargos;
+	@FXML public TableColumn colCargosId;
+	@FXML public TableColumn colCargosArea;
+	@FXML public TableColumn colCargosCargo;
+	@FXML public TableColumn colCargosEstado;
+
+	
+		
+	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
 		cargoDocenteSeleccionado = this.control.getICargoDocente();
@@ -124,14 +115,14 @@ public class Docentes {
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
 		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
 				0.0f, null, null, null, null, ec);
-		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
+		FilaCargo fc = new FilaCargo(String.valueOf(cd.getId()), cd.getArea().getDescripcion(),
 				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
 		
-		this.filasCargosDocentes.add(fc);
+		this.filasCargos.add(fc);
 		
 	}
 
-	@FXML private Button btnCargosGuardar;
+	@FXML public Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
 		/*
 		EstadoCargo estado = cmbCargosEstado.getValue();
@@ -159,7 +150,7 @@ public class Docentes {
 	    
 		try {
 			cargoDocenteSeleccionado.setUltimoCosto(
-		    		Numeros.stringToFloat(txtCargosCosto.getText()));
+		    		Utilidades.stringToFloat(txtCargosCosto.getText()));
 			
 			cargoDocenteSeleccionado.setArea(areaSeleccionada);
 			cargoDocenteSeleccionado.setCargo(cargoSeleccionado);
@@ -186,41 +177,40 @@ public class Docentes {
 		}
 	}
 
-	@FXML private Button btnCargosDescartar;
+	@FXML public Button btnCargosDescartar;
 	@FXML public void descartarCargo() {
 	    vaciarCamposCargos();
 	    // actualizarCamposCargos(); Se ejecuta cuando se selecciona un cargo docente
 	}
 
-	@FXML private Button btnCargosEliminar;
+	@FXML public Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
 		// TODO Enviar a eliminar el cargoDocenteSeleccionado
 	}
 
-
 	
-	
-	private IArea areaSeleccionada;
-	@FXML private TextField txtCargosArea;
-	@FXML private Button btnCargosArea;
+		
+	public IArea areaSeleccionada;
+	@FXML public TextField txtCargosArea;
+	@FXML public Button btnCargosArea;
 
-	private ICargo cargoSeleccionado;
-	@FXML private TextField txtCargosCargo;
-	@FXML private Button btnCargosCargo;
+	public ICargo cargoSeleccionado;
+	@FXML public TextField txtCargosCargo;
+	@FXML public Button btnCargosCargo;
 
-	@FXML private ComboBox<EstadoCargo> cmbCargosEstado;
+	@FXML public ComboBox<EstadoCargo> cmbCargosEstado;
 
-	@FXML private ComboBox<TipoCargo> cmbCargosTipo;
+	@FXML public ComboBox<TipoCargo> cmbCargosTipo;
 
-	@FXML private TextField txtCargosDisp;
-	@FXML private DatePicker dtpCargosDispDesde;
-	@FXML private DatePicker dtpCargosDispHasta;
+	@FXML public TextField txtCargosDisp;
+	@FXML public DatePicker dtpCargosDispDesde;
+	@FXML public DatePicker dtpCargosDispHasta;
 
-	@FXML private TextField txtCargosRes;
-	@FXML private DatePicker dtpCargosResDesde;
-	@FXML private DatePicker dtpCargosResHasta;
+	@FXML public TextField txtCargosRes;
+	@FXML public DatePicker dtpCargosResDesde;
+	@FXML public DatePicker dtpCargosResHasta;
 
-	@FXML private TextField txtCargosCosto;
-	@FXML private DatePicker dtpCargosCosto;
+	@FXML public TextField txtCargosCosto;
+	@FXML public DatePicker dtpCargosCosto;
 
 }
