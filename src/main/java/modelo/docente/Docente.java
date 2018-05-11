@@ -1,15 +1,14 @@
 package modelo.docente;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.cargo.ICargo;
-import modelo.persona.Persona;
+import modelo.persona.IPersona;
 
 public class Docente implements IDocente {
-	private Persona persona;
+	private IPersona persona;
 	private int legajo;
 	private String observaciones;
 	private CategoriaInvestigacion categoriaInvestigacion;
@@ -24,10 +23,10 @@ public class Docente implements IDocente {
 	}
 
 	public Docente() {
-		
+
 	}
-	
-	public Docente(Persona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
+
+	public Docente(IPersona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
 			EstadoDocente estado, List<IIncentivo> incentivos,
 			List<ICargo> cargosDocentes) {
 		super();
@@ -41,7 +40,7 @@ public class Docente implements IDocente {
 	}
 
 
-	
+
 
 	@Override
     public int getLegajo() {
@@ -125,15 +124,18 @@ public class Docente implements IDocente {
 
 
 	@Override
-	public Persona getPersona() {
-		// TODO Auto-generated method stub
+	public IPersona getPersona() {
 		return persona;
 	}
 
+	@Override
+	public void setPersona(IPersona persona) {
+        this.persona = persona;
+    }
 
 
-	
-	
-	
+
+
+
 
 }

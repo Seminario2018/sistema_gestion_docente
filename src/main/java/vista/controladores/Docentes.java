@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import controlador.ControlDocente;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -259,6 +260,27 @@ public class Docentes extends ControladorVista {
 	    docenteSeleccionado.setLegajo(2);
 	    docenteSeleccionado.setPersona(personaSeleccionada);
 
+	    /* TODO Popular estados y tipos (?)
+        this.cmbCargosEstado.setItems(
+                FXCollections.observableArrayList(
+                        EstadoCargo.getLista()));
+
+        this.cmbCargosTipo.setItems(
+                FXCollections.observableArrayList(
+                        TipoCargo.getLista()));
+        */
+
+        /* Cargos y tipos Prueba */
+        this.cmbCargosEstado.setItems(
+                FXCollections.observableArrayList(
+                        Arrays.asList(
+                                new EstadoCargo(0, "Estado1"),
+                                new EstadoCargo(1, "Estado2"))));
+        this.cmbCargosTipo.setItems(
+                FXCollections.observableArrayList(
+                        Arrays.asList(
+                                new TipoCargo(0, "Tipo1"),
+                                new TipoCargo(1, "Tipo2"))));
 	}
 
 }
