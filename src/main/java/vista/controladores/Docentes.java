@@ -125,7 +125,7 @@ public class Docentes extends ControladorVista {
 		tipoContactoJefe.setId(0);
 		tipoContactoJefe.setDescripcion("MailLaboral");
 
-		IContacto contactoJefe = new Contacto(1, tipoContactoJefe, "mleonardoa@gmail.com");
+		IContacto contactoJefe = new Contacto(1, tipoContactoJefe, "semint2018@gmail.com");
 
 		IPersona personaJefe = new Persona();
 		personaJefe.setContactos(Arrays.asList(contactoJefe));
