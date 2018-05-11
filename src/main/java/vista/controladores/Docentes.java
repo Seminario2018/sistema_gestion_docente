@@ -9,8 +9,6 @@ import controlador.ControlDocente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -27,7 +25,6 @@ import modelo.division.Area;
 import modelo.division.Division;
 import modelo.division.IArea;
 import modelo.division.IDivision;
-import modelo.docente.CargoDocente;
 import modelo.docente.Docente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -177,12 +174,14 @@ public class Docentes extends ControladorVista {
 	@FXML public TableColumn colCargosCargo;
 	@FXML public TableColumn colCargosEstado;
 
-
+	// Pruebas
+	int idCargoDocente = 0;
 
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
 		cargoDocenteSeleccionado = this.control.getCargoDocente();
+		cargoDocenteSeleccionado.setId(idCargoDocente++);
 		vaciarCamposCargos();
 		
 	}
