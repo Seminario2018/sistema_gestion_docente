@@ -34,7 +34,7 @@ public class NotificacionCargo {
             default:
                 throw new UnsupportedOperationException("EstadoOperacion no soportado");
         }
-
+/*
         String asunto = String.format("%s de cargo", operacionAsunto);
         String mensaje = String.format(
                 "Se %s el siguiente cargo para el docente:\n"
@@ -57,7 +57,20 @@ public class NotificacionCargo {
                 cargoDocente.getTipoCargo().getDescripcion(),
                 cargoDocente.getEstado().getDescripcion()
         );
-
+*/
+        
+        String asunto = operacionAsunto + " de cargo";
+        String mensaje = "Al docente:\n\n"
+        		+ "\tLegajo: " + docente.getLegajo() + "\n"
+        		+ "\tApellido: " + docente.getPersona().getApellido() + "\n"
+        		+ "\tNombre: " + docente.getPersona().getNombre() + "\n"
+        		+ "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n"
+        		+ "\tCargo: " +  cargoDocente.getCargo().getDescripcion() + "\n"
+                + "\tÁrea: " + cargoDocente.getArea().getDescripcion() + "\n"
+                + "\tDivisión: " + cargoDocente.getArea().getDivision().getDescripcion() + "\n"
+                + "\tTipo de cargo: " + cargoDocente.getTipoCargo().getDescripcion() + "\n"
+                + "\tEstado de cargo: " + cargoDocente.getEstado().getDescripcion() + "\n";
+        
         List<IContacto> contactosJefe = cargoDocente
                 .getArea()
                 .getDivision()
