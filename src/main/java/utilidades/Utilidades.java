@@ -14,7 +14,7 @@ public class Utilidades {
 	 * con decimal.
 	 */
 	public static float stringToFloat(String s) throws IllegalArgumentException {
-		if (s.equals("")) return 0.0f;
+		if (s == null || s.equals("")) return 0.0f;
 		
 		String ss = s.replace(",", ".");
 		try {

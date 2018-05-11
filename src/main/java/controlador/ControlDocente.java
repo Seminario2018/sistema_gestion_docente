@@ -25,10 +25,11 @@ public class ControlDocente {
 		return this.gestorDocente.getCargoDocente();
 	}
 
-	public void guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
+	public EstadoOperacion guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
+		EstadoOperacion eo;
 		if (cargoDocente.getId() == -1) {
 			// Se agrega un nuevo Cargo Docente
-			EstadoOperacion eo = gestorDocente.agregarCargoDocente(docente, cargoDocente);
+			eo = gestorDocente.agregarCargoDocente(docente, cargoDocente);
 	        switch (eo.getEstado()) {
 	            case INSERT_OK:
 	                NotificacionCargo.notificar(eo, docente, cargoDocente);
@@ -39,7 +40,7 @@ public class ControlDocente {
 	        }
 		} else {
 			// Se modifica un Cargo Docente anterior
-			EstadoOperacion eo = gestorDocente.modificarCargoDocente(docente, cargoDocente);
+			eo = gestorDocente.modificarCargoDocente(docente, cargoDocente);
 	        switch (eo.getEstado()) {
 	            case UPDATE_OK:
 	                NotificacionCargo.notificar(eo, docente, cargoDocente);
@@ -49,6 +50,8 @@ public class ControlDocente {
 	                vista.alertaError("Cargos", "No se pudo modificar el cargo docente", eo.getMensaje());
 	        }
         }
+		
+		return eo;
 	}
 
     public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
