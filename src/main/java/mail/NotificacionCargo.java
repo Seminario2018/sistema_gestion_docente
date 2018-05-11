@@ -8,20 +8,20 @@ import modelo.persona.IContacto;
 
 public class NotificacionCargo {
     private static IMail mail = new Mail();
-    
+
     private static String mailDesde = "semint2018@gmail.com";
     private static String contrasena = "semintunlu";
 
     public static void notificar(IDocente docente, ICargoDocente cargoDocente) {
         String asunto = "Actualización de cargo";
         String mensaje = String.format(
-                "Se actualizó el siguiente cargo para el docente:"
+                "Se actualizó el siguiente cargo para el docente:\n"
                 + "\tLegajo: %d\n"
                 + "\tApellido: %s\n"
                 + "\tNombre: %s\n"
                 + "el siguiente cargo:\n"
                 + "\tCargo: %s\n"
-                + "\tÁrea: %d\n"
+                + "\tÁrea: %s\n"
                 + "\tDivisión: %d\n"
                 + "\tTipo de cargo: %s\n"
                 + "\tEstado de cargo: %s\n",

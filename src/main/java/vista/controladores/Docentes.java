@@ -1,6 +1,7 @@
 package vista.controladores;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -13,14 +14,24 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import mail.NotificacionCargo;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
+import modelo.auxiliares.TipoContacto;
 import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
 import modelo.division.Area;
+import modelo.division.Division;
 import modelo.division.IArea;
+import modelo.division.IDivision;
 import modelo.docente.CargoDocente;
+import modelo.docente.Docente;
 import modelo.docente.ICargoDocente;
+import modelo.docente.IDocente;
+import modelo.persona.Contacto;
+import modelo.persona.IContacto;
+import modelo.persona.IPersona;
+import modelo.persona.Persona;
 import utilidades.Utilidades;
 
 /**
@@ -31,7 +42,7 @@ import utilidades.Utilidades;
 public class Docentes extends ControladorVista {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
-	
+
 	}
 
 	private ControlDocente control = new ControlDocente();
@@ -62,6 +73,7 @@ public class Docentes extends ControladorVista {
 	}
 
 	public ICargoDocente cargoDocenteSeleccionado;
+	public IDocente docenteSeleccionado;
 	public List<ICargoDocente> listaCargos;
 	public ObservableList<FilaCargo> filasCargos;
 
@@ -77,7 +89,7 @@ public class Docentes extends ControladorVista {
 		txtCargosCosto.clear();
 		dtpCargosCosto.getEditor().clear();
 	}
-	
+
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
@@ -86,7 +98,7 @@ public class Docentes extends ControladorVista {
 		// Recuperar de la BD fila.getId()
 		// cargoDocenteSeleccionado
 	}
-	
+
 	@FXML public void inicializarTablaCargos() {
 		inicializarTabla("Cargos");
 	}
@@ -97,25 +109,47 @@ public class Docentes extends ControladorVista {
 	@FXML public TableColumn colCargosCargo;
 	@FXML public TableColumn colCargosEstado;
 
-	
-		
+
+
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
 		cargoDocenteSeleccionado = this.control.getICargoDocente();
 //		vaciarCampos();
-	
+
+		/* Prueba Jefe de Area */
+		TipoContacto tipoContactoJefe = new TipoContacto();
+		tipoContactoJefe.setId(0);
+		tipoContactoJefe.setDescripcion("MailLaboral");
+
+		IContacto contactoJefe = new Contacto(1, tipoContactoJefe, "mleonardoa@gmail.com");
+
+		IPersona personaJefe = new Persona();
+		personaJefe.setContactos(Arrays.asList(contactoJefe));
+
+	    IDocente docenteJefe = new Docente();
+	    docenteJefe.setLegajo(121899);
+	    docenteJefe.setPersona(personaJefe);
+
+	    IDivision divisionBiologia = new Division(1, "Biología", docenteJefe, null, null, null);
+
+
 		/* Prueba */
-		Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
+//	    Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
+		Area a = new Area("B1", "Biología 1", divisionBiologia, null, null, null, null, null);
 		Cargo c = new Cargo(1, "Profesor adjunto semiexclusivo", 40);
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
-		CargoDocente cd = new CargoDocente(1, a, c, null, null, null, null,
+		TipoCargo tc = new TipoCargo(3, "Mi TipoCargo");
+		CargoDocente cd = new CargoDocente(1, a, c, tc, null, null, null,
 				0.0f, null, null, null, null, ec);
 		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
 				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
 
 		this.filasCargos.add(fc);
-		
+
+		// Notificar por mail:
+		NotificacionCargo.notificar(docenteSeleccionado, cd);
+
 	}
 
 	@FXML public Button btnCargosGuardar;
@@ -131,7 +165,7 @@ public class Docentes extends ControladorVista {
         LocalDate resHasta = dtpCargosResHasta.getValue();
         float ultimoCosto = Float.parseFloat(txtCargosCosto.getText());
         LocalDate fechaUltCost = dtpCargosCosto.getValue();
-        
+
 		cargoDocenteSeleccionado.setDispDesde(dispDesde);
 	    cargoDocenteSeleccionado.setDispHasta(dispHasta);
 	    cargoDocenteSeleccionado.setDisposicion(disposicion);
@@ -142,12 +176,12 @@ public class Docentes extends ControladorVista {
 	    cargoDocenteSeleccionado.setResHasta(resHasta);
 	    cargoDocenteSeleccionado.setTipoCargo(tipoCargo);
 	    cargoDocenteSeleccionado.setUltimoCosto(ultimoCosto);
-	    */ 
-	    
+	    */
+
 		try {
 			cargoDocenteSeleccionado.setUltimoCosto(
 		    		Utilidades.stringToFloat(txtCargosCosto.getText()));
-			
+
 			cargoDocenteSeleccionado.setArea(areaSeleccionada);
 			cargoDocenteSeleccionado.setCargo(cargoSeleccionado);
 			cargoDocenteSeleccionado.setEstado(cmbCargosEstado.getValue());
@@ -158,15 +192,15 @@ public class Docentes extends ControladorVista {
 			cargoDocenteSeleccionado.setResolucion(txtCargosRes.getText());
 			cargoDocenteSeleccionado.setResDesde(dtpCargosResDesde.getValue());
 			cargoDocenteSeleccionado.setResHasta(dtpCargosResHasta.getValue());
-			
+
 			cargoDocenteSeleccionado.setFechaUltCost(dtpCargosCosto.getValue());
-			
+
 			if (cargoDocenteSeleccionado.getId() == -1) {
 				// Se agrega un nuevo Cargo Docente
-				//this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+				this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
 			} else {
 				// Se modifica un Cargo Docente anterior
-				//this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+				this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
 			}
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
@@ -184,8 +218,8 @@ public class Docentes extends ControladorVista {
 		// TODO Enviar a eliminar el cargoDocenteSeleccionado
 	}
 
-	
-		
+
+
 	public IArea areaSeleccionada;
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
@@ -208,5 +242,23 @@ public class Docentes extends ControladorVista {
 
 	@FXML public TextField txtCargosCosto;
 	@FXML public DatePicker dtpCargosCosto;
+
+	/**
+	 * PRUEBA
+	 */
+	@Override
+	public void inicializarTabla(String nombre) {
+	    super.inicializarTabla(nombre);
+
+	    /* Docente de prueba: */
+	    IPersona personaSeleccionada = new Persona(
+	            "Jurán", "Tomás",
+	            null, null, 21345678, null, null, null, null);
+
+	    docenteSeleccionado = new Docente();
+	    docenteSeleccionado.setLegajo(2);
+	    docenteSeleccionado.setPersona(personaSeleccionada);
+
+	}
 
 }
