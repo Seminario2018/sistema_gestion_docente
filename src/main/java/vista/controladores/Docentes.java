@@ -48,7 +48,7 @@ public class Docentes extends ControladorVista {
 
 	}
 
-	private ControlDocente control = new ControlDocente();
+	private ControlDocente control = new ControlDocente(this);
 
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
@@ -175,21 +175,12 @@ public class Docentes extends ControladorVista {
 
 			cargoDocenteSeleccionado.setFechaUltCost(dtpCargosCosto.getValue());
 			 */
-			if (cargoDocenteSeleccionado.getId() == -1) {
-				// Se agrega un nuevo Cargo Docente
-			    EstadoOperacion estado = this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
-			    if (estado.getEstado() != EstadoOperacion.CodigoEstado.INSERT_OK) {
-			        alertaError("Agregar Cargo-Docente", "No se pudo agregar el cargo.");
-			    }
-			} else {
-				// Se modifica un Cargo Docente anterior
-			    EstadoOperacion estado = this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
-                if (estado.getEstado() != EstadoOperacion.CodigoEstado.UPDATE_OK) {
-                    alertaError("Modificar Cargo-Docente", "No se pudo modificar el cargo.");
-                }
-			}
+			
+			this.control.guardarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+			
+			
 		} catch (IllegalArgumentException e) {
-			alertaError("Error en el campo Último costo", e.getMessage());
+			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
 		}
 	}
 
@@ -207,7 +198,7 @@ public class Docentes extends ControladorVista {
 
         EstadoOperacion estado = this.control.quitarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
         if (estado.getEstado() != EstadoOperacion.CodigoEstado.INSERT_OK) {
-            alertaError("Quitar Cargo-Docente", "No se pudo quitar el cargo.");
+            alertaError("Cargos", "Quitar Cargo Docente", "No se pudo quitar el cargo.");
         }
 	}
 
@@ -285,19 +276,6 @@ public class Docentes extends ControladorVista {
                                 new TipoCargo(0, "Tipo1"),
                                 new TipoCargo(1, "Tipo2"))));
         */
-	}
-
-	/**
-	 * Lanza una alerta al usuario sobre un error del sistema.
-	 * @param encabezado Encabezado del mensaje
-	 * @param contenido Contenido del mensaje
-	 */
-	private void alertaError(String encabezado, String contenido) {
-	    Alert alerta = new Alert(AlertType.ERROR);
-	    alerta.setTitle("Docentes");
-	    alerta.setHeaderText(encabezado);
-	    alerta.setContentText(contenido);
-	    alerta.showAndWait();
 	}
 
 }
