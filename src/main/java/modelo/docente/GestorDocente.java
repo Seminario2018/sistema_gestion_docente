@@ -164,7 +164,6 @@ public class GestorDocente {
 	    // TODO Revisar
 	    try {
     	    ManejoDatos md = new ManejoDatos();
-    	    String tabla = "planta";
     	    String campos = "Codigo, Legajo, Area, Cargo, Tipo_Cargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
     	    String valores = String.format("'%d', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%d'",
     	            cargoDocente.getId(),
@@ -177,7 +176,7 @@ public class GestorDocente {
     	            cargoDocente.getResolucion(),
     	            0
             );
-    	    md.insertar(tabla, campos, valores);
+    	    md.insertar("planta", campos, valores);
     	    if (md.isEstado()) {
     	        return new EstadoOperacion(
     	                EstadoOperacion.CodigoEstado.INSERT_OK,
@@ -194,13 +193,49 @@ public class GestorDocente {
 	    }
 	}
 
+	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
+	    // TODO Revisar
+	    try {
+	        StringBuilder campos = new StringBuilder();
+	        campos.append(String.format(
+	                "Legajo='%d', Area='%s', Cargo='%d', Tipo_Cargo='%s', Estado_Cargo='%s', Disposicion='%s', Resolucion='%s', CostoActual='%d'",
+	                docente.getLegajo(),
+	                cargoDocente.getArea().getCodigo(),
+                    cargoDocente.getCargo().getCodigo(),
+                    cargoDocente.getTipoCargo().getDescripcion(),
+                    cargoDocente.getEstado().getDescripcion(),
+                    cargoDocente.getDisposicion(),
+                    cargoDocente.getResolucion(),
+                    0
+            ));
+
+
+	        String condicion = String.format("Codigo='%d'", cargoDocente.getId());
+
+	        ManejoDatos md = new ManejoDatos();
+	        md.update("planta", campos.toString(), condicion);
+	        if (md.isEstado()) {
+                return new EstadoOperacion(
+                        EstadoOperacion.CodigoEstado.UPDATE_OK,
+                        "El CargoDocente se modificó correctamente");
+            } else {
+                return new EstadoOperacion(
+                        EstadoOperacion.CodigoEstado.UPDATE_ERROR,
+                        "El CargoDocente no se modificó");
+            }
+	    } catch (Exception e) {
+	        return new EstadoOperacion(
+                    EstadoOperacion.CodigoEstado.UPDATE_ERROR,
+                    "Error al modificar el CargoDocente");
+	    }
+	}
+
 	public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 	 // TODO Revisar
         try {
             ManejoDatos md = new ManejoDatos();
-            String tabla = "planta";
             String condicion = String.format("Codigo = '%d'", cargoDocente.getId());
-            md.delete(tabla, condicion);
+            md.delete("planta", condicion);
 
             if (md.isEstado()) {
                 return new EstadoOperacion(
