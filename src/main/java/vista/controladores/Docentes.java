@@ -142,7 +142,7 @@ public class Docentes extends ControladorVista {
 		Area a = new Area("B1", "Biología 1", divisionBiologia, null, null, null, null, null);
 		Cargo c = new Cargo(1, "Profesor Titular Exclusiva", 40);
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
-		TipoCargo tc = new TipoCargo(3, "Mi TipoCargo");
+		TipoCargo tc = new TipoCargo(0, "Ordinario");
 		CargoDocente cd = new CargoDocente(-1, a, c, tc, null, null, null,
 				0.0f, null, null, null, null, ec);
 		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
