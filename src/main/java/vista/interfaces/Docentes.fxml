@@ -278,7 +278,7 @@
                                              </GridPane.margin>
                                           </Label>
                                           <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                          <Button fx:id="btnCargosArea" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2">
+                                          <Button fx:id="btnCargosArea" mnemonicParsing="false" onAction="#seleccionarArea" text="Seleccionar" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
@@ -289,7 +289,7 @@
                                              </GridPane.margin>
                                           </Label>
                                           <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Button fx:id="btnCargosCargo" mnemonicParsing="false" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <Button fx:id="btnCargosCargo" mnemonicParsing="false" onAction="#seleccionarCargo" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
