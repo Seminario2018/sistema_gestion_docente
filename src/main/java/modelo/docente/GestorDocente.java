@@ -165,13 +165,13 @@ public class GestorDocente {
 	    try {
     	    ManejoDatos md = new ManejoDatos();
     	    String campos = "Codigo, Legajo, Area, Cargo, Tipo_Cargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
-    	    String valores = String.format("'%d', '%d', '%s', '%d', '%s', '%s', '%s', '%s', '%d'",
+    	    String valores = String.format("'%d', '%d', '%s', '%d', '%s', '%d', '%s', '%s', '%d'",
     	            cargoDocente.getId(),
     	            docente.getLegajo(),
     	            cargoDocente.getArea().getCodigo(),
     	            cargoDocente.getCargo().getCodigo(),
     	            cargoDocente.getTipoCargo().getDescripcion(),
-    	            cargoDocente.getEstado().getDescripcion(),
+    	            cargoDocente.getEstado().getId(),
     	            cargoDocente.getDisposicion(),
     	            cargoDocente.getResolucion(),
     	            0
@@ -187,6 +187,7 @@ public class GestorDocente {
     	                "El CargoDocente no se agregó");
     	    }
 	    } catch (Exception e) {
+	    	e.printStackTrace();
 	        return new EstadoOperacion(
 	                EstadoOperacion.CodigoEstado.INSERT_ERROR,
 	                "Error al agregar el CargoDocente");

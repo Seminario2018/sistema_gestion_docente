@@ -52,8 +52,8 @@ public class NotificacionCargo {
                 docente.getPersona().getApellido(),
                 docente.getPersona().getNombre(),
                 cargoDocente.getCargo().getDescripcion(),
-                cargoDocente.getArea().getCodigo(),
-                cargoDocente.getArea().getDivision().getCodigo(),
+                cargoDocente.getArea().getDescripcion(),
+                cargoDocente.getArea().getDivision().getDescripcion(),
                 cargoDocente.getTipoCargo().getDescripcion(),
                 cargoDocente.getEstado().getDescripcion()
         );

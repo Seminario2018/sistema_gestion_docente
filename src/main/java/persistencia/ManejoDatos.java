@@ -52,6 +52,7 @@ public class ManejoDatos {
 			st.execute(query);
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			estado = false;
 			s = "Error al insertar la fila"; 
 		}finally {

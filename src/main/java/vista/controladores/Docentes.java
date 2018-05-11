@@ -140,45 +140,25 @@ public class Docentes extends ControladorVista {
 		/* Prueba */
 //	    Area a = new Area("B1", "Biología 1", null, null, null, null, null, null);
 		Area a = new Area("B1", "Biología 1", divisionBiologia, null, null, null, null, null);
-		Cargo c = new Cargo(1, "Profesor adjunto semiexclusivo", 40);
+		Cargo c = new Cargo(1, "Profesor Titular Exclusiva", 40);
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
 		TipoCargo tc = new TipoCargo(3, "Mi TipoCargo");
-		CargoDocente cd = new CargoDocente(1, a, c, tc, null, null, null,
+		CargoDocente cd = new CargoDocente(-1, a, c, tc, null, null, null,
 				0.0f, null, null, null, null, ec);
 		FilaCargo fc = new FilaCargo(cd.getId(), cd.getArea().getDescripcion(),
 				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
 
 		this.filasCargos.add(fc);
-
+		
+		this.cargoDocenteSeleccionado = cd; 
+		
 	}
 
 	@FXML public Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
-		/*
-		EstadoCargo estado = cmbCargosEstado.getValue();
-		TipoCargo tipoCargo = cmbCargosTipo.getValue();
-	    String disposicion = txtCargosDisp.getText();
-        LocalDate dispDesde = dtpCargosDispDesde.getValue();
-        LocalDate dispHasta = dtpCargosDispHasta.getValue();
-        String resolucion = txtCargosRes.getText();
-        LocalDate resDesde = dtpCargosResDesde.getValue();
-        LocalDate resHasta = dtpCargosResHasta.getValue();
-        float ultimoCosto = Float.parseFloat(txtCargosCosto.getText());
-        LocalDate fechaUltCost = dtpCargosCosto.getValue();
-
-		cargoDocenteSeleccionado.setDispDesde(dispDesde);
-	    cargoDocenteSeleccionado.setDispHasta(dispHasta);
-	    cargoDocenteSeleccionado.setDisposicion(disposicion);
-	    cargoDocenteSeleccionado.setEstado(estado);
-	    cargoDocenteSeleccionado.setFechaUltCost(fechaUltCost);
-	    cargoDocenteSeleccionado.setResolucion(resolucion);
-	    cargoDocenteSeleccionado.setResDesde(resDesde);
-	    cargoDocenteSeleccionado.setResHasta(resHasta);
-	    cargoDocenteSeleccionado.setTipoCargo(tipoCargo);
-	    cargoDocenteSeleccionado.setUltimoCosto(ultimoCosto);
-	    */
 
 		try {
+			/*
 			cargoDocenteSeleccionado.setUltimoCosto(
 		    		Utilidades.stringToFloat(txtCargosCosto.getText()));
 
@@ -194,7 +174,7 @@ public class Docentes extends ControladorVista {
 			cargoDocenteSeleccionado.setResHasta(dtpCargosResHasta.getValue());
 
 			cargoDocenteSeleccionado.setFechaUltCost(dtpCargosCosto.getValue());
-
+			 */
 			if (cargoDocenteSeleccionado.getId() == -1) {
 				// Se agrega un nuevo Cargo Docente
 			    EstadoOperacion estado = this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
@@ -209,7 +189,7 @@ public class Docentes extends ControladorVista {
                 }
 			}
 		} catch (IllegalArgumentException e) {
-			System.out.println(e.getMessage());
+			alertaError("Error en el campo Último costo", e.getMessage());
 		}
 	}
 
@@ -276,9 +256,9 @@ public class Docentes extends ControladorVista {
 
 	    /* Docente de prueba: */
 	    IPersona personaSeleccionada = new Persona(
-	            "Jurán", "Tomás",
+	            "Juran", "Tomás",
 	            null, null, 21345678, null, null, null, null);
-
+ 
 	    docenteSeleccionado = new Docente();
 	    docenteSeleccionado.setLegajo(2);
 	    docenteSeleccionado.setPersona(personaSeleccionada);
