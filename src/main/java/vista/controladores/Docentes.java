@@ -9,14 +9,16 @@ import controlador.ControlDocente;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import mail.NotificacionCargo;
 import modelo.auxiliares.EstadoCargo;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
 import modelo.auxiliares.TipoContacto;
 import modelo.cargo.Cargo;
@@ -78,7 +80,7 @@ public class Docentes extends ControladorVista {
 	public List<ICargoDocente> listaCargos;
 	public ObservableList<FilaCargo> filasCargos;
 
-	public void vaciarCamposCargos() {
+	private void vaciarCamposCargos() {
 		txtCargosArea.clear();
 		txtCargosCargo.clear();
 		txtCargosDisp.clear();
@@ -94,7 +96,7 @@ public class Docentes extends ControladorVista {
 	@FXML public void seleccionarCargoDocente() {
 		// TODO cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-		ICargoDocente cd = this.control.getICargoDocente();
+		ICargoDocente cd = this.control.getCargoDocente();
 		cd.setId(fila.getId());
 		// Recuperar de la BD fila.getId()
 		// cargoDocenteSeleccionado
@@ -115,7 +117,7 @@ public class Docentes extends ControladorVista {
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
-		cargoDocenteSeleccionado = this.control.getICargoDocente();
+		cargoDocenteSeleccionado = this.control.getCargoDocente();
 //		vaciarCampos();
 
 		/* Prueba Jefe de Area */
@@ -147,9 +149,6 @@ public class Docentes extends ControladorVista {
 				cd.getCargo().getDescripcion(), cd.getEstado().getDescripcion());
 
 		this.filasCargos.add(fc);
-
-		// Notificar por mail:
-		NotificacionCargo.notificar(docenteSeleccionado, cd);
 
 	}
 
@@ -198,10 +197,16 @@ public class Docentes extends ControladorVista {
 
 			if (cargoDocenteSeleccionado.getId() == -1) {
 				// Se agrega un nuevo Cargo Docente
-				this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+			    EstadoOperacion estado = this.control.agregarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+			    if (estado.getEstado() != EstadoOperacion.CodigoEstado.INSERT_OK) {
+			        alertaError("Agregar Cargo-Docente", "No se pudo agregar el cargo.");
+			    }
 			} else {
 				// Se modifica un Cargo Docente anterior
-				this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+			    EstadoOperacion estado = this.control.modificarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+                if (estado.getEstado() != EstadoOperacion.CodigoEstado.UPDATE_OK) {
+                    alertaError("Modificar Cargo-Docente", "No se pudo modificar el cargo.");
+                }
 			}
 		} catch (IllegalArgumentException e) {
 			System.out.println(e.getMessage());
@@ -210,13 +215,20 @@ public class Docentes extends ControladorVista {
 
 	@FXML public Button btnCargosDescartar;
 	@FXML public void descartarCargo() {
+	    cargoDocenteSeleccionado = null;
 	    vaciarCamposCargos();
 	    // actualizarCamposCargos(); Se ejecuta cuando se selecciona un cargo docente
 	}
 
 	@FXML public Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
-		// TODO Enviar a eliminar el cargoDocenteSeleccionado
+	    FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
+        this.filasCargos.remove(fila);
+
+        EstadoOperacion estado = this.control.quitarCargoDocente(docenteSeleccionado, cargoDocenteSeleccionado);
+        if (estado.getEstado() != EstadoOperacion.CodigoEstado.INSERT_OK) {
+            alertaError("Quitar Cargo-Docente", "No se pudo quitar el cargo.");
+        }
 	}
 
 
@@ -224,10 +236,21 @@ public class Docentes extends ControladorVista {
 	public IArea areaSeleccionada;
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
+	@FXML private void seleccionarArea() {
+        // TODO Seleccionar Área
+//        areaSeleccionada = (?)
+        txtCargosArea.setText(areaSeleccionada.getDescripcion());
+    }
 
 	public ICargo cargoSeleccionado;
 	@FXML public TextField txtCargosCargo;
 	@FXML public Button btnCargosCargo;
+	@FXML private void seleccionarCargo() {
+        // TODO Seleccionar Cargo
+//        cargoSeleccionado = (?);
+        txtCargosCargo.setText(cargoSeleccionado.getDescripcion());
+    }
+
 
 	@FXML public ComboBox<EstadoCargo> cmbCargosEstado;
 
@@ -260,7 +283,7 @@ public class Docentes extends ControladorVista {
 	    docenteSeleccionado.setLegajo(2);
 	    docenteSeleccionado.setPersona(personaSeleccionada);
 
-	    /* TODO Popular estados y tipos (?)
+	    /* TODO Popular estados y tipos (?) */
         this.cmbCargosEstado.setItems(
                 FXCollections.observableArrayList(
                         EstadoCargo.getLista()));
@@ -268,9 +291,9 @@ public class Docentes extends ControladorVista {
         this.cmbCargosTipo.setItems(
                 FXCollections.observableArrayList(
                         TipoCargo.getLista()));
-        */
 
-        /* Cargos y tipos Prueba */
+
+        /* Cargos y tipos Prueba
         this.cmbCargosEstado.setItems(
                 FXCollections.observableArrayList(
                         Arrays.asList(
@@ -281,6 +304,20 @@ public class Docentes extends ControladorVista {
                         Arrays.asList(
                                 new TipoCargo(0, "Tipo1"),
                                 new TipoCargo(1, "Tipo2"))));
+        */
+	}
+
+	/**
+	 * Lanza una alerta al usuario sobre un error del sistema.
+	 * @param encabezado Encabezado del mensaje
+	 * @param contenido Contenido del mensaje
+	 */
+	private void alertaError(String encabezado, String contenido) {
+	    Alert alerta = new Alert(AlertType.ERROR);
+	    alerta.setTitle("Docentes");
+	    alerta.setHeaderText(encabezado);
+	    alerta.setContentText(contenido);
+	    alerta.showAndWait();
 	}
 
 }
