@@ -12,7 +12,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">	
+<VBox prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Programas">	
    <children>
       <GridPane VBox.vgrow="NEVER">
         <columnConstraints>
@@ -50,17 +50,17 @@
       </GridPane>
       <GridPane alignment="BOTTOM_LEFT">
          <children>
-            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar" textOverrun="CLIP" GridPane.columnIndex="1">
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar programa" textOverrun="CLIP" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Button>
-            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo" textOverrun="CLIP" GridPane.columnIndex="2">
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo programa" textOverrun="CLIP" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </Button>
-            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar" textOverrun="CLIP" GridPane.columnIndex="3">
+            <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar programa" textOverrun="CLIP" GridPane.columnIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -92,12 +92,12 @@
                      <top>
                         <GridPane BorderPane.alignment="CENTER">
                            <children>
-                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Guardar" textOverrun="CLIP" GridPane.columnIndex="1">
+                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" textOverrun="CLIP" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar" textOverrun="CLIP" GridPane.columnIndex="2">
+                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" textOverrun="CLIP" GridPane.columnIndex="2">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
@@ -126,7 +126,7 @@
       	                                    </GridPane.margin>
       	                                 </Label>
       	                                 <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      	                                 <Button mnemonicParsing="false" text="Seleccionar" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      	                                 <Button mnemonicParsing="false" text="Seleccionar docente" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="1">
       	                                    <GridPane.margin>
       	                                       <Insets left="10.0" />
       	                                    </GridPane.margin>
@@ -137,7 +137,7 @@
       	                                    </GridPane.margin>
       	                                 </Label>
       	                                 <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      	                                 <Button mnemonicParsing="false" text="Seleccionar" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      	                                 <Button mnemonicParsing="false" text="Seleccionar docente" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.rowIndex="2">
       	                                    <GridPane.margin>
       	                                       <Insets left="10.0" />
       	                                    </GridPane.margin>
@@ -149,7 +149,7 @@
       	                                       <Insets right="10.0" />
       	                                    </GridPane.margin>
       	                                 </Label>
-      	                                 <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      	                                 <TextField promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       	                                 <Label text="Fecha de presentación" GridPane.rowIndex="5">
       	                                    <GridPane.margin>
       	                                       <Insets right="10.0" />
@@ -205,12 +205,12 @@
                      <top>
                         <GridPane BorderPane.alignment="CENTER">
                            <children>
-                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarCargo" text="Agregar" textOverrun="CLIP" GridPane.columnIndex="1">
+                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Agregar proyecto" textOverrun="CLIP" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quitar" textOverrun="CLIP" GridPane.columnIndex="2">
+                              <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Quitar proyecto" textOverrun="CLIP" GridPane.columnIndex="2">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
@@ -234,7 +234,7 @@
                         <TableView minHeight="-Infinity" prefHeight="150.0" BorderPane.alignment="CENTER">
                           <columns>
                             <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Nombre de proyecto de investigación" />
+                            <TableColumn prefWidth="75.0" text="Nombre de proyecto" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -9,6 +9,8 @@ import modelo.division.IArea;
 
 public interface ICargoDocente {
     public ICargoDocente clone();
+    public int getId();
+    public void setId(int id);
     public IArea getArea();
     public void setArea(IArea area);
     public ICargo getCargo();

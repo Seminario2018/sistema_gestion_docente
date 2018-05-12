@@ -1,13 +1,15 @@
 package modelo.persona;
 
+import modelo.auxiliares.TipoContacto;
+
 public interface IContacto {
 	
-	public String getTipo();
-	public String getNombre();
-	public String getValor();
-	public void setTipo(String tipo);
-	public void setNombre(String nombre);
-	public void setValor(String valor);
+	public int getId();
+	public void setId(int id);
+	public TipoContacto getTipo();
+	public void setTipo(TipoContacto tipo);
+	public String getDato();
+	public void setDato(String dato);
 	public IContacto clone();
 
 }

@@ -6,7 +6,7 @@ import modelo.docente.IDocente;
 
 public class Area implements IArea {
 
-    private int codigo;
+    private String codigo;
     private String descripcion;
     private IDivision division;
     private IDocente responsable;
@@ -28,7 +28,7 @@ public class Area implements IArea {
             this.subAreaDe);
     }
 
-    public Area(int codigo, String descripcion, IDivision division,
+    public Area(String codigo, String descripcion, IDivision division,
             IDocente responsable, String disposicion, LocalDate dispDesde,
             LocalDate dispHasta, IArea subAreaDe) {
 
@@ -43,12 +43,12 @@ public class Area implements IArea {
     }
 
     @Override
-    public int getCodigo() {
+    public String getCodigo() {
         return this.codigo;
     }
 
     @Override
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

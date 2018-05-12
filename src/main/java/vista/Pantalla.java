@@ -59,6 +59,7 @@ public class Pantalla extends Application {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(this.fxmlURL));
 			Parent root = loader.load();
+			
 			Scene scene = new Scene(root);
 
 			if (this.sinDecorar) {

@@ -9,20 +9,16 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<BorderPane prefHeight="569.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="569.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Principal">
    <bottom>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="613.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="95.0" minWidth="95.0" prefWidth="95.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label contentDisplay="CENTER" text="01/01/2018" GridPane.columnIndex="1" />
-            <Label text="00:00 a.m." GridPane.columnIndex="2" />
             <Label text="Mensajes dirigidos al usuario">
                <padding>
                   <Insets left="10.0" />

@@ -6,7 +6,7 @@ import java.util.List;
  * @author Martín Tomás Juran
  * @version 1.0, 17 de abr. de 2018
  */
-public class CategoriaInvestigacion {
+public class TipoContacto {
 
 	private int id;
 	private String descripcion;
@@ -27,10 +27,11 @@ public class CategoriaInvestigacion {
         this.descripcion = descripcion;
     }
 
-	/**
-	 * @return la lista de categorías de investigación de la BD
-	 */
-	public static List<CategoriaInvestigacion> getLista() {
-		return null;
-	}
+    /**
+     * @return la lista de estados del docente de la BD
+     */
+    public static List<TipoContacto> getLista() {
+        return null;
+    }
+
 }

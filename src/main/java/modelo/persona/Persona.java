@@ -17,13 +17,13 @@ public class Persona implements IPersona {
 	private LocalDate fechaNacimiento;
 	private TipoDocumento tipoDocumento;
 	private int nroDocumento;
-	private List<Domicilio> domicilios;
-	private List<Contacto> contactos;
+	private List<IDomicilio> domicilios;
+	private List<IContacto> contactos;
 	private List<ITitulo> titulos;	
 	private EstadoPersona estado;
 	
 	public Persona(String apellido, String nombre, LocalDate fechaNacimiento, TipoDocumento tipoDocumento,
-			int nroDocumento, List<Domicilio> domicilios, List<Contacto> contactos, List<ITitulo> titulos,
+			int nroDocumento, List<IDomicilio> domicilios, List<IContacto> contactos, List<ITitulo> titulos,
 			EstadoPersona estado) {
 		super();
 		this.apellido = apellido;
@@ -103,23 +103,23 @@ public class Persona implements IPersona {
 	
 	
 	@Override
-	public List<Domicilio> getDomicilios() {
+	public List<IDomicilio> getDomicilios() {
 		return domicilios;
 	}
 	
 	@Override
-	public void setDomicilios(List<Domicilio> domicilios) {
+	public void setDomicilios(List<IDomicilio> domicilios) {
 		this.domicilios = domicilios;
 	}
 	
 	
 	@Override
-	public List<Contacto> getContactos() {
+	public List<IContacto> getContactos() {
 		return contactos;
 	}
 	
 	@Override
-	public void setContactos(List<Contacto> contactos) {
+	public void setContactos(List<IContacto> contactos) {
 		this.contactos = contactos;
 	}
 	

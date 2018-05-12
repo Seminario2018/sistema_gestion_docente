@@ -12,7 +12,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.Docentes">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Personas">
    <content>
       <GridPane vgap="5.0">
          <columnConstraints>
@@ -122,7 +122,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1">
+                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el apellido" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -132,7 +132,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el nombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -152,7 +152,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                    <TextField editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el número de documento" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>

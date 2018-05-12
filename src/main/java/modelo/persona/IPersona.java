@@ -13,8 +13,8 @@ public interface IPersona {
 	public String getNombre();
 	public LocalDate getFechaNacimiento();
 	public TipoDocumento getTipoDocumento();
-	public List<Domicilio> getDomicilios();
-	public List<Contacto> getContactos();
+	public List<IDomicilio> getDomicilios();
+	public List<IContacto> getContactos();
 	public EstadoPersona getEstado();
 	public int getNroDocumento();
 	
@@ -23,8 +23,8 @@ public interface IPersona {
 	public void setNombre(String nombre);
 	public void setFechaNacimiento(LocalDate fechaNacimiento);
 	public void setTipoDocumento(TipoDocumento tipoDocumento);
-	public void setDomicilios(List<Domicilio> domicilio);
-	public void setContactos(List<Contacto> contacto);
+	public void setDomicilios(List<IDomicilio> domicilio);
+	public void setContactos(List<IContacto> contacto);
 	public void setEstado(EstadoPersona estado);
 	public void setNroDocumento(int nroDocumento);
 	
