@@ -19,37 +19,37 @@ import persistencia.ManejoDatos;
 
 public class GestorDivision {
 
-    private String armarCondicion(IDivision division) {
+  private String armarCondicion(IDivision division) {
 
-        String condicion = "TRUE";
-        if (division != null) {
-            condicion = "";
-            //division
-            if (division.getCodigo() != 0) {
-                condicion += " `Codigo` = " + division.getCodigo();
-            }
-            if (division.getDescripcion() != null) {
-                condicion += " `Descripcion` = '" + division.getDescripcion() + "'";
-            }
-            if (division.getJefe().getLegajo() !=0 ) {
-                condicion += " `Jefe` = '" + division.getJefe() + "'";
-            }
-            if (division.getDisposicion() != null) {
-                condicion += " `Disposicion` = '" + division.getDisposicion() + "'";
-            }
-            if (division.getDispDesde()!= null) {
-                condicion += " `Desde` = '" + Date.valueOf(division.getDispDesde()).toString() + "'";
-            }
-            if (division.getDispHasta() != null) {
-                condicion += " `Hasta` = " +  Date.valueOf(division.getDispHasta()).toString() + "'";
-            }
-        }
-        return condicion; 
+    String condicion = "TRUE";
+    if (division != null) {
+      condicion = "";
+      //division
+      if (division.getCodigo() != 0) {
+        condicion += " `Codigo` = " + division.getCodigo();
+      }
+      if (division.getDescripcion() != null) {
+        condicion += " `Descripcion` = '" + division.getDescripcion() + "'";
+      }
+      if (division.getJefe().getLegajo() !=0 ) {
+        condicion += " `Jefe` = '" + division.getJefe() + "'";
+      }
+      if (division.getDisposicion() != null) {
+        condicion += " `Disposicion` = '" + division.getDisposicion() + "'";
+      }
+      if (division.getDispDesde()!= null) {
+        condicion += " `Desde` = '" + Date.valueOf(division.getDispDesde()).toString() + "'";
+      }
+      if (division.getDispHasta() != null) {
+        condicion += " `Hasta` = " +  Date.valueOf(division.getDispHasta()).toString() + "'";
+      }
     }
-    
-    public EstadoOperacion nuevaDivision(IDivision division) {
+    return condicion; 
+  }
+  
+  public EstadoOperacion nuevaDivision(IDivision division) {
         // TODO actualizar BD
-           try {
+         try {
                ManejoDatos e = new ManejoDatos();
                String table = "divisiones";
                String campos = "`Codigo`, `Descripcion`, `Jefe`, `Disposicion`, `Desde`, `Hasta`";
@@ -63,7 +63,7 @@ public class GestorDivision {
 
     public EstadoOperacion modificarDivision(IDivision division) {
         // TODO actualizar BD
-          try {
+        try {
               ManejoDatos e = new ManejoDatos();
               String tabla = "divisiones";
               String campos = "`Codigo` = \'" + division.getCodigo() + "\', `Descripcion` = \'" + division.getDescripcion() + "\', `Jefe`= \'" + division.getJefe().getLegajo() + "\', `Disposicion`= \'" + division.getDisposicion() + "\', `Desde` = \'" + division.getDispDesde() + "\', `Hasta` =\'" + division.getDispHasta() + "'";
@@ -77,9 +77,10 @@ public class GestorDivision {
 
     public EstadoOperacion eliminarDivision(IDivision division) {
         // TODO actualizar BD
-         try {
+      
+      try {
              ManejoDatos e = new ManejoDatos();
-           
+             e.delete("`Area`", "Responsable = " +division.getCodigo()  );
              e.delete("`Division`", "Codigo = " + division.getCodigo());
              return new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminÃƒÂ³ correctamente");
          } catch (Exception var3) {
@@ -88,43 +89,43 @@ public class GestorDivision {
     }
 
     public List<IDivision> listarDivision(IDivision division) {
-        ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
+      ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
         ArrayList<IDivision> divisiones = new ArrayList<IDivision>();
-        
+      
         String tabla = "Division";
         String campos = "*";
         String condicion = this.armarCondicion(division);
+      
+      
+      
+      try {
+          ManejoDatos md = new ManejoDatos(); 
+          res = md.select(tabla, campos, condicion);
+          for (Hashtable<String, String> reg : res) {
+        Division div = new Division(
+              reg.get("Usuario").toString(),
+              new HashSalt(reg.get("Hash").toString(), reg.get("Salt").toString()),
+              reg.get("Descripcion").toString(),
+              new ArrayList<IRol>()
+            );
         
+        GestorPersona gp = new GestorPersona();
+        Persona p = new Persona();
+        p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
+        p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
+        p = (Persona) gp.listarPersonas(p).get(0);
         
+        divisiones.add(div);        
         
-        try {
-            ManejoDatos md = new ManejoDatos(); 
-            res = md.select(tabla, campos, condicion);
-            for (Hashtable<String, String> reg : res) {
-                Division div = new Division(
-                            reg.get("Usuario").toString(),
-                            new HashSalt(reg.get("Hash").toString(), reg.get("Salt").toString()),
-                            reg.get("Descripcion").toString(),
-                            new ArrayList<IRol>()
-                        );
-                
-                GestorPersona gp = new GestorPersona();
-                Persona p = new Persona();
-                p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
-                p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
-                p = (Persona) gp.listarPersonas(p).get(0);
-                
-                divisiones.add(div);                
-                
-            }
-            return divisiones;
+      }
+          return divisiones;
         }catch(Exception e) {
-            return divisiones;
+          return divisiones;
         }
         
     }
     
     
-    
-    
+  
+  
 }
