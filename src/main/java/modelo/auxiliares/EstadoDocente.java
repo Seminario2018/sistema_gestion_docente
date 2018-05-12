@@ -1,6 +1,10 @@
 package modelo.auxiliares;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+
+import persistencia.ManejoDatos;
 
 /**
  * @author Martín Tomás Juran
@@ -32,5 +36,23 @@ public class EstadoDocente {
 	 */
 	public static List<EstadoDocente> getLista() {
 		return null;
+	}
+	
+	public static EstadoDocente getEstado(EstadoDocente estado) {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "EstadoDocente";
+			String campos = "*";
+			String condicion = "``idEstadoDocente` = " + estado.getId();
+
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos,condicion);
+			Hashtable<String, String> reg = res.get(0);
+			EstadoDocente estadoDocente = new EstadoDocente();
+			estadoDocente.setId(Integer.parseInt(reg.get("idEstadoDocente")));
+			estadoDocente.setDescripcion(reg.get("Descripcion"));
+			return estadoDocente;
+		} catch (NumberFormatException e) {
+			return new EstadoDocente();
+		}
 	}
 }

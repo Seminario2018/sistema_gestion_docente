@@ -1,5 +1,7 @@
 package modelo.cargo;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
@@ -8,11 +10,13 @@ import persistencia.ManejoDatos;
 
 public class GestorCargo {
     public EstadoOperacion nuevoCargo(ICargo cargo) {
-        // TODO actualizar BD
           try {
               ManejoDatos e = new ManejoDatos();
               String table = "cargo";
               String campos = "`Codigo`, `Descripcion`, `CargaHoraria`";
+              if (cargo.getCodigo() == -1) {
+            	  cargo.setCodigo(this.getCodigoMax() + 1);
+              }
               String valores = "\'" + cargo.getCodigo() + "\', \'" +cargo.getDescripcion() + "\', \'" + cargo.getCargaHoraria() + "`";
               e.insertar(table, campos, valores);
               return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "El cargo se creo correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
@@ -22,7 +26,6 @@ public class GestorCargo {
     }
 
     public EstadoOperacion modificarCargo(ICargo cargo) {
-        // TODO actualizar BD
           try {
               ManejoDatos e = new ManejoDatos();
               String tabla = "cargo";
@@ -36,10 +39,8 @@ public class GestorCargo {
     }
 
     public EstadoOperacion eliminarCargo(ICargo cargo) {
-        // TODO actualizar BD
          try {
-             ManejoDatos e = new ManejoDatos();
-           
+             ManejoDatos e = new ManejoDatos();           
              e.delete("`cargo`", "Codigo = " + cargo.getCodigo());
              return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se eliminÃƒÂ³ correctamente");
          } catch (Exception var3) {
@@ -48,10 +49,53 @@ public class GestorCargo {
     }
 
     public List<ICargo> listarCargo(ICargo cargo) {
-        if (cargo != null) {
-            // TODO Filtrar por los campos que ingresan
+        String condicion = "TRUE";
+        String tabla = "cargos";
+        String campos = "*";
+        
+    	if (cargo != null) {
+    		
         }
-        // TODO select BD
         return null;
     }
+    
+    public String armarCondicion(ICargo cargo) {
+    	String condicion = "";
+    	//, , 
+    	if (cargo.getCodigo() > -0) {
+			condicion += "`Codigo` = " + cargo.getCodigo();
+		}
+    	if (cargo.getDescripcion() != null) {
+    		if (!condicion.equals("")) {
+    			condicion += " AND ";
+    		}
+    		condicion += "`Descripcion` = '" + cargo.getDescripcion() + "'";
+    	}
+    	if (cargo.getCargaHoraria() > 0) {
+    		if (!condicion.equals("")) {
+    			condicion += " AND ";
+    		}
+    		condicion += "`CargaHoraria` = " + cargo.getCargaHoraria();
+    	}
+    	
+    	return condicion;
+    }
+    
+    
+    private int getCodigoMax() {
+    	int cod = 1;
+    	try {
+    		ManejoDatos md = new ManejoDatos();
+    		ArrayList<Hashtable<String, String>> res = md.select("cargo", "MAX(codigo");
+    		for (Hashtable<String, String> reg : res) {
+				cod = Integer.parseInt(reg.get("MAX(codigo"));
+			}
+    	}catch(Exception e){
+    		cod = 1;
+    	}
+    	return cod;
+    }
+    
+    
+    
 }

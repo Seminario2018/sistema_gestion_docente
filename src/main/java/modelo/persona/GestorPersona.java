@@ -19,8 +19,8 @@ public class GestorPersona {
 			ManejoDatos md = new ManejoDatos();
 			String table = "EstadoPersona";
 			String campos = "";
-			String valores = persona.getEstado().ordinal() + ", '" + persona.getEstado().name() + "'";
-			String condicion = "descripcion = '" + persona.getEstado().name() + "'";
+			String valores = persona.getEstado().getId()+ ", '" + persona.getEstado().getDescripcion() + "'";
+			String condicion = "descripcion = '" + persona.getEstado().getDescripcion() + "'";
 			
 			if (md.select(table, "*", condicion).isEmpty()) {
 				md.insertar(table, "idEstado, Descripcion", valores);
@@ -117,8 +117,8 @@ public class GestorPersona {
 			String table = "contacto";
 			String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Nombre`, `Tipo`, `Valor`";
 			String valores = contacto.getId() + ", " + persona.getTipoDocumento().getId() + ", "
-					+ "'" + persona.getNroDocumento() + "', '" + contacto.getNombre() + "', "
-					+ "'" + contacto.getTipo() + "', '" + contacto.getValor() + "'";
+					+ "'" + persona.getNroDocumento() + "', '" + contacto.getId() + "', "
+					+ "'" + contacto.getTipo() + "', '" + contacto.getDato() + "'";
 			
 			md.insertar(table, campos, valores);
 		}
@@ -160,7 +160,7 @@ public class GestorPersona {
 					+ "`NroDocumento` = '" + persona.getNroDocumento() + "', "
 					+ "`Apellido` = '" + persona.getApellido() + "', `Nombre` = '" + persona.getNombre() + "', "
 					+ "`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "', "
-					+ "`Estado` = " + persona.getEstado().ordinal();
+					+ "`Estado` = " + persona.getEstado().getId();
 			
 			md.update(table, campos, condicion);
 			
@@ -198,7 +198,7 @@ public class GestorPersona {
 				String[] fnac = reg.get("FechaNacimiento").split("-");
 				p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]),
 						Integer.parseInt(fnac[1]), Integer.parseInt(fnac[2])));
-				p.setEstado(EstadoPersona.values()[Integer.parseInt(reg.get("Estado"))]);
+				p.setEstado(this.getEstado(reg.get("Estado")));
 				this.agregarTitulos(p);
 				this.agregarContactos(p);
 				this.agregarDomicilios(p);
@@ -213,6 +213,15 @@ public class GestorPersona {
 		}
 		
 		return personas;		
+	}
+
+	private EstadoPersona getEstado(String estado) {
+		EstadoPersona e = new EstadoPersona();
+		ManejoDatos md = new ManejoDatos();
+		ArrayList<Hashtable<String, String>> res = md.select("EstadoPersona", "*", "idEstado = " + estado);
+		e.setId(Integer.parseInt(res.get(0).get("idEstado")));
+		e.setDescripcion(res.get(0).get("Descripcion"));
+		return e;
 	}
 
 	private void agregarDomicilios(Persona p) {
