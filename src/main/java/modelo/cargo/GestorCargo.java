@@ -49,11 +49,36 @@ public class GestorCargo {
     }
 
     public List<ICargo> listarCargo(ICargo cargo) {
-        if (cargo != null) {
-            // TODO Filtrar por los campos que ingresan
+        String condicion = "TRUE";
+        String tabla = "cargos";
+        String campos = "*";
+        
+    	if (cargo != null) {
+    		
         }
-        // TODO select BD
         return null;
+    }
+    
+    public String armarCondicion(ICargo cargo) {
+    	String condicion = "";
+    	//, , 
+    	if (cargo.getCodigo() > -0) {
+			condicion += "`Codigo` = " + cargo.getCodigo();
+		}
+    	if (cargo.getDescripcion() != null) {
+    		if (!condicion.equals("")) {
+    			condicion += " AND ";
+    		}
+    		condicion += "`Descripcion` = '" + cargo.getDescripcion() + "'";
+    	}
+    	if (cargo.getCargaHoraria() > 0) {
+    		if (!condicion.equals("")) {
+    			condicion += " AND ";
+    		}
+    		condicion += "`CargaHoraria` = " + cargo.getCargaHoraria();
+    	}
+    	
+    	return condicion;
     }
     
     
