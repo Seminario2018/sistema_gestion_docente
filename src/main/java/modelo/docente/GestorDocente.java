@@ -265,7 +265,7 @@ public class GestorDocente {
     }
 	
 	public ArrayList<ICargo> listarCargo(IDocente docente, ICargoDocente cargo){
-		ArrayList<ICargo> cargos = new ArrayList<ICargo>();
+		ArrayList<ICargoDocente> cargos = new ArrayList<ICargoDocente>();
 		String condicion = "TRUE";
 		condicion += this.armarCondicionCargo(cargo, docente);
 		try {
@@ -289,6 +289,7 @@ public class GestorDocente {
 				cargoN.setDisposicion(reg.get("Disposicion"));
 				cargoN.setResolucion(reg.get("Resolucion"));
 				cargoN.setUltimoCosto(Float.parseFloat(reg.get("CostoActual")));
+				cargos.add(cargoN);
 				
 			}
 			
