@@ -1,11 +1,18 @@
 package modelo.docente;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
+import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.TipoCargo;
+import modelo.cargo.Cargo;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
+import modelo.division.Area;
+import modelo.division.IArea;
 import modelo.persona.IPersona;
 import persistencia.ManejoDatos;
 
@@ -165,6 +172,9 @@ public class GestorDocente {
 	    try {
     	    ManejoDatos md = new ManejoDatos();
     	    String campos = "Codigo, Legajo, Area, Cargo, Tipo_Cargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
+    	    if (cargoDocente.getId() == -1) {
+          	  cargoDocente.setId(this.getCodigoMax() + 1);
+            }
     	    String valores = String.format("'%d', '%d', '%s', '%d', '%s', '%d', '%s', '%s', '%d'",
     	            cargoDocente.getId(),
     	            docente.getLegajo(),
@@ -197,7 +207,7 @@ public class GestorDocente {
 	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 	    // TODO Revisar
 	    try {
-	        StringBuilder campos = new StringBuilder();
+	        StringBuilder campos = new StringBuilder();	        
 	        campos.append(String.format(
 	                "Legajo='%d', Area='%s', Cargo='%d', Tipo_Cargo='%s', Estado_Cargo='%s', Disposicion='%s', Resolucion='%s', CostoActual='%d'",
 	                docente.getLegajo(),
@@ -252,5 +262,115 @@ public class GestorDocente {
                     EstadoOperacion.CodigoEstado.DELETE_ERROR,
                     "Error al quitar el CargoDocente");
         }
+    }
+	
+	public ArrayList<ICargo> listarCargo(IDocente docente, ICargoDocente cargo){
+		ArrayList<ICargo> cargos = new ArrayList<ICargo>();
+		String condicion = "TRUE";
+		condicion += this.armarCondicionCargo(cargo, docente);
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "planta";
+			ArrayList<Hashtable<String,String>> res = md.select(tabla, "*", condicion);
+			/*
+			 *`Area`, `Cargo`, `Tipo_Cargo`, `Estado_Cargo`, `CostoActual`
+			 * 
+			 *IArea area, ICargo cargo, TipoCargo tipoCargo,
+	        String disposicion, LocalDate dispDesde, LocalDate dispHasta,
+	        float ultimoCosto, LocalDate fechaUltCost, String resolucion,
+	        LocalDate resDesde, LocalDate resHasta, EstadoCargo estado
+			 */
+			for (Hashtable<String, String> reg : res) {
+				CargoDocente cargoN = new CargoDocente();
+				cargoN.setId(Integer.parseInt(reg.get("Codigo")));
+				cargoN.setArea(new Area(reg.get("Area"), null, null, null, null, null, null, null));
+				cargoN.setCargo(new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1));
+				cargoN.setTipoCargo(new TipoCargo(0, reg.get("Tipo_Cargo")));
+				cargoN.setDisposicion(reg.get("Disposicion"));
+				cargoN.setResolucion(reg.get("Resolucion"));
+				cargoN.setUltimoCosto(Float.parseFloat(reg.get("CostoActual")));
+				
+			}
+			
+		}catch (Exception e) {
+			cargos = new ArrayList<ICargo>();
+		}
+		
+		
+		return cargos;
+	}
+	
+	
+	private String armarCondicionCargo(ICargoDocente cargo,IDocente docente) {
+		String condicion = "";
+		if (cargo.getId() != -1) {
+			condicion += "`Codigo` = " + cargo.getId();
+		}
+		if (docente != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Legajo` = " + docente.getLegajo();
+		}
+		if (cargo.getArea() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Area` = " + cargo.getArea().getCodigo();
+		}
+		if (cargo.getCargo() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Cargo` = " + cargo.getCargo().getCodigo();
+		}
+		if (cargo.getTipoCargo() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Tipo_Cargo` = '" + cargo.getTipoCargo().getDescripcion() + "'"; 
+		}
+		if (cargo.getEstado() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Estado_Cargo` = '" + cargo.getEstado().getDescripcion() + "'";
+		}
+		if (cargo.getDisposicion() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Disposicion` = '" + cargo.getDisposicion() + "'";
+		}
+		if (cargo.getResolucion() != null) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`Resolucion` = '" + cargo.getResolucion() + "'";
+		}
+		if (cargo.getUltimoCosto() > 0) {
+			if (!condicion.equals("")) {
+				condicion += " AND ";
+			}
+			condicion += "`CostoActual` = " + cargo.getUltimoCosto(); 
+		}
+		
+		return condicion;
+	}
+
+	
+	
+	private int getCodigoMax() {
+    	int cod = 1;
+    	try {
+    		ManejoDatos md = new ManejoDatos();
+    		ArrayList<Hashtable<String, String>> res = md.select("planta", "MAX(Codigo");
+    		for (Hashtable<String, String> reg : res) {
+				cod = Integer.parseInt(reg.get("MAX(codigo"));
+			}
+    	}catch(Exception e){
+    		cod = 1;
+    	}
+    	return cod;
     }
 }

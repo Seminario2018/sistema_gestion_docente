@@ -87,7 +87,7 @@ public class GestorDivision {
          }
     }
 
-    public List<IDivision> listarDivision(IDivision division) {
+    /*public List<IDivision> listarDivision(IDivision division) {
         ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
         ArrayList<IDivision> divisiones = new ArrayList<IDivision>();
         
@@ -122,7 +122,7 @@ public class GestorDivision {
             return divisiones;
         }
         
-    }
+    }*/
     
     
     
