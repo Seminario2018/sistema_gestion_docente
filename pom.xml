@@ -42,12 +42,12 @@
 		<artifactId>mysql-connector-java</artifactId>
 		<version>5.1.46</version>
 	</dependency>
-	
-	<!-- https://mvnrepository.com/artifact/org.jfxtras/jfxtras-labs/8.0-r6 -->
+
+	<!-- https://mvnrepository.com/artifact/org.jfxtras/jfxtras-window -->
 	<dependency>
-	    <groupId>org.jfxtras</groupId>
-	    <artifactId>jfxtras-labs</artifactId>
-	    <version>8.0-r6</version>
+		<groupId>org.jfxtras</groupId>
+		<artifactId>jfxtras-window</artifactId>
+		<version>9.0-r1</version>
 	</dependency>
 
 	<!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail/1.6.1 -->
