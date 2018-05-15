@@ -21,7 +21,6 @@ import javafx.stage.WindowEvent;
 import jfxtras.scene.control.window.CloseIcon;
 import jfxtras.scene.control.window.MinimizeIcon;
 import jfxtras.scene.control.window.Window;
-import jfxtras.scene.control.window.WindowIcon;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
 
@@ -48,7 +47,7 @@ public class GestorPantalla {
 	IUsuario usuario;
 	ControladorVista pantallaPrincipal;
 	Pane internalPane;
-//	Map<String, ControladorVista> pantallasAbiertas = new HashMap<String, ControladorVista>();
+	Map<String, ControladorVista> controladoresActivos = new HashMap<String, ControladorVista>();
 	Map<String, Window> pantallasAbiertas = new HashMap<String, Window>();
 
 	public void lanzarPantallaPrincipal(IUsuario usuario) {
@@ -85,24 +84,35 @@ public class GestorPantalla {
 			} else {
 				FXMLLoader loader = getLoader(nombre);
 				Parent root = loader.load();
-//				this.internalPane.getChildren().add(root);
 				
 				Window window = new Window();
 				window.getContentPane().getChildren().add(root);
 				preferenciasVentana(window, nombre);
 
+				// Tomar el tamaño de la región que va a contener (por lo general 800x600)
 				window.setPrefWidth(((Region) root).getPrefWidth());
 				window.setPrefHeight(((Region) root).getPrefHeight());
 
+				// Nombre y botones de la barra de título
 				window.setTitle(nombre);
 				window.getRightIcons().addAll(
 						new MinimizeIcon(window),
 						new CloseIcon(window)
 						);
+				
+				// Cuando la ventana se cierra, quitarla de la lista de pantallas abiertas
+				window.setOnClosedAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						controladoresActivos.remove(nombre);
+						pantallasAbiertas.remove(nombre);
+					}
+				});
+				
 				this.internalPane.getChildren().add(window);
 				
+				this.controladoresActivos.put(nombre, loader.getController());
 				this.pantallasAbiertas.put(nombre, window);
-//				this.pantallasAbiertas.put(nombre, loader.getController());
 
 			}
 		} catch (IOException e) {
@@ -187,13 +197,14 @@ public class GestorPantalla {
 		
 		// Guardar el tamaño de ventana
 		window.setOnCloseAction(new EventHandler<ActionEvent>() {
+			@Override
 			public void handle(ActionEvent event) {
 				Preferences preferences = Preferences.userRoot().node(name);
 				preferences.putDouble(WINDOW_POSITION_X, window.getLayoutX());
 				preferences.putDouble(WINDOW_POSITION_Y, window.getLayoutY());
 				preferences.putDouble(WINDOW_WIDTH, window.getPrefWidth());
 				preferences.putDouble(WINDOW_HEIGHT, window.getPrefHeight());
-			};
+			}
 		});
 	}
 	

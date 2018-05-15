@@ -183,7 +183,7 @@ public class Docentes extends ControladorVista {
 		cargoDocenteSeleccionado = this.control.getCargoDocente();
 		cargoDocenteSeleccionado.setId(idCargoDocente++);
 		vaciarCamposCargos();
-		
+		System.out.println(btnCargosNuevo.getStyleClass());
 	}
 
 	@FXML public Button btnCargosGuardar;
