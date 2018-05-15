@@ -5,18 +5,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Region;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import jfxtras.scene.control.window.CloseIcon;
+import jfxtras.scene.control.window.MinimizeIcon;
 import jfxtras.scene.control.window.Window;
+import jfxtras.scene.control.window.WindowIcon;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
 
@@ -33,26 +38,24 @@ public class GestorPantalla {
 	private static final String WINDOW_HEIGHT = "Window_Height";
 
 	// Utilizadas para arrastrar ventanas sin decorar
-	private static final String ID_MAIN_PANE = "mainPane";
 	private double posX;
 	private double posY;
+
+	private static final String ID_MAIN_PANE = "mainPane";
 	
 	Stage primaryStage;
 	
 	IUsuario usuario;
 	ControladorVista pantallaPrincipal;
-	AnchorPane internalPane;
-	Map<String, ControladorVista> pantallasAbiertas = new HashMap<String, ControladorVista>();
+	Pane internalPane;
+//	Map<String, ControladorVista> pantallasAbiertas = new HashMap<String, ControladorVista>();
+	Map<String, Window> pantallasAbiertas = new HashMap<String, Window>();
 
 	public void lanzarPantallaPrincipal(IUsuario usuario) {
 		
-		try {
 			this.usuario = usuario;
 			this.primaryStage = new Stage();
 			this.primaryStage.setTitle("Plumas 2 - Sistema de Gestión Docente - Universidad Nacional de Luján");
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
 		
 		try {
 			FXMLLoader loader = getLoader("Principal");
@@ -60,7 +63,7 @@ public class GestorPantalla {
 			
 			this.pantallaPrincipal = loader.getController();
 			this.pantallaPrincipal.setGestor(this);
-			this.internalPane = (AnchorPane) loader.getNamespace().get(ID_MAIN_PANE);
+			this.internalPane = (Pane) loader.getNamespace().get(ID_MAIN_PANE);
 			
 			Scene scene = new Scene(root);
 			this.primaryStage.setScene(scene);
@@ -75,13 +78,33 @@ public class GestorPantalla {
 	
 	public void lanzarPantalla(String nombre, Map<String, Object> args) {		
 		try {
-			FXMLLoader loader = getLoader(nombre);
-			Parent root = loader.load();
-			Window window = new Window();
-			window.getContentPane().getChildren().add(root);
-			
-			this.internalPane.getChildren().add(window);
-			
+			// La pantalla ya existe y hay que traerla al frente
+			if (pantallasAbiertas.get(nombre) != null) {
+				pantallasAbiertas.get(nombre).toFront();
+
+			} else {
+				FXMLLoader loader = getLoader(nombre);
+				Parent root = loader.load();
+//				this.internalPane.getChildren().add(root);
+				
+				Window window = new Window();
+				window.getContentPane().getChildren().add(root);
+				preferenciasVentana(window, nombre);
+
+				window.setPrefWidth(((Region) root).getPrefWidth());
+				window.setPrefHeight(((Region) root).getPrefHeight());
+
+				window.setTitle(nombre);
+				window.getRightIcons().addAll(
+						new MinimizeIcon(window),
+						new CloseIcon(window)
+						);
+				this.internalPane.getChildren().add(window);
+				
+				this.pantallasAbiertas.put(nombre, window);
+//				this.pantallasAbiertas.put(nombre, loader.getController());
+
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -160,19 +183,18 @@ public class GestorPantalla {
 			window.setLayoutY(y);
 		} else {
 			window.setLayoutY((primScreenBounds.getHeight() - window.getHeight()) / 2);
-		} 
+		}
 		
-
 		// Guardar el tamaño de ventana
-		/*
-		window.setOnCloseRequest((final WindowEvent event) -> {
-			Preferences preferences = Preferences.userRoot().node(name);
-			preferences.putDouble(WINDOW_POSITION_X, stage.getX());
-			preferences.putDouble(WINDOW_POSITION_Y, stage.getY());
-			preferences.putDouble(WINDOW_WIDTH, stage.getWidth());
-			preferences.putDouble(WINDOW_HEIGHT, stage.getHeight());
+		window.setOnCloseAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				Preferences preferences = Preferences.userRoot().node(name);
+				preferences.putDouble(WINDOW_POSITION_X, window.getLayoutX());
+				preferences.putDouble(WINDOW_POSITION_Y, window.getLayoutY());
+				preferences.putDouble(WINDOW_WIDTH, window.getPrefWidth());
+				preferences.putDouble(WINDOW_HEIGHT, window.getPrefHeight());
+			};
 		});
-		*/
 	}
 	
 	

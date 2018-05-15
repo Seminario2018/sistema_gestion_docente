@@ -18,6 +18,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		GestorPantalla gp = new GestorPantalla();
 		
+		setUserAgentStylesheet(STYLESHEET_CASPIAN);
+		
 		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));
 	}
 
