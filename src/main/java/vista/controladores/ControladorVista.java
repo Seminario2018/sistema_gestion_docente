@@ -11,12 +11,23 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import vista.GestorPantalla;
 
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 10 de may. de 2018
  */
 public abstract class ControladorVista {
+	
+	protected GestorPantalla gestor;
+	
+	public GestorPantalla getGestor() {
+		return gestor;
+	}
+
+	public void setGestor(GestorPantalla gestor) {
+		this.gestor = gestor;
+	}
 	
 	/**
 	 * Inicializa una tabla genérica, obteniendo con Reflection el nombre

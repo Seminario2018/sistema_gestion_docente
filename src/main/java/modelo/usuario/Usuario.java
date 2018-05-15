@@ -1,6 +1,5 @@
 package modelo.usuario;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import modelo.persona.Persona;
@@ -20,7 +19,7 @@ public class Usuario implements IUsuario{
 	    this.user = user;
 	    this.hash = hash;
 	    this.descripcion = descripcion;
-	    this.roles = new ArrayList<IRol>(roles);
+	    this.roles = roles;
 	}
 
 	public Usuario(String user, String pass, String descripcion,
@@ -29,7 +28,7 @@ public class Usuario implements IUsuario{
 	    this.user = user;
 	    this.setPass(pass);
 	    this.descripcion = descripcion;
-	    this.roles = new ArrayList<IRol>(roles);
+	    this.roles = roles;
 	}
 
     @Override

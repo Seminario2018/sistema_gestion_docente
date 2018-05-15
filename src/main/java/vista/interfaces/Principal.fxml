@@ -55,7 +55,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Docencia">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Docentes (RRHH)" />
+                  <MenuItem fx:id="mnuDocentes" mnemonicParsing="false" onAction="#pantallaDocentes" text="Docentes" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Programas de investigación" />
                   <MenuItem mnemonicParsing="false" text="Proyectos de investigación" />
@@ -65,4 +65,7 @@
          </menus>
       </MenuBar>
    </top>
+   <center>
+      <AnchorPane fx:id="mainPane" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>
