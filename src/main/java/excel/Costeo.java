@@ -50,7 +50,7 @@ public class Costeo {
             Docente docente = new Docente(persona, legajo, "", null, null, null, null);
 
             GestorDocente gestorDocente = new GestorDocente();
-            List<IDocente> listaDocentes = gestorDocente.listarDocente(persona, docente);
+            List<IDocente> listaDocentes = gestorDocente.listarDocente(docente);
 
             // TODO Hacer
         }
