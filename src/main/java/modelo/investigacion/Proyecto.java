@@ -13,28 +13,30 @@ public class Proyecto implements IProyecto {
 	private String resumen;
 	private LocalDate fechaPresentacion;
 	private LocalDate fechaAprobacion;
-	private String disposicion;
+	private String descripcion;
 	private IDocente director;
 	private IDocente codirector;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
 	private EstadoProyecto estado;
+	private Programa programa;
 
 	private List<IIntegrante> integrantes;
 	private List<ISubsidio> subsidios;
 	private List<IProrroga> prorrogas;
 
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
-			String disposicion, IDocente director, IDocente codirector,
+			String descripcion, IDocente director, IDocente codirector,
 			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
-			List<ISubsidio> subsidios, List<IProrroga> prorrogas) {
+			List<ISubsidio> subsidios, List<IProrroga> prorrogas, Programa programa) {
 		super();
+		this.programa=programa;
 		this.id = id;
 		this.nombre = nombre;
 		this.resumen = resumen;
 		this.fechaPresentacion = fechaPresentacion;
 		this.fechaAprobacion = fechaAprobacion;
-		this.disposicion = disposicion;
+		this.descripcion = descripcion;
 		this.director = director;
 		this.codirector = codirector;
 		this.fechaInicio = fechaInicio;
@@ -48,8 +50,8 @@ public class Proyecto implements IProyecto {
 	@Override
 	public IProyecto clone() {
 		return (IProyecto) new Proyecto(this.id, this.nombre, this.resumen, this.fechaPresentacion,
-				this.fechaAprobacion, this.disposicion, this.director, this.codirector, this.fechaInicio, this.fechaFin,
-				this.estado, this.integrantes, this.subsidios, this.prorrogas);
+				this.fechaAprobacion, this.descripcion, this.director, this.codirector, this.fechaInicio, this.fechaFin,
+				this.estado, this.integrantes, this.subsidios, this.prorrogas,this.programa);
 	}
 
 	@Override
@@ -103,13 +105,13 @@ public class Proyecto implements IProyecto {
 	}
 
 	@Override
-	public String getDisposicion() {
-		return this.disposicion;
+	public String getDescripcion() {
+		return this.descripcion;
 	}
 
 	@Override
-	public void setDisposicion(String disposicion) {
-		this.disposicion = disposicion;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	@Override
@@ -205,5 +207,17 @@ public class Proyecto implements IProyecto {
 	@Override
 	public void quitarProrroga(IProrroga prorroga) {
 		this.prorrogas.remove(prorroga);
+	}
+
+	@Override
+	public Programa getPrograma() {
+		// TODO Auto-generated method stub
+		return programa;
+	}
+
+	@Override
+	public void setPrograma(Programa programa) {
+		// TODO Auto-generated method stub
+		this.programa=programa;
 	}
 }
