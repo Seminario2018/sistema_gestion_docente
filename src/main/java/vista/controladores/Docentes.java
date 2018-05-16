@@ -167,7 +167,7 @@ public class Docentes extends ControladorVista {
 
 
 	public void actualizarTablaCargos() {
-		// TODO
+		// TODO actualizarTablaCargos()
 		/*
 		this.listaCargos = this.control.getListaCargosDocentes();
 		for (ICargoDocente cargo : this.listaCargos) {
@@ -235,7 +235,8 @@ public class Docentes extends ControladorVista {
 			*/
 
 			// TODO Reemplazar por actualizarTablaCargos()
-			this.filasCargos.add(new FilaCargo(cargoDocenteSeleccionado));
+			this.filasCargos.add(
+			        new FilaCargo(cargoDocenteSeleccionado));
 
 		} catch (IllegalArgumentException e) {
 			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());

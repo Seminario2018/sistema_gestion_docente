@@ -2,19 +2,10 @@ package modelo.division;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
-import modelo.auxiliares.TipoDocumento;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
-import modelo.auxiliares.hash.HashSalt;
-import modelo.persona.GestorPersona;
-import modelo.persona.IPersona;
-import modelo.persona.Persona;
-import modelo.usuario.IRol;
-import modelo.usuario.IUsuario;
-import modelo.usuario.Usuario;
 import persistencia.ManejoDatos;
 
 public class GestorDivision {
@@ -44,9 +35,9 @@ public class GestorDivision {
         condicion += " `Hasta` = " +  Date.valueOf(division.getDispHasta()).toString() + "'";
       }
     }
-    return condicion; 
+    return condicion;
   }
-  
+
   public EstadoOperacion nuevaDivision(IDivision division) {
         // TODO actualizar BD
          try {
@@ -77,7 +68,7 @@ public class GestorDivision {
 
     public EstadoOperacion eliminarDivision(IDivision division) {
         // TODO actualizar BD
-      
+
       try {
              ManejoDatos e = new ManejoDatos();
              e.delete("`Area`", "Responsable = " +division.getCodigo()  );
@@ -88,23 +79,23 @@ public class GestorDivision {
          }
     }
 
-<<<<<<< HEAD
     public List<IDivision> listarDivision(IDivision division) {
-      ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
-=======
+        // TODO Completar
+        return new ArrayList<IDivision>();
+    }
+
     /*public List<IDivision> listarDivision(IDivision division) {
         ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
->>>>>>> fd0f5a384dcbd175d753fa033b03d5e4fb15c1df
         ArrayList<IDivision> divisiones = new ArrayList<IDivision>();
-      
+
         String tabla = "Division";
         String campos = "*";
         String condicion = this.armarCondicion(division);
-      
-      
-      
+
+
+
       try {
-          ManejoDatos md = new ManejoDatos(); 
+          ManejoDatos md = new ManejoDatos();
           res = md.select(tabla, campos, condicion);
           for (Hashtable<String, String> reg : res) {
         Division div = new Division(
@@ -113,24 +104,24 @@ public class GestorDivision {
               reg.get("Descripcion").toString(),
               new ArrayList<IRol>()
             );
-        
+
         GestorPersona gp = new GestorPersona();
         Persona p = new Persona();
         p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
         p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
         p = (Persona) gp.listarPersonas(p).get(0);
-        
-        divisiones.add(div);        
-        
+
+        divisiones.add(div);
+
       }
           return divisiones;
         }catch(Exception e) {
           return divisiones;
         }
-        
+
     }*/
-    
-    
-  
-  
+
+
+
+
 }
