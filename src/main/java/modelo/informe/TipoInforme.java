@@ -13,6 +13,19 @@ public class TipoInforme implements ITipoInforme {
 	private String fromString; // solo from con joins
 	private String groupByString; // groupby prearmado
 
+	@Override
+    public ITipoInforme clone() {
+	    return new TipoInforme(
+            this.id,
+            this.nombre,
+            this.descripcion,
+            this.editable,
+            this.columnas,
+            this.fromString,
+            this.groupByString
+        );
+	}
+
 	public String armarConsulta() {
 		String select = "SELECT";
 		String where = "\r\nWHERE";
@@ -104,10 +117,10 @@ public class TipoInforme implements ITipoInforme {
 	 * DOCENTE.LEGAJO > 140000 GROUPBY DOCENTE.LEGAJO ORDERBY DOCENTE.LEGAJO
 	 * ASC, DOCENTE.APYNOM DESC
 	 */
-	
-	public TipoInforme() {	
+
+	public TipoInforme() {
 	}
-	
+
 	public TipoInforme(int id, String nombre, String descripcion,
 			boolean editable, List<ColumnaInforme> columnas,
 			String from, String groupby) {
@@ -121,59 +134,73 @@ public class TipoInforme implements ITipoInforme {
 		this.groupByString = groupby;
 	}
 
-	public int getId() {
+	@Override
+    public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	@Override
+    public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getNombre() {
+	@Override
+    public String getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(String nombre) {
+	@Override
+    public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
-	public String getDescripcion() {
+	@Override
+    public String getDescripcion() {
 		return descripcion;
 	}
 
-	public void setDescripcion(String descripcion) {
+	@Override
+    public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 
-	public boolean isEditable() {
+	@Override
+    public boolean isEditable() {
 		return editable;
 	}
 
-	public void setEditable(boolean editable) {
+	@Override
+    public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
 
-	public List<ColumnaInforme> getColumnas() {
+	@Override
+    public List<ColumnaInforme> getColumnas() {
 		return columnas;
 	}
 
-	public void setColumnas(List<ColumnaInforme> columnas) {
+	@Override
+    public void setColumnas(List<ColumnaInforme> columnas) {
 		this.columnas = columnas;
 	}
 
-	public String getFromString() {
+	@Override
+    public String getFromString() {
 		return fromString;
 	}
 
-	public void setFromString(String from) {
+	@Override
+    public void setFromString(String from) {
 		this.fromString = from;
 	}
 
-	public String getGroupByString() {
+	@Override
+    public String getGroupByString() {
 		return groupByString;
 	}
 
-	public void setGroupByString(String groupby) {
+	@Override
+    public void setGroupByString(String groupby) {
 		this.groupByString = groupby;
 	}
 }
