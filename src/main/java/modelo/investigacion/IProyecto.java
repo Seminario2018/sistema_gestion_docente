@@ -18,8 +18,8 @@ public interface IProyecto {
     public void setFechaPresentacion(LocalDate fechaPresentacion);
     public LocalDate getFechaAprobacion();
     public void setFechaAprobacion(LocalDate fechaAprobacion);
-    public String getDisposicion();
-    public void setDisposicion(String disposicion);
+    public String getDescripcion();
+    public void setDescripcion(String disposicion);
     public IDocente getDirector();
     public void setDirector(IDocente director);
     public IDocente getCodirector();
@@ -42,4 +42,6 @@ public interface IProyecto {
     public List<IProrroga> getProrrogas();
     public void agregarProrroga(IProrroga prorroga);
     public void quitarProrroga(IProrroga prorroga);
+    Programa getPrograma();
+    void setPrograma(Programa programa);
 }

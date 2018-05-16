@@ -1,12 +1,15 @@
 package modelo.investigacion;
 
 import modelo.docente.IDocente;
+import modelo.auxiliares.TipoDocumento;
 import modelo.docente.ICargoDocente;
 
 public class Integrante implements IIntegrante {
     private int id;
     private int legajo;
     private String apellido;
+    private  TipoDocumento tipoDocumente;
+    private int nroDocumento;
     private String nombre;
     private String cargo;
     private String institucion;
@@ -19,13 +22,30 @@ public class Integrante implements IIntegrante {
         this.apellido = docente.getPersona().getApellido();
         this.nombre = docente.getPersona().getNombre();
         this.cargo = cargoDocente.getCargo().getDescripcion();
+        this.tipoDocumente=docente.getPersona().getTipoDocumento();
+        this.nroDocumento=docente.getPersona().getNroDocumento();
         this.institucion = "UNLu";
         this.horasSemanales = horasSemanales;
     }
 
     /* Constructor para no docentes / docentes que no son de la UNLu */
-    public Integrante(int id, String apellido, String nombre, String cargo, String institucion, int horasSemanales) {
-    	this.id = id;
+    public Integrante(int id, String apellido, String nombre, String cargo, String institucion, int horasSemanales,  TipoDocumento tipoDocumento, int nroDocumento) {
+        this.id = id;
+        this.apellido = apellido;
+        this.nombre = nombre;
+        this.cargo = cargo;
+        this.institucion = institucion;
+        this.horasSemanales = horasSemanales;
+        this.tipoDocumente=tipoDocumento;
+        this.nroDocumento=nroDocumento;
+    }
+
+    /* Constructor para el clone() */
+    public Integrante(int id, int legajo, String apellido, String nombre, String cargo, String institucion,
+            int horasSemanales) {
+        super();
+        this.id = id;
+        this.legajo = legajo;
         this.apellido = apellido;
         this.nombre = nombre;
         this.cargo = cargo;
@@ -33,28 +53,15 @@ public class Integrante implements IIntegrante {
         this.horasSemanales = horasSemanales;
     }
 
-    /* Constructor para el clone() */
-    public Integrante(int id, int legajo, String apellido, String nombre, String cargo, String institucion,
-			int horasSemanales) {
-		super();
-		this.id = id;
-		this.legajo = legajo;
-		this.apellido = apellido;
-		this.nombre = nombre;
-		this.cargo = cargo;
-		this.institucion = institucion;
-		this.horasSemanales = horasSemanales;
-	}
-
-	@Override
+    @Override
     public IIntegrante clone() {
         return (IIntegrante) new Integrante(this.id,
-        		this.legajo,
-        		this.apellido,
-        		this.nombre,
-        		this.cargo,
-        		this.institucion,
-        		this.horasSemanales);
+                this.legajo,
+                this.apellido,
+                this.nombre,
+                this.cargo,
+                this.institucion,
+                this.horasSemanales);
     }
 
     @Override
@@ -113,6 +120,30 @@ public class Integrante implements IIntegrante {
     @Override
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Override
+    public void setTipoDocumento(TipoDocumento tipoDocumento) {
+        // 
+        this.tipoDocumente=tipoDocumento;
+    }
+
+    @Override
+    public TipoDocumento getTipoDocumento() {
+        // TODO Auto-generated method stub
+        return this.tipoDocumente;
+    }
+
+    @Override
+    public void setNroDocumento(int nroDocumento) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public int getNroDocumento() {
+        // TODO Auto-generated method stub
+        return 0;
     }
     
     
