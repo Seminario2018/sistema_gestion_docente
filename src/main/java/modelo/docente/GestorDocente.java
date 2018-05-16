@@ -212,7 +212,6 @@ public class GestorDocente {
     }
 
 	public EstadoOperacion agregarPlanta(IDocente docente, ICargo planta) {
-		// TODO actualizar BD
     	ManejoDatos md = new ManejoDatos();
     	GestorCargo cd = new GestorCargo();
     	ArrayList<ICargo> cargos = (ArrayList<ICargo>) cd.listarCargo(planta);

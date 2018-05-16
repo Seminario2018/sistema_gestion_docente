@@ -52,11 +52,22 @@ public class GestorCargo {
         String condicion = "TRUE";
         String tabla = "cargos";
         String campos = "*";
-        
+        ArrayList<ICargo> cargos = new ArrayList<ICargo>();
     	if (cargo != null) {
-    		
+    		condicion  = armarCondicion(cargo);
         }
-        return null;
+    	try {
+    		ManejoDatos md = new ManejoDatos();
+    		ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+    		for (Hashtable<String, String> reg : res) {
+				Cargo c = new Cargo(Integer.parseInt(reg.get("Codigo")), reg.get("Descripcion"), Integer.parseInt(reg.get("CargaHoraria")));
+				cargos.add(c);
+    		}
+    	}catch(Exception e) {
+    		cargos = new ArrayList<ICargo>();
+    	}
+    	
+        return cargos;
     }
     
     public String armarCondicion(ICargo cargo) {
