@@ -16,7 +16,7 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		setUserAgentStylesheet(STYLESHEET_CASPIAN);
+//		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 
 		GestorPantalla gp = new GestorPantalla();
 		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));

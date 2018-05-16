@@ -294,6 +294,8 @@
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
                                           </Button>
+                                          <Label text="Estado" GridPane.rowIndex="2" />
+                                          <ComboBox fx:id="cmbCargosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Label text="Tipo de cargo" GridPane.rowIndex="3" />
                                           <ComboBox fx:id="cmbCargosTipo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                           <Label text="Disposición" GridPane.rowIndex="4">
@@ -344,8 +346,6 @@
                                              </GridPane.margin>
                                           </Label>
                                           <DatePicker fx:id="dtpCargosCosto" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-                                          <Label text="Estado" GridPane.rowIndex="2" />
-                                          <ComboBox fx:id="cmbCargosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" />

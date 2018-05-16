@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -96,7 +97,7 @@ public class GestorPantalla {
 				// Nombre y botones de la barra de título
 				window.setTitle(nombre);
 				window.getRightIcons().addAll(
-						new MinimizeIcon(window),
+//						new MinimizeIcon(window),
 						new CloseIcon(window)
 						);
 				
