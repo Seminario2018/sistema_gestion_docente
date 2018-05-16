@@ -105,6 +105,32 @@ public class Docentes extends ControladorVista {
 		cd.setId(fila.getId());
 		List<ICargoDocente> listaCargosDocente = this.controlDocente.listarCargosDocente(docenteSeleccionado, cd);
 		cargoDocenteSeleccionado = listaCargosDocente.get(0);
+
+		// DONE Mostrar datos del cargo docente seleccionado en los controles:
+		txtCargosArea.setText(
+		        cargoDocenteSeleccionado.getArea().getDescripcion());
+		txtCargosCargo.setText(
+		        cargoDocenteSeleccionado.getCargo().getDescripcion());
+		cmbCargosEstado.getSelectionModel().select(
+		        cargoDocenteSeleccionado.getEstado());
+		cmbCargosTipo.getSelectionModel().select(
+		        cargoDocenteSeleccionado.getTipoCargo());
+		txtCargosDisp.setText(
+		        cargoDocenteSeleccionado.getDisposicion());
+		dtpCargosDispDesde.setValue(
+		        cargoDocenteSeleccionado.getDispDesde());
+		dtpCargosDispHasta.setValue(
+		        cargoDocenteSeleccionado.getDispHasta());
+		txtCargosRes.setText(
+		        cargoDocenteSeleccionado.getResolucion());
+		dtpCargosResDesde.setValue(
+		        cargoDocenteSeleccionado.getResDesde());
+		dtpCargosResHasta.setValue(
+                cargoDocenteSeleccionado.getResHasta());
+		txtCargosCosto.setText(
+		        String.valueOf(cargoDocenteSeleccionado.getUltimoCosto()));
+		dtpCargosCosto.setValue(
+		        cargoDocenteSeleccionado.getFechaUltCost());
 	}
 
 	@FXML public void inicializarTablaCargos() {
