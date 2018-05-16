@@ -1,8 +1,11 @@
 package controlador;
 
+import java.util.List;
+
 import mail.NotificacionCargo;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
+import modelo.cargo.ICargo;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -11,16 +14,18 @@ import vista.controladores.ControladorVista;
 public class ControlDocente {
 
 	private ControladorVista vista;
-	
+
 	private GestorCargo gestorCargo = new GestorCargo();
 	private GestorDocente gestorDocente = new GestorDocente();
 
-	
+
 	public ControlDocente(ControladorVista vista) {
 		super();
 		this.vista = vista;
 	}
-	
+
+//  CargosDocente
+
 	public ICargoDocente getCargoDocente() {
 		return this.gestorDocente.getCargoDocente();
 	}
@@ -50,7 +55,7 @@ public class ControlDocente {
 	                vista.alertaError("Cargos", "No se pudo modificar el cargo docente", eo.getMensaje());
 	        }
         }
-		
+
 		return eo;
 	}
 
@@ -66,4 +71,12 @@ public class ControlDocente {
         return eo;
     }
 
+    public List<ICargoDocente> listarCargosDocente(IDocente docente, ICargoDocente cargoDocente) {
+        return this.gestorDocente.listarCargo(docente, cargoDocente);
+    }
+
+//  Cargos
+    public List<ICargo> listarCargos(ICargo cargo) {
+        return this.gestorCargo.listarCargo(cargo);
+    }
 }
