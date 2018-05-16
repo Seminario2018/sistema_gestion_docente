@@ -76,6 +76,18 @@ public class ControlDocente {
     }
 
 //  Cargos
+    public EstadoOperacion nuevoCargo(ICargo cargo) {
+        return this.gestorCargo.nuevoCargo(cargo);
+    }
+
+    public EstadoOperacion modificarCargo(ICargo cargo) {
+        return this.gestorCargo.modificarCargo(cargo);
+    }
+
+    public EstadoOperacion eliminarCargo(ICargo cargo) {
+        return this.gestorCargo.eliminarCargo(cargo);
+    }
+
     public List<ICargo> listarCargos(ICargo cargo) {
         return this.gestorCargo.listarCargo(cargo);
     }
