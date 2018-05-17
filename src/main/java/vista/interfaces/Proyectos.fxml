@@ -41,7 +41,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="txtProyectosId" editable="false" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="80.0" GridPane.columnIndex="1">
+                  <TextField fx:id="txtProyectosId" focusTraversable="false" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" prefHeight="25.0" prefWidth="80.0" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -94,7 +94,7 @@
             </GridPane>
             <TabPane fx:id="tabpaneProyectos" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
-                  <Tab closable="false" text="Datos">
+                  <Tab closable="false" onSelectionChanged="#inicializarDatosProyecto" text="Datos">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="504.0" prefViewportWidth="785.0">
                            <content>

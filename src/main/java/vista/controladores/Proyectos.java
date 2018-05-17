@@ -1,5 +1,6 @@
 package vista.controladores;
 import java.net.URL;
+import java.time.Year;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -22,7 +23,9 @@ import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
+import modelo.investigacion.ISubsidio;
 import modelo.investigacion.Proyecto;
+import modelo.investigacion.Subsidio;
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
@@ -240,30 +243,79 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Subsidios ---------------------------- //
 
+	private ISubsidio subsidioSeleccionado;
+	private ObservableList<FilaSubsidio> filasSubsidios = FXCollections.observableArrayList();
+
+	private void limpiarCamposSubsidios() {
+	    txtSubsidiosAnio.clear();
+        txtSubsidiosMonto.clear();
+        txtSubsidiosDisp.clear();
+        txtaSubsidiosObservaciones.clear();
+	}
+
+	class FilaSubsidio {
+	    private int fecha;
+	    private float monto;
+	    private String observaciones;
+	    public FilaSubsidio(ISubsidio subsidio) {
+	        this.fecha = subsidio.getFecha().getValue();
+	        this.monto = subsidio.getMontoTotal();
+	        this.observaciones = subsidio.getObservaciones();
+	    }
+	    public int getFecha() {
+    	    return this.fecha;
+        }
+	    public float getMontoTotal() {
+    	    return this.monto;
+        }
+	    public String getObservaciones() {
+    	    return this.observaciones;
+        }
+	    public ISubsidio getSubsidio() {
+	        return new Subsidio(Year.of(fecha), observaciones, monto, observaciones, null);
+	    }
+	}
+
 	@FXML private Button btnSubsidiosNuevo;
 	@FXML void nuevoSubsidio(ActionEvent event) {
-
+	    subsidioSeleccionado = new Subsidio(null, null, 0, null, null);
+	    limpiarCamposSubsidios();
 	}
 
 	@FXML private Button btnSubsidiosGuardar;
 	@FXML void guardarSubsidio(ActionEvent event) {
-
+	    if (subsidioSeleccionado != null) {
+	        // Actualizo los valores de los subsidios:
+	        subsidioSeleccionado.setFecha(Year.of(Integer.parseInt(txtSubsidiosAnio.getText())));
+	        subsidioSeleccionado.setMontoTotal(Float.parseFloat(txtSubsidiosMonto.getText()));
+	        subsidioSeleccionado.setDisposicion(txtSubsidiosDisp.getText());
+	        subsidioSeleccionado.setObservaciones(txtaSubsidiosObservaciones.getText());
+	        // Agreo el subsidio al proyecto:
+	        proyectoSeleccionado.agregarSubsidio(subsidioSeleccionado);
+	        this.controlInvestigacion.agregarSubsidio(proyectoSeleccionado, subsidioSeleccionado);
+	        // Agrego el subsidio a la tabla:
+	        filasSubsidios.add(new FilaSubsidio(subsidioSeleccionado));
+	    }
     }
 
 	@FXML private Button btnSubsidiosDescartar;
 	@FXML void descartarSubsidio(ActionEvent event) {
-
+	    limpiarCamposSubsidios();
+	    tblSubsidios.getSelectionModel().clearSelection();
+	    subsidioSeleccionado = null;
     }
 
 	@FXML private Button btnSubsidiosEliminar;
 	@FXML void eliminarSubsidio(ActionEvent event) {
-
+	    FilaSubsidio fs = tblSubsidios.getSelectionModel().getSelectedItem();
+	    ISubsidio subsidio;
+	    tblSubsidios.getSelectionModel().clearSelection();
     }
 
-	@FXML private TableView<?> tblSubsidios;
-	@FXML private TableColumn<?, ?> colSubsidiosAnio;
-	@FXML private TableColumn<?, ?> colSubsidiosMonto;
-	@FXML private TableColumn<?, ?> colSubsidiosObservaciones;
+	@FXML private TableView<FilaSubsidio> tblSubsidios;
+	@FXML private TableColumn<FilaSubsidio, Integer> colSubsidiosAnio;
+	@FXML private TableColumn<FilaSubsidio, Float> colSubsidiosMonto;
+	@FXML private TableColumn<FilaSubsidio, String> colSubsidiosObservaciones;
 
 	@FXML private TextField txtSubsidiosAnio;
 	@FXML private TextField txtSubsidiosMonto;

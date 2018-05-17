@@ -7,9 +7,9 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import vista.GestorPantalla;
 
@@ -18,9 +18,9 @@ import vista.GestorPantalla;
  * @version 1.0, 10 de may. de 2018
  */
 public abstract class ControladorVista {
-	
+
 	protected GestorPantalla gestor;
-	
+
 	public GestorPantalla getGestor() {
 		return gestor;
 	}
@@ -28,7 +28,7 @@ public abstract class ControladorVista {
 	public void setGestor(GestorPantalla gestor) {
 		this.gestor = gestor;
 	}
-	
+
 	/**
 	 * Inicializa una tabla genérica, obteniendo con Reflection el nombre
 	 * de la variables TableView, TableColumn y ObservableList que se quieren
@@ -44,7 +44,7 @@ public abstract class ControladorVista {
 	 * @param fila la Class que funciona como fila de la tabla,
 	 * e.g. <i>FilaCargos</i>.
 	 * @param nombre el String que sigue a la declaración del objeto gráfico,
-	 * e.g. col<i>Cargos</i>X. 
+	 * e.g. col<i>Cargos</i>X.
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void inicializarTabla(String nombre) {
@@ -69,17 +69,17 @@ public abstract class ControladorVista {
 						.replace("col" + nombre, "").toLowerCase();
 				col.setCellValueFactory(new PropertyValueFactory(varName));
 			}
-			
+
 			Field campoTabla = clase.getDeclaredField("tbl" + nombre);
 			Field campoFilas = clase.getDeclaredField("filas" + nombre);
-			
-			campoFilas.set(this, FXCollections.observableArrayList()); 
-			
+
+			campoFilas.set(this, FXCollections.observableArrayList());
+
 			TableView tabla = (TableView) campoTabla.get(this);
 			ObservableList filas = (ObservableList) campoFilas.get(this);
-			
+
 			tabla.setItems(filas);
-			
+
 			/*
 			this.colCargosId.setCellValueFactory(
 					new PropertyValueFactory<T, Integer>("id"));
@@ -98,9 +98,10 @@ public abstract class ControladorVista {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Lanza una alerta al usuario sobre un error del sistema.
+	 * @param titulo Título del mensaje
 	 * @param encabezado Encabezado del mensaje
 	 * @param contenido Contenido del mensaje
 	 */
@@ -110,5 +111,19 @@ public abstract class ControladorVista {
 	    alerta.setHeaderText(encabezado);
 	    alerta.setContentText(contenido);
 	    alerta.showAndWait();
+	}
+
+	/**
+     * Lanza un diálogo de confirmación para el usuario.
+     * @param titulo Título del mensaje
+     * @param encabezado Encabezado del mensaje
+     * @param contenido Contenido del mensaje
+     */
+	public void dialogoConfirmacion(String titulo, String encabezado, String contenido) {
+	    Alert alerta = new Alert(AlertType.CONFIRMATION);
+	    alerta.setTitle(titulo);
+	    alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
 	}
 }
