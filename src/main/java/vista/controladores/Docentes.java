@@ -53,6 +53,21 @@ public class Docentes extends ControladorVista {
 	@FXML public TextField txtDocentesLegajo;
 	@FXML public TextField txtDocentesNombre;
 
+	@FXML private void buscarDocente() {
+
+	}
+
+	@FXML private void nuevoDocente() {
+
+    }
+
+	@FXML private void eliminarDocente() {
+
+    }
+
+	@FXML private void importarUltimoCosto() {
+
+    }
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 	@FXML public TextField txtDatosDocumento;
@@ -78,7 +93,7 @@ public class Docentes extends ControladorVista {
         }
 	}
 
-	@FXML private void guardarDocente() {
+	@FXML private void guardarDatos() {
 	    // TODO Botón "Guardar Cambios"
 	    if (docenteSeleccionado != null) {
 	        // TODO docenteSeleccionado.getPersona()
@@ -91,6 +106,15 @@ public class Docentes extends ControladorVista {
 	        // TODO Modificar persona en ControlPersona
 	        this.controlDocente.modificarDocente(docenteSeleccionado);
 	    }
+	}
+
+	@FXML private void descartarDatos() {
+	    // TODO Descartar cambios.
+	    mostrarDatos();
+	}
+
+	@FXML private void buscarPersona() {
+	    // TODO "Seleccionar Persona"
 	}
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
@@ -534,16 +558,19 @@ public class Docentes extends ControladorVista {
 
 	@FXML private void guardarObservaciones() {
 	    if (docenteSeleccionado != null) {
-            docenteSeleccionado.setObservaciones(
-                    txtaObservaciones.getText());
+            docenteSeleccionado.setObservaciones(txtaObservaciones.getText());
             this.controlDocente.modificarDocente(docenteSeleccionado);
         }
 	}
 
 	@FXML private void mostrarObservaciones() {
 	    if (docenteSeleccionado != null) {
-	        txtaObservaciones.setText(
-	                docenteSeleccionado.getObservaciones());
+	        txtaObservaciones.setText(docenteSeleccionado.getObservaciones());
 	    }
+	}
+
+	@FXML private void descartarObservaciones() {
+	    // TODO "Descartar cambios"
+	    mostrarObservaciones();
 	}
 }

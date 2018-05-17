@@ -114,12 +114,12 @@
                                  <children>
                                     <GridPane hgap="10.0">
                                        <children>
-                                          <Button fx:id="btnDatosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDocente" text="Guardar cambios" GridPane.columnIndex="1">
+                                          <Button fx:id="btnDatosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDatos" text="Guardar cambios" GridPane.columnIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnDatosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarDatos" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnDatosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarDatos" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -502,7 +502,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="btnObservacionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarObservaciones" text="Descartar cambios" GridPane.columnIndex="2">
+                                    <Button fx:id="btnObservacionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarObservaciones" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
