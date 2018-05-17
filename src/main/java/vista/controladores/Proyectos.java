@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
+import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.Proyecto;
 /**
@@ -156,36 +158,78 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Integrantes --------------------------- //
 
+	private ObservableList<FilaIntegrante> filasIntegrante = FXCollections.observableArrayList();
+
+	private void llenarTablaIntegrantes() {
+	    if (proyectoSeleccionado != null) {
+	        List<IIntegrante> integrantes = proyectoSeleccionado.getIntegrantes();
+	        filasIntegrante.clear();
+	        for (IIntegrante integrante : integrantes) {
+	            filasIntegrante.add(new FilaIntegrante(integrante));
+	        }
+	    }
+	}
+
+	class FilaIntegrante {
+	    private String apellido;
+	    private String nombre;
+	    private String cargo;
+	    private String unidad;
+	    private int horas;
+	    public FilaIntegrante(IIntegrante integrante) {
+	        this.apellido = integrante.getApellido();
+	        this.nombre = integrante.getNombre();
+	        this.cargo = integrante.getCargo();
+	        this.unidad = integrante.getInstitucion();
+	        this.horas = integrante.getHorasSemanales();
+	    }
+	    public String getApellido() {
+    	    return this.apellido;
+        }
+	    public String getNombre() {
+    	    return this.nombre;
+        }
+	    public String getCargo() {
+    	    return this.cargo;
+        }
+	    public String getUnidad() {
+    	    return this.unidad;
+        }
+	    public int getHoras() {
+    	    return this.horas;
+        }
+	}
+
 	@FXML private Button btnIntegrantesNuevo;
     @FXML void nuevoIntegrante(ActionEvent event) {
-
+        // TODO Nuevo integrante
     }
 
     @FXML private Button btnIntegrantesGuardar;
 	@FXML void guardarIntegrante(ActionEvent event) {
-
+	    // TODO Guardar cambios
 	}
 
 	@FXML private Button btnIntegrantesDescartar;
 	@FXML void descartarIntegrante(ActionEvent event) {
-
+	    llenarTablaIntegrantes();
 	}
 
 	@FXML private Button btnIntegrantesEliminar;
 	@FXML void eliminarIntegrante(ActionEvent event) {
-
+	    // TODO Eliminar integrante
 	}
 
-	@FXML private TableView<?> tblIntegrantes;
-	@FXML private TableColumn<?, ?> colIntegrantesApellido;
-	@FXML private TableColumn<?, ?> colIntegrantesNombre;
-	@FXML private TableColumn<?, ?> colIntegrantesCargo;
-	@FXML private TableColumn<?, ?> colIntegrantesInstitucion;
-	@FXML private TableColumn<?, ?> colIntegrantesHoras;
+	@FXML private TableView<FilaIntegrante> tblIntegrantes;
+	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesApellido;
+	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesNombre;
+	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesCargo;
+	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesInstitucion;
+	@FXML private TableColumn<FilaIntegrante, Integer> colIntegrantesHoras;
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-
+	    // TODO Seleccionar docente
 	}
 
 	@FXML private TextField txtIntegrantesApellido;
