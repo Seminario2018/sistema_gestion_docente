@@ -1,14 +1,14 @@
 package modelo.investigacion;
 
-import modelo.docente.IDocente;
 import modelo.auxiliares.TipoDocumento;
 import modelo.docente.ICargoDocente;
+import modelo.docente.IDocente;
 
 public class Integrante implements IIntegrante {
     private int id;
     private int legajo;
     private String apellido;
-    private  TipoDocumento tipoDocumente;
+    private TipoDocumento tipoDocumente;
     private int nroDocumento;
     private String nombre;
     private String cargo;
@@ -110,13 +110,14 @@ public class Integrante implements IIntegrante {
     public void setApellido(String apellido) {
         // TODO Auto-generated method stub
         this.apellido=apellido;
-        
+
     }
 
     @Override
     public int getId() {
         return id;
     }
+
     @Override
     public void setId(int id) {
         this.id = id;
@@ -124,7 +125,7 @@ public class Integrante implements IIntegrante {
 
     @Override
     public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        // 
+        //
         this.tipoDocumente=tipoDocumento;
     }
 
@@ -136,15 +137,13 @@ public class Integrante implements IIntegrante {
 
     @Override
     public void setNroDocumento(int nroDocumento) {
-        // TODO Auto-generated method stub
-        
+        this.nroDocumento = nroDocumento;
     }
 
     @Override
     public int getNroDocumento() {
-        // TODO Auto-generated method stub
-        return 0;
+        return this.nroDocumento;
     }
-    
-    
+
+
 }

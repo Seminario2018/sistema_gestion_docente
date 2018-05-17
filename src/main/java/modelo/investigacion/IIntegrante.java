@@ -3,22 +3,20 @@ package modelo.investigacion;
 import modelo.auxiliares.TipoDocumento;
 
 public interface IIntegrante {
-   public IIntegrante clone();
-    //public String getApellidoNombre();
-  //  public void setApellidoNombre(String apellidoNombre);
+    public IIntegrante clone();
     public String getCargo();
     public void setCargo(String cargo);
     public String getInstitucion();
     public int getHorasSemanales();
     public void setHorasSemanales(int horasSemanales);
-  String getApellido();
-  String getNombre();
-  void setNombre(String nombre);
-  void setApellido(String apellido);
-  void setId(int id);
-  int getId();
-  void  setTipoDocumento( TipoDocumento tipoDocumento);
-   TipoDocumento getTipoDocumento();
-  void setNroDocumento(int nroDocumento);
-  int getNroDocumento();
+    public String getApellido();
+    public String getNombre();
+    public void setNombre(String nombre);
+    public void setApellido(String apellido);
+    public void setId(int id);
+    public int getId();
+    public void setTipoDocumento( TipoDocumento tipoDocumento);
+    public TipoDocumento getTipoDocumento();
+    public void setNroDocumento(int nroDocumento);
+    public int getNroDocumento();
 }
