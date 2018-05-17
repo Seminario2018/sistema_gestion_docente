@@ -63,22 +63,22 @@
             </GridPane>
             <GridPane alignment="BOTTOM_LEFT" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="btnDocentesBuscar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar docente">
+                  <Button fx:id="btnDocentesBuscar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buscarDocente" text="Buscar docente">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo docente" GridPane.columnIndex="1">
+                  <Button fx:id="btnDocentesNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoDocente" text="Nuevo docente" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar docente" GridPane.columnIndex="2">
+                  <Button fx:id="btnDocentesEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarDocente" text="Eliminar docente" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesCosto" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Importar último costo" GridPane.columnIndex="3">
+                  <Button fx:id="btnDocentesCosto" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarUltimoCosto" text="Importar último costo" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
@@ -349,7 +349,7 @@
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" />
-                                          <ColumnConstraints minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints minWidth="100.0" prefWidth="200.0" />
                                           <ColumnConstraints hgrow="NEVER" />
                                           <ColumnConstraints />
                                           <ColumnConstraints hgrow="NEVER" />
@@ -413,54 +413,75 @@
                   </Tab>
                   <Tab closable="false" onSelectionChanged="#inicializarTablaIncentivos" text="Incentivos">
                      <content>
-                        <BorderPane prefHeight="200.0" prefWidth="200.0">
-                           <top>
-                              <GridPane BorderPane.alignment="CENTER">
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                          <content>
+                              <GridPane vgap="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                  <RowConstraints minHeight="100.0" />
+                                  <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnIncentivosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="1">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Button fx:id="btnIncentivosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
-                                    <Button fx:id="btnIncentivosEliminar" contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar incentivo" GridPane.columnIndex="3">
-                                       <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </GridPane.margin>
-                                    </Button>
+                                    <GridPane hgap="10.0">
+                                       <children>
+                                          <Button fx:id="btnIncentivosNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoIncentivo" text="Nuevo incentivo" />
+                                          <Button fx:id="btnIncentivosGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarIncentivo" text="Guardar cambios" GridPane.columnIndex="1">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <Button fx:id="btnIncentivosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarIncentivo" text="Descartar cambios" GridPane.columnIndex="2">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                          </Button>
+                                          <Button fx:id="btnIncentivosEliminar" contentDisplay="CENTER" layoutX="420.0" layoutY="11.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarIncentivo" text="Eliminar incentivo" GridPane.columnIndex="3">
+                                             <GridPane.margin>
+                                                <Insets />
+                                             </GridPane.margin>
+                                          </Button>
+                                       </children>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <TableView fx:id="tblIncentivos" maxHeight="200.0" maxWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                                      <columns>
+                                        <TableColumn maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Año" />
+                                      </columns>
+                                       <columnResizePolicy>
+                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                       </columnResizePolicy>
+                                    </TableView>
+                                    <GridPane alignment="CENTER" hgap="5.0" GridPane.rowIndex="2">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" />
+                                        <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Label text="Año" />
+                                          <TextField fx:id="txtIncentivosAnio" minWidth="100.0" GridPane.columnIndex="1" />
+                                       </children>
+                                    </GridPane>
                                  </children>
-                                 <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                 </columnConstraints>
-                                 <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 </rowConstraints>
-                                 <BorderPane.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </BorderPane.margin>
-                              </GridPane>
-                           </top>
-                           <center>
-                              <TableView fx:id="tblIncentivos" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                <columns>
-                                  <TableColumn prefWidth="75.0" text="Año" />
-                                </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                                 <BorderPane.margin>
+                                 <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </BorderPane.margin>
-                              </TableView>
-                           </center>
-                        </BorderPane>
+                                 </padding>
+                              </GridPane>
+                          </content>
+                        </ScrollPane>
                      </content>
                   </Tab>
                   <Tab closable="false" onSelectionChanged="#mostrarObservaciones" text="Observaciones">
@@ -474,16 +495,16 @@
                               </TextArea>
                            </center>
                            <top>
-                              <GridPane BorderPane.alignment="CENTER">
+                              <GridPane hgap="10.0" BorderPane.alignment="CENTER">
                                  <children>
                                     <Button fx:id="btnObservacionesGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarObservaciones" text="Guardar cambios" GridPane.columnIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
+                                          <Insets />
                                        </GridPane.margin>
                                     </Button>
                                     <Button fx:id="btnObservacionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarObservaciones" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
+                                          <Insets />
                                        </GridPane.margin>
                                     </Button>
                                  </children>
