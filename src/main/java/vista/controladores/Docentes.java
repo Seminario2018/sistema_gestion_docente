@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
@@ -25,6 +26,8 @@ import modelo.cargo.ICargo;
 import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import modelo.docente.IIncentivo;
+import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
 import utilidades.Utilidades;
 
@@ -393,4 +396,84 @@ public class Docentes extends ControladorVista {
 	@FXML public TextField txtCargosCosto;
 	@FXML public DatePicker dtpCargosCosto;
 
+// ----------------------------- Pestaña Investigación ---------------------- //
+	// TODO Pestaña "Investigación"
+	@FXML private TextField txtInvestigacionCategoria;
+	@FXML private TableView<FilaProyecto> tblProyectos;
+	private ObservableList<FilaProyecto> filasProyecto;
+
+	class FilaProyecto {
+	    private int id;
+	    private String nombre;
+	    // TODO Área???
+	    // TODO Cargo???
+	    public FilaProyecto(IProyecto proyecto) {
+	        this.id = proyecto.getId();
+	        this.nombre = proyecto.getNombre();
+	    }
+	    public int getId() {
+	        return this.id;
+	    }
+	    public void setId(int id) {
+	        this.id = id;
+	    }
+	    public String getNombre() {
+	        return this.nombre;
+	    }
+	    public void setNombre(String nombre) {
+	        this.nombre = nombre;
+	    }
+	}
+
+	@FXML private void inicializarInvestigacion() {
+	    if (docenteSeleccionado != null) {
+	        txtInvestigacionCategoria.setText(
+	                docenteSeleccionado.getCategoriaInvestigacion().getDescripcion());
+
+	    }
+	}
+// ----------------------------- Pestaña Incentivos ------------------------- //
+	// DONE Pestaña "Incentivos"
+	@FXML private TableView<FilaIncentivo> tblIncentivos;
+	private ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
+
+	class FilaIncentivo {
+	    private int fecha;
+	    public FilaIncentivo(IIncentivo incentivo) {
+	        this.fecha = incentivo.getFecha().getValue();
+	    }
+	    public int getFecha() {
+	        return this.fecha;
+	    }
+	    public void setFecha(int fecha) {
+	        this.fecha = fecha;
+	    }
+	}
+
+	@FXML private void inicializarTablaIncentivos() {
+	    List<IIncentivo> listaIncentivos = this.controlDocente.listarIncentivos(docenteSeleccionado, null);
+        for (IIncentivo incentivo : listaIncentivos) {
+            filasIncentivos.add(
+                    new FilaIncentivo(incentivo));
+        }
+	}
+
+// ----------------------------- Pestaña Observaciones ---------------------- //
+	// DONE Pestaña "Observaciones"
+	@FXML private TextArea txtaObservaciones;
+
+	@FXML private void guardarObservaciones() {
+	    if (docenteSeleccionado != null) {
+            docenteSeleccionado.setObservaciones(
+                    txtaObservaciones.getText());
+            this.controlDocente.modificarDocente(docenteSeleccionado);
+        }
+	}
+
+	@FXML private void mostrarObservaciones() {
+	    if (docenteSeleccionado != null) {
+	        txtaObservaciones.setText(
+	                docenteSeleccionado.getObservaciones());
+	    }
+	}
 }

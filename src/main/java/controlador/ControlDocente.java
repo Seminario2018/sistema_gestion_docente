@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import mail.NotificacionCargo;
@@ -9,6 +10,7 @@ import modelo.cargo.ICargo;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import modelo.docente.IIncentivo;
 import vista.controladores.ControladorVista;
 
 public class ControlDocente {
@@ -104,4 +106,11 @@ public class ControlDocente {
     public List<ICargo> listarCargos(ICargo cargo) {
         return this.gestorCargo.listarCargo(cargo);
     }
+
+//  Incentivos
+    public List<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo) {
+        // TODO sacar incentivos de GestorDocente.
+        return new ArrayList<IIncentivo>();
+    }
+
 }

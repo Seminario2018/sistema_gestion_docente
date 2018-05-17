@@ -374,7 +374,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Investigación">
+                  <Tab closable="false" onSelectionChanged="#inicializarInvestigacion" text="Investigación">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <top>
@@ -411,7 +411,7 @@
                         </BorderPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Incentivos">
+                  <Tab closable="false" onSelectionChanged="#inicializarTablaIncentivos" text="Incentivos">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <top>
@@ -463,7 +463,7 @@
                         </BorderPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Observaciones">
+                  <Tab closable="false" onSelectionChanged="#mostrarObservaciones" text="Observaciones">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>
@@ -476,12 +476,12 @@
                            <top>
                               <GridPane BorderPane.alignment="CENTER">
                                  <children>
-                                    <Button fx:id="btnObservacionesGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="1">
+                                    <Button fx:id="btnObservacionesGuardar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarObservaciones" text="Guardar cambios" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="btnObservacionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="2">
+                                    <Button fx:id="btnObservacionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarObservaciones" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
