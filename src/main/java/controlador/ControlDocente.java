@@ -108,6 +108,14 @@ public class ControlDocente {
     }
 
 //  Incentivos
+    public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
+        return this.gestorDocente.agregarIncentivo(docente, incentivo);
+    }
+
+    public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {
+        return this.gestorDocente.quitarIncentivo(docente, incentivo);
+    }
+
     public List<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo) {
         // TODO sacar incentivos de GestorDocente.
         return new ArrayList<IIncentivo>();

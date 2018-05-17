@@ -1,6 +1,8 @@
 package vista.controladores;
 
 import java.net.URL;
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -27,6 +29,7 @@ import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
+import modelo.docente.Incentivo;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
 import utilidades.Utilidades;
@@ -407,7 +410,7 @@ public class Docentes extends ControladorVista {
 	    private String nombre;
 	    private String area;
 	    private String cargo;
-	    
+
 	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente) {
 	        this.id = proyecto.getId();
 	        this.nombre = proyecto.getNombre();
@@ -449,8 +452,11 @@ public class Docentes extends ControladorVista {
 	}
 // ----------------------------- Pestaña Incentivos ------------------------- //
 	// DONE Pestaña "Incentivos"
+	@FXML private TextField txtIncentivosAnio;
 	@FXML private TableView<FilaIncentivo> tblIncentivos;
 	private ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
+	private List<IIncentivo> incentivosNuevos = new ArrayList<IIncentivo>();
+	private List<IIncentivo> incentivosBorrados = new ArrayList<IIncentivo>();
 
 	class FilaIncentivo {
 	    private int fecha;
@@ -463,14 +469,63 @@ public class Docentes extends ControladorVista {
 	    public void setFecha(int fecha) {
 	        this.fecha = fecha;
 	    }
+	    public IIncentivo getIncentivo() {
+	        return new Incentivo(Year.of(this.fecha));
+	    }
+	}
+
+	private void listarIncentivosTabla() {
+	    List<IIncentivo> listaIncentivos = docenteSeleccionado.getIncentivos();
+        filasIncentivos.clear();
+        for (IIncentivo incentivo : listaIncentivos) {
+            filasIncentivos.add(new FilaIncentivo(incentivo));
+        }
 	}
 
 	@FXML private void inicializarTablaIncentivos() {
-	    List<IIncentivo> listaIncentivos = this.controlDocente.listarIncentivos(docenteSeleccionado, null);
-        for (IIncentivo incentivo : listaIncentivos) {
-            filasIncentivos.add(
-                    new FilaIncentivo(incentivo));
-        }
+	    listarIncentivosTabla();
+	}
+
+	@FXML private void nuevoIncentivo() {
+	    try {
+	        // Creo incentivo:
+    	    IIncentivo nuevoIncentivo = new Incentivo(
+    	            Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
+    	    incentivosNuevos.add(nuevoIncentivo);
+
+    	    // Agrego a tabla de incentivos:
+    	    FilaIncentivo fi = new FilaIncentivo(nuevoIncentivo);
+    	    filasIncentivos.add(fi);
+	    } catch (NumberFormatException nfe) {
+	        nfe.printStackTrace();
+	        alertaError("Docentes", "Error de formato", "La fecha tiene que ser un número");
+	    }
+	}
+
+	@FXML private void guardarIncentivo() {
+	    for (IIncentivo incentivoBorrado : incentivosBorrados) {
+	        docenteSeleccionado.quitarIncentivo(incentivoBorrado);
+	        this.controlDocente.quitarIncentivo(docenteSeleccionado, incentivoBorrado);
+	    }
+	    for (IIncentivo incentivoNuevo : incentivosNuevos) {
+	        docenteSeleccionado.agregarIncentivo(incentivoNuevo);
+	        this.controlDocente.agregarIncentivo(docenteSeleccionado, incentivoNuevo);
+	    }
+	    incentivosNuevos.clear();
+	}
+
+	@FXML private void descartarIncentivo() {
+	    // Quito todos los cambios a los incentivos del docente:
+	    incentivosBorrados.clear();
+	    incentivosNuevos.clear();
+
+	    // Cambio la tabla para mostrar los incentivos originales:
+	    listarIncentivosTabla();
+	}
+
+	@FXML private void eliminarIncentivo() {
+	    FilaIncentivo fila = tblIncentivos.getSelectionModel().getSelectedItem();
+	    incentivosBorrados.add(fila.getIncentivo());
 	}
 
 // ----------------------------- Pestaña Observaciones ---------------------- //
