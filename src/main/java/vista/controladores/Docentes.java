@@ -15,7 +15,9 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
+import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
@@ -23,6 +25,7 @@ import modelo.cargo.ICargo;
 import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import modelo.persona.IPersona;
 import utilidades.Utilidades;
 
 /**
@@ -38,11 +41,51 @@ public class Docentes extends ControladorVista {
 
 	private ControlDivision controlDivision = new ControlDivision(this);
 	private ControlDocente controlDocente = new ControlDocente(this);
+	public IDocente docenteSeleccionado;
 
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
 	@FXML public TextField txtDocentesNombre;
 
+
+// ----------------------------- Pestaña Datos ------------------------------ //
+	@FXML public TextField txtDatosDocumento;
+	@FXML public TextField txtDatosNombre;
+	@FXML public TextField txtDatosLegajo;
+	@FXML public ComboBox<EstadoDocente> cmbDatosEstado;
+	@FXML public ComboBox<CategoriaInvestigacion> cmbDatosCategoria;
+
+	@FXML private void mostrarDatos() {
+	    // DONE Botón "Ver Datos Personales"
+        if (docenteSeleccionado != null) {
+            IPersona persona = docenteSeleccionado.getPersona();
+            txtDatosDocumento.setText(
+                    String.valueOf(persona.getNroDocumento()));
+            txtDatosNombre.setText(
+                    persona.getApellido() + " " + persona.getNombre());
+            txtDatosLegajo.setText(
+                    String.valueOf(docenteSeleccionado.getLegajo()));
+            cmbDatosEstado.getSelectionModel().select(
+                    docenteSeleccionado.getEstado());
+            cmbDatosCategoria.getSelectionModel().select(
+                    docenteSeleccionado.getCategoriaInvestigacion());
+        }
+	}
+
+	@FXML private void guardarDocente() {
+	    // TODO Botón "Guardar Cambios"
+	    if (docenteSeleccionado != null) {
+	        // TODO docenteSeleccionado.getPersona()
+	        docenteSeleccionado.setLegajo(
+	                Integer.parseInt(txtDatosLegajo.getText()));
+	        docenteSeleccionado.setEstado(
+	                cmbDatosEstado.getSelectionModel().getSelectedItem());
+	        docenteSeleccionado.setCategoriaInvestigacion(
+	                cmbDatosCategoria.getSelectionModel().getSelectedItem());
+	        // TODO Modificar persona en ControlPersona
+	        this.controlDocente.modificarDocente(docenteSeleccionado);
+	    }
+	}
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
 	public class FilaCargo {
@@ -80,7 +123,6 @@ public class Docentes extends ControladorVista {
 	}
 
 	public ICargoDocente cargoDocenteSeleccionado;
-	public IDocente docenteSeleccionado;
 	public List<ICargoDocente> listaCargos;
 	public ObservableList<FilaCargo> filasCargos;
 

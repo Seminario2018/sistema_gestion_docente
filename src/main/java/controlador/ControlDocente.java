@@ -24,6 +24,19 @@ public class ControlDocente {
 		this.vista = vista;
 	}
 
+//  Docentes
+	public EstadoOperacion nuevoDocente(IDocente docente) {
+	    return this.gestorDocente.nuevoDocente(docente);
+	}
+
+	public EstadoOperacion modificarDocente(IDocente docente) {
+	    return this.gestorDocente.modificarDocente(docente);
+	}
+
+	public EstadoOperacion eliminarDocente(IDocente docente) {
+	    return this.gestorDocente.eliminarDocente(docente);
+	}
+
 //  CargosDocente
 
 	public ICargoDocente getCargoDocente() {
