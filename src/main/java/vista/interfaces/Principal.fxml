@@ -16,10 +16,10 @@
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="613.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="30.0" vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <Label text="Mensajes dirigidos al usuario">
+            <Label fx:id="lblMensajes" text="¡Bienvenido a Plumas 2!">
                <padding>
                   <Insets left="10.0" />
                </padding>
@@ -36,32 +36,35 @@
                   <MenuItem mnemonicParsing="false" text="Configurar estación de trabajo" />
                   <Menu mnemonicParsing="false" text="Opciones de Administración">
                      <items>
-                        <MenuItem mnemonicParsing="false" text="Administrar grupos de Usuarios" />
-                        <MenuItem mnemonicParsing="false" text="Administrar Usuarios" />
+                        <MenuItem fx:id="mnuRoles" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
+                        <MenuItem fx:id="mnuUsuarios" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
                      </items>
                   </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Acerca de ..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" text="Salir" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Auxiliares">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Estado de los cargos" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Tipos de documentos" />
+                  <MenuItem fx:id="mnuPersonas" mnemonicParsing="false" onAction="#pantallaPersonas" text="Personas" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Docencia">
                <items>
                   <MenuItem fx:id="mnuDocentes" mnemonicParsing="false" onAction="#pantallaDocentes" text="Docentes" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Programas de investigación" />
+                  <MenuItem fx:id="mnuProgramas" mnemonicParsing="false" onAction="#pantallaProgramas" text="Programas de investigación" />
                   <MenuItem fx:id="mnuProyectos" mnemonicParsing="false" onAction="#pantallaProyectos" text="Proyectos de investigación" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Informes" />
+            <Menu fx:id="mnuInformes" mnemonicParsing="false" onAction="#pantallaListaInformes" text="Informes" />
+            <Menu mnemonicParsing="false" text="Ayuda">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Manual de usuario" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" text="Acerca de ..." />
+              </items>
+            </Menu>
          </menus>
       </MenuBar>
    </top>

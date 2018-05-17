@@ -2,9 +2,13 @@ package vista.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.fxml.Initializable;
 
 /**
@@ -20,20 +24,66 @@ public class Principal extends ControladorVista implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
 
+	@FXML
+    private MenuItem mnuUsuarios;
+
     @FXML
-    private Pane mainPane;
+    private MenuItem mnuPersonas;
+
+    @FXML
+    private Menu mnuInformes;
+
+    @FXML
+    private Label lblMensajes;
+
+    @FXML
+    private MenuItem mnuRoles;
+
+    @FXML
+    private MenuItem mnuProyectos;
+
+    @FXML
+    private StackPane mainPane;
 
     @FXML
     private MenuItem mnuDocentes;
 
-    @FXML 
-    void pantallaDocentes() {
+    @FXML
+    private MenuItem mnuProgramas;
+
+    @FXML
+    void pantallaRoles(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pantallaUsuarios(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pantallaPersonas(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pantallaDocentes(ActionEvent event) {
     	this.gestor.lanzarPantalla("Docentes", null);
     }
-    
-    @FXML 
-    void pantallaProyectos() {
+
+    @FXML
+    void pantallaProgramas(ActionEvent event) {
+
+    }
+
+    @FXML
+    void pantallaProyectos(ActionEvent event) {
     	this.gestor.lanzarPantalla("Proyectos", null);
     }
-	
+
+    @FXML
+    void pantallaListaInformes(ActionEvent event) {
+
+    }
+		
 }
