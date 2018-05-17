@@ -399,17 +399,20 @@ public class Docentes extends ControladorVista {
 // ----------------------------- Pestaña Investigación ---------------------- //
 	// TODO Pestaña "Investigación"
 	@FXML private TextField txtInvestigacionCategoria;
-	@FXML private TableView<FilaProyecto> tblProyectos;
-	private ObservableList<FilaProyecto> filasProyecto;
+	@FXML private TableView<FilaInvestigacion> tblInvestigacion;
+	private ObservableList<FilaInvestigacion> filasInvestigacion;
 
-	class FilaProyecto {
+	class FilaInvestigacion {
 	    private int id;
 	    private String nombre;
-	    // TODO Área???
-	    // TODO Cargo???
-	    public FilaProyecto(IProyecto proyecto) {
+	    private String area;
+	    private String cargo;
+	    
+	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente) {
 	        this.id = proyecto.getId();
 	        this.nombre = proyecto.getNombre();
+	        this.setArea(cargoDocente.getArea().getDescripcion());
+	        this.setCargo(cargoDocente.getCargo().getDescripcion());
 	    }
 	    public int getId() {
 	        return this.id;
@@ -423,6 +426,18 @@ public class Docentes extends ControladorVista {
 	    public void setNombre(String nombre) {
 	        this.nombre = nombre;
 	    }
+		public String getArea() {
+			return area;
+		}
+		public void setArea(String area) {
+			this.area = area;
+		}
+		public String getCargo() {
+			return cargo;
+		}
+		public void setCargo(String cargo) {
+			this.cargo = cargo;
+		}
 	}
 
 	@FXML private void inicializarInvestigacion() {
