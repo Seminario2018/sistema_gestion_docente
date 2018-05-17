@@ -19,7 +19,7 @@ public class Proyecto implements IProyecto {
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
 	private EstadoProyecto estado;
-	private Programa programa;
+	private IPrograma programa;
 
 	private List<IIntegrante> integrantes;
 	private List<ISubsidio> subsidios;
@@ -28,7 +28,7 @@ public class Proyecto implements IProyecto {
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
 			String descripcion, IDocente director, IDocente codirector,
 			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
-			List<ISubsidio> subsidios, List<IProrroga> prorrogas, Programa programa) {
+			List<ISubsidio> subsidios, List<IProrroga> prorrogas, IPrograma programa) {
 		super();
 		this.programa=programa;
 		this.id = id;
@@ -210,14 +210,12 @@ public class Proyecto implements IProyecto {
 	}
 
 	@Override
-	public Programa getPrograma() {
-		// TODO Auto-generated method stub
+	public IPrograma getPrograma() {
 		return programa;
 	}
 
 	@Override
-	public void setPrograma(Programa programa) {
-		// TODO Auto-generated method stub
-		this.programa=programa;
+	public void setPrograma(IPrograma programa) {
+		this.programa = programa;
 	}
 }

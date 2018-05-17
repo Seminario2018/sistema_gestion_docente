@@ -30,6 +30,8 @@ public interface IProyecto {
     public void setFechaFin(LocalDate fechaFin);
     public EstadoProyecto getEstado();
     public void setEstado(EstadoProyecto estado);
+    public IPrograma getPrograma();
+    public void setPrograma(IPrograma programa);
 
     public List<IIntegrante> getIntegrantes();
     public void agregarIntegrante(IIntegrante integrante);
@@ -42,6 +44,4 @@ public interface IProyecto {
     public List<IProrroga> getProrrogas();
     public void agregarProrroga(IProrroga prorroga);
     public void quitarProrroga(IProrroga prorroga);
-    Programa getPrograma();
-    void setPrograma(Programa programa);
 }
