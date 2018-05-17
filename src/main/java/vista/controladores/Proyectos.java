@@ -24,6 +24,7 @@ import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.ISubsidio;
+import modelo.investigacion.Integrante;
 import modelo.investigacion.Proyecto;
 import modelo.investigacion.Subsidio;
 /**
@@ -46,7 +47,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------------- General --------------------------------- //
 
-	private IProyecto proyectoSeleccionado;
+	private IProyecto proyectoSeleccionado = null;
 
 	@FXML private TabPane tabpaneProyectos;
 	@FXML private TextField txtProyectosId;
@@ -92,8 +93,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 
-    private IDocente directorSeleccionado;
-    private IDocente codirectorSeleccionado;
+    private IDocente directorSeleccionado = null;
+    private IDocente codirectorSeleccionado = null;
 
     private void llenarCamposDatos() {
         // Coloco los valores del proyecto en los controles:
@@ -161,6 +162,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Integrantes --------------------------- //
 
+	private IIntegrante integranteSeleccionado = null;
 	private ObservableList<FilaIntegrante> filasIntegrante = FXCollections.observableArrayList();
 
 	private void llenarTablaIntegrantes() {
@@ -172,6 +174,14 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        }
 	    }
 	}
+
+	private void limpiarCamposIntegrantes() {
+	    txtIntegrantesApellido.clear();
+	    txtIntegrantesNombre.clear();
+	    txtIntegrantesCargo.clear();
+	    txtIntegrantesHoras.clear();
+	}
+
 
 	class FilaIntegrante {
 	    private String apellido;
@@ -205,7 +215,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesNuevo;
     @FXML void nuevoIntegrante(ActionEvent event) {
-        // TODO Nuevo integrante
+        integranteSeleccionado = new Integrante(0, null, null, null, null, 0, null, 0);
+        limpiarCamposIntegrantes();
     }
 
     @FXML private Button btnIntegrantesGuardar;
@@ -221,6 +232,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnIntegrantesEliminar;
 	@FXML void eliminarIntegrante(ActionEvent event) {
 	    // TODO Eliminar integrante
+
 	}
 
 	@FXML private TableView<FilaIntegrante> tblIntegrantes;
@@ -308,8 +320,16 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnSubsidiosEliminar;
 	@FXML void eliminarSubsidio(ActionEvent event) {
 	    FilaSubsidio fs = tblSubsidios.getSelectionModel().getSelectedItem();
-	    ISubsidio subsidio;
+	    subsidioSeleccionado = fs.getSubsidio();
+	    proyectoSeleccionado.quitarSubsidio(subsidioSeleccionado);
+
+	    this.controlInvestigacion.quitarSubsidio(proyectoSeleccionado, subsidioSeleccionado);
+
+	    dialogoConfirmacion(TITULO, "Quita de subsidio", "El subsidio ha sido eliminado");
+
+	    limpiarCamposSubsidios();
 	    tblSubsidios.getSelectionModel().clearSelection();
+	    subsidioSeleccionado = null;
     }
 
 	@FXML private TableView<FilaSubsidio> tblSubsidios;
