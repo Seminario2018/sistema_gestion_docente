@@ -114,7 +114,7 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnDatosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarProyecto" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnDatosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarProyecto" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -228,7 +228,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnIntegrantesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarIntegrante" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnIntegrantesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarIntegrante" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -349,7 +349,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnSubsidiosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarSubsidio" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnSubsidiosDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarSubsidio" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -428,7 +428,7 @@
                                           </GridPane>
                                        </top>
                                        <bottom>
-                                          <TextArea promptText="Observaciones" BorderPane.alignment="CENTER">
+                                          <TextArea fx:id="txtaSubsidiosObservaciones" promptText="Observaciones" BorderPane.alignment="CENTER">
                                              <BorderPane.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" />
                                              </BorderPane.margin>
@@ -514,7 +514,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnRendicionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarRendicion" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnRendicionesDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarRendicion" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -562,7 +562,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button fx:id="btnProrrogasDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarProrroga" text="Descartar cambios" GridPane.columnIndex="2">
+                                          <Button fx:id="btnProrrogasDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarProrroga" text="Descartar cambios" GridPane.columnIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
@@ -660,7 +660,7 @@
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button fx:id="btnResumenDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarResumen" text="Descartar cambios" GridPane.columnIndex="2">
+                                    <Button fx:id="btnResumenDescartar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarResumen" text="Descartar cambios" GridPane.columnIndex="2">
                                        <GridPane.margin>
                                           <Insets left="10.0" right="10.0" />
                                        </GridPane.margin>
