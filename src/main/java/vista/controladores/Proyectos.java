@@ -1,5 +1,6 @@
 package vista.controladores;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,9 +24,11 @@ import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
+import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
 import modelo.investigacion.Integrante;
 import modelo.investigacion.Proyecto;
+import modelo.investigacion.Rendicion;
 import modelo.investigacion.Subsidio;
 /**
  * @author Martín Tomás Juran
@@ -109,7 +112,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         dtpDatosFinalizacion.setValue(proyectoSeleccionado.getFechaFin());
     }
 
-    @FXML private void inicializarDatosProyecto() {
+    @FXML private void inicializarDatos() {
         cmbDatosEstado.setItems(
                 FXCollections.observableArrayList(
                         EstadoProyecto.getLista()));
@@ -179,9 +182,17 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    txtIntegrantesApellido.clear();
 	    txtIntegrantesNombre.clear();
 	    txtIntegrantesCargo.clear();
+	    txtIntegrantesInstitucion.clear();
 	    txtIntegrantesHoras.clear();
 	}
 
+	private void llenarCamposIntegrantes() {
+	    txtIntegrantesApellido.setText(integranteSeleccionado.getApellido());
+        txtIntegrantesNombre.setText(integranteSeleccionado.getNombre());
+        txtIntegrantesCargo.setText(integranteSeleccionado.getCargo());
+        txtIntegrantesInstitucion.setText(integranteSeleccionado.getInstitucion());
+        txtIntegrantesHoras.setText(String.valueOf(integranteSeleccionado.getHorasSemanales()));
+	}
 
 	class FilaIntegrante {
 	    private String apellido;
@@ -211,6 +222,18 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    public int getHoras() {
     	    return this.horas;
         }
+	}
+
+	@FXML void inicializarIntegrantes() {
+	    integranteSeleccionado = null;
+	    filasIntegrante.clear();
+	    limpiarCamposIntegrantes();
+
+	    if (proyectoSeleccionado != null) {
+	        for (IIntegrante integrante : proyectoSeleccionado.getIntegrantes()) {
+	            filasIntegrante.add(new FilaIntegrante(integrante));
+	        }
+	    }
 	}
 
 	@FXML private Button btnIntegrantesNuevo;
@@ -265,6 +288,15 @@ public class Proyectos extends ControladorVista implements Initializable {
         txtaSubsidiosObservaciones.clear();
 	}
 
+	private void llenarCamposSubsidios() {
+	    if (subsidioSeleccionado != null) {
+	        txtSubsidiosAnio.setText(String.valueOf(subsidioSeleccionado.getFecha()));
+	        txtSubsidiosMonto.setText(String.valueOf(subsidioSeleccionado.getMontoTotal()));
+	        txtSubsidiosDisp.setText(subsidioSeleccionado.getDisposicion());
+	        txtaSubsidiosObservaciones.setText(subsidioSeleccionado.getObservaciones());
+	    }
+	}
+
 	class FilaSubsidio {
 	    private int fecha;
 	    private float monto;
@@ -284,7 +316,20 @@ public class Proyectos extends ControladorVista implements Initializable {
     	    return this.observaciones;
         }
 	    public ISubsidio getSubsidio() {
+	        // TODO Subsidios: Regresar rendiciones
 	        return new Subsidio(Year.of(fecha), observaciones, monto, observaciones, null);
+	    }
+	}
+
+	@FXML void inicializarSubsidios() {
+	    subsidioSeleccionado = null;
+	    filasSubsidios.clear();
+	    limpiarCamposSubsidios();
+
+	    if (proyectoSeleccionado != null) {
+	        for (ISubsidio subsidio : proyectoSeleccionado.getSubsidios()) {
+	            filasSubsidios.add(new FilaSubsidio(subsidio));
+	        }
 	    }
 	}
 
@@ -344,30 +389,109 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
 
+	private IRendicion rendicionSeleccionada = null;
+	private ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
+
+	private void limpiarCamposRendiciones() {
+	    dtpRendicionesFecha.setValue(null);
+	    txtRendicionesMonto.clear();
+	    txtaRendicionesObservaciones.clear();
+	}
+
+	private void llenarCamposRendiciones() {
+	    if (rendicionSeleccionada != null) {
+	        dtpRendicionesFecha.setValue(rendicionSeleccionada.getFecha());
+	        txtRendicionesMonto.setText(String.valueOf(rendicionSeleccionada.getMonto()));
+	        txtaRendicionesObservaciones.setText(rendicionSeleccionada.getObservaciones());
+	    }
+	}
+
+	class FilaRendicion {
+	    private LocalDate fecha;
+	    public LocalDate getFecha() {
+            return this.fecha;
+        }
+
+        public float getMonto() {
+            return this.monto;
+        }
+
+        public String getObservaciones() {
+            return this.observaciones;
+        }
+
+        private float monto;
+	    private String observaciones;
+
+	    public FilaRendicion(IRendicion rendicion) {
+	        this.fecha = rendicion.getFecha();
+	        this.monto = rendicion.getMonto();
+	        this.observaciones = rendicion.getObservaciones();
+	    }
+
+	    public IRendicion getRendicion() {
+	        return new Rendicion(0, this.fecha, this.monto, this.observaciones);
+	    }
+
+	}
+
+	@FXML void inicializarRendiciones() {
+	    rendicionSeleccionada = null;
+	    filasRendiciones.clear();
+	    limpiarCamposRendiciones();
+
+	    if (subsidioSeleccionado != null) {
+    	    for (IRendicion rendicion : subsidioSeleccionado.getRendiciones()) {
+    	        filasRendiciones.add(new FilaRendicion(rendicion));
+    	    }
+	    }
+	}
+
 	@FXML private Button btnRendicionesNueva;
 	@FXML void nuevaRendicion(ActionEvent event) {
-
+	    rendicionSeleccionada = new Rendicion(0, null, 0, null);
+	    limpiarCamposRendiciones();
 	}
 
 	@FXML private Button btnRendicionesGuardar;
 	@FXML void guardarRendicion(ActionEvent event) {
+	    if (rendicionSeleccionada != null) {
+	        try {
+    	        rendicionSeleccionada.setFecha(dtpRendicionesFecha.getValue());
+    	        rendicionSeleccionada.setMonto(Float.parseFloat(txtRendicionesMonto.getText()));
+    	        rendicionSeleccionada.setObservaciones(txtaRendicionesObservaciones.getText());
 
+    	        subsidioSeleccionado.agregarRendicion(rendicionSeleccionada);
+    	        // TODO Rendiciones: Agregar rendición a BD
+	        } catch (NumberFormatException nfe) {
+	            nfe.printStackTrace();
+	            alertaError(TITULO, "Guardar rendición", "Alguno de los datos ingresados no es válido");
+	        }
+	    }
 	}
 
 	@FXML private Button btnRendicionesDescartar;
 	@FXML void descartarRendicion(ActionEvent event) {
-
+	    limpiarCamposRendiciones();
+	    tblRendiciones.getSelectionModel().clearSelection();
+	    rendicionSeleccionada = null;
 	}
 
 	@FXML private Button btnRendicionesEliminar;
 	@FXML void eliminarRendicion(ActionEvent event) {
+	    // Quitar fila de la tabla:
+	    FilaRendicion fr = tblRendiciones.getSelectionModel().getSelectedItem();
+	    filasRendiciones.remove(fr);
 
+	    // Quitar rendición:
+	    subsidioSeleccionado.quitarRendicion(rendicionSeleccionada);
+	    // TODO Rendiciones: Quitar rendición en BD
 	}
 
-	@FXML private TableView<?> tblRendiciones;
-	@FXML private TableColumn<?, ?> colRendicionesFecha;
-	@FXML private TableColumn<?, ?> colRendicionesMonto;
-	@FXML private TableColumn<?, ?> colRendicionesObservaciones;
+	@FXML private TableView<FilaRendicion> tblRendiciones;
+	@FXML private TableColumn<FilaRendicion, LocalDate> colRendicionesFecha;
+	@FXML private TableColumn<FilaRendicion, Float> colRendicionesMonto;
+	@FXML private TableColumn<FilaRendicion, String> colRendicionesObservaciones;
 
 	@FXML private DatePicker dtpRendicionesFecha;
 	@FXML private TextField txtRendicionesMonto;

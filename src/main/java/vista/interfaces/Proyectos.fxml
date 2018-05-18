@@ -94,7 +94,7 @@
             </GridPane>
             <TabPane fx:id="tabpaneProyectos" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
-                  <Tab closable="false" onSelectionChanged="#inicializarDatosProyecto" text="Datos">
+                  <Tab closable="false" onSelectionChanged="#inicializarDatos" text="Datos">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="504.0" prefViewportWidth="785.0">
                            <content>
@@ -203,7 +203,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Integrantes">
+                  <Tab closable="false" onSelectionChanged="#inicializarIntegrantes" text="Integrantes">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                            <content>
@@ -324,7 +324,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Subsidios">
+                  <Tab closable="false" onSelectionChanged="#inicializarSubsidios" text="Subsidios">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                            <content>
@@ -434,7 +434,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Rendiciones">
+                  <Tab closable="false" onSelectionChanged="#inicializarRendiciones" text="Rendiciones">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                            <content>
