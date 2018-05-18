@@ -3,7 +3,7 @@ package modelo.persona;
 import modelo.auxiliares.TipoContacto;
 
 /**
- * @author Martín Tomás Juran
+ * @author MartÃ­n TomÃ¡s Juran
  * @version 1.0, 28 de abr. de 2018
  */
 
@@ -11,12 +11,14 @@ public class Contacto implements IContacto{
 	private int id;
 	private TipoContacto tipo;
 	private String dato; //https://facebook.com/usuario
+	private Persona persona;
 
-	public Contacto(int id, TipoContacto tipo, String dato) {
+	public Contacto(int id, TipoContacto tipo, String dato, Persona persona) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.dato = dato;
+		this.setPersona(persona);
 	}
 
 	public int getId() {
@@ -45,7 +47,16 @@ public class Contacto implements IContacto{
 
 	@Override
 	public IContacto clone() {
-		return new Contacto(this.id, this.tipo, this.dato);
+		return new Contacto(this.id, this.tipo, this.dato,this.persona);
+	}
+
+	@Override
+	public Persona getPersona() {
+		return persona;
+	}
+	@Override
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 }

@@ -11,5 +11,7 @@ public interface IContacto {
 	public String getDato();
 	public void setDato(String dato);
 	public IContacto clone();
+	Persona getPersona();
+	void setPersona(Persona persona);
 
 }
