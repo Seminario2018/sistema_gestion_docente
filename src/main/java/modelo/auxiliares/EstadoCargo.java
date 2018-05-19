@@ -1,7 +1,9 @@
 package modelo.auxiliares;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import persistencia.ManejoDatos;
 
 /**
  * @author Martín Tomás Juran
@@ -9,15 +11,17 @@ import java.util.List;
  */
 public class EstadoCargo {
 
-	private int id;
-	private String descripcion;
+    private int id;
+    private String descripcion;
 
-	public EstadoCargo(int id, String descripcion) {
-		this.id = id;
-		this.descripcion = descripcion;
-	}
+    public EstadoCargo(
+        int id,
+        String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+    }
 
-	public int getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -33,19 +37,21 @@ public class EstadoCargo {
         this.descripcion = descripcion;
     }
 
-	/**
-	 * @return la lista de estados de los cargos de la BD
-	 */
-	public static List<EstadoCargo> getLista() {
-	    // TODO Cargar estados de la BD.
-		List<EstadoCargo> listaEstados = new ArrayList<EstadoCargo>();
-		listaEstados.add(new EstadoCargo(0, "Activo"));
-		listaEstados.add(new EstadoCargo(1, "Inactivo"));
-		return listaEstados;
-	}
+    /**
+     * @return la lista de estados de los cargos de la BD
+     */
+    public static List<EstadoCargo> getLista() {
+        List<EstadoCargo> listaEstados = new ArrayList<EstadoCargo>();
 
-	@Override
-    public String toString() {
+        ManejoDatos md = new ManejoDatos();
+        List<Hashtable<String, String>> filas = md.select("estadocargo", "*");
+        for (Hashtable<String, String> fila : filas) {
+            listaEstados.add(new EstadoCargo(Integer.parseInt(fila.get("idestadocargo")), fila.get("Descripcion")));
+        }
+        return listaEstados;
+    }
+
+    @Override public String toString() {
         return this.descripcion;
     }
 }
