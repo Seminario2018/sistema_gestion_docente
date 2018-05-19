@@ -36,6 +36,10 @@ public class Division implements IDivision {
         this.dispHasta = dispHasta;
 	}
 
+    public Division(){
+        
+    }
+
     @Override
     public int getCodigo() {
         return this.codigo;

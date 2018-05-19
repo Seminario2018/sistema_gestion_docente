@@ -11,7 +11,7 @@ public class Contacto implements IContacto{
 	private int id;
 	private TipoContacto tipo;
 	private String dato; //https://facebook.com/usuario
-	private Persona persona;
+	
 
 	public Contacto(int id, TipoContacto tipo, String dato, Persona persona) {
 		super();
@@ -50,13 +50,6 @@ public class Contacto implements IContacto{
 		return new Contacto(this.id, this.tipo, this.dato,this.persona);
 	}
 
-	@Override
-	public Persona getPersona() {
-		return persona;
-	}
-	@Override
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
+
 
 }

@@ -1,11 +1,20 @@
 package modelo.division;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
+import com.sun.webkit.graphics.Ref;
+
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.TipoDocumento;
+import modelo.docente.Docente;
+import modelo.docente.ICargoDocente;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
+import modelo.persona.IPersona;
+import modelo.persona.Persona;
 import persistencia.ManejoDatos;
 
 public class GestorDivision {
@@ -46,7 +55,7 @@ public class GestorDivision {
                String campos = "`Codigo`, `Descripcion`, `Jefe`, `Disposicion`, `Desde`, `Hasta`";
                String valores = "\'" + division.getCodigo() + "\', \'" +division.getDescripcion() + "\', \'" + division.getJefe().getLegajo() + "\', " + division.getDisposicion() + ", \'" + division.getDispDesde() + "\', \'" + division.getDispHasta() + "`";
                e.insertar(table, campos, valores);
-               return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "La division se creÃƒÂ³ correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+               return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "La division se creÃƒÆ’Ã‚Â³ correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
            } catch (Exception var6) {
                return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la division");
            }
@@ -60,7 +69,7 @@ public class GestorDivision {
               String campos = "`Codigo` = \'" + division.getCodigo() + "\', `Descripcion` = \'" + division.getDescripcion() + "\', `Jefe`= \'" + division.getJefe().getLegajo() + "\', `Disposicion`= \'" + division.getDisposicion() + "\', `Desde` = \'" + division.getDispDesde() + "\', `Hasta` =\'" + division.getDispHasta() + "'";
               String condicion = "`Codigo` = \'" + division.getCodigo() + "\'";
               e.update(tabla, campos, condicion);
-              return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La division se modificÃƒÂ³ correctamente");
+              return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La division se modificÃƒÆ’Ã‚Â³ correctamente");
           } catch (Exception var6) {
               return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el proyecto");
           }
@@ -73,55 +82,46 @@ public class GestorDivision {
              ManejoDatos e = new ManejoDatos();
              e.delete("`Area`", "Responsable = " +division.getCodigo()  );
              e.delete("`Division`", "Codigo = " + division.getCodigo());
-             return new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminÃƒÂ³ correctamente");
+             return new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminÃƒÆ’Ã‚Â³ correctamente");
          } catch (Exception var3) {
              return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la division");
          }
     }
 
-    public List<IDivision> listarDivision(IDivision division) {
+    public ArrayList<IDivision> listarDivision(IDivision division) {
         // TODO Completar
-        return new ArrayList<IDivision>();
+      ArrayList<IDivision> divisiones = new ArrayList<IDivision>();
+    
+    try {
+      ManejoDatos md = new ManejoDatos();
+      String table = "divisiones";
+      String campos = "*";
+      String condicion =  this.armarCondicion(division);
+      
+      ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
+      
+      for (Hashtable<String, String> reg : res) {
+        Division d = new Division();
+        d.setCodigo(Integer.parseInt(reg.get("Codigo")));//(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
+        d.setDescripcion(reg.get("Descripcion"));//;Integer.parseInt(reg.get("NroDocumento")));
+        Docente profesor =new Docente(null,Integer.parseInt(reg.get("Jefe")),null,null,null,null,null);
+        d.setJefe(profesor);
+        
+        d.setDisposicion(reg.get("Disposicion"));
+        
+        String[] desde = reg.get("Desde").split("-");
+        d.setDispDesde(LocalDate.of(Integer.parseInt(desde[0]),Integer.parseInt(desde[1]), Integer.parseInt(desde[2])));
+        String[] hasta = reg.get("Desde").split("-");
+        d.setDispDesde(LocalDate.of(Integer.parseInt(hasta[0]),Integer.parseInt(hasta[1]), Integer.parseInt(hasta[2])));
+        divisiones.add(d);;
     }
 
-    /*public List<IDivision> listarDivision(IDivision division) {
-        ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
-        ArrayList<IDivision> divisiones = new ArrayList<IDivision>();
-
-        String tabla = "Division";
-        String campos = "*";
-        String condicion = this.armarCondicion(division);
-
-
-
-      try {
-          ManejoDatos md = new ManejoDatos();
-          res = md.select(tabla, campos, condicion);
-          for (Hashtable<String, String> reg : res) {
-        Division div = new Division(
-              reg.get("Usuario").toString(),
-              new HashSalt(reg.get("Hash").toString(), reg.get("Salt").toString()),
-              reg.get("Descripcion").toString(),
-              new ArrayList<IRol>()
-            );
-
-        GestorPersona gp = new GestorPersona();
-        Persona p = new Persona();
-        p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
-        p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
-        p = (Persona) gp.listarPersonas(p).get(0);
-
-        divisiones.add(div);
-
-      }
-          return divisiones;
-        }catch(Exception e) {
-          return divisiones;
-        }
-
-    }*/
-
-
-
-
+    }catch (Exception e) {
+      divisiones = new ArrayList<IDivision>();
+    }
+    
+    
+    return divisiones;
+    }
+    
 }
