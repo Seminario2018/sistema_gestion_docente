@@ -15,6 +15,7 @@ public class Area implements IArea {
     private LocalDate dispHasta;
     private IArea subAreaDe;
 
+
     @Override
     public IArea clone() {
         return (IArea) new Area(
@@ -27,6 +28,11 @@ public class Area implements IArea {
             this.dispHasta,
             this.subAreaDe);
     }
+
+    public Area(){
+        
+    }
+
 
     public Area(String codigo, String descripcion, IDivision division,
             IDocente responsable, String disposicion, LocalDate dispDesde,
