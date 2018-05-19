@@ -26,12 +26,14 @@ import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
+import modelo.docente.Docente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
 import modelo.docente.Incentivo;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
+import modelo.persona.Persona;
 import utilidades.Utilidades;
 
 /**
@@ -54,7 +56,12 @@ public class Docentes extends ControladorVista {
 	@FXML public TextField txtDocentesNombre;
 
 	@FXML private void buscarDocente() {
-
+		/* Prueba */
+		// Recupera al docente legajo 143191
+		this.docenteSeleccionado = this.controlDocente
+				.listarDocente(new Docente(null, 143191, null, null, null, null, null))
+				.get(0);
+		actualizarCamposGeneral();
 	}
 
 	@FXML private void nuevoDocente() {
@@ -68,6 +75,28 @@ public class Docentes extends ControladorVista {
 	@FXML private void importarUltimoCosto() {
 
     }
+	
+	private void actualizarCamposGeneral() {
+		vaciarCamposGeneral();
+		if (this.docenteSeleccionado != null) {
+			this.txtDocentesLegajo.setText(
+					String.valueOf(docenteSeleccionado.getLegajo()));
+			if (this.docenteSeleccionado.getPersona() != null) {
+				this.txtDocentesNombre.setText(
+						this.docenteSeleccionado
+							.getPersona().getApellido()
+						+ ", " +
+						this.docenteSeleccionado
+							.getPersona().getNombre()
+						);
+			}
+		}
+	}
+	
+	private void vaciarCamposGeneral() {
+		this.txtDocentesLegajo.clear();
+		this.txtDocentesNombre.clear();
+	}
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 	@FXML public TextField txtDatosDocumento;

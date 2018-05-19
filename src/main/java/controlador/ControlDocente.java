@@ -27,6 +27,7 @@ public class ControlDocente {
 	}
 
 //  Docentes
+	
 	public EstadoOperacion nuevoDocente(IDocente docente) {
 	    return this.gestorDocente.nuevoDocente(docente);
 	}
@@ -38,6 +39,11 @@ public class ControlDocente {
 	public EstadoOperacion eliminarDocente(IDocente docente) {
 	    return this.gestorDocente.eliminarDocente(docente);
 	}
+	
+	public List<IDocente> listarDocente(IDocente docente) {
+		return this.gestorDocente.listarDocente(docente);
+	}
+	
 
 //  CargosDocente
 
