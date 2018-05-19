@@ -97,7 +97,9 @@ public class ManejoDatos {
 		try {
 			Statement st = c.createStatement();
 			String query = "select " + campos + " from " + tabla + " where " + condicion;
+			System.out.println(query);
 			ResultSet resultSet = st.executeQuery(query);
+			System.out.println("Cantidad de filas: " + resultSet);
 			String[] fields = this.getCampos(resultSet, campos);
 			//System.out.println(fields[1]);
 			while (resultSet.next())

@@ -225,7 +225,7 @@ public class GestorPersona {
 	}
 
 	private void agregarDomicilios(Persona p) {
-		ArrayList<Domicilio> domicilios = new ArrayList<Domicilio>();
+		List<IDomicilio> domicilios = new ArrayList<IDomicilio>();
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "domicilios";
@@ -239,7 +239,7 @@ public class GestorPersona {
 			}
 			p.setDomicilios(domicilios);
 		}catch (Exception e) {
-			p.setDomicilios(new ArrayList<Domicilio>());
+			p.setDomicilios(new ArrayList<IDomicilio>());
 		}
 		
 	}
@@ -299,24 +299,30 @@ public class GestorPersona {
 		String condicion = "TRUE";
 		if (persona != null) {
 			condicion = "";
-			//usuario
+			
+			List<String> condiciones = new ArrayList<String>();
+					
 			if (persona.getTipoDocumento() != null) {
-				condicion += " `TipoDocumento` = " + persona.getTipoDocumento().getId();
+				condiciones.add("`TipoDocumento` = " + persona.getTipoDocumento().getId());
 			}
 			if (persona.getNroDocumento() != 0) {
-				condicion += " `NroDocumento` = '" + persona.getNroDocumento() + "'";
+				condiciones.add("`NroDocumento` = '" + persona.getNroDocumento() + "'");
 			}
 			if (persona.getApellido() != null) {
-				condicion += " `Apellido` = '" + persona.getApellido() + "'";
+				condiciones.add("`Apellido` = '" + persona.getApellido() + "'");
 			}
 			if (persona.getNombre() != null) {
-				condicion += " `Nombre` = '" + persona.getNombre() + "'";
+				condiciones.add("`Nombre` = '" + persona.getNombre() + "'");
 			}
 			if (persona.getFechaNacimiento() != null) {
-				condicion += " `FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'";
+				condiciones.add("`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'");
 			}
 			if (persona.getEstado() != null) {
-				condicion += " `Estado` = " + persona.getEstado().ordinal();
+				condiciones.add("`Estado` = " + persona.getEstado().getId());
+			}
+			
+			if (!condiciones.isEmpty()) {
+				condicion = String.join(" AND ", condiciones);
 			}
 		}
 		return condicion; 

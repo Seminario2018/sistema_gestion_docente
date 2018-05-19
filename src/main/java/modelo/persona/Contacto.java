@@ -13,12 +13,11 @@ public class Contacto implements IContacto{
 	private String dato; //https://facebook.com/usuario
 	
 
-	public Contacto(int id, TipoContacto tipo, String dato, Persona persona) {
+	public Contacto(int id, TipoContacto tipo, String dato) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.dato = dato;
-		this.setPersona(persona);
 	}
 
 	public int getId() {
@@ -47,7 +46,7 @@ public class Contacto implements IContacto{
 
 	@Override
 	public IContacto clone() {
-		return new Contacto(this.id, this.tipo, this.dato,this.persona);
+		return new Contacto(this.id, this.tipo, this.dato);
 	}
 
 

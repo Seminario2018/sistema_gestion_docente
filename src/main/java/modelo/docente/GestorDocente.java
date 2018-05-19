@@ -119,7 +119,7 @@ public class GestorDocente {
 				EstadoDocente estado = new EstadoDocente();
 				estado.setId(Integer.parseInt(reg.get("Estado")));
 				Docente doc = new Docente(gp.listarPersonas(p).get(0), 
-						Integer.parseInt(reg.get("Legajo")), reg.get("Observacionse"), CategoriaInvestigacion.getCategoria(cat),
+						Integer.parseInt(reg.get("Legajo")), reg.get("Observaciones"), CategoriaInvestigacion.getCategoria(cat),
 						EstadoDocente.getEstado(estado), null, null);
 				this.cargarCargos(doc);
 				this.cargarIncentivos(doc);
