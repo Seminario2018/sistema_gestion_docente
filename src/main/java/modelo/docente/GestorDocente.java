@@ -380,58 +380,59 @@ public class GestorDocente {
 	
 	private String armarCondicionCargo(ICargoDocente cargo,IDocente docente) {
 		String condicion = "";
-		if (cargo.getId() != -1) {
-			condicion += "`Codigo` = " + cargo.getId();
-		}
-		if (docente != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+		if (cargo != null) {
+			if (cargo.getId() != -1) {
+				condicion += "`Codigo` = " + cargo.getId();
 			}
-			condicion += "`Legajo` = " + docente.getLegajo();
-		}
-		if (cargo.getArea() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (docente != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Legajo` = " + docente.getLegajo();
 			}
-			condicion += "`Area` = " + cargo.getArea().getCodigo();
-		}
-		if (cargo.getCargo() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getArea() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Area` = " + cargo.getArea().getCodigo();
 			}
-			condicion += "`Cargo` = " + cargo.getCargo().getCodigo();
-		}
-		if (cargo.getTipoCargo() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getCargo() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Cargo` = " + cargo.getCargo().getCodigo();
 			}
-			condicion += "`Tipo_Cargo` = '" + cargo.getTipoCargo().getDescripcion() + "'"; 
-		}
-		if (cargo.getEstado() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getTipoCargo() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Tipo_Cargo` = '" + cargo.getTipoCargo().getDescripcion() + "'";
 			}
-			condicion += "`Estado_Cargo` = '" + cargo.getEstado().getDescripcion() + "'";
-		}
-		if (cargo.getDisposicion() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getEstado() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Estado_Cargo` = '" + cargo.getEstado().getDescripcion() + "'";
 			}
-			condicion += "`Disposicion` = '" + cargo.getDisposicion() + "'";
-		}
-		if (cargo.getResolucion() != null) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getDisposicion() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Disposicion` = '" + cargo.getDisposicion() + "'";
 			}
-			condicion += "`Resolucion` = '" + cargo.getResolucion() + "'";
-		}
-		if (cargo.getUltimoCosto() > 0) {
-			if (!condicion.equals("")) {
-				condicion += " AND ";
+			if (cargo.getResolucion() != null) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`Resolucion` = '" + cargo.getResolucion() + "'";
 			}
-			condicion += "`CostoActual` = " + cargo.getUltimoCosto(); 
+			if (cargo.getUltimoCosto() > 0) {
+				if (!condicion.equals("")) {
+					condicion += " AND ";
+				}
+				condicion += "`CostoActual` = " + cargo.getUltimoCosto();
+			} 
 		}
-		
 		return condicion;
 	}
 
