@@ -53,9 +53,46 @@ public class GestorProyecto {
         }
     }
 
-    public List<IProyecto> listarProyecto(IProyecto proyecto) {
-        return null;
-    }
+   public ArrayList<IProyecto> listarProyecto(IProyecto proyecto) {
+ 
+            ArrayList<IProyecto> proyectos = new ArrayList<IProyecto>();
+            String condicion = "TRUE";
+            condicion += this.armarCondicion(proyecto);
+            try {
+                ManejoDatos md = new ManejoDatos();
+                String tabla = "proyecto";
+                ArrayList<Hashtable<String,String>> res = md.select(tabla, "*", condicion);
+                for (Hashtable<String, String> reg : res) {
+                    Proyecto p = new Proyecto();
+                    p.setId(Integer.parseInt(reg.get("Id")));
+                    p.setNombre(reg.get("Nombre"));
+                    p.setDescripcion(reg.get("Descripcion"));
+                    Docente profesor =new Docente(null,Integer.parseInt(reg.get("Jefe")),null,null,null,null,null);
+                    p.setDirector(profesor);
+                    String[] Fecha_Aprovacion = reg.get("Fecha_Aprovacion").split("-");
+                    p.setFechaAprobacion(LocalDate.of(Integer.parseInt(Fecha_Aprovacion[0]),Integer.parseInt(Fecha_Aprovacion[1]), Integer.parseInt(Fecha_Aprovacion[2])));
+                    String[] Fecha_Presentacion = reg.get("Fecha_Presentacion").split("-");
+                    p.setFechaPresentacion(LocalDate.of(Integer.parseInt(Fecha_Presentacion[0]),Integer.parseInt(Fecha_Presentacion[1]), Integer.parseInt(Fecha_Presentacion[2])));
+                    String[] Fecha_Inicio = reg.get("Fecha_Inicio").split("-");
+                    p.setFechaAprobacion(LocalDate.of(Integer.parseInt(Fecha_Inicio[0]),Integer.parseInt(Fecha_Inicio[1]), Integer.parseInt(Fecha_Inicio[2])));
+                    String[] Fecha_Fin = reg.get("Fecha_Fin").split("-");
+                    p.setFechaPresentacion(LocalDate.of(Integer.parseInt(Fecha_Fin[0]),Integer.parseInt(Fecha_Fin[1]), Integer.parseInt(Fecha_Fin[2])));
+                    Programa programa =new Programa(Integer.parseInt(reg.get("Id")),null,null,null,null,null,null,null,null);
+                    p.setPrograma(programa);
+                    
+                    proyectos.add(p);   
+                    
+                }
+                
+            }catch (Exception e) {
+                proyectos = new ArrayList<IProyecto>();
+            }
+            
+            
+            return proyectos;
+        }
+        
+    
 
     public EstadoOperacion AgregarIntegrante(IProyecto proyecto, IIntegrante integrante) {
         try {
@@ -118,4 +155,59 @@ public class GestorProyecto {
         md.delete("`prorroga`", "`proyecto` = " + proyecto.getId() + "disposicion= " + prorroga.getDisposicion());
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitÃ³ correctamente");
     }
+
+   private String armarCondicion(IProyecto proyecto) {
+
+        String condicion = "TRUE";
+        if (proyecto != null) {
+          condicion = "";
+          //division
+          if (proyecto.getId() != 0) {
+            condicion += " `Id` = " + proyecto.getId();
+          }
+          if (proyecto.getNombre() != "") {
+            condicion += " `Nombre` = '" + proyecto.getNombre() + "'";
+          }
+          if (proyecto.getDescripcion() !="" ) {
+            condicion += " `Descripcion` = '" + proyecto.getDescripcion() + "'";
+          }
+          if (proyecto.getDirector() != null) {
+            condicion += " `Director` = '" + proyecto.getDirector() + "'";
+          }
+          if (proyecto.getFechaPresentacion()!= null) {
+            condicion += " `Fecha_Presentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()).toString() + "'";
+          }
+          if (proyecto.getFechaAprobacion() != null) {
+            condicion += " `Fecha_Aprovacion` = " +  Date.valueOf(proyecto.getFechaAprobacion()).toString() + "'";
+          }
+          
+          
+          if (proyecto.getFechaInicio()!= null) {
+              condicion += " `Fecha_Inicio` = '" + Date.valueOf(proyecto.getFechaInicio()).toString() + "'";
+            }
+            if (proyecto.getFechaFin() != null) {
+              condicion += " `Fecha_Fin` = " +  Date.valueOf(proyecto.getFechaFin()).toString() + "'";
+            }
+            
+            
+            if(proyecto.getPrograma()!=null) {
+                condicion+="`Programa`= '" + proyecto.getPrograma() + "'";
+            }
+            
+            
+            if(proyecto.getEstado()!=null) {
+                condicion+="`Estado`= '" + proyecto.getEstado() + "'";
+            }
+          
+          
+          
+          
+        }
+        return condicion;
+      }
+    
+    
+    
+
+
 }

@@ -19,6 +19,10 @@ public class Programa implements IPrograma {
 
 	private List<IProyecto> proyectos;
 
+    public Programa(){
+        
+    }
+
 	public Programa(int id, String nombre, String disposicion,
 	        IDocente director, IDocente codirector, LocalDate fechaInicio,
 	        LocalDate fechaFin, EstadoPrograma estado,

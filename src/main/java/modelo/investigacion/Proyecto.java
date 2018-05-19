@@ -25,6 +25,9 @@ public class Proyecto implements IProyecto {
 	private List<ISubsidio> subsidios;
 	private List<IProrroga> prorrogas;
 
+	public Proyecto(){
+		
+	}
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
 			String descripcion, IDocente director, IDocente codirector,
 			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
