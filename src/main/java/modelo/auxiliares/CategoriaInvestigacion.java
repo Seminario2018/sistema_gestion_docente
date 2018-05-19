@@ -3,7 +3,6 @@ package modelo.auxiliares;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import persistencia.ManejoDatos;
 
 /**
@@ -46,8 +45,8 @@ public class CategoriaInvestigacion {
 		}
 		return categorias;
 	}
-	
-	
+
+
 	public static CategoriaInvestigacion getCategoria(CategoriaInvestigacion categoria) {
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -65,4 +64,9 @@ public class CategoriaInvestigacion {
 			return new CategoriaInvestigacion();
 		}
 	}
+
+	@Override
+    public String toString() {
+        return this.descripcion;
+    }
 }

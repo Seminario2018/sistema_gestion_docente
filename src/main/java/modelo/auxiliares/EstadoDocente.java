@@ -54,4 +54,9 @@ public class EstadoDocente {
 			return new EstadoDocente();
 		}
 	}
+
+	@Override
+	public String toString() {
+	    return this.descripcion;
+	}
 }

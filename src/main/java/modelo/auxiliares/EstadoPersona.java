@@ -34,4 +34,8 @@ public class EstadoPersona {
 		return null;
 	}
 
+	@Override
+	public String toString() {
+	    return this.descripcion;
+	}
 }

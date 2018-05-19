@@ -33,4 +33,9 @@ public class EstadoPrograma {
 	public static List<EstadoPrograma> getLista() {
 		return null;
 	}
+
+	@Override
+    public String toString() {
+        return this.descripcion;
+    }
 }

@@ -3,11 +3,11 @@ package modelo.persona;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoPersona;
+import modelo.auxiliares.TipoContacto;
 import modelo.auxiliares.TipoDocumento;
 import persistencia.ManejoDatos;
 
@@ -283,17 +283,9 @@ public class GestorPersona {
                 // Contacto c = new Contacto(Integer.parseInt(reg.get("idContacto")), reg.get("Nombre"),
                 // reg.get("Tipo"), reg.get("Valor"));
 
-                Enumeration<String> claves = reg.keys();
-                while (claves.hasMoreElements()) {
-                    String clave = claves.nextElement();
-                    System.out.printf("%s\n", clave);
-                }
-
-                throw new RuntimeException("Terminado");
-
-                //                IContacto c =
-                //                    new Contacto(Integer.parseInt(reg.get("idContacto")), new TipoContacto(), reg.get("valor"));
-                //                contactos.add(c);
+                IContacto c =
+                    new Contacto(Integer.parseInt(reg.get("idContacto")), new TipoContacto(), reg.get("valor"));
+                contactos.add(c);
             }
             p.setContactos(contactos);
         } catch (Exception e) {

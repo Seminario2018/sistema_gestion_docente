@@ -3,7 +3,6 @@ package modelo.auxiliares;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import persistencia.ManejoDatos;
 
 /**
@@ -143,6 +142,11 @@ public class TipoDocumento {
 		}
 
 	}
+
+	@Override
+    public String toString() {
+        return this.descripcion;
+    }
 }
 
 

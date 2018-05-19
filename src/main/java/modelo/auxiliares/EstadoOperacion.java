@@ -11,16 +11,16 @@ public class EstadoOperacion {
 		DELETE_OK, DELETE_ERROR,
 		SELECT_OK, SELECT_ERROR;
 	}
-	
+
 	private CodigoEstado estado;
-	private String mensaje; 
-	
+	private String mensaje;
+
 	public EstadoOperacion(CodigoEstado estado, String mensaje) {
 		super();
 		this.estado = estado;
 		this.mensaje = mensaje;
 	}
-	
+
 	public CodigoEstado getEstado() {
 		return estado;
 	}
@@ -33,4 +33,9 @@ public class EstadoOperacion {
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
 	}
+
+	@Override
+    public String toString() {
+        return this.mensaje;
+    }
 }
