@@ -635,7 +635,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Resumen">
+                  <Tab closable="false" onSelectionChanged="#inicializarResumen" text="Resumen">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>

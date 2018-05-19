@@ -597,14 +597,27 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // ---------------------------- Pestaña Resumen ----------------------------- //
 
+	@FXML private void inicializarResumen() {
+	    if (proyectoSeleccionado != null) {
+	        txtaResumen.setText(proyectoSeleccionado.getResumen());
+	    }
+	}
+
     @FXML private Button btnResumenGuardar;
     @FXML void guardarResumen(ActionEvent event) {
-
+        if (proyectoSeleccionado != null) {
+            proyectoSeleccionado.setResumen(txtaResumen.getText());
+            this.controlInvestigacion.modificarProyecto(proyectoSeleccionado);
+        }
     }
 
     @FXML private Button btnResumenDescartar;
     @FXML void descartarResumen(ActionEvent event) {
-
+        if (proyectoSeleccionado != null) {
+            txtaResumen.setText(proyectoSeleccionado.getResumen());
+        } else {
+            txtaResumen.clear();
+        }
     }
 
     @FXML private TextArea txtaResumen;
