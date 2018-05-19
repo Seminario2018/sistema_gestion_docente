@@ -126,28 +126,28 @@ public class Generadores {
 
 			personas +=
 					"(0, " 
-					+ String.valueOf(dni)
+					+ dni
 					+ ", '"
 					+ apellido
 					+ "', '"
 					+ nombre
 					+ "', '"
-					+ String.valueOf(anio)
-					+ "-"
-					+ String.valueOf(mes)
-					+ "-"
-					+ String.valueOf(dia)
+					+ anio + "-" + mes + "-" + dia
 					+ "', 0),\n";
 			
 			
 			docentes +=
 					"("
-					+ String.valueOf(legajo)
+					+ legajo
 					+ ", 0, "
-					+ String.valueOf(dni)
+					+ dni
 					+ ", 'Observaciones de "
 					+ apellido
-					+ "', 1, 0),\n";
+					+ "', "
+					+ rnd.nextInt(6) // Categoría de investigación
+					+ ", "
+					+ rnd.nextInt(2) // Estado
+					+ "),\n";
 			
 		}
 		
