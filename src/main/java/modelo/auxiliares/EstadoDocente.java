@@ -3,7 +3,6 @@ package modelo.auxiliares;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import persistencia.ManejoDatos;
 
 /**
@@ -37,13 +36,13 @@ public class EstadoDocente {
 	public static List<EstadoDocente> getLista() {
 		return null;
 	}
-	
+
 	public static EstadoDocente getEstado(EstadoDocente estado) {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "EstadoDocente";
 			String campos = "*";
-			String condicion = "``idEstadoDocente` = " + estado.getId();
+			String condicion = "`idEstadoDocente` = " + estado.getId();
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos,condicion);
 			Hashtable<String, String> reg = res.get(0);
