@@ -59,7 +59,8 @@ public class Docentes extends ControladorVista {
 		/* Prueba */
 		// Recupera al docente legajo 143191
 		this.docenteSeleccionado = this.controlDocente
-				.listarDocente(new Docente(null, 143191, null, null, null, null, null))
+//				.listarDocente(new Docente(null, 143191, null, null, null, null, null))
+				.listarDocente(null)
 				.get(0);
 		actualizarCamposGeneral();
 	}
