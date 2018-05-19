@@ -192,7 +192,7 @@ public class GestorPersona {
     }
 
     public List<IPersona> listarPersonas(IPersona persona) {
-        ArrayList<IPersona> personas = new ArrayList<IPersona>();
+        List<IPersona> personas = new ArrayList<IPersona>();
 
         try {
             ManejoDatos md = new ManejoDatos();
@@ -237,13 +237,13 @@ public class GestorPersona {
         return e;
     }
 
-    private void agregarDomicilios(Persona p) {
+    private void agregarDomicilios(IPersona persona) {
         List<IDomicilio> domicilios = new ArrayList<IDomicilio>();
         try {
             ManejoDatos md = new ManejoDatos();
             String table = "domicilios";
             String campos = "*";
-            String condicion = this.armarCondicion2(p);
+            String condicion = this.armarCondicion2(persona);
             ArrayList<Hashtable<String, String>> res =
                 md.select(table, campos, condicion);
             for (Hashtable<String, String> reg : res) {
@@ -251,32 +251,32 @@ public class GestorPersona {
                     new Domicilio(Integer.parseInt(reg.get("iddomicilios")), reg.get("Provincia"), reg.get("Ciudad"), reg.get("CodigoPostal"), reg.get("Domicilio"));
                 domicilios.add(d);
             }
-            p.setDomicilios(domicilios);
+            persona.setDomicilios(domicilios);
         } catch (Exception e) {
-            p.setDomicilios(new ArrayList<IDomicilio>());
+            persona.setDomicilios(new ArrayList<IDomicilio>());
         }
 
     }
 
-    private String armarCondicion2(IPersona p) {
+    private String armarCondicion2(IPersona persona) {
         String condicion = "TRUE";
-        if (p != null) {
+        if (persona != null) {
             condicion = "";
             condicion +=
-                " `TipoDocumento` = " + p.getTipoDocumento().getId() + " and";
-            condicion += " `NroDocumento` = '" + p.getNroDocumento() + "'";
+                " `TipoDocumento` = " + persona.getTipoDocumento().getId() + " and";
+            condicion += " `NroDocumento` = '" + persona.getNroDocumento() + "'";
 
         }
         return condicion;
     }
 
-    private void agregarContactos(IPersona p) {
+    private void agregarContactos(IPersona persona) {
         List<IContacto> contactos = new ArrayList<IContacto>();
         try {
             ManejoDatos md = new ManejoDatos();
             String table = "contacto";
             String campos = "*";
-            String condicion = this.armarCondicion2(p);
+            String condicion = this.armarCondicion2(persona);
             ArrayList<Hashtable<String, String>> res =
                 md.select(table, campos, condicion);
             for (Hashtable<String, String> reg : res) {
@@ -287,32 +287,30 @@ public class GestorPersona {
                     new Contacto(Integer.parseInt(reg.get("idContacto")), new TipoContacto(), reg.get("valor"));
                 contactos.add(c);
             }
-            p.setContactos(contactos);
+            persona.setContactos(contactos);
         } catch (Exception e) {
-            p.setContactos(new ArrayList<IContacto>());
+            persona.setContactos(new ArrayList<IContacto>());
         }
-
     }
 
-    private void agregarTitulos(Persona p) {
-        ArrayList<ITitulo> titulos = new ArrayList<ITitulo>();
+    private void agregarTitulos(IPersona persona) {
+        List<ITitulo> titulos = new ArrayList<ITitulo>();
         try {
             ManejoDatos md = new ManejoDatos();
             String table = "titulos";
             String campos = "*";
-            String condicion = this.armarCondicion2(p);
+            String condicion = this.armarCondicion2(persona);
             ArrayList<Hashtable<String, String>> res =
                 md.select(table, campos, condicion);
             for (Hashtable<String, String> reg : res) {
-                Titulo t =
+                ITitulo t =
                     new Titulo(Integer.parseInt(reg.get("idtitulos")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
                 titulos.add(t);
             }
-            p.setTitulos(titulos);
+            persona.setTitulos(titulos);
         } catch (Exception e) {
-            p.setTitulos(new ArrayList<ITitulo>());
+            persona.setTitulos(new ArrayList<ITitulo>());
         }
-
     }
 
     private String armarCondicion(IPersona persona) {
