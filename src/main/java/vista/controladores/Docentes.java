@@ -5,7 +5,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import controlador.ControlAuxiliar;
 import controlador.ControlDivision;
 import controlador.ControlDocente;
 import javafx.collections.FXCollections;
@@ -33,7 +33,6 @@ import modelo.docente.IIncentivo;
 import modelo.docente.Incentivo;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
-import modelo.persona.Persona;
 import utilidades.Utilidades;
 
 /**
@@ -56,12 +55,13 @@ public class Docentes extends ControladorVista {
 	@FXML public TextField txtDocentesNombre;
 
 	@FXML private void buscarDocente() {
-		/* Prueba */
+		/* TEST Docentes: Selección de docente */
 		// Recupera al docente legajo 143191
 		this.docenteSeleccionado = this.controlDocente
 				.listarDocente(new Docente(null, 143191, null, null, null, null, null))
 //				.listarDocente(null)
 				.get(0);
+		//*/
 		actualizarCamposGeneral();
 	}
 
@@ -76,7 +76,7 @@ public class Docentes extends ControladorVista {
 	@FXML private void importarUltimoCosto() {
 
     }
-	
+
 	private void actualizarCamposGeneral() {
 		vaciarCamposGeneral();
 		if (this.docenteSeleccionado != null) {
@@ -93,7 +93,7 @@ public class Docentes extends ControladorVista {
 			}
 		}
 	}
-	
+
 	private void vaciarCamposGeneral() {
 		this.txtDocentesLegajo.clear();
 		this.txtDocentesNombre.clear();
@@ -261,25 +261,11 @@ public class Docentes extends ControladorVista {
 	    /* DONE Popular estados y tipos */
 	    this.cmbCargosEstado.setItems(
                 FXCollections.observableArrayList(
-                        EstadoCargo.getLista()));
+                        ControlAuxiliar.listarEstadosCargo()));
 
         this.cmbCargosTipo.setItems(
                 FXCollections.observableArrayList(
-                        TipoCargo.getLista()));
-	    //*/
-
-        /* TEST Cargos y tipos Prueba *
-        this.cmbCargosEstado.setItems(
-                FXCollections.observableArrayList(
-                        Arrays.asList(
-                                new EstadoCargo(0, "Activo"),
-                                new EstadoCargo(1, "Inactivo"))));
-        this.cmbCargosTipo.setItems(
-                FXCollections.observableArrayList(
-                        Arrays.asList(
-                                new TipoCargo(0, "Ordinario"),
-                                new TipoCargo(1, "Interino"))));
-        //*/
+                        ControlAuxiliar.listarTiposCargo()));
 
         /* DONE Popular tabla con cargosDocente de docenteSeleccionado */
         // Agarro todos los cargos docente del docente seleccionado:
@@ -291,8 +277,6 @@ public class Docentes extends ControladorVista {
         }
         //*/
 	}
-
-
 
 	public void actualizarTablaCargos() {
 		// TODO actualizarTablaCargos()

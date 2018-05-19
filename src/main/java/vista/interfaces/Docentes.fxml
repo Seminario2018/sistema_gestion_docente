@@ -138,7 +138,7 @@
                                     <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.rowIndex="1">
                                        <children>
                                           <Label text="Documento" />
-                                          <TextField fx:id="txtDatosDocumento" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1">
+                                          <TextField fx:id="txtDatosDocumento" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -148,7 +148,7 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtDatosNombre" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtDatosNombre" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
