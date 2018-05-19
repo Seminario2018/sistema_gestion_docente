@@ -537,7 +537,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" text="Prórrogas">
+                  <Tab closable="false" onSelectionChanged="#inicializarProrrogas" text="Prórrogas">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="506.0" prefViewportWidth="800.0">
                            <content>

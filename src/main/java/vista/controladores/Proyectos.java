@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +22,12 @@ import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
+import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
 import modelo.investigacion.Integrante;
+import modelo.investigacion.Prorroga;
 import modelo.investigacion.Proyecto;
 import modelo.investigacion.Rendicion;
 import modelo.investigacion.Subsidio;
@@ -477,16 +478,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    rendicionSeleccionada = null;
 	}
 
-	@FXML private Button btnRendicionesEliminar;
-	@FXML void eliminarRendicion(ActionEvent event) {
-	    // Quitar fila de la tabla:
-	    FilaRendicion fr = tblRendiciones.getSelectionModel().getSelectedItem();
-	    filasRendiciones.remove(fr);
-
-	    // Quitar rendición:
-	    subsidioSeleccionado.quitarRendicion(rendicionSeleccionada);
-	    // TODO Rendiciones: Quitar rendición en BD
-	}
+    @FXML private Button btnRendicionesEliminar;
+    @FXML void eliminarRendicion(ActionEvent event) {
+        FilaRendicion fr = tblRendiciones.getSelectionModel().getSelectedItem();
+        filasRendiciones.remove(fr);
+        subsidioSeleccionado.quitarRendicion(rendicionSeleccionada);
+        // TODO Rendiciones: Quitar rendición en BD
+    }
 
 	@FXML private TableView<FilaRendicion> tblRendiciones;
 	@FXML private TableColumn<FilaRendicion, LocalDate> colRendicionesFecha;
@@ -499,29 +497,99 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Prórrogas ---------------------------- //
 
-	@FXML private Button btnProrrogasNueva;
-    @FXML void nuevaProrroga(ActionEvent event) {
+	private IProrroga prorrogaSeleccionada = null;
+	private ObservableList<FilaProrroga> filasProrrogas = FXCollections.observableArrayList();
 
+    private void limpiarCamposProrrogas() {
+        dtpProrrogasInicio.setValue(null);
+        dtpProrrogasFinalizacion.setValue(null);
+        txtProrrogasDisp.clear();
     }
 
-    @FXML private Button btnProrrogasGuardar;
-    @FXML void guardarProrroga(ActionEvent event) {
+    private void llenarCamposProrrogas() {
+        if (prorrogaSeleccionada != null) {
+            dtpProrrogasInicio.setValue(prorrogaSeleccionada.getFechaInicio());
+            dtpProrrogasFinalizacion.setValue(prorrogaSeleccionada.getFechaFin());
+            txtProrrogasDisp.setText(prorrogaSeleccionada.getDisposicion());
+        }
+    }
 
+	class FilaProrroga {
+	    private LocalDate fechaInicio;
+	    private LocalDate fechaFin;
+	    public FilaProrroga(IProrroga prorroga) {
+	        this.fechaInicio = prorroga.getFechaInicio();
+	    }
+	    public LocalDate getFechaInicio() {
+    	    return this.fechaInicio;
+        }
+        public LocalDate getfechaFin() {
+            return this.fechaFin;
+        }
+        public IProrroga getProrroga() {
+            return new Prorroga(null, fechaInicio, fechaFin);
+        }
+	}
+
+    @FXML void inicializarProrrogas() {
+        prorrogaSeleccionada = null;
+        filasProrrogas.clear();
+        limpiarCamposProrrogas();
+
+        if (proyectoSeleccionado != null) {
+            for (IProrroga prorroga : proyectoSeleccionado.getProrrogas()) {
+                filasProrrogas.add(new FilaProrroga(prorroga));
+            }
+        }
+    }
+
+	@FXML private Button btnProrrogasNueva;
+    @FXML void nuevaProrroga(ActionEvent event) {
+        prorrogaSeleccionada = new Prorroga(null, null, null);
+        limpiarCamposProrrogas();
+    }
+
+    @FXML void guardarProrroga(ActionEvent event) {
+        if (prorrogaSeleccionada != null) {
+            try {
+                prorrogaSeleccionada.setFechaInicio(dtpProrrogasInicio.getValue());
+                prorrogaSeleccionada.setFechaFin(dtpProrrogasFinalizacion.getValue());
+                prorrogaSeleccionada.setDisposicion(txtProrrogasDisp.getText());
+
+                proyectoSeleccionado.agregarProrroga(prorrogaSeleccionada);
+                this.controlInvestigacion.agregarProrroga(proyectoSeleccionado, prorrogaSeleccionada);
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
+                alertaError(TITULO, "Guardar prórroga", "Alguno de los datos ingresados no es válido");
+            }
+        }
     }
 
     @FXML private Button btnProrrogasDescartar;
     @FXML void descartarProrroga(ActionEvent event) {
-
+        limpiarCamposProrrogas();
+        tblProrrogas.getSelectionModel().clearSelection();
+        prorrogaSeleccionada = null;
     }
 
     @FXML private Button btnProrrogasEliminar;
     @FXML void eliminarProrroga(ActionEvent event) {
+        FilaProrroga fila = tblProrrogas.getSelectionModel().getSelectedItem();
+        prorrogaSeleccionada = fila.getProrroga();
+        proyectoSeleccionado.quitarProrroga(prorrogaSeleccionada);
 
+        this.controlInvestigacion.quitarProrroga(proyectoSeleccionado, prorrogaSeleccionada);
+
+        dialogoConfirmacion(TITULO, "Quita de prórroga", "La prórroga ha sido quitada.");
+
+        limpiarCamposProrrogas();
+        tblProrrogas.getSelectionModel().clearSelection();
+        prorrogaSeleccionada = null;
     }
 
-	@FXML private TableView<?> tblProrrogas;
-	@FXML private TableColumn<?, ?> colProrrogasInicio;
-	@FXML private TableColumn<?, ?> colProrrogasFinalización;
+	@FXML private TableView<FilaProrroga> tblProrrogas;
+	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
+	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasFinalización;
 
 	@FXML private DatePicker dtpProrrogasInicio;
 	@FXML private DatePicker dtpProrrogasFinalizacion;
