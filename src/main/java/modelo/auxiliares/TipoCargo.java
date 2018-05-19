@@ -38,7 +38,10 @@ public class TipoCargo {
      */
     public static List<TipoCargo> getLista() {
         // TODO Cargar tipos de cargo de la BD
-        return new ArrayList<TipoCargo>();
+        List<TipoCargo> listaTipos = new ArrayList<TipoCargo>();
+        listaTipos.add(new TipoCargo(0, "Ordinario"));
+        listaTipos.add(new TipoCargo(1, "Interino"));
+        return listaTipos;
     }
 
     @Override

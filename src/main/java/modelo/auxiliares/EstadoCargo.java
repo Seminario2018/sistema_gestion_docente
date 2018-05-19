@@ -38,7 +38,10 @@ public class EstadoCargo {
 	 */
 	public static List<EstadoCargo> getLista() {
 	    // TODO Cargar estados de la BD.
-		return new ArrayList<EstadoCargo>();
+		List<EstadoCargo> listaEstados = new ArrayList<EstadoCargo>();
+		listaEstados.add(new EstadoCargo(0, "Activo"));
+		listaEstados.add(new EstadoCargo(1, "Inactivo"));
+		return listaEstados;
 	}
 
 	@Override
