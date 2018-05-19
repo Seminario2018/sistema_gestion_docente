@@ -97,13 +97,16 @@ public class ManejoDatos {
 		try {
 			Statement st = c.createStatement();
 			String query = "select " + campos + " from " + tabla + " where " + condicion;
+			
+			/* DEBUG */
 			System.out.println(query);
+			
 			ResultSet resultSet = st.executeQuery(query);
-			System.out.println("Cantidad de filas: " + resultSet);
 			String[] fields = this.getCampos(resultSet, campos);
 			//System.out.println(fields[1]);
 			while (resultSet.next())
 			{
+				System.out.println(resultSet.getInt(1));
 				Hashtable<String, String> reg = new Hashtable<String, String>();
 				for (String s : fields){
 					reg.put(s, resultSet.getString(s));

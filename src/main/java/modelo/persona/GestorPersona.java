@@ -194,7 +194,7 @@ public class GestorPersona {
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p.setApellido(reg.get("Apellido"));
-				p.setNombre("Nombre");
+				p.setNombre(reg.get("Nombre"));
 				String[] fnac = reg.get("FechaNacimiento").split("-");
 				p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]),
 						Integer.parseInt(fnac[1]), Integer.parseInt(fnac[2])));
@@ -209,7 +209,8 @@ public class GestorPersona {
 			
 			
 		}catch (Exception e) {
-			personas = new ArrayList<IPersona>();
+			e.printStackTrace();
+//			personas = new ArrayList<IPersona>();
 		}
 		
 		return personas;		
