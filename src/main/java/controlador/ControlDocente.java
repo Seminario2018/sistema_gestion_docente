@@ -28,6 +28,10 @@ public class ControlDocente {
 
 //  Docentes
 	
+	public IDocente getIDocente() {
+		return this.gestorDocente.getIDocente();
+	}
+	
 	public EstadoOperacion nuevoDocente(IDocente docente) {
 	    return this.gestorDocente.nuevoDocente(docente);
 	}
@@ -47,8 +51,8 @@ public class ControlDocente {
 
 //  CargosDocente
 
-	public ICargoDocente getCargoDocente() {
-		return this.gestorDocente.getCargoDocente();
+	public ICargoDocente getICargoDocente() {
+		return this.gestorDocente.getICargoDocente();
 	}
 
 	public EstadoOperacion guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {

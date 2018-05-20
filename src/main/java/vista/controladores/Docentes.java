@@ -48,7 +48,7 @@ public class Docentes extends ControladorVista {
 
 	private ControlDivision controlDivision = new ControlDivision(this);
 	private ControlDocente controlDocente = new ControlDocente(this);
-	public IDocente docenteSeleccionado;
+	public IDocente docenteSeleccionado = this.controlDocente.getIDocente();
 
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
@@ -92,6 +92,13 @@ public class Docentes extends ControladorVista {
 						);
 			}
 		}
+
+		actualizarCamposDatos();
+		actualizarTablaCargos();
+//		TODO
+//		actualizarTablaInvestigacion();
+//		actualizarTablaIncentivos();
+//		actualizarObservaciones();
 	}
 
 	private void vaciarCamposGeneral() {
@@ -107,7 +114,6 @@ public class Docentes extends ControladorVista {
 	@FXML public ComboBox<CategoriaInvestigacion> cmbDatosCategoria;
 
 	@FXML private void mostrarDatos() {
-	    // DONE Botón "Ver Datos Personales"
         if (docenteSeleccionado != null) {
             IPersona persona = docenteSeleccionado.getPersona();
             txtDatosDocumento.setText(
@@ -145,6 +151,19 @@ public class Docentes extends ControladorVista {
 
 	@FXML private void buscarPersona() {
 	    // TODO "Seleccionar Persona"
+	}
+	
+	private void actualizarCamposDatos() {
+		vaciarCamposDatos();
+		mostrarDatos();
+	}
+	
+	private void vaciarCamposDatos() {
+		txtDatosDocumento.clear();
+		txtDatosNombre.clear();
+		txtDatosLegajo.clear();
+		cmbDatosEstado.getSelectionModel().clearSelection();
+		cmbDatosCategoria.getSelectionModel().clearSelection();
 	}
 
 // ----------------------------- Pestaña Cargos ----------------------------- //
@@ -202,7 +221,7 @@ public class Docentes extends ControladorVista {
 	@FXML public void seleccionarCargoDocente() {
 		// DONE cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-		ICargoDocente cd = this.controlDocente.getCargoDocente();
+		ICargoDocente cd = this.controlDocente.getICargoDocente();
 		// Busco el cargoDocente en la BD según su id:
 		cd.setId(fila.getId());
 		List<ICargoDocente> listaCargosDocente = this.controlDocente.listarCargosDocente(docenteSeleccionado, cd);
@@ -306,7 +325,7 @@ public class Docentes extends ControladorVista {
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
-		cargoDocenteSeleccionado = this.controlDocente.getCargoDocente();
+		cargoDocenteSeleccionado = this.controlDocente.getICargoDocente();
 		/* TEST *
 		cargoDocenteSeleccionado.setId(idCargoDocente++);
 		//*/
@@ -490,11 +509,11 @@ public class Docentes extends ControladorVista {
 	}
 // ----------------------------- Pestaña Incentivos ------------------------- //
 	// DONE Pestaña "Incentivos"
-	@FXML private TextField txtIncentivosAnio;
-	@FXML private TableView<FilaIncentivo> tblIncentivos;
-	private ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
-	private List<IIncentivo> incentivosNuevos = new ArrayList<IIncentivo>();
-	private List<IIncentivo> incentivosBorrados = new ArrayList<IIncentivo>();
+	@FXML protected TextField txtIncentivosAnio;
+	@FXML protected TableView<FilaIncentivo> tblIncentivos;
+	protected ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
+	protected List<IIncentivo> incentivosNuevos = new ArrayList<IIncentivo>();
+	protected List<IIncentivo> incentivosBorrados = new ArrayList<IIncentivo>();
 
 	class FilaIncentivo {
 	    private int fecha;
@@ -515,12 +534,14 @@ public class Docentes extends ControladorVista {
 	private void listarIncentivosTabla() {
 	    List<IIncentivo> listaIncentivos = docenteSeleccionado.getIncentivos();
         filasIncentivos.clear();
-        for (IIncentivo incentivo : listaIncentivos) {
-            filasIncentivos.add(new FilaIncentivo(incentivo));
-        }
+        if (listaIncentivos != null)
+        	for (IIncentivo incentivo : listaIncentivos) {
+        		filasIncentivos.add(new FilaIncentivo(incentivo));
+        	}	
 	}
 
-	@FXML private void inicializarTablaIncentivos() {
+	@FXML public void inicializarTablaIncentivos() {
+		inicializarTabla("Incentivos");
 	    listarIncentivosTabla();
 	}
 

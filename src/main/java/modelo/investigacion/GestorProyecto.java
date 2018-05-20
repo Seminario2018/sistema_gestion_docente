@@ -143,8 +143,6 @@ public class GestorProyecto {
                 "`Id`, `TipoDocumento`, `NroDocumento`, `Institucion`, `Cargo`, `HorasSemanales`,`Proyecto`";
             String valores =
                 "\'" + integrante.getId() + "\', \'"
-                    + integrante.getTipoDocumento() + "\', \'"
-                    + integrante.getNroDocumento() + "\', "
                     + integrante.getInstitucion() + ", \'"
                     + integrante.getCargo() + "\', \'"
                     + integrante.getHorasSemanales() + "\', \'"

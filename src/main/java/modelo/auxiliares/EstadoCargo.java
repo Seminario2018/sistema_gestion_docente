@@ -44,7 +44,7 @@ public class EstadoCargo {
         List<EstadoCargo> listaEstados = new ArrayList<EstadoCargo>();
 
         ManejoDatos md = new ManejoDatos();
-        List<Hashtable<String, String>> filas = md.select("estadocargo", "*");
+        List<Hashtable<String, String>> filas = md.select("estadoscargos", "*");
         for (Hashtable<String, String> fila : filas) {
             listaEstados.add(new EstadoCargo(Integer.parseInt(fila.get("idestadocargo")), fila.get("Descripcion")));
         }

@@ -444,4 +444,18 @@ public class GestorDocente {
 		}
 		return cod;
 	}
+
+	/**
+	 * @return Una plantilla ICargoDocente vacía
+	 */
+	public ICargoDocente getICargoDocente() {
+		return new CargoDocente();
+	}
+
+	/**
+	 * @return Una plantilla IDocente vacía
+	 */
+	public IDocente getIDocente() {
+		return new Docente();
+	}
 }

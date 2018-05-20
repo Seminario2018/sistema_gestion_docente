@@ -4,7 +4,6 @@ import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
-import modelo.cargo.ICargo;
 import modelo.persona.IPersona;
 public interface IDocente {
 
