@@ -1,6 +1,5 @@
 package modelo.investigacion;
 
-import modelo.auxiliares.TipoDocumento;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 
@@ -8,8 +7,6 @@ public class Integrante implements IIntegrante {
     private int id;
     private int legajo;
     private String apellido;
-    private TipoDocumento tipoDocumente;
-    private int nroDocumento;
     private String nombre;
     private String cargo;
     private String institucion;
@@ -22,22 +19,18 @@ public class Integrante implements IIntegrante {
         this.apellido = docente.getPersona().getApellido();
         this.nombre = docente.getPersona().getNombre();
         this.cargo = cargoDocente.getCargo().getDescripcion();
-        this.tipoDocumente=docente.getPersona().getTipoDocumento();
-        this.nroDocumento=docente.getPersona().getNroDocumento();
         this.institucion = "UNLu";
         this.horasSemanales = horasSemanales;
     }
 
     /* Constructor para no docentes / docentes que no son de la UNLu */
-    public Integrante(int id, String apellido, String nombre, String cargo, String institucion, int horasSemanales,  TipoDocumento tipoDocumento, int nroDocumento) {
+    public Integrante(int id, String apellido, String nombre, String cargo, String institucion, int horasSemanales) {
         this.id = id;
         this.apellido = apellido;
         this.nombre = nombre;
         this.cargo = cargo;
         this.institucion = institucion;
         this.horasSemanales = horasSemanales;
-        this.tipoDocumente=tipoDocumento;
-        this.nroDocumento=nroDocumento;
     }
 
     /* Constructor para el clone() */
@@ -122,28 +115,4 @@ public class Integrante implements IIntegrante {
     public void setId(int id) {
         this.id = id;
     }
-
-    @Override
-    public void setTipoDocumento(TipoDocumento tipoDocumento) {
-        //
-        this.tipoDocumente=tipoDocumento;
-    }
-
-    @Override
-    public TipoDocumento getTipoDocumento() {
-        // TODO Auto-generated method stub
-        return this.tipoDocumente;
-    }
-
-    @Override
-    public void setNroDocumento(int nroDocumento) {
-        this.nroDocumento = nroDocumento;
-    }
-
-    @Override
-    public int getNroDocumento() {
-        return this.nroDocumento;
-    }
-
-
 }

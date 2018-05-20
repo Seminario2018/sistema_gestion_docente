@@ -40,14 +40,14 @@ public class EstadoDocente {
 	public static EstadoDocente getEstado(EstadoDocente estado) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "EstadoDocente";
+			String tabla = "EstadosDocentes";
 			String campos = "*";
-			String condicion = "`idEstadoDocente` = " + estado.getId();
+			String condicion = "`id` = " + estado.getId();
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos,condicion);
 			Hashtable<String, String> reg = res.get(0);
 			EstadoDocente estadoDocente = new EstadoDocente();
-			estadoDocente.setId(Integer.parseInt(reg.get("idEstadoDocente")));
+			estadoDocente.setId(Integer.parseInt(reg.get("id")));
 			estadoDocente.setDescripcion(reg.get("Descripcion"));
 			return estadoDocente;
 		} catch (NumberFormatException e) {

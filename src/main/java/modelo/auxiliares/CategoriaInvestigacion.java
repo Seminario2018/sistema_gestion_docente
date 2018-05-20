@@ -36,10 +36,10 @@ public class CategoriaInvestigacion {
 	public static List<CategoriaInvestigacion> getLista() {
 		ArrayList<CategoriaInvestigacion> categorias = new ArrayList<CategoriaInvestigacion>();
 		ManejoDatos md = new ManejoDatos();
-		ArrayList<Hashtable<String, String>> res = md.select("CategoriaInvestigacion", "`idCategoriaInvestigacion`, `Descripcion`");
+		ArrayList<Hashtable<String, String>> res = md.select("CategoriasInvestigacion", "`id`, `Descripcion`");
 		for (Hashtable<String, String> reg : res) {
 			CategoriaInvestigacion cat = new CategoriaInvestigacion();
-			cat.setId(Integer.parseInt(reg.get("idCategoriaInvestigacion")));
+			cat.setId(Integer.parseInt(reg.get("id")));
 			cat.setDescripcion(reg.get("Descripcion"));
 			categorias.add(cat);
 		}
@@ -50,14 +50,14 @@ public class CategoriaInvestigacion {
 	public static CategoriaInvestigacion getCategoria(CategoriaInvestigacion categoria) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "CategoriaInvestigacion";
+			String tabla = "CategoriasInvestigacion";
 			String campos = "*";
-			String condicion = "`idCategoriaInvestigacion` = " + categoria.getId();
+			String condicion = "`id` = " + categoria.getId();
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos,condicion);
 			Hashtable<String, String> reg = res.get(0);
 			CategoriaInvestigacion cat = new CategoriaInvestigacion();
-			cat.setId(Integer.parseInt(reg.get("idCategoriaInvestigacion")));
+			cat.setId(Integer.parseInt(reg.get("id")));
 			cat.setDescripcion(reg.get("Descripcion"));
 			return cat;
 		} catch (NumberFormatException e) {

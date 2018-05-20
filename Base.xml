@@ -2,6 +2,6 @@
 <base>
 	<driver>com.mysql.jdbc.Driver</driver>
 	<usr>root</usr>
-	<password></password>
+	<password>ljm123ljm</password>
 	<url>jdbc:mysql://localhost:3306/plumasdocentes</url>
 </base>
