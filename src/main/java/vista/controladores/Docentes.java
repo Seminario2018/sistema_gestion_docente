@@ -202,7 +202,7 @@ public class Docentes extends ControladorVista {
 	@FXML public void seleccionarCargoDocente() {
 		// DONE cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
 		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-		ICargoDocente cd = this.controlDocente.getICargoDocente();
+		ICargoDocente cd = this.controlDocente.getCargoDocente();
 		// Busco el cargoDocente en la BD según su id:
 		cd.setId(fila.getId());
 		List<ICargoDocente> listaCargosDocente = this.controlDocente.listarCargosDocente(docenteSeleccionado, cd);
@@ -306,7 +306,7 @@ public class Docentes extends ControladorVista {
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
 		// Obtener un ICargoDocente vacío
-		cargoDocenteSeleccionado = this.controlDocente.getICargoDocente();
+		cargoDocenteSeleccionado = this.controlDocente.getCargoDocente();
 		/* TEST *
 		cargoDocenteSeleccionado.setId(idCargoDocente++);
 		//*/

@@ -61,7 +61,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void buscarProyecto(ActionEvent event) {
 	    try {
 	        int idProyecto = Integer.parseInt(txtProyectosId.getText());
-	        IProyecto proyectoBusqueda = new Proyecto(idProyecto, null, null, null, null, null, null, null, null, null, null, null, null, null);
+	        IProyecto proyectoBusqueda = new Proyecto(idProyecto, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	        List<IProyecto> proyectos = this.controlInvestigacion.listarProyecto(proyectoBusqueda);
 
 	        switch (proyectos.size()) {
@@ -132,7 +132,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    proyectoSeleccionado.setFechaInicio(dtpDatosInicio.getValue());
 	    proyectoSeleccionado.setFechaFin(dtpDatosFinalizacion.getValue());
 
-	    this.controlInvestigacion.modificarProyecto(proyectoSeleccionado, null);
+	    this.controlInvestigacion.modificarProyecto(proyectoSeleccionado);
 	}
 
 	@FXML private Button btnDatosDescartar;
@@ -607,7 +607,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML void guardarResumen(ActionEvent event) {
         if (proyectoSeleccionado != null) {
             proyectoSeleccionado.setResumen(txtaResumen.getText());
-            this.controlInvestigacion.modificarProyecto(proyectoSeleccionado, null);
+            this.controlInvestigacion.modificarProyecto(proyectoSeleccionado);
         }
     }
 
