@@ -1,10 +1,10 @@
 package controlador;
 
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import modelo.investigacion.GestorProyecto;
 import modelo.investigacion.IIntegrante;
+import modelo.investigacion.IPrograma;
 import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.ISubsidio;
@@ -14,14 +14,12 @@ public class ControlInvestigacion {
     private GestorProyecto gestorProyecto = new GestorProyecto();
 
 //    Proyectos
-    // TODO pasar id de Programa? cómo se relaciona un proyecto con un programa sino?
-    public EstadoOperacion nuevoProyecto(IProyecto proyecto) {
-        return this.gestorProyecto.nuevoProyecto(proyecto);
+    public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
+        return this.gestorProyecto.nuevoProyecto(proyecto, programa);
     }
 
-    // TODO mismo arriba
-    public EstadoOperacion modificarProyecto(IProyecto proyecto) {
-        return this.gestorProyecto.modificarProyecto(proyecto);
+    public EstadoOperacion modificarProyecto(IProyecto proyecto, IPrograma programa) {
+        return this.gestorProyecto.modificarProyecto(proyecto, programa);
     }
 
     public EstadoOperacion eliminarProyecto(IProyecto proyecto) {
