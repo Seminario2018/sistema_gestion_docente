@@ -1,2 +1,0 @@
-Para importar en la BD plumasdocentes2.sql es necesario realizar drop de las tablas que se tengan en el schema plumasdocentes.
-Se recomienda realizar drop del schema y crear uno nuevo con el mismo nombre.

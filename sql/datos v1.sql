@@ -2,36 +2,36 @@ delete from areas where areas.SubAreaDe is not null;
 delete from areas;
 delete from divisiones;
 delete from docentes;
-delete from persona;
+delete from personas;
 delete from cargos;
-delete from categoriainvestigacion;
-delete from estadocargo;
-delete from estadodocente;
-delete from estadopersona;
-delete from tipos_documentos;
+delete from categoriasinvestigacion;
+delete from estadoscargos;
+delete from estadosdocentes;
+delete from estadospersonas;
+delete from tiposdocumentos;
 
 
-insert into tipos_documentos values
+insert into tiposdocumentos values
 (0, 'DNI');
 
 
-insert into estadopersona values 
+insert into estadospersonas values 
 (0, 'Activa'),
 (1, 'Inactiva');
 
 
-insert into estadodocente values 
+insert into estadosdocentes values 
 (0, 'Activo'),
 (1, 'Inactivo'),
 (2, 'Jubilado');
     
 
-insert into estadocargo values 
+insert into estadoscargos values 
 (0, 'Activo'),
 (1, 'Inactivo');
 
 
-insert into categoriainvestigacion values
+insert into categoriasinvestigacion values
 (0, 'No categorizado'),
 (1, 'I'),
 (2, 'II'),
@@ -67,7 +67,7 @@ insert into cargos values
 
 
 # Jefes de División
-insert into persona values 
+insert into personas values 
 (0, 9675920, 'Gonzalez', 'Julián', '1945-03-29', 0),
 (0, 17200893, 'Panesco', 'Guillermo', '1967-10-02', 0),
 (0, 11242536, 'Urritiaga', 'Daniel Alfonso', '1951-05-12', 0),
