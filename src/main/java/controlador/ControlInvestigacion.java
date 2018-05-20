@@ -14,10 +14,12 @@ public class ControlInvestigacion {
     private GestorProyecto gestorProyecto = new GestorProyecto();
 
 //    Proyectos
+    // TODO pasar id de Programa? cómo se relaciona un proyecto con un programa sino?
     public EstadoOperacion nuevoProyecto(IProyecto proyecto) {
         return this.gestorProyecto.nuevoProyecto(proyecto);
     }
 
+    // TODO mismo arriba
     public EstadoOperacion modificarProyecto(IProyecto proyecto) {
         return this.gestorProyecto.modificarProyecto(proyecto);
     }
