@@ -23,9 +23,9 @@ public interface IDocente {
 	public void agregarIncentivo(IIncentivo incentivo);
 	public void quitarIncentivo(IIncentivo incentivo);
 
-	public List<ICargo> getCargosDocentes();
-	public void agregarCargoDocente(ICargo cargoDocente);
-	public void quitarCargoDocente(ICargo cargoDocente);
+	public List<ICargoDocente> getCargosDocentes();
+	public void agregarCargoDocente(ICargoDocente cargoDocente);
+	public void quitarCargoDocente(ICargoDocente cargoDocente);
 	public IPersona getPersona();
 	public void setPersona(IPersona persona);
 

@@ -19,7 +19,6 @@ public class Proyecto implements IProyecto {
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
 	private EstadoProyecto estado;
-	private IPrograma programa;
 
 	private List<IIntegrante> integrantes;
 	private List<ISubsidio> subsidios;
@@ -31,9 +30,8 @@ public class Proyecto implements IProyecto {
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
 			String descripcion, IDocente director, IDocente codirector,
 			LocalDate fechaInicio, LocalDate fechaFin, EstadoProyecto estado, List<IIntegrante> integrantes,
-			List<ISubsidio> subsidios, List<IProrroga> prorrogas, IPrograma programa) {
+			List<ISubsidio> subsidios, List<IProrroga> prorrogas) {
 		super();
-		this.programa=programa;
 		this.id = id;
 		this.nombre = nombre;
 		this.resumen = resumen;
@@ -54,7 +52,7 @@ public class Proyecto implements IProyecto {
 	public IProyecto clone() {
 		return (IProyecto) new Proyecto(this.id, this.nombre, this.resumen, this.fechaPresentacion,
 				this.fechaAprobacion, this.descripcion, this.director, this.codirector, this.fechaInicio, this.fechaFin,
-				this.estado, this.integrantes, this.subsidios, this.prorrogas,this.programa);
+				this.estado, this.integrantes, this.subsidios, this.prorrogas);
 	}
 
 	@Override
@@ -210,15 +208,5 @@ public class Proyecto implements IProyecto {
 	@Override
 	public void quitarProrroga(IProrroga prorroga) {
 		this.prorrogas.remove(prorroga);
-	}
-
-	@Override
-	public IPrograma getPrograma() {
-		return programa;
-	}
-
-	@Override
-	public void setPrograma(IPrograma programa) {
-		this.programa = programa;
 	}
 }

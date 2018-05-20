@@ -18,7 +18,7 @@ public class ColumnaInforme {
 	public ColumnaInforme(boolean visible, String nombre, String atributo, List<String> filtros, String calculo, int ordenar, int posicion) {
 		super();
 		this.visible = visible;
-		this.setNombre(nombre);
+		this.setNombre(nombre);  	
 		this.atributo = atributo;
 		this.filtros = filtros;
 		this.calculo = calculo;

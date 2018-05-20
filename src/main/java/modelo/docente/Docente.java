@@ -15,7 +15,7 @@ public class Docente implements IDocente {
 	private EstadoDocente estado;
 
 	private List<IIncentivo> incentivos;
-	private List<ICargo> cargosDocentes;
+	private List<ICargoDocente> cargosDocentes;
 
 	@Override
 	public IDocente clone() {
@@ -28,7 +28,7 @@ public class Docente implements IDocente {
 
 	public Docente(IPersona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
 			EstadoDocente estado, List<IIncentivo> incentivos,
-			List<ICargo> cargosDocentes) {
+			List<ICargoDocente> cargosDocentes) {
 		super();
 		this.persona = persona;
 		this.legajo = legajo;
@@ -85,18 +85,18 @@ public class Docente implements IDocente {
 	}
 
 	@Override
-    public List<ICargo> getCargosDocentes() {
+    public List<ICargoDocente> getCargosDocentes() {
 		return cargosDocentes;
 	}
 
 	@Override
-    public void agregarCargoDocente(ICargo planta) {
+    public void agregarCargoDocente(ICargoDocente planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.add(planta);
 	}
 
 	@Override
-    public void quitarCargoDocente(ICargo planta) {
+    public void quitarCargoDocente(ICargoDocente planta) {
 		// TODO actualizar BD
 		this.cargosDocentes.remove(planta);
 	}

@@ -1,7 +1,4 @@
-CREATE TABLE `estadocargo` (
-  `idestadocargo` INT NOT NULL,
-  `Descripcion` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idestadocargo`));
+
 
 ALTER TABLE `planta` 
 DROP FOREIGN KEY `estado`;
@@ -20,7 +17,7 @@ ADD CONSTRAINT `estado`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
-ALTER TABLE `persona` 
+ALTER TABLE `Persona` 
 CHANGE COLUMN `Apellido` `Apellido` VARCHAR(50) NOT NULL ,
 CHANGE COLUMN `Nombre` `Nombre` VARCHAR(45) NOT NULL ;
 
@@ -81,9 +78,9 @@ DROP FOREIGN KEY `disp_pro`;
 ALTER TABLE `programainvestigacion` 
 DROP INDEX `disp_idx` ;
 
-ALTER TABLE `programasasignaturas` 
+ALTER TABLE `programasAsignaturas` 
 DROP FOREIGN KEY `dispo`;
-ALTER TABLE `programasasignaturas` 
+ALTER TABLE `programasAsignaturas` 
 DROP INDEX `dispo_idx` ;
 
 ALTER TABLE `prorroga` 
@@ -189,5 +186,5 @@ ADD CONSTRAINT `fk_docentes_3`
   ON UPDATE NO ACTION;
 
 
-ALTER TABLE `persona` 
+ALTER TABLE `Persona` 
 CHANGE COLUMN `FechaNacimiento` `FechaNacimiento` DATE NULL DEFAULT NULL ;

@@ -15,7 +15,7 @@ public class GestorProyecto {
 
     public GestorProyecto() {}
 
-    public EstadoOperacion nuevoProyecto(IProyecto proyecto) {
+    public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
         try {
             ManejoDatos e = new ManejoDatos();
             String table = "Proyecto";
@@ -29,7 +29,7 @@ public class GestorProyecto {
                     + proyecto.getFechaAprobacion() + "\', \'"
                     + proyecto.getFechaInicio() + "\', \'"
                     + proyecto.getFechaFin() + "\', \'"
-                    + proyecto.getPrograma().getId() + "\', \'"
+                    + programa.getId() + "\', \'"
                     + proyecto.getEstado() + "`";
             e.insertar(table, campos, valores);
             return e.isEstado()
@@ -43,7 +43,7 @@ public class GestorProyecto {
         }
     }
 
-    public EstadoOperacion modificarProyecto(IProyecto proyecto) {
+    public EstadoOperacion modificarProyecto(IProyecto proyecto, IPrograma programa) {
         try {
             ManejoDatos e = new ManejoDatos();
             String tabla = "Proyecto";
@@ -57,7 +57,7 @@ public class GestorProyecto {
                     + "\', `Fecha_Aprobacion` =\'"
                     + proyecto.getFechaAprobacion() + "\', `Fecha_Inicio` =\'"
                     + proyecto.getFechaInicio() + "\', `Programa` =\'"
-                    + proyecto.getPrograma().getId() + "\', `Estado` =\'"
+                    + programa.getId() + "\', `Estado` =\'"
                     + proyecto.getEstado() + "\'";
             String condicion = "`Id` = \'" + proyecto.getId() + "\'";
             e.update(tabla, campos, condicion);
@@ -125,11 +125,6 @@ public class GestorProyecto {
                     LocalDate.of(Integer.parseInt(Fecha_Fin[0]),
                         Integer.parseInt(Fecha_Fin[1]),
                         Integer.parseInt(Fecha_Fin[2])));
-                Programa programa =
-                    new Programa(Integer.parseInt(reg.get("Id")), null, null,
-                        null, null, null, null, null, null);
-                p.setPrograma(programa);
-
                 proyectos.add(p);
             }
 
@@ -283,9 +278,6 @@ public class GestorProyecto {
                 condicion +=
                     " `Fecha_Fin` = " + Date.valueOf(proyecto.getFechaFin())
                         .toString() + "'";
-            }
-            if (proyecto.getPrograma() != null) {
-                condicion += "`Programa`= '" + proyecto.getPrograma() + "'";
             }
             if (proyecto.getEstado() != null) {
                 condicion += "`Estado`= '" + proyecto.getEstado() + "'";

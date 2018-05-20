@@ -30,8 +30,6 @@ public interface IProyecto {
     public void setFechaFin(LocalDate fechaFin);
     public EstadoProyecto getEstado();
     public void setEstado(EstadoProyecto estado);
-    public IPrograma getPrograma();
-    public void setPrograma(IPrograma programa);
 
     public List<IIntegrante> getIntegrantes();
     public void agregarIntegrante(IIntegrante integrante);
