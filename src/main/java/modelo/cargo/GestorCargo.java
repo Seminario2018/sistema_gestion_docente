@@ -12,15 +12,16 @@ public class GestorCargo {
     public EstadoOperacion nuevoCargo(ICargo cargo) {
           try {
               ManejoDatos e = new ManejoDatos();
-              String table = "cargo";
+              String table = "Cargos";
               String campos = "`Codigo`, `Descripcion`, `CargaHoraria`";
               if (cargo.getCodigo() == -1) {
             	  cargo.setCodigo(this.getCodigoMax() + 1);
               }
-              String valores = "\'" + cargo.getCodigo() + "\', \'" +cargo.getDescripcion() + "\', \'" + cargo.getCargaHoraria() + "`";
+              String valores = "'" + cargo.getCodigo() + "', '" +cargo.getDescripcion() + "', "
+              		+ "'" + cargo.getCargaHoraria() + "`";
               e.insertar(table, campos, valores);
               return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "El cargo se creo correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
-          } catch (Exception var6) {
+          } catch (Exception e) {
               return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el cargo");
           }
     }
@@ -29,10 +30,12 @@ public class GestorCargo {
           try {
               ManejoDatos e = new ManejoDatos();
               String tabla = "cargo";
-              String campos = "`Codigo` = \'" + cargo.getCodigo() + "\', `Descripcion` = \'" + cargo.getDescripcion() + "\', `CargaHoraria`= \'" + cargo.getCargaHoraria() + "'";
-              String condicion = "`Codigo` = \'" + cargo.getCodigo() + "\'";
+              String campos = "`Descripcion` = '" + cargo.getDescripcion() + "', "
+              		+ "`CargaHoraria`= '" + cargo.getCargaHoraria() + "'";
+              String condicion = "`Codigo` = '" + cargo.getCodigo() + "'";
               e.update(tabla, campos, condicion);
-              return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El cargo se modificÃƒÂ³ correctamente");
+              return e.isEstado()?new EstadoOperacion(CodigoEstado.UPDATE_OK, "El cargo se modificó correctamente"):
+            	  new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el cargo");
           } catch (Exception var6) {
               return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el cargo");
           }
@@ -42,7 +45,8 @@ public class GestorCargo {
          try {
              ManejoDatos e = new ManejoDatos();           
              e.delete("`cargo`", "Codigo = " + cargo.getCodigo());
-             return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se eliminÃƒÂ³ correctamente");
+             return e.isEstado()?new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se eliminó correctamente"):
+            	 new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el cargo");
          } catch (Exception var3) {
              return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el cargo");
          }
@@ -70,9 +74,8 @@ public class GestorCargo {
         return cargos;
     }
     
-    public String armarCondicion(ICargo cargo) {
+    private String armarCondicion(ICargo cargo) {
     	String condicion = "";
-    	//, , 
     	if (cargo.getCodigo() > -0) {
 			condicion += "`Codigo` = " + cargo.getCodigo();
 		}
