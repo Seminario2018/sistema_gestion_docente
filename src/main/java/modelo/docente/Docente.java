@@ -4,7 +4,6 @@ import java.util.List;
 
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
-import modelo.cargo.ICargo;
 import modelo.persona.IPersona;
 
 public class Docente implements IDocente {
@@ -91,35 +90,38 @@ public class Docente implements IDocente {
 
 	@Override
     public void agregarCargoDocente(ICargoDocente planta) {
-		// TODO actualizar BD
 		this.cargosDocentes.add(planta);
+		GestorDocente gd = new GestorDocente();
+		gd.agregarCargoDocente(this, planta);
 	}
 
 	@Override
     public void quitarCargoDocente(ICargoDocente planta) {
-		// TODO actualizar BD
 		this.cargosDocentes.remove(planta);
+		GestorDocente gd = new GestorDocente();
+		gd.quitarCargoDocente(this, planta);
 	}
 
 	@Override
 	public List<IIncentivo> getIncentivos() {
-		// TODO Auto-generated method stub
 		return incentivos;
 	}
 
 
 	@Override
 	public void agregarIncentivo(IIncentivo incentivo) {
-		// TODO Auto-generated method stub
 		this.incentivos.add(incentivo);
+		GestorDocente gd = new GestorDocente();
+		gd.agregarIncentivo(this, incentivo);
 	}
 
 
 
 	@Override
 	public void quitarIncentivo(IIncentivo incentivo) {
-		// TODO Auto-generated method stub
 		this.incentivos.remove(incentivo);
+		GestorDocente gd = new GestorDocente();
+		gd.quitarIncentivo(this, incentivo);
 	}
 
 

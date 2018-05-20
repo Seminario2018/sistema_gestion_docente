@@ -19,7 +19,6 @@ public class GestorArea {
 		String condicion = "TRUE";
 		if (area != null) {
 			condicion = "";
-			//division
 			if (area.getCodigo() != "") {
 				condicion += " `Codigo` = " + area.getCodigo();
 			}
@@ -77,7 +76,6 @@ public class GestorArea {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			String table = "areas";
-			//`Codigo`, `Descripcion`, `Division`, `Responsable`, `Disposicion`, `Desde`, `Hasta`, `SubAreaDe`
 			String campos = "`Codigo`, `Descripcion`, `Division`,`Responsable`, `Disposicion`,`Desde`,`Hasta`,`SubAreaDe`";
 			String valores = "'" + area.getCodigo() + "', '" +area.getDescripcion() + "', '" + area.getDivision() +"', "
 					+ "'"+area.getDocenteResponsable().getLegajo()+"', '"+area.getDispDesde() +"', "
@@ -109,7 +107,7 @@ public class GestorArea {
 	public EstadoOperacion eliminarArea(IArea area) {
 		try {
 			ManejoDatos e = new ManejoDatos();
-			e.delete("`areas`", "Codigo = " + area.getCodigo());
+			e.delete("`Areas`", "Codigo = " + area.getCodigo());
 			return e.isEstado()?new EstadoOperacion(CodigoEstado.DELETE_OK, "El area se eliminó correctamente"):
 				new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el area");
 		} catch (Exception var3) {

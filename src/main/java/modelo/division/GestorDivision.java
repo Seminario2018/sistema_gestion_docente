@@ -93,7 +93,7 @@ public class GestorDivision {
 	public EstadoOperacion eliminarDivision(IDivision division) {
 		try {
 			ManejoDatos e = new ManejoDatos();
-			e.delete("`Division`", "Codigo = " + division.getCodigo());
+			e.delete("`Divisiones`", "Codigo = " + division.getCodigo());
 			return e.isEstado()?new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminó correctamente"):
 				new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la division");
 		} catch (Exception var3) {
@@ -106,7 +106,7 @@ public class GestorDivision {
 
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "divisiones";
+			String table = "Divisiones";
 			String campos = "*";
 			String condicion =  this.armarCondicion(division);
 

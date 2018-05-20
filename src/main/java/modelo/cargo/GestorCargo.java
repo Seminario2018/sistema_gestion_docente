@@ -54,7 +54,7 @@ public class GestorCargo {
 
     public List<ICargo> listarCargo(ICargo cargo) {
         String condicion = "TRUE";
-        String tabla = "cargos";
+        String tabla = "Cargos";
         String campos = "*";
         ArrayList<ICargo> cargos = new ArrayList<ICargo>();
     	if (cargo != null) {
