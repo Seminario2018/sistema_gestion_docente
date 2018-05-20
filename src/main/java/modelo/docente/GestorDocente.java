@@ -55,13 +55,11 @@ public class GestorDocente {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Docentes";
-			String campos = "`Legajo` = '"+ docente.getLegajo()
-			+"', `TipoDocumento` = '"+ docente.getPersona().getTipoDocumento()
-			+"', `NroDocumento`= '"+ docente.getPersona().getNroDocumento()
-			+"', `Observaciones`= '"+ docente.getObservaciones()
-			+"', `CategoriaInvestigacion` = '"+ docente.getCategoriaInvestigacion()
-			+"'";
-			String condicion = "`Legajo` = '" + docente.getLegajo() + "'";
+			String campos = "`TipoDocumento` = '"+ docente.getPersona().getTipoDocumento().getId()
+				+"', `NroDocumento`= '"+ docente.getPersona().getNroDocumento()
+				+"', `Observaciones`= '"+ docente.getObservaciones()
+				+"', `CategoriaInvestigacion` = "+ docente.getCategoriaInvestigacion().getId();
+			String condicion = "`Legajo` = " + docente.getLegajo();
 
 			md.update(tabla, campos, condicion);
 

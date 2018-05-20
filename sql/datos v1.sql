@@ -1,37 +1,37 @@
-delete from areas where areas.SubAreaDe is not null;
-delete from areas;
-delete from divisiones;
-delete from docentes;
-delete from personas;
-delete from cargos;
-delete from categoriasinvestigacion;
-delete from estadoscargos;
-delete from estadosdocentes;
-delete from estadospersonas;
-delete from tiposdocumentos;
+delete from Areas where Areas.SubAreaDe is not null;
+delete from Areas;
+delete from Divisiones;
+delete from Docentes;
+delete from Personas;
+delete from Cargos;
+delete from CategoriasInvestigacion;
+delete from EstadosCargos;
+delete from EstadosDocentes;
+delete from EstadosPersonas;
+delete from TiposDocumentos;
 
 
-insert into tiposdocumentos values
+insert into TiposDocumentos values
 (0, 'DNI');
 
 
-insert into estadospersonas values 
+insert into EstadosPersonas values 
 (0, 'Activa'),
 (1, 'Inactiva');
 
 
-insert into estadosdocentes values 
+insert into EstadosDocentes values 
 (0, 'Activo'),
 (1, 'Inactivo'),
 (2, 'Jubilado');
     
 
-insert into estadoscargos values 
+insert into EstadosCargos values 
 (0, 'Activo'),
 (1, 'Inactivo');
 
 
-insert into categoriasinvestigacion values
+insert into CategoriasInvestigacion values
 (0, 'No categorizado'),
 (1, 'I'),
 (2, 'II'),
@@ -40,7 +40,7 @@ insert into categoriasinvestigacion values
 (5, 'V');
     
 
-insert into cargos values
+insert into Cargos values
 (213,'Profesor Titular Exclusiva',40.0),
 (214,'Profesor Titular Semiexclusiva',20.0),
 (215,'Profesor Titular Simple',10.0),
@@ -67,7 +67,7 @@ insert into cargos values
 
 
 # Jefes de División
-insert into personas values 
+insert into Personas values 
 (0, 9675920, 'Gonzalez', 'Julián', '1945-03-29', 0),
 (0, 17200893, 'Panesco', 'Guillermo', '1967-10-02', 0),
 (0, 11242536, 'Urritiaga', 'Daniel Alfonso', '1951-05-12', 0),
@@ -120,7 +120,7 @@ insert into personas values
 
 
 # Jefes de División
-insert into docentes values 
+insert into Docentes values 
 (469, 0, 9675920, 'Jefe de la división Biología', 1, 0),
 (94, 0, 17200893, 'Jefe de la división Computación', 1, 0),
 (107, 0, 11242536, 'Jefe de la división Estadísticas y Sistemas', 1, 0),
@@ -172,7 +172,7 @@ insert into docentes values
 (143191, 0, 39586150, 'Observaciones de Juran', 1, 0);
 
 
-insert into divisiones values
+insert into Divisiones values
 ('BI','Biología',469,'DD 04/2006','2006-02-14','2009-12-20'),
 ('CO','Computación',94,'DD 13/2012','2006-02-14','2009-12-20'),
 ('ES','Estadísticas y Sistemas',107,'DD 02/2006','2006-02-14','2009-12-20'),
@@ -181,7 +181,7 @@ insert into divisiones values
 ('QU','Química',104,'DD 06/2006','2006-03-01','2009-12-20');
 
 
-insert into areas values
+insert into Areas values
 ('BI.01.00','Ecología','BI',427,'506/12','2001-12-31','2013-12-31',null),
 ('BI.01.01','Ecología Básica','BI',60,'','2001-12-31','2001-12-31','BI.01.00'),
 ('BI.01.02','Ecología Avanzada','BI',60,'','2001-12-31','2001-12-31','BI.01.00'),

@@ -58,8 +58,8 @@ public class TipoDocumento {
 	private void actualizar() {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documento";
-			String campos = "`idTipo` = "+ this.getId() +", `Descripcion` = '" + this.getDescripcion() + "'";
+			String tabla = "TiposDocumentos";
+			String campos = "`Descripcion` = '" + this.getDescripcion() + "'";
 			String condicion = "idTipo = " + this.getId();
 
 			md.update(tabla, campos, condicion);
@@ -74,8 +74,8 @@ public class TipoDocumento {
 	private void insertar() {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documento";
-			String campos = "`idTipo`, `Descripcion`";
+			String tabla = "TiposDocumentos";
+			String campos = "`id`, `Descripcion`";
 			String valores = this.getId() + ", '" + this.getDescripcion() + "'";
 
 			md.insertar(tabla, campos, valores);
@@ -89,9 +89,9 @@ public class TipoDocumento {
 	private boolean existe() {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documento";
+			String tabla = "TiposDocumentos";
 			String campos = "*";
-			String condicion = "idTipo = " + this.getId();
+			String condicion = "id = " + this.getId();
 
 			if(md.select(tabla, campos, condicion).isEmpty()) {
 				return false;
@@ -111,13 +111,12 @@ public class TipoDocumento {
 		try {
 			List<TipoDocumento> documentos = new ArrayList<TipoDocumento>();
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documento";
+			String tabla = "TiposDocumentos";
 			String campos = "*";
-
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
 			for (Hashtable<String, String> reg : res) {
-				TipoDocumento doc = new TipoDocumento(Integer.parseInt(reg.get("idTipo")), reg.get("Descripcion"));
+				TipoDocumento doc = new TipoDocumento(Integer.parseInt(reg.get("id")), reg.get("Descripcion"));
 				documentos.add(doc);
 			}
 
@@ -130,13 +129,14 @@ public class TipoDocumento {
 	public static TipoDocumento getTipo(TipoDocumento doc) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documentos";
+			String tabla = "TiposDocumentos";
 			String campos = "*";
-			String condicion = "idTipo = " + doc.getId();
+			String condicion = "id = " + doc.getId();
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos,condicion);
 			Hashtable<String, String> reg = res.get(0);
-			return new TipoDocumento(Integer.parseInt(reg.get("idTipo")), reg.get("Descripcion"));
+			
+			return new TipoDocumento(Integer.parseInt(reg.get("id")), reg.get("Descripcion"));
 		} catch (NumberFormatException e) {
 			return new TipoDocumento();
 		}

@@ -14,40 +14,23 @@ import persistencia.ManejoDatos;
 public class GestorPersona {
 
 	public EstadoOperacion nuevoUsuario(IPersona persona) {
-
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "EstadosPersonas";
-			String campos = "";
-			String valores =
-					persona.getEstado().getId() + ", '"
-							+ persona.getEstado().getDescripcion() + "'";
-			String condicion =
-					"Descripcion = '" + persona.getEstado().getDescripcion() + "'";
-
-			if (md.select(table, "*", condicion).isEmpty()) {
-				md.insertar(table, "id, Descripcion", valores);
-			}
-
-			ArrayList<Hashtable<String, String>> res =
-					md.select(table, "*", condicion);
-			String estado = res.get(0).get("id");
-
+			
+			persona.getEstado().guardar();
 			persona.getTipoDocumento().guardarTipoDocumento();
 
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
-			String fechaNac =
-					Date.valueOf(persona.getFechaNacimiento()).toString();
+			String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
 
-			table = "Personas";
-			campos =
-					"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`";
-			valores =
+			String table = "Personas";
+			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`";
+			String valores =
 					tipoDoc + ", '" + nroDoc + "'," + " '" + persona.getApellido()
 					+ "', "
 					+ "'" + persona.getNombre() + "',"
-					+ " '" + fechaNac + "', " + estado;
+					+ " '" + fechaNac + "', " + persona.getEstado().getId();
 
 			md.insertar(table, campos, valores);
 
@@ -170,7 +153,7 @@ public class GestorPersona {
 
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "Persona";
+			String table = "Personas";
 			String condicion =
 					" TipoDocumento = " + persona.getTipoDocumento() + ", "
 							+ "NroDocumento = '" + persona.getNroDocumento() + "'";
@@ -202,7 +185,7 @@ public class GestorPersona {
 
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "Persona";
+			String table = "Personas";
 			String campos = "*";
 			String condicion = this.armarCondicion(persona);
 
@@ -235,19 +218,15 @@ public class GestorPersona {
 
 	private EstadoPersona getEstado(String estado) {
 		EstadoPersona e = new EstadoPersona();
-		ManejoDatos md = new ManejoDatos();
-		ArrayList<Hashtable<String, String>> res =
-				md.select("EstadoPersona", "*", "idEstado = " + estado);
-		e.setId(Integer.parseInt(res.get(0).get("idEstado")));
-		e.setDescripcion(res.get(0).get("Descripcion"));
-		return e;
+		e.setDescripcion(estado);
+		return EstadoPersona.getEstado(e);
 	}
 
 	private void agregarDomicilios(IPersona persona) {
 		List<IDomicilio> domicilios = new ArrayList<IDomicilio>();
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "domicilios";
+			String table = "Domicilios";
 			String campos = "*";
 			String condicion = this.armarCondicion2(persona);
 			ArrayList<Hashtable<String, String>> res =
@@ -280,17 +259,17 @@ public class GestorPersona {
 		List<IContacto> contactos = new ArrayList<IContacto>();
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "contacto";
+			String table = "Contactos";
 			String campos = "*";
 			String condicion = this.armarCondicion2(persona);
 			ArrayList<Hashtable<String, String>> res =
 					md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
-				// Contacto c = new Contacto(Integer.parseInt(reg.get("idContacto")), reg.get("Nombre"),
-				// reg.get("Tipo"), reg.get("Valor"));
-
+				TipoContacto tc = new TipoContacto();
+				tc.setId(Integer.parseInt(reg.get("Tipo")));;
+				tc = TipoContacto.getTipoContacto(tc);
 				IContacto c =
-						new Contacto(Integer.parseInt(reg.get("idContacto")), new TipoContacto(), reg.get("valor"));
+						new Contacto(Integer.parseInt(reg.get("idcontacto")), tc, reg.get("valor"));
 				contactos.add(c);
 			}
 			persona.setContactos(contactos);
