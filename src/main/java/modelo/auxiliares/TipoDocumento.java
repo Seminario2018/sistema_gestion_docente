@@ -130,7 +130,7 @@ public class TipoDocumento {
 	public static TipoDocumento getTipo(TipoDocumento doc) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "tipos_documentos";
+			String tabla = "tiposdocumentos";
 			String campos = "*";
 			String condicion = "idTipo = " + doc.getId();
 

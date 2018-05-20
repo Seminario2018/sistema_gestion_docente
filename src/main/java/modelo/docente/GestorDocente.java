@@ -446,4 +446,8 @@ public class GestorDocente {
 		}
 		return cod;
 	}
+
+	public ICargoDocente getICargoDocente() {
+		return new CargoDocente(); 
+	}
 }
