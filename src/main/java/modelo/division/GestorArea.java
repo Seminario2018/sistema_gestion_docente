@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.docente.Docente;
@@ -136,11 +135,11 @@ public class GestorArea {
 				Docente profesor =new Docente(null,Integer.parseInt(reg.get("Jefe")),null,null,null,null,null);
 				GestorDocente gd = new GestorDocente();
 				profesor = (Docente) gd.listarDocente(profesor).get(0);
-				
+
 				Division d=new Division(Integer.parseInt(reg.get("Codigo")),"",null,null,null,null);
 				GestorDivision gdiv = new GestorDivision();
 				d = (Division) gdiv.listarDivision(d).get(0);
-				
+
 				a.setDocenteResponsable(profesor);
 				a.setDivision(d);
 				a.setDisposicion(reg.get("Disposicion"));
@@ -153,7 +152,8 @@ public class GestorArea {
 				areas.add(a);;
 			}
 
-		}catch (Exception e) {
+		} catch (Exception e) {
+		    e.printStackTrace();
 			areas = new ArrayList<IArea>();
 		}
 		return areas;
