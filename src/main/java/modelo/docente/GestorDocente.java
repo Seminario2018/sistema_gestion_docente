@@ -250,7 +250,7 @@ public class GestorDocente {
 	public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String campos = "Codigo, Legajo, Area, Cargo, Tipo_Cargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
+			String campos = "Codigo, Legajo, Area, Cargo, TipoCargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
 			if (cargoDocente.getId() == -1) {
 				cargoDocente.setId(this.getCodigoMax() + 1);
 			}

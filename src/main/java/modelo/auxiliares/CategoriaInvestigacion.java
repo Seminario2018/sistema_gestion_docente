@@ -29,6 +29,65 @@ public class CategoriaInvestigacion {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+    
+    public void guardar() {
+    	if(this.existe()) {
+    		this.actualizar();
+    	}else {
+    		this.insertar();
+    	}
+    }
+
+	private void insertar() {
+		this.setId(CategoriaInvestigacion.getMaxID()+1);
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "CategoriasInvestigacion";
+			String campos = "id, Descripcion";			
+			String valores = this.getId() + ", '" + this.getDescripcion() + "'";
+			
+			md.insertar(tabla, campos, valores);
+			
+		}catch (Exception e){
+			
+		}
+		
+	}
+
+	private void actualizar() {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "CategoriasInvestigacion";
+			String campos = "Descripcion = '" + this.getDescripcion() + "'";
+			String condicion = "id = " + this.getId();
+			
+			md.update(tabla, campos, condicion);
+			
+		}catch (Exception e){
+			
+		}
+		
+	}
+
+	private boolean existe() {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "CategoriasInvestigacion";
+			String campos = "id";
+			String condicion = "id = " + this.getId();
+			
+			if (md.select(tabla, campos, condicion).isEmpty()) {
+				return true;
+			}else {
+				return false;
+			}
+			
+			
+		}catch (Exception e){
+			return false;
+		}
+		
+	}
 
 	/**
 	 * @return la lista de categorías de investigación de la BD
@@ -63,6 +122,23 @@ public class CategoriaInvestigacion {
 		} catch (NumberFormatException e) {
 			return new CategoriaInvestigacion();
 		}
+	}
+	
+	public static int getMaxID() {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "CategoriasInvestigacion";
+			String campos = "Max(id)";
+			
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+			int maxID = Integer.parseInt(res.get(0).get("Max(id)"));
+			return maxID;
+			
+			
+		}catch (Exception e){
+			return 0;
+		}
+
 	}
 
 	@Override

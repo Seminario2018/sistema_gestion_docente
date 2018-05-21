@@ -49,8 +49,7 @@ public class EstadoPersona {
 			String condicion = "idEstado = " + this.getId();
 			
 			md.update(tabla, campos, condicion);
-			
-			
+
 		}catch (Exception e) {
 			
 		}
@@ -60,6 +59,7 @@ public class EstadoPersona {
 	
 	private void insertar() {
 		try {
+			this.setId(EstadoPersona.getMaxID() + 1);
 			ManejoDatos  md = new ManejoDatos();
 			String tabla = "EstadosPersonas";
 			String campos = "idEstado, Descripcion";
@@ -142,5 +142,22 @@ public class EstadoPersona {
 	@Override
 	public String toString() {
 	    return this.descripcion;
+	}
+	
+	public static int getMaxID() {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "EstadosPersonas";
+			String campos = "Max(idEstado)";
+			
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+			int maxID = Integer.parseInt(res.get(0).get("Max(idEstado)"));
+			return maxID;
+			
+			
+		}catch (Exception e){
+			return 0;
+		}
+
 	}
 }

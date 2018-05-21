@@ -12,7 +12,11 @@ public class Cargo implements ICargo {
 	    this.cargaHoraria = cargaHoraria;
 	}
 
-    @Override
+    public Cargo() {
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
     public ICargo clone() {
         return (ICargo) new Cargo(
             this.codigo,
