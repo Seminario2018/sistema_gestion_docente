@@ -19,7 +19,7 @@ public class GestorArea {
 		String condicion = "TRUE";
 		if (area != null) {
 			condicion = "";
-			if (area.getCodigo() != "") {
+			if (!area.getCodigo().equals("") ) {
 				condicion += " `Codigo` = " + area.getCodigo();
 			}
 			if (area.getDescripcion() != null) {
@@ -40,7 +40,7 @@ public class GestorArea {
 				}
 				condicion += " `Responsable` = '" + area.getDocenteResponsable().getLegajo() + "'";
 			}
-			if (area.getDisposicion()!= "") {
+			if (!area.getDisposicion().equals("")) {
 				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}

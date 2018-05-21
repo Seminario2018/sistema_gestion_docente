@@ -136,38 +136,38 @@ public class GestorInforme {
 			if (informe.getId() != 0) {
 				condicion += " `id` = " + informe.getId();
 			}
-			if (informe.getNombre() != "") {
-				if (condicion != "") {
+			if (!informe.getNombre().equals("") ){
+				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}
 				condicion += " `Nombre` = '" + informe.getNombre() + "'";
 			}
-			if (informe.getDescripcion() != "") {
-				if (condicion != "") {
+			if (!informe.getDescripcion().equals("")) {
+				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}
 				condicion += " Descripcion = '" + informe.getDescripcion() + "'";
 			}
 			if (informe.isEditable()) {
-				if (condicion != "") {
+				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}
 				condicion += " Editable = " + 1;
 			}else {
-				if (condicion != "") {
+				if (!condicion.equals("") ) {
 					condicion += " AND ";
 				}
 				condicion += " Editable = " + 0;
 			}
-			if (informe.getFromString() !="" ) {
-				if (condicion != "") {
+			if (!informe.getFromString().equals("") ) {
+				if (!condicion.equals("") ) {
 					condicion += " AND ";
 				}
 				condicion += " `from` = '" + informe.getFromString() + "'";
 			}
 
 			if (informe.getColumnas()!= null) {
-				if (condicion != "") {
+				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}
 				condicion += " `TipoInformecol` = '" +informe.getColumnas() + "'";
