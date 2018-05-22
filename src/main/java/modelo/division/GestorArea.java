@@ -1,6 +1,7 @@
 package modelo.division;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -131,23 +132,23 @@ public class GestorArea {
 				Area a = new Area();
 				a.setCodigo(reg.get("Codigo"));
 				a.setDescripcion(reg.get("Descripcion"));
-				Area sa =new Area(reg.get("Subarea_De"),null,null,null,null,null,null,null);
-				Docente profesor =new Docente(null,Integer.parseInt(reg.get("Jefe")),null,null,null,null,null);
+				Area sa = new Area(reg.get("SubAreaDe"),null,null,null,null,null,null,null);
+				Docente responsable = new Docente(null,Integer.parseInt(reg.get("Responsable")),null,null,null,null,null);
 				GestorDocente gd = new GestorDocente();
-				profesor = (Docente) gd.listarDocente(profesor).get(0);
+				responsable = (Docente) gd.listarDocente(responsable).get(0);
 
-				Division d=new Division(Integer.parseInt(reg.get("Codigo")),"",null,null,null,null);
-				GestorDivision gdiv = new GestorDivision();
-				d = (Division) gdiv.listarDivision(d).get(0);
+				GestorDivision gestorDivision = new GestorDivision();
+				Division d = (Division) gestorDivision.listarDivision(null).get(0);
 
-				a.setDocenteResponsable(profesor);
+				a.setDocenteResponsable(responsable);
 				a.setDivision(d);
 				a.setDisposicion(reg.get("Disposicion"));
 
-				String[] desde = reg.get("Desde").split("-");
-				a.setDispDesde(LocalDate.of(Integer.parseInt(desde[0]),Integer.parseInt(desde[1]), Integer.parseInt(desde[2])));
-				String[] hasta = reg.get("Desde").split("-");
-				a.setDispDesde(LocalDate.of(Integer.parseInt(hasta[0]),Integer.parseInt(hasta[1]), Integer.parseInt(hasta[2])));
+				LocalDate desde = Timestamp.valueOf(reg.get("Desde")).toLocalDateTime().toLocalDate();
+				LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
+
+				a.setDispDesde(desde);
+				a.setDispDesde(hasta);
 				a.setAreaDe(sa);
 				areas.add(a);;
 			}

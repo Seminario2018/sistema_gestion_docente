@@ -103,12 +103,14 @@ public class ManejoDatos {
             ResultSet resultSet =
                 connection.createStatement().executeQuery(query);
             String[] fields = this.getCampos(resultSet, campos);
-            //System.out.println(fields[1]);
             while (resultSet.next()) {
-                // System.out.println(resultSet.getInt(1));
                 Hashtable<String, String> reg = new Hashtable<String, String>();
-                for (String s : fields) {
-                    reg.put(s, resultSet.getString(s));
+                for (String campo : fields) {
+                    String valor = resultSet.getString(campo);
+                    if (valor == null) {
+                        valor = "";
+                    }
+                    reg.put(campo, valor);
                 }
                 res.add(reg);
             }
