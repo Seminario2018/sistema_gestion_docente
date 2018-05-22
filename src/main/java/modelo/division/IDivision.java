@@ -1,14 +1,13 @@
 package modelo.division;
 
 import java.time.LocalDate;
-
 import modelo.docente.IDocente;
 
 public interface IDivision {
 
     public IDivision clone();
-    public int getCodigo();
-    public void setCodigo(int codigo);
+    public String getCodigo();
+    public void setCodigo(String codigo);
     public String getDescripcion();
     public void setDescripcion(String descripcion);
     public IDocente getJefe();

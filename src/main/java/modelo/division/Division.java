@@ -1,12 +1,11 @@
 package modelo.division;
 
 import java.time.LocalDate;
-
 import modelo.docente.IDocente;
 
 public class Division implements IDivision {
 
-	private int codigo;
+	private String codigo;
 	private String descripcion;
 	private IDocente jefe;
 	private String disposicion;
@@ -25,7 +24,7 @@ public class Division implements IDivision {
         );
     }
 
-	public Division(int codigo, String descripcion, IDocente jefe,
+	public Division(String codigo, String descripcion, IDocente jefe,
 	    String disposicion, LocalDate dispDesde, LocalDate dispHasta) {
 
 	    this.codigo = codigo;
@@ -37,16 +36,16 @@ public class Division implements IDivision {
 	}
 
     public Division(){
-        
+
     }
 
     @Override
-    public int getCodigo() {
+    public String getCodigo() {
         return this.codigo;
     }
 
     @Override
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
