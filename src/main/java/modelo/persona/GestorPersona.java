@@ -26,30 +26,26 @@ public class GestorPersona {
 
 			String table = "Personas";
 			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`";
-			String valores =
-					tipoDoc + ", '" + nroDoc + "'," + " '" + persona.getApellido()
-					+ "', "
-					+ "'" + persona.getNombre() + "',"
-					+ " '" + fechaNac + "', " + persona.getEstado().getId();
+			String valores = tipoDoc + ", '" + nroDoc + "', "
+					+ "'" + persona.getApellido() + "', '" + persona.getNombre() + "', "
+					+ "'" + fechaNac + "', " + persona.getEstado().getId();
 
 			md.insertar(table, campos, valores);
 
-			if (persona.getContactos() != null) {
-				if (!persona.getContactos().isEmpty()) {
-					for (IContacto contacto : persona.getContactos()) {
-						this.insertarContactos(persona, contacto);
-					}
+			if (persona.getContactos() != null && !persona.getContactos().isEmpty()) {
+				for (IContacto contacto : persona.getContactos()) {
+					this.insertarContactos(persona, contacto);
 				}
 			}
 
-			if (persona.getDomicilios() != null) {
-				if (!persona.getDomicilios().isEmpty()) {
-					for(IDomicilio domicilio : persona.getDomicilios()) {
-						this.insetarDomicilios(persona, domicilio);
-					}
 
+			if (persona.getDomicilios() != null && !persona.getDomicilios().isEmpty()) {
+				for(IDomicilio domicilio : persona.getDomicilios()) {
+					this.insetarDomicilios(persona, domicilio);
 				}
+
 			}
+			
 
 			if (persona.getTitulos() != null) {
 				if (!persona.getTitulos().isEmpty()) {
@@ -76,14 +72,16 @@ public class GestorPersona {
 	private void insertarTitulos(IPersona persona, ITitulo titulo) {
 		ManejoDatos md = new ManejoDatos();
 		int esMayor = titulo.isEsMayor() ? 1 : 0;
+		
+		if (titulo.getId() == -1) {
+			titulo.setId(this.getMax("Titulos", "id"));
+		}
+		
 		String table = "Titulos";
-		String campos =
-				"`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
-		String valores =
-				titulo.getId() + ", " + persona.getTipoDocumento().getId()
-				+ ", "
-				+ "'" + persona.getNroDocumento() + "', '"
-				+ titulo.getNombre() + "', " + esMayor;
+		String campos = "`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
+		String valores = titulo.getId() + ", "
+				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', "
+				+ "'" + titulo.getNombre() + "', " + esMayor;
 
 		md.insertar(table, campos, valores);
 
@@ -92,37 +90,35 @@ public class GestorPersona {
 
 	private void insetarDomicilios(IPersona persona, IDomicilio domicilio) {
 		ManejoDatos md = new ManejoDatos();
+		
+		if (domicilio.getId() == -1) {
+			domicilio.setId(this.getMax("Domicilios", "iddomicilios"));
+		}
+		
 		String table = "Domicilios";
-		String campos =
-				"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`,"
-						+ "`CodigoPostal`, `Direccion`";
-		String valores =
-				domicilio.getId() + ", " + persona.getTipoDocumento().getId()
-				+ ", "
-				+ "'" + persona.getNroDocumento() + "', '"
-				+ domicilio.getProvincia() + "', "
-				+ "'" + domicilio.getCiudad() + "', '"
-				+ domicilio.getCodigoPostal() + "', "
-				+ "'" + domicilio.getDireccion() + "'";
+		String campos =	"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`, `CodigoPostal`, `Direccion`";
+		String valores =domicilio.getId() + ", "
+				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', '"
+				+ domicilio.getProvincia() + "', '" + domicilio.getCiudad() + "', "
+				+ "'" + domicilio.getCodigoPostal() + "', '" + domicilio.getDireccion() + "'";
 
 		md.insertar(table, campos, valores);
 
 	}
 
-	private void insertarContactos(IPersona persona, IContacto contacto) {
+	public void insertarContactos(IPersona persona, IContacto contacto) {
 		ManejoDatos md = new ManejoDatos();
-		String table = "TiposContactos";
-		String campos = "`id`, `Descripcion`";
-		String valores = contacto.getTipo().getId() + ", '" + contacto.getTipo().getDescripcion() + "'";
-		md.insertar(table, campos, valores);
-		table = "Contactos";
-		campos =
-				"`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
-		valores =
-				contacto.getId() + ", " + persona.getTipoDocumento().getId()
-				+ ", "
-				+ "'" + persona.getNroDocumento() + "', '"
-				+ contacto.getId() + "', "
+		
+		contacto.getTipo().guardar();
+		
+		if (contacto.getId() == -1) {
+			contacto.setId(this.getMax("Contactos", "idcontacto"));
+		}
+		
+		String table = "Contactos";
+		String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
+		String valores = contacto.getId() + ", "
+				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', "
 				+ contacto.getTipo().getId() + ", '" + contacto.getDato() + "'";
 
 		md.insertar(table, campos, valores);
@@ -133,9 +129,7 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Personas";
-			String condicion =
-					" TipoDocumento = " + persona.getTipoDocumento() + ", "
-							+ "NroDocumento = '" + persona.getNroDocumento() + "'";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
 
 			md.delete(table, condicion);
 
@@ -152,20 +146,16 @@ public class GestorPersona {
 	public EstadoOperacion modificarPersona(IPersona persona) {
 
 		try {
+			
+			persona.getEstado().guardar();
+			
 			ManejoDatos md = new ManejoDatos();
 			String table = "Personas";
-			String condicion =
-					" TipoDocumento = " + persona.getTipoDocumento() + ", "
-							+ "NroDocumento = '" + persona.getNroDocumento() + "'";
+			String condicion =	" TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
 
-			String campos =
-					"`TipoDocumento` = " + persona.getTipoDocumento().getId() + ", "
-							+ "`NroDocumento` = '" + persona.getNroDocumento() + "', "
-							+ "`Apellido` = '" + persona.getApellido()
-							+ "', `Nombre` = '" + persona.getNombre() + "', "
-							+ "`FechaNacimiento` = '"
-							+ Date.valueOf(persona.getFechaNacimiento()).toString()
-							+ "', "
+			String campos =	"`Apellido` = '" + persona.getApellido() + "', "
+							+ "`Nombre` = '" + persona.getNombre() + "', "
+							+ "`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() 	+ "', "
 							+ "`Estado` = " + persona.getEstado().getId();
 
 			md.update(table, campos, condicion);
@@ -189,9 +179,9 @@ public class GestorPersona {
 			String campos = "*";
 			String condicion = this.armarCondicion(persona);
 
-			ArrayList<Hashtable<String, String>> res =
-					md.select(table, campos, condicion);
-
+			ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
+			
+			//`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`
 			for (Hashtable<String, String> reg : res) {
 				Persona p = new Persona();
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
@@ -201,11 +191,10 @@ public class GestorPersona {
 				String[] fnac = reg.get("FechaNacimiento").split("-");
 				p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]), Integer.parseInt(fnac[1]), Integer.parseInt(fnac[2])));
 				p.setEstado(this.getEstado(reg.get("Estado")));
-				this.agregarTitulos(p);
-				this.agregarContactos(p);
-				this.agregarDomicilios(p);
+				p.setTitulos(this.getTitulos(p));
+				p.setContactos(this.getContactos(p));
+				p.setDomicilios(this.getDomicilios(p));
 				personas.add(p);
-
 			}
 
 		} catch (Exception e) {
@@ -222,7 +211,7 @@ public class GestorPersona {
 		return EstadoPersona.getEstado(e);
 	}
 
-	private void agregarDomicilios(IPersona persona) {
+	public List<IDomicilio> getDomicilios(IPersona persona) {
 		List<IDomicilio> domicilios = new ArrayList<IDomicilio>();
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -236,9 +225,9 @@ public class GestorPersona {
 						new Domicilio(Integer.parseInt(reg.get("iddomicilios")), reg.get("Provincia"), reg.get("Ciudad"), reg.get("CodigoPostal"), reg.get("Domicilio"));
 				domicilios.add(d);
 			}
-			persona.setDomicilios(domicilios);
+			return domicilios;
 		} catch (Exception e) {
-			persona.setDomicilios(new ArrayList<IDomicilio>());
+			return new ArrayList<IDomicilio>();
 		}
 
 	}
@@ -255,7 +244,7 @@ public class GestorPersona {
 		return condicion;
 	}
 
-	private void agregarContactos(IPersona persona) {
+	public List<IContacto> getContactos(IPersona persona) {
 		List<IContacto> contactos = new ArrayList<IContacto>();
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -272,13 +261,13 @@ public class GestorPersona {
 						new Contacto(Integer.parseInt(reg.get("idcontacto")), tc, reg.get("valor"));
 				contactos.add(c);
 			}
-			persona.setContactos(contactos);
+			return contactos;
 		} catch (Exception e) {
-			persona.setContactos(new ArrayList<IContacto>());
+			return new ArrayList<IContacto>();
 		}
 	}
 
-	private void agregarTitulos(IPersona persona) {
+	public List<ITitulo> getTitulos(IPersona persona) {
 		List<ITitulo> titulos = new ArrayList<ITitulo>();
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -292,9 +281,9 @@ public class GestorPersona {
 						new Titulo(Integer.parseInt(reg.get("idtitulos")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
 				titulos.add(t);
 			}
-			persona.setTitulos(titulos);
+			return titulos;
 		} catch (Exception e) {
-			persona.setTitulos(new ArrayList<ITitulo>());
+			return new ArrayList<ITitulo>();
 		}
 	}
 
@@ -333,6 +322,21 @@ public class GestorPersona {
 			}
 		}
 		return condicion;
+	}
+	
+	private int getMax(String tabla,String campo) {
+		try {
+			String campos = "MAX(" + campo + ")";
+			
+			ManejoDatos md = new ManejoDatos();
+
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+			int max = Integer.parseInt(res.get(0).get(campos));
+			return max;
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+		
 	}
 
 }
