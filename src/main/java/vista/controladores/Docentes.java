@@ -50,27 +50,61 @@ public class Docentes extends ControladorVista {
 	private ControlDocente controlDocente = new ControlDocente(this);
 	public IDocente docenteSeleccionado = this.controlDocente.getIDocente();
 
+	private static final String TITULO = "Docentes";
+
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
 	@FXML public TextField txtDocentesNombre;
 
 	@FXML private void buscarDocente() {
-		/* TEST Docentes: Selección de docente */
-		// Recupera al docente legajo 143191
-		this.docenteSeleccionado = this.controlDocente
-				.listarDocente(new Docente(null, 143191, null, null, null, null, null))
-//				.listarDocente(null)
-				.get(0);
-		//*/
-		actualizarCamposGeneral();
+	    try {
+	        int legajo = Integer.parseInt(txtDocentesLegajo.getText());
+	        /* TEST Docentes: Selección de docente *
+	        int legajo = 143191;
+	        //*/
+	        IDocente docenteBusqueda = new Docente();
+	        docenteBusqueda.setLegajo(legajo);
+	        List<IDocente> docentes = this.controlDocente.listarDocente(docenteBusqueda);
+
+	        switch (docentes.size()) {
+	            case 0:
+	                alertaError(TITULO, "Buscar docente", "No existen docentes con el legajo indicado.\nLegajo: " + String.valueOf(legajo));
+	                break;
+	            case 1:
+	                docenteSeleccionado = docentes.get(0);
+	                actualizarCamposGeneral();
+	                break;
+	            default:
+	                throw new RuntimeException("Más de un docente con el mismo legajo.");
+	        }
+
+	    } catch (NumberFormatException nfe) {
+	        alertaError(TITULO, "Buscar docente", "El legajo ingresado no es numérico.");
+	    }
 	}
 
 	@FXML private void nuevoDocente() {
-
+	    try {
+    	    IDocente docenteNuevo = this.controlDocente.getIDocente();
+    	    int legajo = Integer.parseInt(txtDocentesLegajo.getText());
+    	    docenteNuevo.setLegajo(legajo);
+    	    if (this.controlDocente.listarDocente(docenteNuevo).isEmpty()) {
+    	        docenteSeleccionado = docenteNuevo;
+    	        this.txtDocentesNombre.clear();
+    	    } else {
+    	        alertaError(TITULO, "Nuevo docente", "Un docente con este legajo ya existe.\nLegajo: " + String.valueOf(legajo));
+    	    }
+	    } catch (NumberFormatException nfe) {
+            alertaError(TITULO, "Nuevo docente", "El legajo ingresado no es numérico.");
+	    }
     }
 
 	@FXML private void eliminarDocente() {
-
+	    if (docenteSeleccionado != null) {
+	        this.controlDocente.eliminarDocente(docenteSeleccionado);
+	        docenteSeleccionado = null;
+	        vaciarCamposGeneral();
+	    }
     }
 
 	@FXML private void importarUltimoCosto() {
@@ -152,12 +186,12 @@ public class Docentes extends ControladorVista {
 	@FXML private void buscarPersona() {
 	    // TODO "Seleccionar Persona"
 	}
-	
+
 	private void actualizarCamposDatos() {
 		vaciarCamposDatos();
 		mostrarDatos();
 	}
-	
+
 	private void vaciarCamposDatos() {
 		txtDatosDocumento.clear();
 		txtDatosNombre.clear();
@@ -423,6 +457,7 @@ public class Docentes extends ControladorVista {
         //*/
 		// TODO Sacar lista de áreas de la BD (?)
 	    List<IArea> listaAreas = this.controlDivision.listarAreas(null);
+	    areaSeleccionada = listaAreas.get(0);
 		txtCargosArea.setText(areaSeleccionada.getDescripcion());
     }
 
@@ -501,6 +536,7 @@ public class Docentes extends ControladorVista {
 	}
 
 	@FXML private void inicializarInvestigacion() {
+	    inicializarTabla("Investigación");
 	    if (docenteSeleccionado != null) {
 	        txtInvestigacionCategoria.setText(
 	                docenteSeleccionado.getCategoriaInvestigacion().getDescripcion());
@@ -534,10 +570,11 @@ public class Docentes extends ControladorVista {
 	private void listarIncentivosTabla() {
 	    List<IIncentivo> listaIncentivos = docenteSeleccionado.getIncentivos();
         filasIncentivos.clear();
-        if (listaIncentivos != null)
-        	for (IIncentivo incentivo : listaIncentivos) {
+        if (listaIncentivos != null) {
+            for (IIncentivo incentivo : listaIncentivos) {
         		filasIncentivos.add(new FilaIncentivo(incentivo));
-        	}	
+        	}
+        }
 	}
 
 	@FXML public void inicializarTablaIncentivos() {
