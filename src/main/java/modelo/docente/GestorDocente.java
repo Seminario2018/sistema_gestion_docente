@@ -12,7 +12,9 @@ import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
 import modelo.auxiliares.TipoDocumento;
 import modelo.cargo.Cargo;
+import modelo.cargo.GestorCargo;
 import modelo.division.Area;
+import modelo.division.GestorArea;
 import modelo.persona.GestorPersona;
 import modelo.persona.Persona;
 import persistencia.ManejoDatos;
@@ -22,20 +24,31 @@ public class GestorDocente {
 	public EstadoOperacion nuevoDocente(IDocente docente) {
 		try {
 			ManejoDatos md=new ManejoDatos();
+			docente.getEstado().guardar();
+			docente.getCategoriaInvestigacion().guardar();
+			if (!(GestorPersona.existePersona(docente.getPersona()))) {
+				GestorPersona gp = new GestorPersona();
+				gp.nuevaPersona(docente.getPersona());
+			}
+			
 			String table="Docentes";
-			String campos="`Legajo`, `TipoDocumento`, `NroDocumento`, `Observaciones`, "
-					+ "`CategoriaInvestigacion`, `Estado`";
+			String campos="`Legajo`, `TipoDocumento`, `NroDocumento`, `Observaciones`, `CategoriaInvestigacion`, `Estado`";
 			String valores= docente.getLegajo() + ", " +docente.getPersona().getTipoDocumento().getId() +", "
-					+ "'"+docente.getPersona().getNroDocumento() +"', '"+docente.getObservaciones() + "', "
+					+ "'" + docente.getPersona().getNroDocumento() +"', '"+docente.getObservaciones() + "', "
 					+ docente.getCategoriaInvestigacion().getId() +", "+docente.getEstado().getId();
+			
 			md.insertar(table, campos, valores);
+			
+			/*
 
 			for (IIncentivo incentivo : docente.getIncentivos()) {
 				this.agregarIncentivo(docente, incentivo);
 			}
+			
 			for (ICargoDocente cargoDocente : docente.getCargosDocentes()) {
 				this.agregarCargoDocente(docente, cargoDocente);
 			}
+			*/
 
 			if (md.isEstado()) {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,"El docente se creó correctamente");
@@ -47,7 +60,6 @@ public class GestorDocente {
 
 		} catch (Exception e) {
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,"Error al crear al docente");
-
 		}
 	}
 
@@ -102,7 +114,6 @@ public class GestorDocente {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
-				//`Observaciones`, `CategoriaInvestigacion`, `Estado`
 				GestorPersona gp = new GestorPersona();
 				Persona p = new Persona();
 				TipoDocumento td = new TipoDocumento();
@@ -249,6 +260,20 @@ public class GestorDocente {
 
 	public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 		try {
+			
+			if (!GestorArea.existeArea(cargoDocente.getArea())) {
+				GestorArea ga = new GestorArea();
+				ga.nuevaArea(cargoDocente.getArea());
+			}
+			
+			if(!GestorCargo.existeCargo(cargoDocente.getCargo())) {
+				GestorCargo gc = new GestorCargo();
+				gc.nuevoCargo(cargoDocente.getCargo());
+			}
+			
+			cargoDocente.getEstado().guardar();
+			cargoDocente.getTipoCargo().guardar();
+			
 			ManejoDatos md = new ManejoDatos();
 			String campos = "Codigo, Legajo, Area, Cargo, TipoCargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
 			if (cargoDocente.getId() == -1) {
@@ -352,9 +377,19 @@ public class GestorDocente {
 			for (Hashtable<String, String> reg : res) {
 				CargoDocente cargoN = new CargoDocente();
 				cargoN.setId(Integer.parseInt(reg.get("Codigo")));
-				cargoN.setArea(new Area(reg.get("Area"), null, null, null, null, null, null, null));
-				cargoN.setCargo(new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1));
-				cargoN.setTipoCargo(new TipoCargo(0, reg.get("Tipo_Cargo")));
+				
+				GestorArea ga = new GestorArea();
+				Area a = new Area(reg.get("Area"), null, null, null, null, null, null, null);
+				a = (Area) ga.listarArea(a).get(0);
+				
+				cargoN.setArea(a);
+				
+				GestorCargo gc = new GestorCargo();
+				Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
+				car = (Cargo) gc.listarCargo(car).get(0);
+				
+				cargoN.setCargo(car);
+				cargoN.setTipoCargo(TipoCargo.getTipoCargo(new TipoCargo(0, reg.get("Tipo_Cargo"))));
 				cargoN.setDisposicion(reg.get("Disposicion"));
 				cargoN.setResolucion(reg.get("Resolucion"));
 				cargoN.setUltimoCosto(Float.parseFloat(reg.get("CostoActual")));
@@ -444,6 +479,24 @@ public class GestorDocente {
 		}
 		return cod;
 	}
+	
+	public static boolean existeDocente(IDocente docente) {
+		String tabla = "Docentes";
+		if (docente == null || docente.getLegajo() == -1) {
+			return false;
+		}
+		String condicion = "Legajo = " + docente.getLegajo();
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+
+		}catch (Exception e) {
+			return false;
+		}
+	}
+	
+	
 
 	/**
 	 * @return Una plantilla ICargoDocente vacía

@@ -91,6 +91,18 @@ public class GestorArea {
 	public EstadoOperacion modificarArea(IArea area) {
 		try {
 			ManejoDatos e = new ManejoDatos();
+			
+			if (!GestorDivision.existeDivision(area.getDivision())){
+				GestorDivision gd = new GestorDivision();
+				gd.nuevaDivision(area.getDivision());
+			}
+			
+			if (area.getDocenteResponsable() != null && !GestorDocente.existeDocente(area.getDocenteResponsable())) {
+				GestorDocente gd = new GestorDocente();
+				gd.nuevoDocente(area.getDocenteResponsable());
+			}
+			
+			
 			String tabla = "Areas";
 			String campos = "`Descripcion` = '" + area.getDescripcion() + "', `Division`= '" + area.getDivision().getCodigo() +"', "
 					+ "`Responsable`= '" + area.getDocenteResponsable().getLegajo()+"', `Desde`"+area.getDispDesde()+"', "
@@ -159,6 +171,24 @@ public class GestorArea {
 		}
 		return areas;
 	}
+	
+	
+	public static boolean existeArea(IArea area) {
+    	String tabla = "Areas";
+		if (area == null || area.getCodigo() == null) {
+			return false;
+		}
+		String condicion = "Codigo = '" + area.getCodigo() + "'";
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+
+		}catch (Exception e) {
+			return false;
+		}
+    }
+
 
 }
 

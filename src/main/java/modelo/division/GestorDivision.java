@@ -64,15 +64,18 @@ public class GestorDivision {
 
     public EstadoOperacion nuevaDivision(IDivision division) {
         try {
+        	
+        	if (division.getJefe() != null && !GestorDocente.existeDocente(division.getJefe())) {
+        		GestorDocente gd = new GestorDocente();
+        		gd.nuevoDocente(division.getJefe());
+        	}
+        	
             ManejoDatos e = new ManejoDatos();
             String table = "Divisiones";
             String campos =
                 "`Codigo`, `Descripcion`, `Jefe`, `Disposicion`, `Desde`, `Hasta`";
-            String valores =
-                "'" + division.getCodigo() + "', '" + division.getDescripcion()
-                    + "', "
-                    + "'" + division.getJefe().getLegajo() + "', "
-                    + division.getDisposicion() + ", "
+            String valores = "'" + division.getCodigo() + "', '" + division.getDescripcion() + "', "
+                	+ "" + division.getJefe().getLegajo() + ", '" + division.getDisposicion() + "', "
                     + "'" + Date.valueOf(division.getDispDesde()) + "', "
                     + "'" + Date.valueOf(division.getDispHasta()) + "'";
             e.insertar(table, campos, valores);
@@ -86,10 +89,15 @@ public class GestorDivision {
 
     public EstadoOperacion modificarDivision(IDivision division) {
         try {
+        	
+        	if (division.getJefe() != null && !GestorDocente.existeDocente(division.getJefe())) {
+        		GestorDocente gd = new GestorDocente();
+        		gd.nuevoDocente(division.getJefe());
+        	}
+        	
             ManejoDatos e = new ManejoDatos();
             String tabla = "Divisiones";
-            String campos =
-                "`Descripcion` = '" + division.getDescripcion() + "', "
+            String campos = "`Descripcion` = '" + division.getDescripcion() + "', "
                     + "`Jefe`= '" + division.getJefe().getLegajo() + "', "
                     + "`Disposicion`= '" + division.getDisposicion() + "', "
                     + "`Desde` = '" + Date.valueOf(division.getDispDesde())
@@ -134,10 +142,9 @@ public class GestorDivision {
                 Division d = new Division();
                 d.setCodigo(reg.get("Codigo"));
                 d.setDescripcion(reg.get("Descripcion"));
+                
                 GestorDocente gd = new GestorDocente();
-
-                Docente profesor =
-                    new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null, null);
+                Docente profesor =  new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null, null);
                 profesor = (Docente) gd.listarDocente(profesor).get(0);
                 d.setJefe(profesor);
 
@@ -151,11 +158,27 @@ public class GestorDivision {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             divisiones = new ArrayList<IDivision>();
         }
 
         return divisiones;
+    }
+    
+    
+    public static boolean existeDivision(IDivision division) {
+    	String tabla = "Divisiones";
+		if (division == null || division.getCodigo() == null) {
+			return false;
+		}
+		String condicion = "Codigo = '" + division.getCodigo() + "'";
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+
+		}catch (Exception e) {
+			return false;
+		}
     }
 
 }

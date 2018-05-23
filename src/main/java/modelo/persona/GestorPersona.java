@@ -13,7 +13,7 @@ import persistencia.ManejoDatos;
 
 public class GestorPersona {
 
-	public EstadoOperacion nuevoUsuario(IPersona persona) {
+	public EstadoOperacion nuevaPersona(IPersona persona) {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			
@@ -337,6 +337,24 @@ public class GestorPersona {
 			return 0;
 		}
 		
+	}
+	
+	
+	public static boolean existePersona(IPersona persona) {
+		String tabla = "Personas";
+		if (persona == null || persona.getTipoDocumento() == null || persona.getNroDocumento() == -1) {
+			return false;
+		}
+		String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + ", "
+				+ "NroDocumento = '" + persona.getNroDocumento() + "'";
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+
+		}catch (Exception e) {
+			return false;
+		}
 	}
 
 }

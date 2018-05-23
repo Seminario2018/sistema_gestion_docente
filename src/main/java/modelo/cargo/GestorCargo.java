@@ -109,6 +109,22 @@ public class GestorCargo {
     	}
     	return cod;
     }
+
+	public static boolean existeCargo(ICargo cargo) {
+		String tabla = "Cargos";
+		if (cargo == null || cargo.getCodigo() == -1) {
+			return false;
+		}
+		String condicion = "Codigo = " + cargo.getCodigo();
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+
+		}catch (Exception e) {
+			return false;
+		}
+	}
     
     
     
