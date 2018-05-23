@@ -43,6 +43,7 @@ public class TipoContacto {
 
     private void insertar() {
     	try {
+    		this.setId(TipoContacto.getMaxID() + 1);
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "TiposContactos";
 			String campos = "id, Descripcion";
@@ -121,6 +122,21 @@ public class TipoContacto {
     		return new TipoContacto();
     	}
     	
+    }
+    
+    public static int getMaxID() {
+    	try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "TiposContactos";
+			String campos = "Max(id)";
+			
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+			int maxID = Integer.parseInt(res.get(0).get("Max(id)"));
+			
+			return maxID;
+		}catch (Exception e) {
+			return 0;
+		}
     }
     
 

@@ -65,11 +65,6 @@ public class GestorDivision {
     public EstadoOperacion nuevaDivision(IDivision division) {
         try {
         	
-        	if (division.getJefe() != null && !GestorDocente.existeDocente(division.getJefe())) {
-        		GestorDocente gd = new GestorDocente();
-        		gd.nuevoDocente(division.getJefe());
-        	}
-        	
             ManejoDatos e = new ManejoDatos();
             String table = "Divisiones";
             String campos =
@@ -81,7 +76,7 @@ public class GestorDivision {
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "La division se creó correctamente")
-                : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+                : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la division");
         } catch (Exception var6) {
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la division");
         }

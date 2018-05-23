@@ -77,9 +77,9 @@ public class CategoriaInvestigacion {
 			String condicion = "id = " + this.getId();
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
-				return true;
-			}else {
 				return false;
+			}else {
+				return true;
 			}
 			
 			

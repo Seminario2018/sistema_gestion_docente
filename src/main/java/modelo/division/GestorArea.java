@@ -75,14 +75,20 @@ public class GestorArea {
 
 		try {
 			ManejoDatos e = new ManejoDatos();
-			String table = "areas";
-			String campos = "`Codigo`, `Descripcion`, `Division`,`Responsable`, `Disposicion`,`Desde`,`Hasta`,`SubAreaDe`";
-			String valores = "'" + area.getCodigo() + "', '" +area.getDescripcion() + "', '" + area.getDivision() +"', "
-					+ "'"+area.getDocenteResponsable().getLegajo()+"', '"+area.getDispDesde() +"', "
-					+ "'"+area.getDispHasta() +"', "
-					+ "'"+area.getAreaDe().getCodigo() +"'";
+			String table = "Areas";
+			//`Codigo`, `Descripcion`, `Division`, `Responsable`, `Disposicion`, `Desde`, `Hasta`, `SubAreaDe`
+			String campos = "`Codigo`, `Descripcion`, `Division`,`Responsable`, `Disposicion`,`Desde`,`Hasta`";
+			String valores = "'" + area.getCodigo() + "', '" +area.getDescripcion() + "', '" + area.getDivision().getCodigo() +"', "
+					+ "'"+area.getDocenteResponsable().getLegajo()+"', "
+					+ "'" + area.getDisposicion() + "', "
+					+ "'"+area.getDispDesde() +"', "
+					+ "'"+area.getDispHasta() +"'";
+			if (area.getAreaDe() != null) {
+				campos += ", `SubAreaDe`";
+				valores += ", '" + area.getAreaDe().getCodigo() + "'";
+			}
 			e.insertar(table, campos, valores);
-			return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "El Area se creó correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+			return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "El Area se creó correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Area");
 		} catch (Exception var6) {
 			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Area");
 		}

@@ -60,7 +60,7 @@ public class TipoDocumento {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "TiposDocumentos";
 			String campos = "`Descripcion` = '" + this.getDescripcion() + "'";
-			String condicion = "idTipo = " + this.getId();
+			String condicion = "id = " + this.getId();
 
 			md.update(tabla, campos, condicion);
 

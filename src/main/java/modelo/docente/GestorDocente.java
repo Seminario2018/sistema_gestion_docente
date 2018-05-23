@@ -1,6 +1,7 @@
 package modelo.docente;
 
 
+import java.sql.Date;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -26,10 +27,6 @@ public class GestorDocente {
 			ManejoDatos md=new ManejoDatos();
 			docente.getEstado().guardar();
 			docente.getCategoriaInvestigacion().guardar();
-			if (!(GestorPersona.existePersona(docente.getPersona()))) {
-				GestorPersona gp = new GestorPersona();
-				gp.nuevaPersona(docente.getPersona());
-			}
 			
 			String table="Docentes";
 			String campos="`Legajo`, `TipoDocumento`, `NroDocumento`, `Observaciones`, `CategoriaInvestigacion`, `Estado`";
@@ -39,17 +36,19 @@ public class GestorDocente {
 			
 			md.insertar(table, campos, valores);
 			
-			/*
-
-			for (IIncentivo incentivo : docente.getIncentivos()) {
-				this.agregarIncentivo(docente, incentivo);
+			
+			if (docente.getIncentivos() != null) {
+				for (IIncentivo incentivo : docente.getIncentivos()) {
+					this.agregarIncentivo(docente, incentivo);
+				}
 			}
 			
-			for (ICargoDocente cargoDocente : docente.getCargosDocentes()) {
-				this.agregarCargoDocente(docente, cargoDocente);
+			
+			if (docente.getCargosDocentes() != null) {
+				for (ICargoDocente cargoDocente : docente.getCargosDocentes()) {
+					this.agregarCargoDocente(docente, cargoDocente);
+				} 
 			}
-			*/
-
 			if (md.isEstado()) {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,"El docente se creó correctamente");
 			} else {
@@ -261,11 +260,6 @@ public class GestorDocente {
 	public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 		try {
 			
-			if (!GestorArea.existeArea(cargoDocente.getArea())) {
-				GestorArea ga = new GestorArea();
-				ga.nuevaArea(cargoDocente.getArea());
-			}
-			
 			if(!GestorCargo.existeCargo(cargoDocente.getCargo())) {
 				GestorCargo gc = new GestorCargo();
 				gc.nuevoCargo(cargoDocente.getCargo());
@@ -274,22 +268,23 @@ public class GestorDocente {
 			cargoDocente.getEstado().guardar();
 			cargoDocente.getTipoCargo().guardar();
 			
-			ManejoDatos md = new ManejoDatos();
-			String campos = "Codigo, Legajo, Area, Cargo, TipoCargo, Estado_Cargo, Disposicion, Resolucion, CostoActual";
 			if (cargoDocente.getId() == -1) {
 				cargoDocente.setId(this.getCodigoMax() + 1);
 			}
-			String valores = String.format("'%d', '%d', '%s', '%d', '%s', '%d', '%s', '%s', '%d'",
-					cargoDocente.getId(),
-					docente.getLegajo(),
-					cargoDocente.getArea().getCodigo(),
-					cargoDocente.getCargo().getCodigo(),
-					cargoDocente.getTipoCargo().getDescripcion(),
-					cargoDocente.getEstado().getId(),
-					cargoDocente.getDisposicion(),
-					cargoDocente.getResolucion(),
-					0
-					);
+			
+			ManejoDatos md = new ManejoDatos();
+			String campos = "`Codigo`, `Legajo`, `Area`, `Cargo`, `TipoCargo`, "
+					+ "`Disposicion`, `DispDesde`, `DispHasta`, `Resolucion`, `ResDesde`, `ResHasta`, "
+					+ "`UltimoCosto`, `FechaUltimoCosto`, `EstadoCargo`";
+			
+			
+			String valores = cargoDocente.getId() + ", " + docente.getLegajo() + ", '" + cargoDocente.getArea().getCodigo() + "', "
+					+ cargoDocente.getCargo().getCodigo() + ", " + cargoDocente.getTipoCargo().getId() + ", "
+					+ "'" + cargoDocente.getDisposicion() + "', "
+					+ "'" + Date.valueOf(cargoDocente.getDispDesde()) + "', '" + Date.valueOf(cargoDocente.getDispHasta()) + "', "
+					+ "'" + cargoDocente.getResolucion() + "', "
+					+ "'"  + Date.valueOf(cargoDocente.getResDesde()) + "', '" + Date.valueOf(cargoDocente.getResHasta()) + "', "
+					+ cargoDocente.getUltimoCosto() + ", '" + Date.valueOf(cargoDocente.getFechaUltCost()) + "', " + cargoDocente.getEstado().getId(); 
 			md.insertar("CargosDocentes", campos, valores);
 			if (md.isEstado()) {
 				return new EstadoOperacion(
@@ -467,7 +462,7 @@ public class GestorDocente {
 
 
 	private int getCodigoMax() {
-		int cod = 1;
+		int cod = 0;
 		try {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "MAX(Codigo)");
@@ -475,7 +470,7 @@ public class GestorDocente {
 				cod = Integer.parseInt(reg.get("MAX(Codigo)"));
 			}
 		}catch(Exception e){
-			cod = 1;
+			cod = 0;
 		}
 		return cod;
 	}

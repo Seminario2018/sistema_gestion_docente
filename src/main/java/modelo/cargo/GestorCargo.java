@@ -18,7 +18,7 @@ public class GestorCargo {
             	  cargo.setCodigo(this.getCodigoMax() + 1);
               }
               String valores = "'" + cargo.getCodigo() + "', '" +cargo.getDescripcion() + "', "
-              		+ "'" + cargo.getCargaHoraria() + "`";
+              		+ cargo.getCargaHoraria();
               e.insertar(table, campos, valores);
               return e.isEstado()?new EstadoOperacion(CodigoEstado.INSERT_OK, "El cargo se creo correctamente"):new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
           } catch (Exception e) {

@@ -36,7 +36,7 @@ public class UsuarioTest {
 				td, 40455634, null, null, null, ep);
 				
 		GestorPersona gp = new GestorPersona();
-		System.out.println(gp.nuevoUsuario(p).getMensaje());
+		System.out.println(gp.nuevaPersona(p).getMensaje());
 		
 		Usuario u = new Usuario("leomarazzo", "leonardomarazzo", "Leonardo", new ArrayList<IRol>());
 		u.setPersona(p);

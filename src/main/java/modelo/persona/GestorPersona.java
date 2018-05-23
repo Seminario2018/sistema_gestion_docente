@@ -333,7 +333,7 @@ public class GestorPersona {
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
 			int max = Integer.parseInt(res.get(0).get(campos));
 			return max;
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			return 0;
 		}
 		
