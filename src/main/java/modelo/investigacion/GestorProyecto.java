@@ -17,10 +17,45 @@ public class GestorProyecto {
 
     public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
         try {
+        	
+        	proyecto.getEstado().guardar();
+        
             ManejoDatos e = new ManejoDatos();
-            String table = "Proyecto";
-            String campos = "`Id`, `Nombre`, `Descripcion`, `Director`, `Fecha_Presentacion`, `Fecha_Aprobacion`,`Fecha_Inicio`,`Fecha_Fin`,`Programa`,`Estado`";
-            String valores = "\'" + proyecto.getId() + "\', \'" + proyecto.getNombre() + "\', \'" + proyecto.getDescripcion() + "\', " + proyecto.getDirector().getLegajo() + ", \'" + proyecto.getFechaPresentacion() + "\', \'" + proyecto.getFechaAprobacion() + "\', \'" + proyecto.getFechaInicio() + "\', \'" + proyecto.getFechaFin() + "\', \'" + programa.getId() + "\', \'" + proyecto.getEstado() + "`";
+            String table = "Proyectos";
+            String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
+            String valores = proyecto.getId() + ", '" + proyecto.getNombre() + "', "
+            		+ "'" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
+            		+ "" + proyecto.getDirector().getLegajo() + ", " + proyecto.getEstado().getId();
+            
+            if (proyecto.getResumen() != null && !proyecto.getResumen().equals("")) {
+            	campos += ", `Resumen`";
+            	valores += ", '" + proyecto.getResumen() + "'";
+            }
+            if (proyecto.getFechaAprobacion() != null) {
+            	campos += ", `FechaAprobacion`";
+            	valores += ", '" + Date.valueOf(proyecto.getFechaAprobacion()) + "'";
+            }
+            if (proyecto.getDescripcion() != null && !proyecto.getDescripcion().equals("")) {
+            	campos += ", `Descripcion`";
+            	valores += ", '" + proyecto.getDescripcion() + "'";
+            }
+            if (proyecto.getCodirector() != null) {
+            	campos += ", `Codirector`";
+            	valores += ", " + proyecto.getCodirector().getLegajo();
+            }
+            if (proyecto.getFechaInicio() != null) {
+            	campos += ", `FechaInicio`";
+            	valores += ", '" + Date.valueOf(proyecto.getFechaInicio()) + "'";
+            }
+            if (proyecto.getFechaFin() != null) {
+            	campos += ", `Fecha_Fin`";
+            	valores += ", '" + Date.valueOf(proyecto.getFechaFin()) + "'";
+            }
+            if (programa != null) {
+            	campos += ", `Programa`";
+            	valores += ", " + programa.getId();
+            }
+            
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente")
