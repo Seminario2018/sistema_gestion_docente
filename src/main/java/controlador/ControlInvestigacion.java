@@ -13,7 +13,7 @@ public class ControlInvestigacion {
 
     private GestorProyecto gestorProyecto = new GestorProyecto();
 
-//    Proyectos
+    //    Proyectos
     public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
         return this.gestorProyecto.nuevoProyecto(proyecto, programa);
     }
@@ -30,7 +30,11 @@ public class ControlInvestigacion {
         return this.gestorProyecto.listarProyecto(proyecto);
     }
 
-//    Integrantes
+    public IProyecto getIProyecto() {
+        return this.gestorProyecto.getIProyecto();
+    }
+
+    //    Integrantes
     public EstadoOperacion agregarIntegrante(IProyecto proyecto, IIntegrante integrante) {
         return this.gestorProyecto.AgregarIntegrante(proyecto, integrante);
     }
@@ -39,7 +43,7 @@ public class ControlInvestigacion {
         return this.gestorProyecto.AgregarIntegrante(proyecto, integrante);
     }
 
-//    Subsidios
+    //    Subsidios
     public EstadoOperacion agregarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
         return this.gestorProyecto.agregarSubsidio(proyecto, subsidio);
     }
@@ -48,7 +52,7 @@ public class ControlInvestigacion {
         return this.gestorProyecto.quitarSubsidio(proyecto, subsidio);
     }
 
-//    Prorrogas
+    //    Prorrogas
     public EstadoOperacion agregarProrroga(IProyecto proyecto, IProrroga prorroga) {
         return this.gestorProyecto.agregarProrroga(proyecto, prorroga);
     }
