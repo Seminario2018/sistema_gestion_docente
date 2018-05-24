@@ -1,5 +1,6 @@
 package modelo.investigacion;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -17,12 +18,30 @@ public class GestorPrograma {
 			programa.getEstado().guardar();
 			
 			ManejoDatos md = new ManejoDatos();
-			//nullables `Codirector`, `Disposicion`, `Desde`, `Hasta`,
+			//nullables, ,
 			String table = "ProgramasInvestigacion";
 			String campos = "`id`, `Nombre`, `Director`, `Estado`";
 			String valores = programa.getId() + ", '" + programa.getNombre() + "', "
 					+ "" + programa.getDirector().getLegajo() + ", " + programa.getEstado().getId();
+			if (programa.getCodirector() != null) {
+				campos += ", `Codirector`";
+				valores += ", " + programa.getCodirector().getLegajo();
+			}
 			
+			if (programa.getDisposicion() != null && !programa.getDisposicion().equals("")) {
+				campos += ", `Disposicion`";
+				valores += ", '" + programa.getDisposicion() + "'";
+			}
+			
+			if (programa.getFechaInicio() != null) {
+				campos += ", `Desde`";
+				valores += ", '" + Date.valueOf(programa.getFechaInicio()) + "'";
+			}
+			
+			if (programa.getFechaFin() != null) {
+				campos += ", `Hasta`";
+				valores += ", '" + Date.valueOf(programa.getFechaFin()) + "'";
+			}
 			
 			md.insertar(table, campos, valores);
 			
@@ -38,6 +57,9 @@ public class GestorPrograma {
 					"No se pudo guardar el programa");
 		}
 	}
+	
+	
+	
 
 	private int getMaxID() {
 		try {
