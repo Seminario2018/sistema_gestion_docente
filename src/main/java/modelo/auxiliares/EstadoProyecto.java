@@ -77,7 +77,7 @@ public class EstadoProyecto {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "EstadosProyectos";
 			String campos = "idEstadoProyecto";
-			String condicion = "idEstadoProyecto = " + this.getId();
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return true;

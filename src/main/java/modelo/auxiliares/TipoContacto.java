@@ -77,8 +77,8 @@ public class TipoContacto {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "TiposContactos";
-			String campos = "*";
-			String condicion = "id = " + this.id;
+			String campos = "id";
+			String condicion = "Descripcion = '" +  this.getDescripcion() + "'";
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return false;

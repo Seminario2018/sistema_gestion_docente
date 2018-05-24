@@ -76,8 +76,8 @@ public class EstadoPersona {
 		try {
 			ManejoDatos  md = new ManejoDatos();
 			String tabla = "EstadosPersonas";
-			String campos = "*";
-			String condicion = "idEstado = " + this.getId();
+			String campos = "idEstado";
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			if (res.isEmpty()) {

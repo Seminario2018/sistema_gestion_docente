@@ -90,8 +90,8 @@ public class TipoDocumento {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "TiposDocumentos";
-			String campos = "*";
-			String condicion = "id = " + this.getId();
+			String campos = "id";
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 
 			if(md.select(tabla, campos, condicion).isEmpty()) {
 				return false;

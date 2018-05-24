@@ -74,7 +74,7 @@ public class CategoriaInvestigacion {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "CategoriasInvestigacion";
 			String campos = "id";
-			String condicion = "id = " + this.getId();
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return false;

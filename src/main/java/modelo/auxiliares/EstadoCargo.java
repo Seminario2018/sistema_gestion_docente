@@ -86,7 +86,7 @@ public class EstadoCargo {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "EstadosCargos";
 			String campos = "idestadocargo";
-			String condicion = "idestadocargo = " + this.getId();
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";;
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return true;

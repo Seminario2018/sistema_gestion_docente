@@ -74,7 +74,7 @@ public class EstadoDocente {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "EstadosDocentes";
 			String campos = "id";
-			String condicion = "id = " + this.getId();
+			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return true;
