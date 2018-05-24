@@ -76,7 +76,7 @@ public class ManejoDatos {
             while (resultSet.next()) {
                 Hashtable<String, String> reg = new Hashtable<String, String>();
                 for (String s : fields) {
-                    reg.put(s, resultSet.getString(s));
+                	reg.put(s, resultSet.getString(s) == null ? "" : resultSet.getString(s));
                 }
                 res.add(reg);
             }
@@ -106,11 +106,7 @@ public class ManejoDatos {
             while (resultSet.next()) {
                 Hashtable<String, String> reg = new Hashtable<String, String>();
                 for (String campo : fields) {
-                    String valor = resultSet.getString(campo);
-                    if (valor == null) {
-                        valor = "";
-                    }
-                    reg.put(campo, valor);
+                    reg.put(campo, resultSet.getString(campo) == null ? "" : resultSet.getString(campo));
                 }
                 res.add(reg);
             }
