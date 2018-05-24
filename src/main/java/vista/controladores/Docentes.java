@@ -26,7 +26,6 @@ import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
-import modelo.docente.Docente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
@@ -57,46 +56,19 @@ public class Docentes extends ControladorVista {
 	@FXML public TextField txtDocentesNombre;
 
 	@FXML private void buscarDocente() {
-	    try {
-	        int legajo = Integer.parseInt(txtDocentesLegajo.getText());
-	        /* TEST Docentes: Selección de docente *
-	        int legajo = 143191;
-	        //*/
-	        IDocente docenteBusqueda = new Docente();
-	        docenteBusqueda.setLegajo(legajo);
-	        List<IDocente> docentes = this.controlDocente.listarDocente(docenteBusqueda);
-
-	        switch (docentes.size()) {
-	            case 0:
-	                alertaError(TITULO, "Buscar docente", "No existen docentes con el legajo indicado.\nLegajo: " + String.valueOf(legajo));
-	                break;
-	            case 1:
-	                docenteSeleccionado = docentes.get(0);
-	                actualizarCamposGeneral();
-	                break;
-	            default:
-	                throw new RuntimeException("Más de un docente con el mismo legajo.");
-	        }
-
-	    } catch (NumberFormatException nfe) {
-	        alertaError(TITULO, "Buscar docente", "El legajo ingresado no es numérico.");
-	    }
+	    /* TEST Docentes: Selección de docente */
+        // Recupera al docente legajo 143191
+	    IDocente docenteBusqueda = this.controlDocente.getIDocente();
+	    docenteBusqueda.setLegajo(143191);
+	    docenteSeleccionado = this.controlDocente
+	        .listarDocente(docenteBusqueda)
+	        .get(0);
+        actualizarCamposGeneral();
+        //*/
 	}
 
 	@FXML private void nuevoDocente() {
-	    try {
-    	    IDocente docenteNuevo = this.controlDocente.getIDocente();
-    	    int legajo = Integer.parseInt(txtDocentesLegajo.getText());
-    	    docenteNuevo.setLegajo(legajo);
-    	    if (this.controlDocente.listarDocente(docenteNuevo).isEmpty()) {
-    	        docenteSeleccionado = docenteNuevo;
-    	        this.txtDocentesNombre.clear();
-    	    } else {
-    	        alertaError(TITULO, "Nuevo docente", "Un docente con este legajo ya existe.\nLegajo: " + String.valueOf(legajo));
-    	    }
-	    } catch (NumberFormatException nfe) {
-            alertaError(TITULO, "Nuevo docente", "El legajo ingresado no es numérico.");
-	    }
+
     }
 
 	@FXML private void eliminarDocente() {
@@ -104,6 +76,7 @@ public class Docentes extends ControladorVista {
 	        this.controlDocente.eliminarDocente(docenteSeleccionado);
 	        docenteSeleccionado = null;
 	        vaciarCamposGeneral();
+	        dialogoConfirmacion(TITULO, "Eliminar docente", "El docente fue eliminado con éxito.");
 	    }
     }
 
