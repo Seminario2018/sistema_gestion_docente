@@ -26,6 +26,15 @@ public class ColumnaInforme {
 		this.posicion = posicion;
 	}
 	
+	public ColumnaInforme() {
+		this.setNombre(null);  	
+		this.atributo = null;
+		this.filtros = null;
+		this.calculo = null;
+		this.ordenar = -1;
+		this.posicion = -1;
+	}
+
 	public boolean isVisible() {
 		return visible;
 	}

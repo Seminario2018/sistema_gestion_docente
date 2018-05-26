@@ -2,7 +2,9 @@ package modelo.informe;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
@@ -15,14 +17,28 @@ public class GestorInforme {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			String table = "TiposInformes";
+			
+			informe.setId(GestorInforme.getMaxID(table, "id"));
 
 			int editable = informe.isEditable() ? 1 : 0;
-			String campos = "`id`, `Nombre`, `Descripcion`, `Editable`, `FromString`, `GroupByString`";
-			String valores = informe.getId() + ", '" + informe.getNombre()+ "', "
-					+ "'" + informe.getDescripcion() + "', "
-					+ editable + ", "
-					+ "'" + informe.getFromString() + "', "
-					+ "'" + informe.getGroupByString() + "'";
+			// 
+			String campos = "`id`, `Nombre`, `Editable`";
+			String valores = informe.getId() + ", '" + informe.getNombre()+ "', " + editable;
+			
+			if (informe.getDescripcion() != null && !informe.getDescripcion().equals("")) {
+				campos += ", `Descripcion`";
+				valores += "'" + informe.getDescripcion() + "'";
+			}
+			if (informe.getFromString() != null && !informe.getFromString().equals("")) {
+				campos += ", `FromString`";
+				valores += ", " + informe.getFromString() + "'";
+			}
+			if (informe.getGroupByString() != null && !informe.getFromString().equals("")) {
+				campos += ", `GroupByString`";
+				valores += ", '" + informe.getGroupByString() + "'";
+				
+			}
+			
 			e.insertar(table, campos, valores);
 			
 			for (ColumnaInforme col : informe.getColumnas()) {
@@ -36,17 +52,30 @@ public class GestorInforme {
 	}
 
 
+	
+
+
 	public void agregarColumna(TipoInforme informe, ColumnaInforme col) throws Exception {
-		//`TipoInforme`, `Visible`, `Nombre`, `Atributo`, `Filtros`, `Calculo`, `Ordenar`, `Posicion`
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Columnas";
-			String campos = "`TipoInforme`, `Visible`, `Nombre`, `Atributo`, `Filtros`, `Calculo`, "
-					+ "`Ordenar`, `Posicion`";
+			String campos = "`TipoInforme`, `Visible`, `Atributo`, `Ordenar`, `Posicion`";
 			int visible = col.isVisible() ? 1 : 0;
-			String valores = informe.getId() + ", " + visible + ", '" + col.getNombre() + "', "
-					+ "'" + col.getAtributo() + "', '" + col.getFiltros().toString() + "', "
-					+ "'" + col.getCalculo() + "', " + col.getOrdenar() + ", " + col.getPosicion();
+			String valores = informe.getId() + ", " + visible + ", '" + col.getAtributo() + "', " + col.getOrdenar() + ", " + col.getPosicion();
+			
+			if (col.getNombre() != null && !col.getNombre().equals("")) {
+				campos += ", `Nombre`";
+				valores += ", '" + col.getNombre() + "'";
+			}
+			if (col.getFiltros() != null) {
+				campos += ", `Filtros`";
+				valores += ", '" + col.getFiltros() + "'";
+			}
+			if (col.getCalculo() != null && !col.getCalculo().equals("")) {
+				campos += ", `Calculo`";
+				valores += ", '" + col.getCalculo() + "'";
+			}
+			
 			md.insertar(table, campos, valores);
 			
 			
@@ -67,11 +96,19 @@ public class GestorInforme {
 			String tabla = "TiposInformes";
 			int editable = informe.isEditable() ? 1 : 0;
 			String campos = "Nombre = '" + informe.getNombre() + "', "
-					+ "Descripcion = '" + informe.getDescripcion() + "', "
-					+ "Editable = " + editable + ", "
-					+ "FromString = '" +informe.getFromString() + "', "
-					+ "GroupByString = '" + informe.getGroupByString() + "'";
-
+					+ "Editable = " + editable;
+			
+			if (informe.getDescripcion() != null && !informe.getDescripcion().equals("")) {
+				campos += ", Descripcion = '" + informe.getDescripcion() + "'";
+			}
+			
+			if (informe.getFromString() != null && !informe.getFromString().equals("")) {
+				campos += ", FromString = '" + informe.getFromString() + "'";
+			}
+			
+			if (informe.getGroupByString() != null && !informe.getGroupByString().equals("")) {
+				campos += ", GroupByString = '" + informe.getGroupByString() + "'";
+			}
 			String condicion = "`id` = '" + informe.getId() + "'";
 			e.update(tabla, campos, condicion);
 			return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El informe se modificó correctamente");
@@ -95,7 +132,7 @@ public class GestorInforme {
 
 
 
-	public ArrayList<ITipoInforme> listarProyecto(ITipoInforme informe) {
+	public ArrayList<ITipoInforme> listarTipoInforme(ITipoInforme informe) {
 
 		ArrayList<ITipoInforme> informes = new ArrayList<ITipoInforme>();
 		String condicion = "TRUE";
@@ -109,10 +146,22 @@ public class GestorInforme {
 				TipoInforme t=new TipoInforme();
 				t.setId(Integer.parseInt(reg.get("id")));
 				t.setNombre(reg.get("Nombre"));
-				t.setDescripcion(reg.get("Descripcion"));
+				
+				if (!reg.get("Descripcion").equals("")) {
+					t.setDescripcion(reg.get("Descripcion"));
+				}
+				
 				t.setEditable((reg.get("Editable") == "1" ? true : false));
-				t.setFromString(reg.get("FromString"));
-				t.setGroupByString(reg.get("GroupByString"));
+				
+				if (!reg.get("FromString").equals("")) {
+					t.setFromString(reg.get("FromString"));
+				}
+				if (!reg.get("GroupByString").equals("")) {
+					t.setGroupByString(reg.get("GroupByString"));
+				}
+				
+				t.setColumnas(this.listarColumnas(informe, null));
+				
 				informes.add(t);	
 			}
 
@@ -127,14 +176,77 @@ public class GestorInforme {
 
 
 
+	private List<ColumnaInforme> listarColumnas(ITipoInforme informe, ColumnaInforme columna) {
+		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>();
+		ManejoDatos md = new ManejoDatos();
+		String tabla = "Columnas";
+		String condicion = this.armarCondicion(informe, columna);
+		
+		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+		for (Hashtable<String, String> reg : res) {
+			ColumnaInforme c = new ColumnaInforme();
+			//`Visible`, `Nombre`, `Atributo`, `Filtros`, `Calculo`, `Ordenar`, `Posicion`
+			c.setVisible(reg.get("Visible") == "1" ? true : false);
+			
+			if (!reg.get("Visible").equals("")) {
+				c.setNombre(reg.get("Nombre"));
+			}
+			c.setAtributo(reg.get("Atributo"));
+			if (!reg.get("Filtros").equals("")) {
+				c.setFiltros(Arrays.asList(reg.get("Filtros").split(",")));
+			}
+			if (!reg.get("Calculo").equals("")) {
+				c.setCalculo(reg.get("Calculo"));
+			}
+			c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
+			c.setPosicion(Integer.parseInt(reg.get("Posicion")));
+			columnas.add(c);
+		}
+		
+		return columnas;
+	}
+
+
+
+
+
+	private String armarCondicion(ITipoInforme informe, ColumnaInforme columna) {
+		String condicion = "TRUE";
+		if (informe != null) {
+			condicion += " AND TipoInforme = " + informe.getId();
+		}
+		if (columna !=null) {
+			if (columna.getNombre() != null && !columna.getNombre().equals("")) {
+				condicion += " AND Nombre = '" + columna.getNombre() + "'";
+			}
+			if (columna.getAtributo() != null && ! columna.getAtributo().equals("")) {
+				condicion += " AND Atributo = '" + columna.getAtributo() + "'";
+			}
+			if (columna.getFiltros() != null) {
+				condicion += " AND Filtros = '" + columna.getFiltros().toString() + "'";
+			}
+			if (columna.getOrdenar() != -1) {
+				condicion += " AND Ordenar = " + columna.getOrdenar();
+			}
+			if (columna.getPosicion() != -1) {
+				condicion += " AND Posicion = " + columna.getPosicion();
+			}
+		}
+		
+		return condicion;
+	}
+
+
+
+
+
 	private String armarCondicion(ITipoInforme informe) {
 
 		String condicion = "TRUE";
 		if (informe != null) {
-			condicion = "";
 
 			if (informe.getId() != 0) {
-				condicion += " `id` = " + informe.getId();
+				condicion += " AND `id` = " + informe.getId();
 			}
 			if (!informe.getNombre().equals("") ){
 				if (!condicion.equals("")) {
@@ -174,6 +286,19 @@ public class GestorInforme {
 			}
 		}
 		return condicion;
+	}
+	
+	private static int getMaxID(String tabla, String string) {
+		int maxID = 0;
+		try {
+			ManejoDatos md = new ManejoDatos(); 
+			String campo = "MAX(" + string + ")";
+			maxID = Integer.parseInt(md.select(tabla, campo).get(0).get(campo));
+		} catch (Exception e) {
+			maxID = 0;
+		}
+		
+		return maxID;
 	}
 
 
