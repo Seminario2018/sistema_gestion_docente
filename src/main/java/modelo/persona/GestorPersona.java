@@ -17,18 +17,28 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			
-			persona.getEstado().guardar();
+			
 			persona.getTipoDocumento().guardarTipoDocumento();
 
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
-			String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
+			
 
 			String table = "Personas";
-			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`";
+			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`";
 			String valores = tipoDoc + ", '" + nroDoc + "', "
-					+ "'" + persona.getApellido() + "', '" + persona.getNombre() + "', "
-					+ "'" + fechaNac + "', " + persona.getEstado().getId();
+					+ "'" + persona.getApellido() + "', '" + persona.getNombre();
+			
+			if (persona.getFechaNacimiento() != null) {
+				String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
+				campos += ", `FechaNacimiento`";
+				valores += "'" + fechaNac + "'";
+			}
+			if (persona.getEstado() != null) {
+				persona.getEstado().guardar();
+				campos += ", `Estado`";
+				valores += ", " + persona.getEstado().getId();
+			}
 
 			md.insertar(table, campos, valores);
 
@@ -154,10 +164,16 @@ public class GestorPersona {
 			String condicion =	" TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
 
 			String campos =	"`Apellido` = '" + persona.getApellido() + "', "
-							+ "`Nombre` = '" + persona.getNombre() + "', "
-							+ "`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() 	+ "', "
-							+ "`Estado` = " + persona.getEstado().getId();
-
+							+ "`Nombre` = '" + persona.getNombre() + "'";
+			
+			
+			if (persona.getFechaNacimiento() != null) {
+				campos += ", `FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'";
+			}
+			if (persona.getEstado() != null) {
+				persona.getEstado().guardar();
+				campos += ", `Estado` = " + persona.getEstado().getId();
+			}
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
@@ -188,9 +204,16 @@ public class GestorPersona {
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p.setApellido(reg.get("Apellido"));
 				p.setNombre(reg.get("Nombre"));
-				String[] fnac = reg.get("FechaNacimiento").split("-");
-				p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]), Integer.parseInt(fnac[1]), Integer.parseInt(fnac[2])));
-				p.setEstado(this.getEstado(reg.get("Estado")));
+				
+				
+				if (!reg.get("FechaNacimiento").equals("")) {
+					String[] fnac = reg.get("FechaNacimiento").split("-");
+					p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]), Integer.parseInt(fnac[1]),
+							Integer.parseInt(fnac[2])));
+				}
+				if (!reg.get("Estado").equals("")) {
+					p.setEstado(this.getEstado(reg.get("Estado")));
+				}
 				p.setTitulos(this.getTitulos(p));
 				p.setContactos(this.getContactos(p));
 				p.setDomicilios(this.getDomicilios(p));
@@ -198,8 +221,8 @@ public class GestorPersona {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			//          personas = new ArrayList<IPersona>();
+			
+			personas = new ArrayList<IPersona>();
 		}
 
 		return personas;
