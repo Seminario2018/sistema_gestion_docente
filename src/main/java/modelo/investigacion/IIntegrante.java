@@ -1,7 +1,5 @@
 package modelo.investigacion;
 
-import modelo.auxiliares.TipoDocumento;
-
 public interface IIntegrante {
     public IIntegrante clone();
     public String getCargo();
@@ -15,4 +13,7 @@ public interface IIntegrante {
     public void setApellido(String apellido);
     public void setId(int id);
     public int getId();
+    public int getLegajo();
+    public void setLegajo(int legajo);
+    public void setInstitucion(String institucion);
 }

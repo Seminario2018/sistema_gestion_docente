@@ -155,6 +155,11 @@ public class GestorPrograma {
 				estado = EstadoPrograma.getEstado(estado);
 				p.setEstado(estado);
 				
+				GestorProyecto gp = new GestorProyecto();
+				List<IProyecto> proyectos = gp.listarProyecto(null, p);
+				for (IProyecto proyecto : proyectos) {
+					p.agregarProyecto(proyecto);
+				}
 				programas.add(p);
 				
 			}

@@ -46,7 +46,17 @@ public class Integrante implements IIntegrante {
         this.horasSemanales = horasSemanales;
     }
 
-    @Override
+    public Integrante() {
+    	 this.id = -1;
+         this.legajo = -1;
+         this.apellido = null;
+         this.nombre = null;
+         this.cargo = null;
+         this.institucion = null;
+         this.horasSemanales = -1;
+	}
+
+	@Override
     public IIntegrante clone() {
         return (IIntegrante) new Integrante(this.id,
                 this.legajo,
@@ -89,21 +99,17 @@ public class Integrante implements IIntegrante {
 
     @Override
     public String getNombre() {
-        // TODO Auto-generated method stub
         return this.nombre;
     }
 
     @Override
     public void setNombre(String nombre) {
-        // TODO Auto-generated method stub
         this.nombre=nombre;
     }
 
     @Override
     public void setApellido(String apellido) {
-        // TODO Auto-generated method stub
         this.apellido=apellido;
-
     }
 
     @Override
@@ -115,4 +121,19 @@ public class Integrante implements IIntegrante {
     public void setId(int id) {
         this.id = id;
     }
+
+	public int getLegajo() {
+		return legajo;
+	}
+
+	public void setLegajo(int legajo) {
+		this.legajo = legajo;
+	}
+
+	public void setInstitucion(String institucion) {
+		this.institucion = institucion;
+	}
+    
+    
+    
 }

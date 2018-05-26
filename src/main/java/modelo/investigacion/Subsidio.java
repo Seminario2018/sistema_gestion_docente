@@ -21,7 +21,15 @@ public class Subsidio implements ISubsidio {
 	    this.rendiciones = new ArrayList<IRendicion>(rendiciones);
 	}
 
-    @Override
+    public Subsidio() {
+    	this.fecha = null;
+	    this.disposicion = null;
+	    this.montoTotal = -1;
+	    this.observaciones = null;
+	    this.rendiciones = null;
+	}
+
+	@Override
     public ISubsidio clone() {
         return (ISubsidio) new Subsidio(
             this.fecha,

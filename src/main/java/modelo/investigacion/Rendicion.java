@@ -15,7 +15,14 @@ public class Rendicion implements IRendicion {
 	    this.observaciones = observaciones;
 	}
 
-    @Override
+    public Rendicion() {
+    	this.id = -1;
+	    this.fecha = null;
+	    this.monto = -1;
+	    this.observaciones = null;
+	}
+
+	@Override
     public IRendicion clone() {
         return (IRendicion) new Rendicion(
         		this.id,

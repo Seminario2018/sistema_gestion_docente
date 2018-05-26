@@ -1,4 +1,4 @@
-delete from permisos;
+delete from Permisos;
 delete from usuarios;
 delete from roles;
 
@@ -142,10 +142,10 @@ DROP FOREIGN KEY `fk_RolesXUsuario_2`;
 ALTER TABLE `rolesxusuario` 
 DROP INDEX `fk_RolesXUsuario_2_idx` ;
 
-ALTER TABLE `permisos` 
+ALTER TABLE `Permisos` 
 DROP FOREIGN KEY `fk_Permiso_1`;
-ALTER TABLE `permisos` 
-DROP INDEX `fk_permisos_2_idx` ;
+ALTER TABLE `Permisos` 
+DROP INDEX `fk_Permisos_2_idx` ;
 
 ALTER TABLE `roles` 
 ADD COLUMN `id` INT NOT NULL FIRST,
@@ -170,12 +170,12 @@ ADD CONSTRAINT `fk_rolesxusuario_2`
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
-ALTER TABLE `permisos` 
+ALTER TABLE `Permisos` 
 DROP FOREIGN KEY `fk_Permiso_2`;
-ALTER TABLE `permisos` 
+ALTER TABLE `Permisos` 
 CHANGE COLUMN `Rol` `Rol` INT NOT NULL ,
 ADD INDEX `fk_Permiso_1_idx` (`Rol` ASC);
-ALTER TABLE `permisos` 
+ALTER TABLE `Permisos` 
 ADD CONSTRAINT `fk_Permiso_2`
   FOREIGN KEY (`Modulo`)
   REFERENCES `modulos` (`idmodulo`)

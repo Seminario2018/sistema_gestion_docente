@@ -115,6 +115,23 @@ public class EstadoProyecto {
         	return new ArrayList<EstadoProyecto>();
         }
     }
+    
+    public static EstadoProyecto getEstado(EstadoProyecto estado) {
+    	try {
+        	ManejoDatos md = new ManejoDatos();
+        	String tabla = "EstadosProyectos";
+        	String campos = "*";
+        	
+        	ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+        	Hashtable<String, String> reg = res.get(0);
+				
+        	estado.setDescripcion(reg.get("Descripcion"));
+        	
+        	return estado;      	
+        }catch (Exception e) {
+        	return null;
+        }
+    }
 
     
     public static int getMaxID() {

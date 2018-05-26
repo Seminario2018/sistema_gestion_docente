@@ -14,7 +14,13 @@ public class Prorroga implements IProrroga {
 	    this.fechaFin = fechaFin;
 	}
 
-    @Override
+    public Prorroga() {
+    	this.disposicion = null;
+	    this.fechaInicio = null;
+	    this.fechaFin = null;
+	}
+
+	@Override
     public IProrroga clone() {
         return (IProrroga) new Prorroga(
             this.disposicion,
