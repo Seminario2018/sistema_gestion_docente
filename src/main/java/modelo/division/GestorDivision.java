@@ -67,12 +67,25 @@ public class GestorDivision {
         	
             ManejoDatos e = new ManejoDatos();
             String table = "Divisiones";
-            String campos =
-                "`Codigo`, `Descripcion`, `Jefe`, `Disposicion`, `Desde`, `Hasta`";
-            String valores = "'" + division.getCodigo() + "', '" + division.getDescripcion() + "', "
-                	+ "" + division.getJefe().getLegajo() + ", '" + division.getDisposicion() + "', "
-                    + "'" + Date.valueOf(division.getDispDesde()) + "', "
-                    + "'" + Date.valueOf(division.getDispHasta()) + "'";
+            String campos = "`Codigo`, `Descripcion`";
+            String valores = "'" + division.getCodigo() + "', '" + division.getDescripcion() + "'";
+            //`Jefe`, `Disposicion`, `Desde`, `Hasta`
+            if (division.getJefe() != null) {
+            	campos += ", Jefe";
+            	valores += ", " + division.getJefe().getLegajo();
+            }
+            if (division.getDisposicion() != null && !division.getDisposicion().equals("")) {
+            	campos += ", Disposicion";
+            	valores += ", '" + division.getDisposicion() + "'";
+            }
+            if (division.getDispDesde() != null) {
+            	campos += ", Desde";
+            	valores += ", '" + Date.valueOf(division.getDispDesde()) + "'";
+            }
+            if (division.getDispHasta() != null) {
+            	campos += ", Hasta";
+            	valores += ", '" + Date.valueOf(division.getDispHasta()) + "'";
+            }
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "La division se creó correctamente")
@@ -85,21 +98,22 @@ public class GestorDivision {
     public EstadoOperacion modificarDivision(IDivision division) {
         try {
         	
-        	if (division.getJefe() != null && !GestorDocente.existeDocente(division.getJefe())) {
-        		GestorDocente gd = new GestorDocente();
-        		gd.nuevoDocente(division.getJefe());
-        	}
-        	
             ManejoDatos e = new ManejoDatos();
             String tabla = "Divisiones";
-            String campos = "`Descripcion` = '" + division.getDescripcion() + "', "
-                    + "`Jefe`= '" + division.getJefe().getLegajo() + "', "
-                    + "`Disposicion`= '" + division.getDisposicion() + "', "
-                    + "`Desde` = '" + Date.valueOf(division.getDispDesde())
-                    + "', "
-                    + "`Hasta` = '" + Date.valueOf(division.getDispHasta())
-                    + "'";
-            String condicion = "`Codigo` = '" + division.getCodigo() + "'";
+            String campos = "`Descripcion` = '" + division.getDescripcion() + "'";
+            if (division.getJefe() != null) {
+            	campos += ", `Jefe`= '" + division.getJefe().getLegajo() + "'";
+            }
+            if (division.getDisposicion() != null && !division.getDisposicion().equals("")) {
+            	campos += ", Disposicion = '" + division.getDisposicion() + "'";
+            }
+            if (division.getDispDesde() != null) {
+            	campos += ", Desde = '" + division.getDisposicion() + "'";
+            }
+            if (division.getDispHasta() != null) {
+            	campos += ", Hasta= '" + Date.valueOf(division.getDispHasta()) +  "'";
+            }
+            String condicion = "Codigo = " + division.getCodigo() + "'";
             e.update(tabla, campos, condicion);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "La division se modificó correctamente")
@@ -138,18 +152,32 @@ public class GestorDivision {
                 d.setCodigo(reg.get("Codigo"));
                 d.setDescripcion(reg.get("Descripcion"));
                 
-                GestorDocente gd = new GestorDocente();
-                Docente profesor =  new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null, null);
-                profesor = (Docente) gd.listarDocente(profesor).get(0);
-                d.setJefe(profesor);
-
-                d.setDisposicion(reg.get("Disposicion"));
-
-                String[] desde = reg.get("Desde").split("-");
-                d.setDispDesde(LocalDate.of(Integer.parseInt(desde[0]), Integer.parseInt(desde[1]), Integer.parseInt(desde[2])));
-                String[] hasta = reg.get("Desde").split("-");
-                d.setDispDesde(LocalDate.of(Integer.parseInt(hasta[0]), Integer.parseInt(hasta[1]), Integer.parseInt(hasta[2])));
-                divisiones.add(d);;
+                if (!reg.get("Jefe").equals("")) {
+					GestorDocente gd = new GestorDocente();
+					Docente profesor = new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null,
+							null);
+					profesor = (Docente) gd.listarDocente(profesor).get(0);
+					d.setJefe(profesor);
+				}
+                
+                
+				if (!reg.get("Disposicion").equals("")) {
+					d.setDisposicion(reg.get("Disposicion"));
+				}
+				
+				
+				if (!reg.get("Desde").equals("")) {
+					String[] desde = reg.get("Desde").split("-");
+					d.setDispDesde(LocalDate.of(Integer.parseInt(desde[0]), Integer.parseInt(desde[1]),
+							Integer.parseInt(desde[2])));
+				}
+				
+				if (!reg.get("Hasta").equals("")) {
+					String[] hasta = reg.get("hasta").split("-");
+					d.setDispHasta(LocalDate.of(Integer.parseInt(hasta[0]), Integer.parseInt(hasta[1]),
+							Integer.parseInt(hasta[2])));
+				}
+				divisiones.add(d);;
             }
 
         } catch (Exception e) {

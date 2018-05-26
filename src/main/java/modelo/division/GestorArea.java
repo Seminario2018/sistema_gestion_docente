@@ -18,9 +18,8 @@ public class GestorArea {
 
 		String condicion = "TRUE";
 		if (area != null) {
-			condicion = "";
 			if (!area.getCodigo().equals("") ) {
-				condicion += " `Codigo` = " + area.getCodigo();
+				condicion += " AND `Codigo` = " + area.getCodigo();
 			}
 			if (area.getDescripcion() != null) {
 				if (!condicion.equals("")) {
@@ -76,13 +75,28 @@ public class GestorArea {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			String table = "Areas";
-			//`Codigo`, `Descripcion`, `Division`, `Responsable`, `Disposicion`, `Desde`, `Hasta`, `SubAreaDe`
-			String campos = "`Codigo`, `Descripcion`, `Division`,`Responsable`, `Disposicion`,`Desde`,`Hasta`";
-			String valores = "'" + area.getCodigo() + "', '" +area.getDescripcion() + "', '" + area.getDivision().getCodigo() +"', "
-					+ "'"+area.getDocenteResponsable().getLegajo()+"', "
-					+ "'" + area.getDisposicion() + "', "
-					+ "'"+area.getDispDesde() +"', "
-					+ "'"+area.getDispHasta() +"'";
+			String campos = "`Codigo`, `Division`";
+			String valores = "'" + area.getCodigo() + "', '" + area.getDivision().getCodigo() +"'";
+			if (area.getDescripcion() != null && !area.getDescripcion().equals("")) {
+				campos += ", Descripcion";
+				valores += ", '"+area.getDocenteResponsable().getLegajo() + "'";
+			}
+			if (area.getDocenteResponsable() != null) {
+				campos += ", Responsable";
+				valores += ", " + area.getDocenteResponsable();
+			}
+			if (area.getDisposicion() != null && !area.getDisposicion().equals("")) {
+				campos += ", Disposicion";
+				valores += ", '" + area.getDisposicion() + "'";
+			}
+			if (area.getDispDesde() != null) {
+				campos += ", Desde";
+				valores += ", '" + Date.valueOf(area.getDispDesde()) + "'";
+			}
+			if (area.getDispHasta() != null) {
+				campos += ", Hasta";
+				valores += ", '" + Date.valueOf(area.getDispHasta()) + "'";
+			}
 			if (area.getAreaDe() != null) {
 				campos += ", `SubAreaDe`";
 				valores += ", '" + area.getAreaDe().getCodigo() + "'";
@@ -98,21 +112,24 @@ public class GestorArea {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			
-			if (!GestorDivision.existeDivision(area.getDivision())){
-				GestorDivision gd = new GestorDivision();
-				gd.nuevaDivision(area.getDivision());
-			}
-			
-			if (area.getDocenteResponsable() != null && !GestorDocente.existeDocente(area.getDocenteResponsable())) {
-				GestorDocente gd = new GestorDocente();
-				gd.nuevoDocente(area.getDocenteResponsable());
-			}
-			
-			
 			String tabla = "Areas";
-			String campos = "`Descripcion` = '" + area.getDescripcion() + "', `Division`= '" + area.getDivision().getCodigo() +"', "
-					+ "`Responsable`= '" + area.getDocenteResponsable().getLegajo()+"', `Desde`"+area.getDispDesde()+"', "
-					+ "`Hasta`"+area.getDispHasta()+"',`SubArea_De`= '"+ area.getAreaDe().getCodigo()+"'";
+			String campos = "`Division`= '" + area.getDivision().getCodigo() + "'";
+			if (area.getDescripcion() != null && !area.getDescripcion().equals("")) {
+				campos += ", `Descripcion` = '" + area.getDescripcion() + "'";
+			}
+			if (area.getDocenteResponsable() != null) {
+				campos += ", `Responsable`= '" + area.getDocenteResponsable().getLegajo() + "',";
+			}
+			if (area.getDispDesde() != null) {
+				campos += ", `Desde`" + Date.valueOf(area.getDispDesde()) + "',";
+			}
+			if (area.getDispHasta() != null) {
+				campos += ", `Hasta` = '"+ Date.valueOf(area.getDispHasta()) + "'";
+			}
+			if (area.getAreaDe() != null) {
+				campos += ", `SubArea_De`= '"+ area.getAreaDe().getCodigo() + "'";
+			}
+			
 			String condicion = "`Codigo` = '" + area.getCodigo() + "'";
 			e.update(tabla, campos, condicion);
 			return e.isEstado()?new EstadoOperacion(CodigoEstado.UPDATE_OK, "El Area se modificó correctamente"):
@@ -149,30 +166,46 @@ public class GestorArea {
 			for (Hashtable<String, String> reg : res) {
 				Area a = new Area();
 				a.setCodigo(reg.get("Codigo"));
-				a.setDescripcion(reg.get("Descripcion"));
-				Area sa = new Area(reg.get("SubAreaDe"),null,null,null,null,null,null,null);
-				Docente responsable = new Docente(null,Integer.parseInt(reg.get("Responsable")),null,null,null,null,null);
-				GestorDocente gd = new GestorDocente();
-				responsable = (Docente) gd.listarDocente(responsable).get(0);
-
+				
+				
+				if (!reg.get("Descripcion").equals("")) {
+					a.setDescripcion(reg.get("Descripcion"));
+				}
+				
 				GestorDivision gestorDivision = new GestorDivision();
-				Division d = (Division) gestorDivision.listarDivision(null).get(0);
-
-				a.setDocenteResponsable(responsable);
+				Division d = new Division();
+				d.setCodigo(reg.get("Division"));
+				d = (Division) gestorDivision.listarDivision(d).get(0);
 				a.setDivision(d);
-				a.setDisposicion(reg.get("Disposicion"));
-
-				LocalDate desde = Timestamp.valueOf(reg.get("Desde")).toLocalDateTime().toLocalDate();
-				LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
-
-				a.setDispDesde(desde);
-				a.setDispDesde(hasta);
-				a.setAreaDe(sa);
+				
+				if (!reg.get("Responsable").equals("")) {
+					Docente responsable = new Docente();
+					responsable.setLegajo(Integer.parseInt(reg.get("Responsable")));
+					GestorDocente gd = new GestorDocente();
+					responsable = (Docente) gd.listarDocente(responsable).get(0);
+					a.setDocenteResponsable(responsable);
+				}		
+				if (!reg.get("Disposicion").equals("")) {
+					a.setDisposicion(reg.get("Disposicion"));
+				}
+				if (!reg.get("Desde").equals("")) {
+					LocalDate desde = Date.valueOf(reg.get("Desde")).toLocalDate();
+					a.setDispDesde(desde);
+				}
+				if (!reg.get("Hasta").equals("")) {
+					LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
+					a.setDispDesde(hasta);
+				}
+				if (!reg.get("Hasta").equals("")) {
+					Area sa = new Area(reg.get("SubAreaDe"), null, null, null, null, null, null, null);
+					a.setAreaDe(sa);
+				}
+				
 				areas.add(a);;
 			}
 
 		} catch (Exception e) {
-		    e.printStackTrace();
+			
 			areas = new ArrayList<IArea>();
 		}
 		return areas;
