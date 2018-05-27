@@ -43,6 +43,14 @@ public class ControlInvestigacion {
         return this.gestorProyecto.AgregarIntegrante(proyecto, integrante);
     }
 
+    public List<IIntegrante> listarIntegrantes(IProyecto proyecto, IIntegrante integrante) {
+        return this.gestorProyecto.listarIntegrantes(proyecto, integrante);
+    }
+
+    public IIntegrante getIIntegrante() {
+        return this.gestorProyecto.getIIntegrante();
+    }
+
     //    Subsidios
     public EstadoOperacion agregarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
         return this.gestorProyecto.agregarSubsidio(proyecto, subsidio);
@@ -60,5 +68,6 @@ public class ControlInvestigacion {
     public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {
         return this.gestorProyecto.quitarProrroga(proyecto, prorroga);
     }
+
 
 }

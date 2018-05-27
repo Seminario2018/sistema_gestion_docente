@@ -20,20 +20,20 @@ public class GestorProyecto {
 
     public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
         try {
-        	
+
         	if (proyecto.getId() == -1) {
         		proyecto.setId(GestorProyecto.getMaxID("Proyectos", "id") + 1);
         	}
-        	
+
         	proyecto.getEstado().guardar();
-        
+
             ManejoDatos e = new ManejoDatos();
             String table = "Proyectos";
             String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
             String valores = proyecto.getId() + ", '" + proyecto.getNombre() + "', "
             		+ "'" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
             		+ "" + proyecto.getDirector().getLegajo() + ", " + proyecto.getEstado().getId();
-            
+
             if (proyecto.getResumen() != null && !proyecto.getResumen().equals("")) {
             	campos += ", `Resumen`";
             	valores += ", '" + proyecto.getResumen() + "'";
@@ -62,8 +62,8 @@ public class GestorProyecto {
             	campos += ", `Programa`";
             	valores += ", " + programa.getId();
             }
-            
-            
+
+
             for (IIntegrante i : proyecto.getIntegrantes()) {
 				this.AgregarIntegrante(proyecto, i);
 			}
@@ -73,7 +73,7 @@ public class GestorProyecto {
             for (IProrroga p : proyecto.getProrrogas()) {
 				this.agregarProrroga(proyecto, p);
 			}
-            
+
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente")
@@ -83,19 +83,19 @@ public class GestorProyecto {
         }
     }
 
-    
+
 
 	public EstadoOperacion modificarProyecto(IProyecto proyecto, IPrograma programa) {
         try {
-        	
+
         	proyecto.getEstado().guardar();
-        	
+
             ManejoDatos e = new ManejoDatos();
             String tabla = "Proyectos";
             String campos = "`Nombre` = '" + proyecto.getNombre() + "', `Director`= " + proyecto.getDirector().getLegajo() + ", "
             		+ "`Fecha_Presentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
             		+ "`Estado` = " + proyecto.getEstado().getId();
-            
+
 
             if (proyecto.getResumen() != null && !proyecto.getResumen().equals("")) {
             	campos += ", `Resumen`= '" + proyecto.getResumen() + "'";
@@ -118,7 +118,7 @@ public class GestorProyecto {
             if (programa != null) {
             	campos += ", `Programa` = " + programa.getId();
             }
-            
+
             String condicion = "`Id` = " + proyecto.getId() + "'";
             e.update(tabla, campos, condicion);
             return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente");
@@ -128,7 +128,7 @@ public class GestorProyecto {
     }
 
     public EstadoOperacion eliminarProyecto(IProyecto proyecto) {
-        try {   	
+        try {
             ManejoDatos e = new ManejoDatos();
             e.delete("`Integrantes`", "Proyecto = " + proyecto.getId());
             e.delete("`Prorrogas", "Proyecto = " + proyecto.getId());
@@ -152,28 +152,28 @@ public class GestorProyecto {
                 Proyecto p = new Proyecto();
                 p.setId(Integer.parseInt(reg.get("Id")));
                 p.setNombre(reg.get("Nombre"));
-                
+
                 String[] fechaPresentacion = reg.get("FechaPresentacion").split("-");
-                LocalDate fechaPres = LocalDate.of(Integer.parseInt(fechaPresentacion[0]), 
+                LocalDate fechaPres = LocalDate.of(Integer.parseInt(fechaPresentacion[0]),
                 		Integer.parseInt(fechaPresentacion[1]), Integer.parseInt(fechaPresentacion[2]));
                 p.setFechaPresentacion(fechaPres);
-                
+
                 Docente profesor = new Docente(null, Integer.parseInt(reg.get("Director")), null, null, null, null, null);
                 GestorDocente gd = new GestorDocente();
                 profesor = (Docente) gd.listarDocente(profesor).get(0);
                 p.setDirector(profesor);
-                
+
                 EstadoProyecto est = new EstadoProyecto();
                 est.setId(Integer.parseInt(reg.get("Estado")));
                 est = EstadoProyecto.getEstado(est);
-                
+
                 if (!reg.get("Resumen").equals("")) {
                 	p.setResumen(reg.get("Resumen"));
                 }
-                
+
                 if (!reg.get("FechaAprobacion").equals("")) {
                 	String[] fechaAprobacion = reg.get("FechaAprobacion").split("-");
-                    LocalDate fechaAprob = LocalDate.of(Integer.parseInt(fechaAprobacion[0]), 
+                    LocalDate fechaAprob = LocalDate.of(Integer.parseInt(fechaAprobacion[0]),
                     		Integer.parseInt(fechaAprobacion[1]), Integer.parseInt(fechaAprobacion[2]));
                 	p.setFechaAprobacion(fechaAprob);
                 }
@@ -187,13 +187,13 @@ public class GestorProyecto {
                 }
                 if (!reg.get("FechaInicio").equals("")) {
                 	String[] fechaInicio = reg.get("FechaAprobacion").split("-");
-                    LocalDate fechaIni = LocalDate.of(Integer.parseInt(fechaInicio[0]), 
+                    LocalDate fechaIni = LocalDate.of(Integer.parseInt(fechaInicio[0]),
                     		Integer.parseInt(fechaInicio[1]), Integer.parseInt(fechaInicio[2]));
                 	p.setFechaInicio(fechaIni);
                 }
                 if (!reg.get("Fecha_Fin").equals("")) {
                 	String[] fechaFin = reg.get("FechaAprobacion").split("-");
-                    LocalDate fechaF = LocalDate.of(Integer.parseInt(fechaFin[0]), 
+                    LocalDate fechaF = LocalDate.of(Integer.parseInt(fechaFin[0]),
                     		Integer.parseInt(fechaFin[1]), Integer.parseInt(fechaFin[2]));
                     p.setFechaFin(fechaF);
                 }
@@ -206,8 +206,8 @@ public class GestorProyecto {
                 for (IProrroga pro : this.listarProrrogas(p, null)) {
                 	p.agregarProrroga(pro);
                 }
-                
-                
+
+
                 proyectos.add(p);
             }
         } catch (Exception e) {
@@ -226,7 +226,7 @@ public class GestorProyecto {
             String table = "Integrantes";
             String campos = "`id`, `Proyecto`";
             String valores = integrante.getId() + ", " + proyecto.getId();
-            
+
             if (integrante.getLegajo() != -1) {
             	campos += ", Legajo";
             	valores += ", " + integrante.getLegajo();
@@ -270,7 +270,7 @@ public class GestorProyecto {
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el integrante");
         }
     }
-    
+
     public List<IIntegrante> listarIntegrantes (IProyecto proyecto, IIntegrante integrante){
     	List<IIntegrante> integrantes = new ArrayList<IIntegrante>();
     	try {
@@ -281,7 +281,7 @@ public class GestorProyecto {
 			for (Hashtable<String, String> reg : res) {
 				Integrante i = new Integrante();
 				i.setId(Integer.parseInt(reg.get("id")));
-				
+
 				if (!reg.get("Legajo").equals("")) {
 					i.setLegajo(Integer.parseInt(reg.get("Legajo")));
 				}
@@ -307,7 +307,10 @@ public class GestorProyecto {
 		}
     	return integrantes;
     }
-    
+
+    public IIntegrante getIIntegrante() {
+        return new Integrante();
+    }
 
     private String armarCondicion(IProyecto proyecto, IIntegrante integrante) {
     	String condicion = "TRUE";
@@ -334,7 +337,7 @@ public class GestorProyecto {
     	if (proyecto != null) {
     		condicion += " AND Proyecto = " + proyecto.getId();
     	}
-    	
+
 		return condicion;
 	}
 
@@ -345,16 +348,16 @@ public class GestorProyecto {
             String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
             String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
             		+ subsidio.getMontoTotal();
-            
+
             if (subsidio.getObservaciones() != null && !subsidio.getObservaciones().equals("")) {
             	campos += ", Observaciones";
             	valores += ", '" + subsidio.getObservaciones() + "'";
             }
-            
+
             for (IRendicion rendicion : subsidio.getRendiciones()) {
 				this.agregarRendicion(rendicion);
 			}
-            
+
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agregó correctamente")
@@ -366,17 +369,17 @@ public class GestorProyecto {
 
     public EstadoOperacion quitarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
         ManejoDatos md = new ManejoDatos();
-        md.delete("`Subsidios`", "Proyecto = " + proyecto.getId() + ", Disposicion= '" + subsidio.getDisposicion() +  "'"); 
+        md.delete("`Subsidios`", "Proyecto = " + proyecto.getId() + ", Disposicion= '" + subsidio.getDisposicion() +  "'");
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
     }
-    
+
     public List<ISubsidio> listarSubsidios(IProyecto proyecto, ISubsidio subsidio){
     	List<ISubsidio> subsidios = new ArrayList<ISubsidio>();
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Subsidios";
 			String condicion = this.armarCondicion(proyecto, subsidio);
-			
+
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				Subsidio sub = new Subsidio();
@@ -384,14 +387,14 @@ public class GestorProyecto {
 				sub.setDisposicion(reg.get("Disposicion"));
 				sub.setMontoTotal(Float.parseFloat(reg.get("MontoTotal")));
 				sub.setObservaciones(reg.get("Observaciones").equals("") ? null : reg.get("Observaciones"));
-							
+
 			}
 		} catch (Exception e) {
 			subsidios = new ArrayList<ISubsidio>();
 		}
     	return subsidios;
     }
-    
+
 
     private String armarCondicion(IProyecto proyecto, ISubsidio subsidio) {
 		String condicion = "TRUE";
@@ -412,7 +415,7 @@ public class GestorProyecto {
 		if (proyecto != null) {
 			condicion += " AND Proyecto = " + proyecto.getId();
 		}
-		
+
 		return condicion;
 	}
 
@@ -423,7 +426,7 @@ public class GestorProyecto {
             String table = "Prorrogas";
             String campos = "`Proyecto`, `Disposicion`";
             String valores = proyecto.getId() + "', '" + prorroga.getDisposicion() + "'";
-            
+
             if (prorroga.getFechaInicio() != null) {
             	campos += ", Fecha_inicio";
             	valores += ", '" + Date.valueOf(prorroga.getFechaInicio()) + "'";
@@ -447,28 +450,28 @@ public class GestorProyecto {
         md.delete("`Prorrogas`", "`Proyecto` = " + proyecto.getId() + ", Disposicion = '" + prorroga.getDisposicion() + "'");
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
     }
-    
+
     public List<IProrroga> listarProrrogas(IProyecto proyecto, IProrroga prorroga){
     	List<IProrroga> prorrogas = new ArrayList<IProrroga>();
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Prorrogas";
 			String condicion = this.armarCondicion(proyecto, prorroga);
-			
+
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				Prorroga p = new Prorroga();
 				p.setDisposicion(reg.get("Disposicion"));
-				
+
 				if (!reg.get("Fecha_inicio").equals("")) {
 					String[] fecha = reg.get("Fecha_inicio").split("-");
-					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]), 
+					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]),
 							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 					p.setFechaInicio(f);
 				}
 				if (!reg.get("Fecha_fin").equals("")) {
 					String[] fecha = reg.get("Fecha_fin").split("-");
-					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]), 
+					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]),
 							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 					p.setFechaFin(f);
 				}
@@ -480,8 +483,7 @@ public class GestorProyecto {
 
     	return prorrogas;
     }
-    
-    
+
 
     private String armarCondicion(IProyecto proyecto, IProrroga prorroga) {
 		String condicion = "TRUE";
@@ -499,7 +501,7 @@ public class GestorProyecto {
 		if (proyecto != null) {
 			condicion += " AND Proyecto = " + proyecto.getId();
 		}
-		
+
 		return condicion;
 	}
 
@@ -540,7 +542,7 @@ public class GestorProyecto {
         		 condicion += " AND `Programa` = " + programa.getId();
         	}
         }
-        
+
         return condicion;
     }
 
@@ -559,7 +561,7 @@ public class GestorProyecto {
 		}
     	return maxid;
 	}
-    
+
     public EstadoOperacion agregarRendicion(IRendicion rendicion) {
     	try {
 			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
@@ -567,13 +569,13 @@ public class GestorProyecto {
 			String tabla = "Rendisiones";
 			String campos = "`id`, `Fecha`, `Monto`";
 			String valores = rendicion.getId() + ", '" + Date.valueOf(rendicion.getFecha()) + "', " + rendicion.getMonto();
-			
+
 			if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
 				campos += ", Observaciones";
 				valores += ", '" + rendicion.getObservaciones() + "'";
 			}
-			
-			md.insertar(tabla, campos, valores);   	
+
+			md.insertar(tabla, campos, valores);
 			return md.isEstado()
 			        ? new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente")
 			        : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
@@ -581,32 +583,32 @@ public class GestorProyecto {
 			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
 		}
     }
-    
-    
+
+
     public EstadoOperacion eliminarRendicion(IRendicion rendicion) {
     	ManejoDatos md = new ManejoDatos();
-    	
+
     	md.delete("Rendiciones", "id = " + rendicion.getId());
-    	
+
     	return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendicion se elimino correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la rendicion");
     }
-    
-    
+
+
     public List<IRendicion> listarRendiciones(IRendicion rendicion){
     	List<IRendicion> rendiciones = new ArrayList<IRendicion>();
     	ManejoDatos md = new ManejoDatos();
     	String tabla = "Rendiciones";
     	String condicion = this.armarCondicion(rendicion);
-    	
+
     	ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 		for (Hashtable<String, String> reg : res) {
 			Rendicion r = new Rendicion();
 			r.setId(Integer.parseInt(reg.get("id")));
-			
+
 			String[] fecha = reg.get("Fecha").split("-");
-			LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]), 
+			LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]),
 					Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 			r.setFecha(f);
 			r.setMonto(Float.parseFloat(reg.get("Monto")));
@@ -615,10 +617,10 @@ public class GestorProyecto {
 			}
 			rendiciones.add(r);
 		}
-    	
+
     	return rendiciones;
     }
-    
+
     private String armarCondicion(IRendicion rendicion) {
 		String condicion = "TRUE";
 		if (rendicion != null) {
@@ -641,5 +643,6 @@ public class GestorProyecto {
 	public IProyecto getIProyecto() {
         return new Proyecto();
     }
+
 
 }
