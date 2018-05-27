@@ -470,12 +470,18 @@ public class Docentes extends ControladorVista {
 	@FXML private TableView<FilaInvestigacion> tblInvestigacion;
 	private ObservableList<FilaInvestigacion> filasInvestigacion;
 
-	class FilaInvestigacion {
+	public class FilaInvestigacion {
 	    private int id;
 	    private String nombre;
 	    private String area;
 	    private String cargo;
 
+        public FilaInvestigacion(int id, String nombre, String area, String cargo) {
+            this.id = id;
+            this.nombre = nombre;
+            this.area = area;
+            this.cargo = cargo;
+        }
 	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente) {
 	        this.id = proyecto.getId();
 	        this.nombre = proyecto.getNombre();
