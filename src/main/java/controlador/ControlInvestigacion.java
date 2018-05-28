@@ -27,7 +27,7 @@ public class ControlInvestigacion {
     }
 
     public List<IProyecto> listarProyecto(IProyecto proyecto) {
-        return this.gestorProyecto.listarProyecto(proyecto);
+        return this.gestorProyecto.listarProyecto(proyecto, null);
     }
 
     public IProyecto getIProyecto() {

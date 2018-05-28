@@ -1,7 +1,6 @@
 package modelo.division;
 
 import java.time.LocalDate;
-
 import modelo.docente.IDocente;
 
 public class Area implements IArea {
@@ -30,7 +29,9 @@ public class Area implements IArea {
     }
 
     public Area(){
-        
+        this.codigo = "";
+        this.descripcion = "";
+        this.disposicion = "";
     }
 
 

@@ -65,7 +65,7 @@ public class DocentesTest {
     public void tipoCargos() {
         List<TipoCargo> listaTipoCargos = ControlAuxiliar.listarTiposCargo();
 
-        System.out.printf("\n > TipoCargos:\n");
+        System.out.printf("\n> TipoCargos:\n");
         for (TipoCargo tipo : listaTipoCargos) {
             System.out.printf("%s\n", tipo);
         }

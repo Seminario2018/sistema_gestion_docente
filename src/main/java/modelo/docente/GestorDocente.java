@@ -6,7 +6,6 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.EstadoOperacion;
@@ -16,6 +15,7 @@ import modelo.cargo.Cargo;
 import modelo.cargo.GestorCargo;
 import modelo.division.Area;
 import modelo.division.GestorArea;
+import modelo.division.IArea;
 import modelo.persona.GestorPersona;
 import modelo.persona.Persona;
 import persistencia.ManejoDatos;
@@ -31,7 +31,7 @@ public class GestorDocente {
 			String campos="`Legajo`, `TipoDocumento`, `NroDocumento`,  `Estado`";
 			String valores= docente.getLegajo() + ", " +docente.getPersona().getTipoDocumento().getId() +", "
 					+ "'" + docente.getPersona().getNroDocumento() +"', "+docente.getEstado().getId();
-			
+
 			if (docente.getObservaciones() != null && !docente.getObservaciones().equals("")) {
 				campos += ", Observaciones";
 				valores += ", '"+docente.getObservaciones() + "'";
@@ -40,21 +40,21 @@ public class GestorDocente {
 				campos += ", CategoriaInvestigacion";
 				valores += ", " + docente.getCategoriaInvestigacion().getId();
 			}
-			
+
 			md.insertar(table, campos, valores);
-			
-			
+
+
 			if (docente.getIncentivos() != null) {
 				for (IIncentivo incentivo : docente.getIncentivos()) {
 					this.agregarIncentivo(docente, incentivo);
 				}
 			}
-			
-			
+
+
 			if (docente.getCargosDocentes() != null) {
 				for (ICargoDocente cargoDocente : docente.getCargosDocentes()) {
 					this.agregarCargoDocente(docente, cargoDocente);
-				} 
+				}
 			}
 			if (md.isEstado()) {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,"El docente se creó correctamente");
@@ -75,15 +75,15 @@ public class GestorDocente {
 			String tabla = "Docentes";
 			String campos = "`TipoDocumento` = '"+ docente.getPersona().getTipoDocumento().getId()
 				+"', `NroDocumento`= '"+ docente.getPersona().getNroDocumento() + "', Estado = " + docente.getEstado().getId();
-			
+
 			if (docente.getObservaciones() != null && !docente.getObservaciones().equals("")) {
 				campos += "`Observaciones`= '" + docente.getObservaciones() +  "'";
 			}
-			
+
 			if (docente.getCategoriaInvestigacion() != null) {
 				campos += ", `CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion().getId();
 			}
-			
+
 			String condicion = "`Legajo` = " + docente.getLegajo();
 
 			md.update(tabla, campos, condicion);
@@ -128,7 +128,7 @@ public class GestorDocente {
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				Docente doc = new Docente();
-				
+
 				GestorPersona gp = new GestorPersona();
 				Persona p = new Persona();
 				TipoDocumento td = new TipoDocumento();
@@ -137,24 +137,25 @@ public class GestorDocente {
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p = (Persona) gp.listarPersonas(p).get(0);
 				doc.setPersona(p);
-				
+
 				doc.setLegajo(Integer.parseInt(reg.get("Legajo")));
-				
+
 				if (!reg.get("Observaciones").equals("")) {
 					doc.setObservaciones(reg.get("Observaciones"));
 				}
-				
-				
+
+
 				if (!reg.get("CategoriaInvestigacion").equals("")) {
 					CategoriaInvestigacion cat = new CategoriaInvestigacion();
 					cat.setId(Integer.parseInt(reg.get("CategoriaInvestigacion")));
 					cat = CategoriaInvestigacion.getCategoria(cat);
+					doc.setCategoriaInvestigacion(cat);
 				}
-				
+
 				EstadoDocente estado = new EstadoDocente();
 				estado.setId(Integer.parseInt(reg.get("Estado")));
 				estado = EstadoDocente.getEstado(estado);
-				
+
 				this.cargarCargos(doc);
 				this.cargarIncentivos(doc);
 				docentes.add(doc);
@@ -193,7 +194,7 @@ public class GestorDocente {
 				if(!condicion.equals("")) {
 					condicion += " AND ";
 				}
-				condicion += "`TipoDocumento` = " + docente.getPersona().getTipoDocumento().getId(); 
+				condicion += "`TipoDocumento` = " + docente.getPersona().getTipoDocumento().getId();
 			}
 			if (docente.getPersona().getNroDocumento() > 0) {
 				if(!condicion.equals("")) {
@@ -229,7 +230,7 @@ public class GestorDocente {
 
 		String tabla = "Incentivos";
 		String campos = "`Fecha`, `Legajo`";
-		String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo(); 
+		String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo();
 		md.insertar(tabla, campos, valores);
 		if (md.isEstado()) {
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,"El incentivo se creó correctamente");
@@ -250,7 +251,7 @@ public class GestorDocente {
 		return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
 				"El incentivo se quitó correctamente");
 	}
-	
+
 	public ArrayList<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo){
 		ArrayList<IIncentivo> incentivos = new ArrayList<IIncentivo>();
 		try {
@@ -267,7 +268,7 @@ public class GestorDocente {
 		}
 	}
 
-	
+
 	private String armarCondicionIncentivo(IDocente docente, IIncentivo incentivo) {
 		String condicion = "TRUE";
 		if (incentivo != null) {
@@ -282,30 +283,30 @@ public class GestorDocente {
 				condicion += "Legajo = " + docente.getLegajo();
 			}
 		}
-		
+
 		return condicion;
 	}
 
 	public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 		try {
-			cargoDocente.getEstado().guardar();
-			cargoDocente.getTipoCargo().guardar();
-			
+//			cargoDocente.getEstado().guardar();
+//			cargoDocente.getTipoCargo().guardar();
+
 			if (cargoDocente.getId() == -1) {
 				cargoDocente.setId(this.getCodigoMax() + 1);
 			}
-			
+
 			ManejoDatos md = new ManejoDatos();
 			String campos = "`Codigo`, `Legajo`, `Area`, `Cargo`, `TipoCargo`, `EstadoCargo`";
-			
+
 			//`UltimoCosto`, `FechaUltimoCosto`
 			String valores = cargoDocente.getId() + ", " + docente.getLegajo() + ", '" + cargoDocente.getArea().getCodigo() + "', "
 					+ cargoDocente.getCargo().getCodigo() + ", " + cargoDocente.getTipoCargo().getId() + ", "
 					+ cargoDocente.getEstado().getId();
-			
+
 			if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
 				campos += ", Disposicion";
-				valores += ", '" +  cargoDocente.getDisposicion() + "'"; 
+				valores += ", '" +  cargoDocente.getDisposicion() + "'";
 			}
 			if (cargoDocente.getDispDesde() != null) {
 				campos += ", DispDesde";
@@ -359,9 +360,9 @@ public class GestorDocente {
 					+ "`Cargo` " + cargoDocente.getCargo().getCodigo() + ", "
 					+ "`TipoCargo` = " + cargoDocente.getTipoCargo().getId() + ", "
 					+ "`EstadoCargo` = " + cargoDocente.getEstado().getId();
-			
+
 			if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
-				campos += ", Disposicion = '" +  cargoDocente.getDisposicion() + "'"; 
+				campos += ", Disposicion = '" +  cargoDocente.getDisposicion() + "'";
 			}
 			if (cargoDocente.getDispDesde() != null) {
 				campos += ", DispDesde = '" + Date.valueOf(cargoDocente.getDispDesde()) + "'";
@@ -429,7 +430,8 @@ public class GestorDocente {
 
 	public ArrayList<ICargoDocente> listarCargo(IDocente docente, ICargoDocente cargo){
 		ArrayList<ICargoDocente> cargos = new ArrayList<ICargoDocente>();
-		String condicion = "TRUE";
+//		String condicion = "TRUE";
+		String condicion = "";
 		condicion += this.armarCondicionCargo(cargo, docente);
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -437,26 +439,28 @@ public class GestorDocente {
 			ArrayList<Hashtable<String,String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				CargoDocente c = new CargoDocente();
-				c.setId(Integer.parseInt(reg.get("Codigo")));				
-				
+				c.setId(Integer.parseInt(reg.get("Codigo")));
+
 				GestorArea ga = new GestorArea();
-				Area a = new Area(reg.get("Area"), null, null, null, null, null, null, null);
-				a = (Area) ga.listarArea(a).get(0);
+//				IArea a = new Area(reg.get("Area"), null, null, null, null, null, null, null);
+				IArea a = new Area();
+				a.setCodigo(reg.get("Area"));
+				a = ga.listarArea(a).get(0);
 				c.setArea(a);
-				
+
 				GestorCargo gc = new GestorCargo();
 				Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
 				car = (Cargo) gc.listarCargo(car).get(0);
 				c.setCargo(car);
-				
+
 				c.setTipoCargo(TipoCargo.getTipoCargo(new TipoCargo(0, reg.get("Tipo_Cargo"))));
-				
+
 				if (!reg.get("Disposicion").equals("")) {
-					
+
 					c.setDisposicion(reg.get("Disposicion"));
 				}
 				// `DispDesde`, `DispHasta`, `Resolucion`, `ResDesde`, `ResHasta`, `UltimoCosto`, `FechaUltimoCosto`
-				
+
 				if (!reg.get("DispDesde").equals("")) {
 					c.setDispDesde(Date.valueOf(reg.get("DispDesde")).toLocalDate());
 				}
@@ -542,7 +546,7 @@ public class GestorDocente {
 					condicion += " AND ";
 				}
 				condicion += "`CostoActual` = " + cargo.getUltimoCosto();
-			} 
+			}
 		}
 		return condicion;
 	}
@@ -562,7 +566,7 @@ public class GestorDocente {
 		}
 		return cod;
 	}
-	
+
 	public static boolean existeDocente(IDocente docente) {
 		String tabla = "Docentes";
 		if (docente == null || docente.getLegajo() == -1) {
@@ -578,8 +582,8 @@ public class GestorDocente {
 			return false;
 		}
 	}
-	
-	
+
+
 
 	/**
 	 * @return Una plantilla ICargoDocente vacía

@@ -19,9 +19,9 @@ public class GestorArea {
 		String condicion = "TRUE";
 		if (area != null) {
 			if (!area.getCodigo().equals("") ) {
-				condicion += " AND `Codigo` = " + area.getCodigo();
+				condicion += " AND `Codigo` = '" + area.getCodigo() + "'";
 			}
-			if (area.getDescripcion() != null) {
+			if (!area.getDescripcion().equals("")) {
 				if (!condicion.equals("")) {
 					condicion += " AND ";
 				}

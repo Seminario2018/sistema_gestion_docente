@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import controlador.ControlAuxiliar;
 import controlador.ControlDivision;
 import controlador.ControlDocente;
+import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -25,11 +26,13 @@ import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
+import modelo.division.Area;
 import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
 import modelo.docente.Incentivo;
+import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
 import utilidades.Utilidades;
@@ -47,6 +50,7 @@ public class Docentes extends ControladorVista {
 
 	private ControlDivision controlDivision = new ControlDivision(this);
 	private ControlDocente controlDocente = new ControlDocente(this);
+	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
 	public IDocente docenteSeleccionado = this.controlDocente.getIDocente();
 
 	private static final String TITULO = "Docentes";
@@ -427,10 +431,18 @@ public class Docentes extends ControladorVista {
 		IArea a = new Area("B1", "Biología 1", divisionBiologia, null, null, null, null, null);
 
 		areaSeleccionada = a;
-        //*/
+        /* TEST Prueba Area 02*/
+	    System.out.printf(">>> seleccionarArea <<<");
+	    IArea a = new Area();
+	    a.setCodigo("CO.01.00");
+	    areaSeleccionada = this.controlDivision.listarAreas(a).get(0);
+
+	    //*/
 		// TODO Sacar lista de áreas de la BD (?)
-	    List<IArea> listaAreas = this.controlDivision.listarAreas(null);
-	    areaSeleccionada = listaAreas.get(0);
+//	    List<IArea> listaAreas = this.controlDivision.listarAreas(null);
+//	    assert(!listaAreas.isEmpty());
+//	    areaSeleccionada = listaAreas.get(0);
+
 		txtCargosArea.setText(areaSeleccionada.getDescripcion());
     }
 
@@ -440,8 +452,9 @@ public class Docentes extends ControladorVista {
 	@FXML private void seleccionarCargo() {
         // TODO Seleccionar Cargo
 	    /* TEST Prueba Cargo*/
-		ICargo c = new Cargo(1, "Profesor Titular Exclusiva", 40);
+		ICargo c = new Cargo(213, "Profesor Titular Exclusiva", 40);
 		cargoSeleccionado = c;
+
         //*/
 		// TODO Sacar lista de cargos de la BD (?)
 		List<ICargo> listaCargos = this.controlDocente.listarCargos(null);
@@ -467,8 +480,8 @@ public class Docentes extends ControladorVista {
 // ----------------------------- Pestaña Investigación ---------------------- //
 	// TODO Pestaña "Investigación"
 	@FXML private TextField txtInvestigacionCategoria;
-	@FXML private TableView<FilaInvestigacion> tblInvestigacion;
-	private ObservableList<FilaInvestigacion> filasInvestigacion;
+	@FXML protected TableView<FilaInvestigacion> tblInvestigacion;
+	protected ObservableList<FilaInvestigacion> filasInvestigacion;
 
 	public class FilaInvestigacion {
 	    private int id;
@@ -515,12 +528,24 @@ public class Docentes extends ControladorVista {
 	}
 
 	@FXML private void inicializarInvestigacion() {
-	    inicializarTabla("Investigación");
+	    inicializarTabla("Investigacion");
 	    if (docenteSeleccionado != null) {
-	        txtInvestigacionCategoria.setText(
-	                docenteSeleccionado.getCategoriaInvestigacion().getDescripcion());
-
+	        CategoriaInvestigacion ci = docenteSeleccionado.getCategoriaInvestigacion();
+	        txtInvestigacionCategoria.setText(ci.getDescripcion());
 	    }
+
+	    // Lista con todos los proyectos (?):
+        List<IProyecto> listaProyectos = this.controlInvestigacion.listarProyecto(null);
+        for (IProyecto proyecto : listaProyectos) {
+            for (IIntegrante integrante : proyecto.getIntegrantes()) {
+                if (integrante.getLegajo() == docenteSeleccionado.getLegajo()) {
+                    // TODO Investigación: Falta el área
+                    FilaInvestigacion fila = new FilaInvestigacion(proyecto.getId(), proyecto.getNombre(), "", integrante.getCargo());
+                    filasInvestigacion.add(fila);
+                    break;
+                }
+            }
+        }
 	}
 // ----------------------------- Pestaña Incentivos ------------------------- //
 	// DONE Pestaña "Incentivos"
