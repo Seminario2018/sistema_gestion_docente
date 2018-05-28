@@ -179,13 +179,20 @@ public class GestorArea {
                 a.setDivision(d);
                 a.setDisposicion(reg.get("Disposicion"));
 
-                LocalDate desde = Timestamp.valueOf(reg.get("Desde")).toLocalDateTime().toLocalDate();
-                LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
+                // Fecha desde
+                if (!reg.get("Desde").equals("")) {
+                    LocalDate desde = Timestamp.valueOf(reg.get("Desde")).toLocalDateTime().toLocalDate();
+                    a.setDispDesde(desde);
+                }
 
-                a.setDispDesde(desde);
-                a.setDispDesde(hasta);
+                // Fecha hasta
+                if (!reg.get("Hasta").equals("")) {
+                    LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
+                    a.setDispDesde(hasta);
+                }
+
                 a.setAreaDe(sa);
-                areas.add(a);;
+                areas.add(a);
             }
 
         } catch (Exception e) {
