@@ -3,7 +3,6 @@ package modelo.auxiliares;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import persistencia.ManejoDatos;
 
 /**
@@ -12,19 +11,19 @@ import persistencia.ManejoDatos;
  */
 public class TipoCargo {
 
-	private int id;
-	private String descripcion;
+    private int id;
+    private String descripcion;
 
-	public TipoCargo(int id, String descripcion) {
+    public TipoCargo(int id, String descripcion) {
         this.id = id;
         this.descripcion = descripcion;
     }
 
-	public TipoCargo() {
-		// TODO Auto-generated constructor stub
-	}
+    public TipoCargo() {
+        // TODO Auto-generated constructor stub
+    }
 
-	public int getId() {
+    public int getId() {
         return this.id;
     }
 
@@ -39,106 +38,101 @@ public class TipoCargo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     public void guardar() {
-    	if (this.existe()) {
-    		this.actualizar();
-    	}else {
-    		this.insertar();
-    	}
+        if (this.existe()) {
+            this.actualizar();
+        } else {
+            this.insertar();
+        }
     }
-    
 
     private boolean existe() {
-    	try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposCargos";
-			String campos = "id";
-			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
-			
-			if (md.select(tabla, campos, condicion).isEmpty()) {
-				return false;
-			}else {
-				return true;
-			}
-			
-		}catch (Exception e){
-			return false;
-		}
-	}
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "TiposCargos";
+            String campos = "id";
+            String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 
-	private void actualizar() {
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposCargos";
-			String campos = "Descripcion = '" + this.getDescripcion() + "'";
-			String condicion = "id = " + this.id;
-			
-			md.update(tabla, campos, condicion);
-			
-		}catch (Exception e){
-			
-		}
-		
-	}
+            return !md.select(tabla, campos, condicion).isEmpty();
 
-	private void insertar() {
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposCargos";
-			String campos = "id, Descripcion";
-			String valores = this.getId() +", '" + this.getDescripcion() + "'";
-			
-			md.insertar(tabla, campos, valores);
-			
-		}catch (Exception e) {
-			
-		}
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-	/**
+    private void actualizar() {
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "TiposCargos";
+            String campos = "Descripcion = '" + this.getDescripcion() + "'";
+            String condicion = "id = " + this.id;
+
+            md.update(tabla, campos, condicion);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void insertar() {
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "TiposCargos";
+            String campos = "id, Descripcion";
+            String valores = this.getId() + ", '" + this.getDescripcion() + "'";
+
+            md.insertar(tabla, campos, valores);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * @return la lista de tipos de cargo de la BD
      */
     public static List<TipoCargo> getLista() {
         try {
-			List<TipoCargo> listaTipos = new ArrayList<TipoCargo>();
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposCargos";
-			String campos = "Descripcion";
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
-			
-			for (Hashtable<String, String> reg : res) {
-				TipoCargo tc = new TipoCargo();
-				tc.setId(Integer.parseInt(reg.get("id")));
-				tc.setDescripcion(reg.get("Descripcion"));
-				listaTipos.add(tc);
-			}
-			
-			return listaTipos;
-		} catch (NumberFormatException e) {
-			return new ArrayList<TipoCargo>();
-		}
+            List<TipoCargo> listaTipos = new ArrayList<TipoCargo>();
+            ManejoDatos md = new ManejoDatos();
+            ArrayList<Hashtable<String, String>> res = md.select("tiposcargos", "*");
+
+            for (Hashtable<String, String> reg : res) {
+                TipoCargo tc = new TipoCargo();
+                tc.setId(Integer.parseInt(reg.get("id")));
+                tc.setDescripcion(reg.get("Descripcion"));
+                listaTipos.add(tc);
+            }
+
+            return listaTipos;
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            return new ArrayList<TipoCargo>();
+        }
     }
-    
+
     public static TipoCargo getTipoCargo(TipoCargo tc) {
-    	try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposCargos";
-			String campos = "Descripcion";
-			String condicion = "id = " + tc.id;
-			
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
-			
-			if (res.isEmpty()) {
-				return null;
-			}else {
-				tc.setDescripcion(res.get(0).get("Descripcion"));
-				return tc;
-			}
-			
-		}catch (Exception e){
-			return null;
-		}
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "TiposCargos";
+            String campos = "Descripcion";
+            String condicion = "id = " + tc.id;
+
+            ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+
+            if (res.isEmpty()) {
+                return null;
+            } else {
+                tc.setDescripcion(res.get(0).get("Descripcion"));
+                return tc;
+            }
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
