@@ -111,7 +111,7 @@ public class GestorArea {
 	public EstadoOperacion modificarArea(IArea area) {
 		try {
 			ManejoDatos e = new ManejoDatos();
-			
+
 			String tabla = "Areas";
 			String campos = "`Division`= '" + area.getDivision().getCodigo() + "'";
 			if (area.getDescripcion() != null && !area.getDescripcion().equals("")) {
@@ -129,7 +129,7 @@ public class GestorArea {
 			if (area.getAreaDe() != null) {
 				campos += ", `SubArea_De`= '"+ area.getAreaDe().getCodigo() + "'";
 			}
-			
+
 			String condicion = "`Codigo` = '" + area.getCodigo() + "'";
 			e.update(tabla, campos, condicion);
 			return e.isEstado()?new EstadoOperacion(CodigoEstado.UPDATE_OK, "El Area se modificó correctamente"):
@@ -153,65 +153,49 @@ public class GestorArea {
 	}
 
 	public List<IArea> listarArea(IArea area) {
-		ArrayList<IArea> areas = new ArrayList<IArea>();
+        ArrayList<IArea> areas = new ArrayList<IArea>();
 
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String table = "areas";
-			String campos = "*";
-			String condicion =  this.armarCondicion(area);
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String table = "areas";
+            String campos = "*";
+            String condicion =  this.armarCondicion(area);
 
-			ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
+            ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
 
-			for (Hashtable<String, String> reg : res) {
-				Area a = new Area();
-				a.setCodigo(reg.get("Codigo"));
-				
-				
-				if (!reg.get("Descripcion").equals("")) {
-					a.setDescripcion(reg.get("Descripcion"));
-				}
-				
-				GestorDivision gestorDivision = new GestorDivision();
-				Division d = new Division();
-				d.setCodigo(reg.get("Division"));
-				d = (Division) gestorDivision.listarDivision(d).get(0);
-				a.setDivision(d);
-				
-				if (!reg.get("Responsable").equals("")) {
-					Docente responsable = new Docente();
-					responsable.setLegajo(Integer.parseInt(reg.get("Responsable")));
-					GestorDocente gd = new GestorDocente();
-					responsable = (Docente) gd.listarDocente(responsable).get(0);
-					a.setDocenteResponsable(responsable);
-				}		
-				if (!reg.get("Disposicion").equals("")) {
-					a.setDisposicion(reg.get("Disposicion"));
-				}
-				if (!reg.get("Desde").equals("")) {
-					LocalDate desde = Date.valueOf(reg.get("Desde")).toLocalDate();
-					a.setDispDesde(desde);
-				}
-				if (!reg.get("Hasta").equals("")) {
-					LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
-					a.setDispDesde(hasta);
-				}
-				if (!reg.get("Hasta").equals("")) {
-					Area sa = new Area(reg.get("SubAreaDe"), null, null, null, null, null, null, null);
-					a.setAreaDe(sa);
-				}
-				
-				areas.add(a);;
-			}
+            for (Hashtable<String, String> reg : res) {
+                Area a = new Area();
+                a.setCodigo(reg.get("Codigo"));
+                a.setDescripcion(reg.get("Descripcion"));
+                Area sa = new Area(reg.get("SubAreaDe"),null,null,null,null,null,null,null);
+                Docente responsable = new Docente(null,Integer.parseInt(reg.get("Responsable")),null,null,null,null,null);
+                GestorDocente gd = new GestorDocente();
+                responsable = (Docente) gd.listarDocente(responsable).get(0);
 
-		} catch (Exception e) {
-			
-			areas = new ArrayList<IArea>();
-		}
-		return areas;
-	}
-	
-	
+                GestorDivision gestorDivision = new GestorDivision();
+                Division d = (Division) gestorDivision.listarDivision(null).get(0);
+
+                a.setDocenteResponsable(responsable);
+                a.setDivision(d);
+                a.setDisposicion(reg.get("Disposicion"));
+
+                LocalDate desde = Timestamp.valueOf(reg.get("Desde")).toLocalDateTime().toLocalDate();
+                LocalDate hasta = Timestamp.valueOf(reg.get("Hasta")).toLocalDateTime().toLocalDate();
+
+                a.setDispDesde(desde);
+                a.setDispDesde(hasta);
+                a.setAreaDe(sa);
+                areas.add(a);;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            areas = new ArrayList<IArea>();
+        }
+        return areas;
+    }
+
+
 	public static boolean existeArea(IArea area) {
     	String tabla = "Areas";
 		if (area == null || area.getCodigo() == null) {

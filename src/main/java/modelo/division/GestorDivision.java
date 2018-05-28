@@ -64,7 +64,7 @@ public class GestorDivision {
 
     public EstadoOperacion nuevaDivision(IDivision division) {
         try {
-        	
+
             ManejoDatos e = new ManejoDatos();
             String table = "Divisiones";
             String campos = "`Codigo`, `Descripcion`";
@@ -97,7 +97,7 @@ public class GestorDivision {
 
     public EstadoOperacion modificarDivision(IDivision division) {
         try {
-        	
+
             ManejoDatos e = new ManejoDatos();
             String tabla = "Divisiones";
             String campos = "`Descripcion` = '" + division.getDescripcion() + "'";
@@ -151,7 +151,7 @@ public class GestorDivision {
                 Division d = new Division();
                 d.setCodigo(reg.get("Codigo"));
                 d.setDescripcion(reg.get("Descripcion"));
-                
+
                 if (!reg.get("Jefe").equals("")) {
 					GestorDocente gd = new GestorDocente();
 					Docente profesor = new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null,
@@ -159,24 +159,21 @@ public class GestorDivision {
 					profesor = (Docente) gd.listarDocente(profesor).get(0);
 					d.setJefe(profesor);
 				}
-                
-                
+
 				if (!reg.get("Disposicion").equals("")) {
 					d.setDisposicion(reg.get("Disposicion"));
 				}
-				
-				
+
 				if (!reg.get("Desde").equals("")) {
-					String[] desde = reg.get("Desde").split("-");
-					d.setDispDesde(LocalDate.of(Integer.parseInt(desde[0]), Integer.parseInt(desde[1]),
-							Integer.parseInt(desde[2])));
+				    LocalDate desde = Date.valueOf(reg.get("Desde")).toLocalDate();
+					d.setDispDesde(desde);
 				}
-				
+
 				if (!reg.get("Hasta").equals("")) {
-					String[] hasta = reg.get("hasta").split("-");
-					d.setDispHasta(LocalDate.of(Integer.parseInt(hasta[0]), Integer.parseInt(hasta[1]),
-							Integer.parseInt(hasta[2])));
+				    LocalDate hasta = Date.valueOf(reg.get("Hasta")).toLocalDate();
+					d.setDispHasta(hasta);
 				}
+
 				divisiones.add(d);;
             }
 
@@ -186,8 +183,8 @@ public class GestorDivision {
 
         return divisiones;
     }
-    
-    
+
+
     public static boolean existeDivision(IDivision division) {
     	String tabla = "Divisiones";
 		if (division == null || division.getCodigo() == null) {
