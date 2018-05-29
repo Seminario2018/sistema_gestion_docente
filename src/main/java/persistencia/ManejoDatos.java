@@ -84,8 +84,9 @@ public class ManejoDatos {
             estado = false;
             e.printStackTrace();
         } finally {
+        	con.desconectar();
             connection = null;
-            con.desconectar();
+            
         }
         return res;
     }
@@ -114,8 +115,9 @@ public class ManejoDatos {
             estado = false;
             e.printStackTrace();
         } finally {
+        	con.desconectar();
             connection = null;
-            con.desconectar();
+            
         }
         return res;
     }

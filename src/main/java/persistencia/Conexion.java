@@ -55,6 +55,12 @@ public class Conexion {
 	}
 	
 	public void desconectar() {
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		conn = null;
 	}
 }

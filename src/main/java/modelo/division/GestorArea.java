@@ -158,7 +158,7 @@ public class GestorArea {
 
         try {
             ManejoDatos md = new ManejoDatos();
-            String table = "areas";
+            String table = "Areas";
             String campos = "*";
             String condicion = this.armarCondicion(area);
 
@@ -182,13 +182,13 @@ public class GestorArea {
 
                 // Fecha desde
                 if (!reg.get("Desde").equals("")) {
-                    LocalDate desde = Date.valueOf(reg.get("Desde")).toLocalDate();
+                    LocalDate desde = LocalDate.parse(reg.get("Desde"));
                     a.setDispDesde(desde);
                 }
 
                 // Fecha hasta
                 if (!reg.get("Hasta").equals("")) {
-                    LocalDate hasta = Date.valueOf(reg.get("Hasta")).toLocalDate();
+                    LocalDate hasta = LocalDate.parse(reg.get("Hasta"));
                     a.setDispDesde(hasta);
                 }
 
