@@ -161,8 +161,8 @@ public class GestorDocente {
 				docentes.add(doc);
 			}
 
-		}catch (Exception e) {
-
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
 
 		return docentes;
@@ -260,31 +260,51 @@ public class GestorDocente {
 			String condicion = this.armarCondicionIncentivo(docente, incentivo);
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
-				incentivos.add(new Incentivo(Year.parse(reg.get("Year"))));
+				incentivos.add(new Incentivo(Year.parse(reg.get("Fecha"))));
 			}
 			return incentivos;
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new ArrayList<IIncentivo>();
 		}
 	}
 
 
 	private String armarCondicionIncentivo(IDocente docente, IIncentivo incentivo) {
-		String condicion = "TRUE";
-		if (incentivo != null) {
-			condicion = "";
-			if (incentivo.getFecha() != null) {
-				condicion += "Year = '" + incentivo.getFecha().toString() + "'";
-			}
-			if (docente != null) {
-				if (!condicion.equals("")) {
-					condicion += " AND ";
-				}
-				condicion += "Legajo = " + docente.getLegajo();
-			}
+//		String condicion = "TRUE";
+//		if (incentivo != null) {
+//			condicion = "";
+//			if (incentivo.getFecha() != null) {
+//				condicion += "Year = '" + incentivo.getFecha().toString() + "'";
+//			}
+//			if (docente != null) {
+//				if (!condicion.equals("")) {
+//					condicion += " AND ";
+//				}
+//				condicion += "Legajo = " + docente.getLegajo();
+//			}
+//		}
+//
+//		return condicion;
+
+		List<String> condiciones = new ArrayList<String>();
+
+		// Docente:
+		if ((docente != null) && (docente.getLegajo() != 0)) {
+		    condiciones.add("Legajo = " + docente.getLegajo());
 		}
 
-		return condicion;
+		// Incentivo:
+		if ((incentivo != null) && (incentivo.getFecha() != null)) {
+		    condiciones.add("Year = '" + incentivo.getFecha().toString() + "'");
+		}
+
+		if (condiciones.isEmpty()) {
+		    return "TRUE";
+		} else {
+		    return String.join(" AND ", condiciones);
+		}
+
 	}
 
 	public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {

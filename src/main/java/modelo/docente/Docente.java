@@ -1,7 +1,7 @@
 package modelo.docente;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
 import modelo.persona.IPersona;
@@ -22,7 +22,7 @@ public class Docente implements IDocente {
 	}
 
 	public Docente() {
-
+	    this.incentivos = new ArrayList<IIncentivo>();
 	}
 
 	public Docente(IPersona persona, int legajo, String observaciones, CategoriaInvestigacion categoriaInvestigacion,
@@ -111,8 +111,8 @@ public class Docente implements IDocente {
 	@Override
 	public void agregarIncentivo(IIncentivo incentivo) {
 		this.incentivos.add(incentivo);
-		GestorDocente gd = new GestorDocente();
-		gd.agregarIncentivo(this, incentivo);
+//		GestorDocente gd = new GestorDocente();
+//		gd.agregarIncentivo(this, incentivo);
 	}
 
 
@@ -120,8 +120,8 @@ public class Docente implements IDocente {
 	@Override
 	public void quitarIncentivo(IIncentivo incentivo) {
 		this.incentivos.remove(incentivo);
-		GestorDocente gd = new GestorDocente();
-		gd.quitarIncentivo(this, incentivo);
+//		GestorDocente gd = new GestorDocente();
+//		gd.quitarIncentivo(this, incentivo);
 	}
 
 
