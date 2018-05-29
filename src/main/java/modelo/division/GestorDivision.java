@@ -152,13 +152,7 @@ public class GestorDivision {
                 d.setCodigo(reg.get("Codigo"));
                 d.setDescripcion(reg.get("Descripcion"));
 
-                if (!reg.get("Jefe").equals("")) {
-					GestorDocente gd = new GestorDocente();
-					Docente profesor = new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null,
-							null);
-					profesor = (Docente) gd.listarDocente(profesor).get(0);
-					d.setJefe(profesor);
-				}
+ 
 
 				if (!reg.get("Disposicion").equals("")) {
 					d.setDisposicion(reg.get("Disposicion"));

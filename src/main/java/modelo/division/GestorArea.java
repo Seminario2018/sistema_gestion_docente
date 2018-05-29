@@ -7,8 +7,6 @@ import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
-import modelo.docente.Docente;
-import modelo.docente.GestorDocente;
 import persistencia.ManejoDatos;
 
 public class GestorArea {
@@ -168,16 +166,7 @@ public class GestorArea {
                 Area a = new Area();
                 a.setCodigo(reg.get("Codigo"));
                 a.setDescripcion(reg.get("Descripcion"));
-                Area sa = new Area(reg.get("SubAreaDe"), null, null, null, null, null, null, null);
-                Docente responsable = new Docente(null, Integer.parseInt(reg.get("Responsable")), null, null, null, null, null);
-                GestorDocente gd = new GestorDocente();
-                responsable = (Docente) gd.listarDocente(responsable).get(0);
-
-                GestorDivision gestorDivision = new GestorDivision();
-                Division d = (Division) gestorDivision.listarDivision(null).get(0);
-
-                a.setDocenteResponsable(responsable);
-                a.setDivision(d);
+                
                 a.setDisposicion(reg.get("Disposicion"));
 
                 // Fecha desde
@@ -192,7 +181,6 @@ public class GestorArea {
                     a.setDispDesde(hasta);
                 }
 
-                a.setAreaDe(sa);
                 areas.add(a);
             }
 

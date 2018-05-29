@@ -1,11 +1,18 @@
 package modelo.docente;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
+import modelo.cargo.Cargo;
+import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
+import modelo.division.Area;
+import modelo.division.GestorArea;
 import modelo.division.IArea;
+import persistencia.ManejoDatos;
 
 public class CargoDocente implements ICargoDocente {
 	private int id = -1;
@@ -24,6 +31,19 @@ public class CargoDocente implements ICargoDocente {
 
 
 	public CargoDocente() {
+		this.id = -1;
+	    this.area = null;
+	    this.cargo = null;
+	    this.tipoCargo = null;
+	    this.disposicion = null;
+	    this.dispDesde = null;
+	    this.dispHasta = null;
+	    this.ultimoCosto = -1;
+	    this.fechaUltCost = null;
+	    this.resolucion = null;
+	    this.resDesde = null;
+	    this.resHasta = null;
+	    this.estado = null;
 		
 	}
 	
@@ -76,6 +96,16 @@ public class CargoDocente implements ICargoDocente {
 
 	@Override
     public IArea getArea() {
+		if (area == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "Area", "Codigo = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+			GestorArea ga = new GestorArea();
+			IArea a = new Area();
+			a.setCodigo(reg.get("Area"));
+			a = ga.listarArea(a).get(0);
+			this.setArea(a);
+		}
         return this.area;
     }
 
@@ -86,6 +116,15 @@ public class CargoDocente implements ICargoDocente {
 
     @Override
     public ICargo getCargo() {
+    	if (cargo == null) {
+    		ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "Cargo", "Codigo = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+    		GestorCargo gc = new GestorCargo();
+			Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
+			car = (Cargo) gc.listarCargo(car).get(0);
+			this.setCargo(car);
+    	}
         return this.cargo;
     }
 
@@ -96,6 +135,12 @@ public class CargoDocente implements ICargoDocente {
 
     @Override
     public TipoCargo getTipoCargo() {
+    	if (this.tipoCargo == null) {
+    		ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "TipoCargo", "Codigo = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+			this.setTipoCargo(TipoCargo.getTipoCargo(new TipoCargo(Integer.parseInt(reg.get("TipoCargo")), "")));
+    	}
         return this.tipoCargo;
     }
 
@@ -186,6 +231,15 @@ public class CargoDocente implements ICargoDocente {
 
     @Override
     public EstadoCargo getEstado() {
+    	if (this.estado == null) {
+    		ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "EstadoCargo", "Codigo = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+			EstadoCargo estado = new EstadoCargo();
+			estado.setId(Integer.parseInt(reg.get("EstadoCargo")));
+			estado = EstadoCargo.getEstadoCargo(estado);
+			this.setEstado(estado);
+    	}
         return this.estado;
     }
 

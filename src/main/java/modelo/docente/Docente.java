@@ -1,10 +1,15 @@
 package modelo.docente;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoDocente;
+import modelo.auxiliares.TipoDocumento;
+import modelo.persona.GestorPersona;
 import modelo.persona.IPersona;
+import modelo.persona.Persona;
+import persistencia.ManejoDatos;
 
 public class Docente implements IDocente {
 	private IPersona persona;
@@ -22,6 +27,13 @@ public class Docente implements IDocente {
 	}
 
 	public Docente() {
+		this.persona = null;
+		this.legajo = -1;
+		this.observaciones = null;
+		this.categoriaInvestigacion = null;
+		this.estado = null;
+
+		this.cargosDocentes = new ArrayList<ICargoDocente>();
 	    this.incentivos = new ArrayList<IIncentivo>();
 	}
 
@@ -65,6 +77,16 @@ public class Docente implements IDocente {
 
 	@Override
     public CategoriaInvestigacion getCategoriaInvestigacion() {
+		if (this.categoriaInvestigacion == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("Docentes", "CategoriaInvestigacion", "Legajo = " + this.getLegajo());
+			Hashtable<String, String> reg = res.get(0);
+			CategoriaInvestigacion cat = new CategoriaInvestigacion();
+			cat.setId(Integer.parseInt(reg.get("CategoriaInvestigacion")));
+			cat = CategoriaInvestigacion.getCategoria(cat);
+			this.setCategoriaInvestigacion(cat);
+		}
+		
 		return categoriaInvestigacion;
 	}
 
@@ -75,6 +97,16 @@ public class Docente implements IDocente {
 
 	@Override
     public EstadoDocente getEstado() {
+		if (this.estado == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("Docentes", "Estado", "Legajo = " + this.getLegajo());
+			Hashtable<String, String> reg = res.get(0);
+			
+			EstadoDocente estado = new EstadoDocente();
+			estado.setId(Integer.parseInt(reg.get("Estado")));
+			estado = EstadoDocente.getEstado(estado);
+		}
+		
 		return estado;
 	}
 
@@ -85,6 +117,9 @@ public class Docente implements IDocente {
 
 	@Override
     public List<ICargoDocente> getCargosDocentes() {
+		if (this.cargosDocentes.isEmpty()) {
+			this.cargarCargos();
+		}
 		return cargosDocentes;
 	}
 
@@ -104,6 +139,10 @@ public class Docente implements IDocente {
 
 	@Override
 	public List<IIncentivo> getIncentivos() {
+		if (incentivos.isEmpty()) {
+			this.cargarIncentivos();
+		}
+		
 		return incentivos;
 	}
 
@@ -127,7 +166,24 @@ public class Docente implements IDocente {
 
 	@Override
 	public IPersona getPersona() {
-		return persona;
+		if (persona == null) {
+			this.recuperarPersona();
+		}
+		return this.persona;
+	}
+
+	private void recuperarPersona() {
+		ManejoDatos md = new ManejoDatos();
+		ArrayList<Hashtable<String, String>> res = md.select("Docentes", "TipoDocumento, NroDocumento", "Legajo = " + this.getLegajo());
+		Hashtable<String, String> reg = res.get(0);
+		GestorPersona gp = new GestorPersona();
+		Persona p = new Persona();
+		TipoDocumento td = new TipoDocumento();
+		td.setId(Integer.parseInt(reg.get("TipoDocumento")));
+		p.setTipoDocumento(TipoDocumento.getTipo(td));
+		p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
+		p = (Persona) gp.listarPersonas(p).get(0);
+		this.setPersona(p);
 	}
 
 	@Override
@@ -136,6 +192,23 @@ public class Docente implements IDocente {
     }
 
 
+	private void cargarIncentivos() {
+		GestorDocente gd = new GestorDocente();
+		ArrayList<IIncentivo> incentivos = gd.listarIncentivos(this, null);
+		for (IIncentivo iIncentivo : incentivos) {
+			this.agregarIncentivo(iIncentivo);
+		}
+
+	}
+
+	private void cargarCargos() {
+		GestorDocente gd = new GestorDocente();
+		ArrayList<ICargoDocente> cargos = gd.listarCargo(this, null);
+		for (ICargoDocente iCargo : cargos) {
+			this.agregarCargoDocente(iCargo);
+		}
+
+	}
 
 
 

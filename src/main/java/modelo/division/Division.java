@@ -1,7 +1,13 @@
 package modelo.division;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Hashtable;
+
+import modelo.docente.Docente;
+import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
+import persistencia.ManejoDatos;
 
 public class Division implements IDivision {
 
@@ -36,7 +42,12 @@ public class Division implements IDivision {
 	}
 
     public Division(){
-
+    	this.codigo = null;
+        this.descripcion = null;
+        this.jefe = null;
+        this.disposicion = null;
+        this.dispDesde = null;
+        this.dispHasta = null;
     }
 
     @Override
@@ -61,6 +72,19 @@ public class Division implements IDivision {
 
     @Override
     public IDocente getJefe() {
+    	if (this.jefe == null) {
+    		ManejoDatos md = new ManejoDatos();
+    		ArrayList<Hashtable<String, String>> res =  
+    				md.select("Divisiones", "Jefe", "Codigo = '" + this.getCodigo() + "'");
+    		Hashtable<String, String> reg = res.get(0);
+            if (!reg.get("Jefe").equals("")) {
+					GestorDocente gd = new GestorDocente();
+					Docente profesor = new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null,
+							null);
+					profesor = (Docente) gd.listarDocente(profesor).get(0);
+					this.setJefe(profesor);
+			}
+    	}
         return this.jefe;
     }
 
