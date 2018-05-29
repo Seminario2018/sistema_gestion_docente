@@ -2,10 +2,14 @@ package modelo.investigacion;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import modelo.auxiliares.EstadoProyecto;
+import modelo.docente.Docente;
+import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
+import persistencia.ManejoDatos;
 
 public class Proyecto implements IProyecto {
 	private int id;
@@ -25,7 +29,20 @@ public class Proyecto implements IProyecto {
 	private List<IProrroga> prorrogas;
 
 	public Proyecto(){
-		
+		this.id = -1;
+		this.nombre = null;
+		this.resumen = null;
+		this.fechaPresentacion = null;
+		this.fechaAprobacion = null;
+		this.descripcion = null;
+		this.director = null;
+		this.codirector = null;
+		this.fechaInicio = null;
+		this.fechaFin = null;
+		this.estado = null;
+		this.integrantes = new ArrayList<IIntegrante>(integrantes);
+		this.subsidios = new ArrayList<ISubsidio>(subsidios);
+		this.prorrogas = new ArrayList<IProrroga>(prorrogas);
 	}
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
 			String descripcion, IDocente director, IDocente codirector,
@@ -117,6 +134,15 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public IDocente getDirector() {
+		if (this.director == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Director", "id = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+            Docente profesor = new Docente(null, Integer.parseInt(reg.get("Director")), null, null, null, null, null);
+            GestorDocente gd = new GestorDocente();
+            profesor = (Docente) gd.listarDocente(profesor).get(0);
+            this.setDirector(profesor);
+		}
 		return this.director;
 	}
 
@@ -127,6 +153,17 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public IDocente getCodirector() {
+		if (this.codirector == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Codirector", "id = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+			if (!reg.get("Codirector").equals("")) {
+            	Docente profesor = new Docente(null, Integer.parseInt(reg.get("Codirector")), null, null, null, null, null);
+                GestorDocente gd = new GestorDocente();
+                profesor = (Docente) gd.listarDocente(profesor).get(0);
+                this.setCodirector(profesor);
+            }
+		}
 		return this.codirector;
 	}
 
@@ -157,6 +194,15 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public EstadoProyecto getEstado() {
+		if (this.estado == null) {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Estado", "id = " + this.getId());
+			Hashtable<String, String> reg = res.get(0);
+			EstadoProyecto est = new EstadoProyecto();
+            est.setId(Integer.parseInt(reg.get("Estado")));
+            est = EstadoProyecto.getEstado(est);
+            this.setEstado(est);
+		}
 		return this.estado;
 	}
 
@@ -167,6 +213,13 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public List<IIntegrante> getIntegrantes() {
+		if (this.integrantes.isEmpty()) {
+			GestorProyecto gp = new GestorProyecto();
+			for (IIntegrante integrante : gp.listarIntegrantes(this, null)) {
+				this.agregarIntegrante(integrante);
+			}
+		}
+		
 		return this.integrantes;
 	}
 
@@ -182,6 +235,12 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public List<ISubsidio> getSubsidios() {
+		if (this.subsidios.isEmpty()) {
+			GestorProyecto gp = new GestorProyecto();
+			for (ISubsidio subsidio : gp.listarSubsidios(this, null)) {
+            	this.agregarSubsidio(subsidio);
+            }
+		}
 		return this.subsidios;
 	}
 
@@ -197,6 +256,12 @@ public class Proyecto implements IProyecto {
 
 	@Override
 	public List<IProrroga> getProrrogas() {
+		if (this.prorrogas.isEmpty()) {
+			GestorProyecto gp = new GestorProyecto();
+			for (IProrroga pro : gp.listarProrrogas(this, null)) {
+            	this.agregarProrroga(pro);
+            }
+		}
 		return this.prorrogas;
 	}
 

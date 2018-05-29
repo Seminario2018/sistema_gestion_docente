@@ -9,9 +9,6 @@ import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
-import modelo.auxiliares.EstadoProyecto;
-import modelo.docente.Docente;
-import modelo.docente.GestorDocente;
 import persistencia.ManejoDatos;
 
 public class GestorProyecto {
@@ -158,15 +155,6 @@ public class GestorProyecto {
                 		Integer.parseInt(fechaPresentacion[1]), Integer.parseInt(fechaPresentacion[2]));
                 p.setFechaPresentacion(fechaPres);
 
-                Docente profesor = new Docente(null, Integer.parseInt(reg.get("Director")), null, null, null, null, null);
-                GestorDocente gd = new GestorDocente();
-                profesor = (Docente) gd.listarDocente(profesor).get(0);
-                p.setDirector(profesor);
-
-                EstadoProyecto est = new EstadoProyecto();
-                est.setId(Integer.parseInt(reg.get("Estado")));
-                est = EstadoProyecto.getEstado(est);
-
                 if (!reg.get("Resumen").equals("")) {
                 	p.setResumen(reg.get("Resumen"));
                 }
@@ -180,11 +168,7 @@ public class GestorProyecto {
                 if (!reg.get("Descripcion").equals("")) {
                 	p.setDescripcion(reg.get("Descripcion"));
                 }
-                if (!reg.get("Codirector").equals("")) {
-                	profesor = new Docente(null, Integer.parseInt(reg.get("Codirector")), null, null, null, null, null);
-                    gd = new GestorDocente();
-                    profesor = (Docente) gd.listarDocente(profesor).get(0);
-                }
+                
                 if (!reg.get("FechaInicio").equals("")) {
                 	String[] fechaInicio = reg.get("FechaAprobacion").split("-");
                     LocalDate fechaIni = LocalDate.of(Integer.parseInt(fechaInicio[0]),
@@ -196,15 +180,6 @@ public class GestorProyecto {
                     LocalDate fechaF = LocalDate.of(Integer.parseInt(fechaFin[0]),
                     		Integer.parseInt(fechaFin[1]), Integer.parseInt(fechaFin[2]));
                     p.setFechaFin(fechaF);
-                }
-                for (IIntegrante integrante : this.listarIntegrantes(p, null)) {
-					p.agregarIntegrante(integrante);
-				}
-                for (ISubsidio subsidio : this.listarSubsidios(p, null)) {
-                	p.agregarSubsidio(subsidio);
-                }
-                for (IProrroga pro : this.listarProrrogas(p, null)) {
-                	p.agregarProrroga(pro);
                 }
 
 

@@ -7,9 +7,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
-import modelo.auxiliares.EstadoPrograma;
-import modelo.docente.Docente;
-import modelo.docente.GestorDocente;
 import persistencia.ManejoDatos;
 
 public class GestorPrograma {
@@ -117,23 +114,11 @@ public class GestorPrograma {
 			
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
-				//`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`
 				Programa p = new Programa();
 				p.setId(Integer.parseInt(reg.get("id")));
 				p.setNombre(reg.get("Nombre"));
 				
-				Docente doc = new Docente();
-				doc.setLegajo(Integer.parseInt(reg.get("Director")));
-				GestorDocente gd = new GestorDocente();
-				doc = (Docente) gd.listarDocente(doc).get(0);
-						
-				p.setDirector(doc);
 				
-				if (!reg.get("codirector").equals("")) {
-					doc.setLegajo(Integer.parseInt(reg.get("Codirector")));
-					doc = (Docente) gd.listarDocente(doc).get(0);
-					p.setCodirector(doc);
-				}
 				if (!reg.get("Disposicion").equals("")) {
 					p.setDisposicion(reg.get("Disposicion"));
 				}
@@ -150,16 +135,6 @@ public class GestorPrograma {
 					p.setFechaFin(fld);
 				}
 				
-				EstadoPrograma estado = new EstadoPrograma();
-				estado.setId(Integer.parseInt(reg.get("Estado")));
-				estado = EstadoPrograma.getEstado(estado);
-				p.setEstado(estado);
-				
-				GestorProyecto gp = new GestorProyecto();
-				List<IProyecto> proyectos = gp.listarProyecto(null, p);
-				for (IProyecto proyecto : proyectos) {
-					p.agregarProyecto(proyecto);
-				}
 				programas.add(p);
 				
 			}
