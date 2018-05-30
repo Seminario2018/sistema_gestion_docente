@@ -21,6 +21,7 @@ import modelo.auxiliares.TipoDocumento;
 import modelo.persona.IContacto;
 import modelo.persona.IDomicilio;
 import modelo.persona.IPersona;
+import modelo.persona.ITitulo;
 
 /**
  * @author Martín Tomás Juran
@@ -118,7 +119,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    }
 	}
 
-	/** Vacía los campos de datos */
+	/** Vacía los controles de datos */
 	private void datosVaciarControles() {
 	    txtDatosApellido.clear();
 	    txtDatosNombre.clear();
@@ -196,7 +197,7 @@ public class Personas extends ControladorVista implements Initializable {
         }
     }
 
-	/** Vacía los campos de datos del contacto */
+	/** Vacía los controles de datos del contacto */
     private void contactosVaciarControles() {
         cmbContactosTipo.getSelectionModel().clearSelection();
         txtContactosDato.clear();
@@ -325,7 +326,7 @@ public class Personas extends ControladorVista implements Initializable {
         }
     }
 
-    /** Vacía los campos de datos del contacto */
+    /** Vacía los controles de datos del domicilio */
     private void domiciliosVaciarControles() {
         cmbDomiciliosProvincia.getSelectionModel().clearSelection();
         txtDomiciliosCiudad.clear();
@@ -414,20 +415,99 @@ public class Personas extends ControladorVista implements Initializable {
 
 // ---------------------------- Pestaña Títulos ----------------------------- //
 
+	private ITitulo tituloSeleccionado = null;
+	private ObservableList<FilaTitulo> filasTitulos = FXCollections.observableArrayList();
+
+	public class FilaTitulo {
+	    private ITitulo titulo;
+	    public FilaTitulo(ITitulo titulo) {
+	        this.titulo = titulo;
+	    }
+	    public String getNombre() {
+	        return this.titulo.getNombre();
+	    }
+	    public boolean esMayor() {
+	        return this.titulo.isEsMayor();
+	    }
+	    public ITitulo getTitulo() {
+	        return this.titulo;
+	    }
+	}
+
+	/** Refresca la tabla de títulos */
+    private void titulosActualizarTabla() {
+        filasTitulos.clear();
+        if (personaSeleccionada != null) {
+            for (ITitulo titulo : personaSeleccionada.getTitulos()) {
+                filasTitulos.add(new FilaTitulo(titulo));
+            }
+        }
+    }
+
+    /** Muestra los datos del titulo seleccionado: */
+    private void titulosMostrarTitulo() {
+        if (domicilioSeleccionado != null) {
+            txtTitulosTitulo.setText(tituloSeleccionado.getNombre());
+        }
+    }
+
+    /** Vacía los campos de datos del título */
+    private void titulosVaciarControles() {
+        txtTitulosTitulo.clear();
+    }
+
+	@FXML private void inicializarTitulos() {
+	    inicializarTabla("Titulos");
+	    titulosActualizarTabla();
+	}
+
 	@FXML private TextField txtTitulosTitulo;
 
 	@FXML private Button btnTitulosAgregar;
 	@FXML public void agregarTitulo(ActionEvent event) {
+	    ITitulo tituloNuevo = this.controlPersona.getITitulo();
+	    personaSeleccionada.getTitulos().add(tituloNuevo);
 
+	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+	    switch (resultado.getEstado()) {
+            case UPDATE_ERROR:
+                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            case UPDATE_OK:
+                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
+	    titulosActualizarTabla();
 	}
 
 	@FXML private Button btnTitulosQuitar;
 	@FXML public void quitarTitulo(ActionEvent event) {
+	    FilaTitulo filaSeleccionada = this.tblTitulos.getSelectionModel().getSelectedItem();
+        tituloSeleccionado = filaSeleccionada.getTitulo();
 
+        personaSeleccionada.getTitulos().remove(tituloSeleccionado);
+        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+
+        switch(resultado.getEstado()) {
+            case DELETE_ERROR:
+                alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
+                personaSeleccionada.getTitulos().add(tituloSeleccionado);
+                break;
+            case DELETE_OK:
+                dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
+                tituloSeleccionado = null;
+                titulosVaciarControles();
+                break;
+            default:
+                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+        }
+        titulosActualizarTabla();
 	}
 
-	@FXML private TableView<?> tblTitulos;
-	@FXML private TableColumn<?, ?> colTitulosTitulo;
-	@FXML private TableColumn<?, ?> colTituloMayor;
+	@FXML private TableView<FilaTitulo> tblTitulos;
+	@FXML private TableColumn<FilaTitulo, String> colTitulosTitulo;
+	@FXML private TableColumn<FilaTitulo, Boolean> colTituloMayor;
 
 }

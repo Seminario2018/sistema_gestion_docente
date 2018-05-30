@@ -333,7 +333,7 @@
                         </GridPane>
                      </content>
                   </Tab>
-                  <Tab text="Títulos">
+                  <Tab onSelectionChanged="#inicializarTitulos" text="Títulos">
                     <content>
                         <GridPane vgap="10.0">
                            <columnConstraints>
