@@ -89,6 +89,8 @@ public class GestorPantalla {
 				Window window = new Window();
 				window.getContentPane().getChildren().add(root);
 				preferenciasVentana(window, nombre);
+				// Problemas con la GUI
+				window.setResizableWindow(false);
 
 				// Tomar el tamaño de la región que va a contener (por lo general 800x600)
 				window.setPrefWidth(((Region) root).getPrefWidth());
