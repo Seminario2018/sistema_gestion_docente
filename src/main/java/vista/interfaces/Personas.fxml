@@ -256,7 +256,7 @@
                         </GridPane>
                      </content>
                   </Tab>
-                  <Tab text="Domicilios">
+                  <Tab onSelectionChanged="#inicializarDomicilios" text="Domicilios">
                      <content>
                         <GridPane vgap="10.0">
                            <children>

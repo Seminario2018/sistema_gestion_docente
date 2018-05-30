@@ -18,8 +18,8 @@ import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoContacto;
 import modelo.auxiliares.TipoDocumento;
-import modelo.persona.Contacto;
 import modelo.persona.IContacto;
+import modelo.persona.IDomicilio;
 import modelo.persona.IPersona;
 
 /**
@@ -162,27 +162,23 @@ public class Personas extends ControladorVista implements Initializable {
 	private ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
 
 	public class FilaContacto {
-	    private int id;
-	    private TipoContacto tipo;
-	    private String dato;
+	    private IContacto contacto;
 	    public FilaContacto(IContacto contacto) {
-	        this.id = contacto.getId();
-	        this.tipo = contacto.getTipo();
-	        this.dato = contacto.getDato();
+	        this.contacto = contacto;
 	    }
 	    public String getTipo() {
-	        return this.tipo.getDescripcion();
+	        return this.contacto.getTipo().getDescripcion();
 	    }
 	    public String getDato() {
-	        return this.dato;
+	        return this.contacto.getDato();
 	    }
 	    public IContacto getContacto() {
-	        return new Contacto(this.id, this.tipo, this.dato);
+	        return this.contacto;
 	    }
 	}
 
 	/** Refresca la tabla de contactos */
-	private void actualizarTablaContactos() {
+	private void contactosActualizarTabla() {
 	    filasContactos.clear();
 	    if (personaSeleccionada != null) {
             for (IContacto contacto : personaSeleccionada.getContactos()) {
@@ -210,13 +206,11 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private void inicializarContactos() {
 	    inicializarTabla("Contactos");
 
-	    actualizarTablaContactos();
+	    contactosActualizarTabla();
 
 	    cmbContactosTipo.setItems(
 	        FXCollections.observableArrayList(
 	            TipoContacto.getLista()));
-
-	    contactosMostrarContacto();
 	}
 
 	@FXML private Button btnContactosNuevo;
@@ -231,9 +225,19 @@ public class Personas extends ControladorVista implements Initializable {
 	    contactoSeleccionado.setDato(txtContactosDato.getText());
 
 	    personaSeleccionada.getContactos().add(contactoSeleccionado);
-	    this.controlPersona.modificarPersona(personaSeleccionada);
 
-	    actualizarTablaContactos();
+	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+        switch (resultado.getEstado()) {
+            case UPDATE_ERROR:
+                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            case UPDATE_OK:
+                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
+	    contactosActualizarTabla();
 	}
 
 	@FXML private Button btnContactosDescartar;
@@ -263,7 +267,7 @@ public class Personas extends ControladorVista implements Initializable {
             default:
                 throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
         }
-	    actualizarTablaContactos();
+	    contactosActualizarTabla();
 	}
 
 	@FXML private TableView<FilaContacto> tblContactos;
@@ -275,33 +279,135 @@ public class Personas extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Domicilios ---------------------------- //
 
+	private IDomicilio domicilioSeleccionado = null;
+    private ObservableList<FilaDomicilio> filasDomicilios = FXCollections.observableArrayList();
+
+    public class FilaDomicilio {
+        private IDomicilio domicilio;
+        public FilaDomicilio(IDomicilio domicilio) {
+            this.domicilio = domicilio;
+        }
+        public String getProvincia() {
+            return this.domicilio.getProvincia();
+        }
+        public String getCiudad() {
+            return this.domicilio.getCiudad();
+        }
+        public String getCodigoPostal() {
+            return this.domicilio.getCodigoPostal();
+        }
+        public String getDireccion() {
+            return this.domicilio.getDireccion();
+        }
+        public IDomicilio getDomicilio() {
+            return this.domicilio;
+        }
+    }
+
+    /** Refresca la tabla de domicilios */
+    private void domiciliosActualizarTabla() {
+        filasDomicilios.clear();
+        if (personaSeleccionada != null) {
+            for (IDomicilio domicilio: personaSeleccionada.getDomicilios()) {
+                filasDomicilios.add(
+                    new FilaDomicilio(domicilio));
+            }
+        }
+    }
+
+    /** Muestra los datos del domicilio seleccionado: */
+    private void domiciliosMostrarDomicilio() {
+        if (domicilioSeleccionado != null) {
+            cmbDomiciliosProvincia.getSelectionModel().select(domicilioSeleccionado.getProvincia());
+            txtDomiciliosCiudad.setText(domicilioSeleccionado.getCiudad());
+            txtDomiciliosCP.setText(domicilioSeleccionado.getCodigoPostal());
+            txtDomiciliosDireccion.setText(domicilioSeleccionado.getDireccion());
+        }
+    }
+
+    /** Vacía los campos de datos del contacto */
+    private void domiciliosVaciarControles() {
+        cmbDomiciliosProvincia.getSelectionModel().clearSelection();
+        txtDomiciliosCiudad.clear();
+        txtDomiciliosCP.clear();
+        txtDomiciliosDireccion.clear();
+    }
+
+    @FXML private void inicializarDomicilios() {
+        inicializarTabla("Domicilios");
+
+        domiciliosActualizarTabla();
+
+        // TODO Llenar combobox de provincias
+    }
+
 	@FXML private Button btnDomiciliosNuevo;
 	@FXML public void nuevoDomicilio(ActionEvent event) {
-
+	    domicilioSeleccionado = this.controlPersona.getIDomicilio();
+	    domiciliosVaciarControles();
 	}
 
 	@FXML private Button btnDomiciliosGuardar;
 	@FXML public void guardarDomicilio(ActionEvent event) {
+	    domicilioSeleccionado.setProvincia(cmbDomiciliosProvincia.getSelectionModel().getSelectedItem());
+	    domicilioSeleccionado.setCiudad(txtDomiciliosCiudad.getText());
+	    domicilioSeleccionado.setCodigoPostal(txtDomiciliosCP.getText());
+	    domicilioSeleccionado.setDireccion(txtDomiciliosDireccion.getText());
 
+	    personaSeleccionada.getDomicilios().add(domicilioSeleccionado);
+
+        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+        switch (resultado.getEstado()) {
+            case UPDATE_ERROR:
+                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            case UPDATE_OK:
+                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
+
+        domiciliosActualizarTabla();
 	}
 
 	@FXML private Button btnDomicilioDescartar;
 	@FXML public void descartarDomicilio(ActionEvent event) {
-
+	    domicilioSeleccionado = null;
+        domiciliosVaciarControles();
 	}
 
 	@FXML private Button btnDomiciliosEliminar;
 	@FXML public void eliminarDomicilio(ActionEvent event) {
+	    FilaDomicilio filaSeleccionada = this.tblDomicilios.getSelectionModel().getSelectedItem();
+        domicilioSeleccionado = filaSeleccionada.getDomicilio();
 
+        personaSeleccionada.getDomicilios().remove(domicilioSeleccionado);
+        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+
+        switch(resultado.getEstado()) {
+            case DELETE_ERROR:
+                alertaError(TITULO, "Eliminar Domicilio", resultado.getMensaje());
+                personaSeleccionada.getDomicilios().add(domicilioSeleccionado);
+                break;
+            case DELETE_OK:
+                dialogoConfirmacion(TITULO, "Eliminar Domicilio", resultado.getMensaje());
+                domicilioSeleccionado = null;
+                domiciliosVaciarControles();
+                break;
+            default:
+                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+        }
+        domiciliosActualizarTabla();
 	}
 
-	@FXML private TableView<?> tblDomicilios;
-	@FXML private TableColumn<?, ?> colDomiciliosProvincia;
-	@FXML private TableColumn<?, ?> colDomiciliosCiudad;
-	@FXML private TableColumn<?, ?> colDomiciliosCP;
-	@FXML private TableColumn<?, ?> colDomiciliosDireccion;
+	@FXML private TableView<FilaDomicilio> tblDomicilios;
+	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosProvincia;
+	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosCiudad;
+	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosCP;
+	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosDireccion;
 
-	@FXML private ComboBox<?> cmbDomiciliosProvincia;
+	@FXML private ComboBox<String> cmbDomiciliosProvincia;
 	@FXML private TextField txtDomiciliosCiudad;
 	@FXML private TextField txtDomiciliosCP;
 	@FXML private TextField txtDomiciliosDireccion;
