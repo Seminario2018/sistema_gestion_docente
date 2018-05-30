@@ -385,4 +385,9 @@ public class GestorPersona {
         return new Persona();
     }
 
+
+	public IContacto getIContacto() {
+        return new Contacto();
+    }
+
 }

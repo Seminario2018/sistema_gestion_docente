@@ -7,48 +7,56 @@ import modelo.auxiliares.TipoContacto;
  * @version 1.0, 28 de abr. de 2018
  */
 
-public class Contacto implements IContacto{
-	private int id;
-	private TipoContacto tipo;
-	private String dato; //https://facebook.com/usuario
-	
+public class Contacto implements IContacto {
 
-	public Contacto(int id, TipoContacto tipo, String dato) {
-		super();
-		this.id = id;
-		this.tipo = tipo;
-		this.dato = dato;
-	}
+    private int id;
+    private TipoContacto tipo;
+    private String dato; //https://facebook.com/usuario
 
-	public int getId() {
-		return id;
-	}
+    public Contacto(int id, TipoContacto tipo, String dato) {
+        super();
+        this.id = id;
+        this.tipo = tipo;
+        this.dato = dato;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public Contacto() {
 
-	public TipoContacto getTipo() {
-		return tipo;
-	}
+    }
 
-	public void setTipo(TipoContacto tipo) {
-		this.tipo = tipo;
-	}
+    @Override
+    public int getId() {
+        return id;
+    }
 
-	public String getDato() {
-		return dato;
-	}
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDato(String dato) {
-		this.dato = dato;
-	}
+    @Override
+    public TipoContacto getTipo() {
+        return tipo;
+    }
 
-	@Override
-	public IContacto clone() {
-		return new Contacto(this.id, this.tipo, this.dato);
-	}
+    @Override
+    public void setTipo(TipoContacto tipo) {
+        this.tipo = tipo;
+    }
 
+    @Override
+    public String getDato() {
+        return dato;
+    }
 
+    @Override
+    public void setDato(String dato) {
+        this.dato = dato;
+    }
+
+    @Override
+    public IContacto clone() {
+        return new Contacto(this.id, this.tipo, this.dato);
+    }
 
 }

@@ -48,4 +48,9 @@ public class ControlPersona {
         return this.gestorPersona.getIPersona();
     }
 
+
+    public IContacto getIContacto() {
+        return this.gestorPersona.getIContacto();
+    }
+
 }
