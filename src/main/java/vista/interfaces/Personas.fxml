@@ -187,7 +187,7 @@
                         </GridPane>
                      </content>
                   </Tab>
-                <Tab text="Contactos">
+                <Tab onSelectionChanged="#inicializarContactos" text="Contactos">
                      <content>
                         <GridPane vgap="10.0">
                            <columnConstraints>

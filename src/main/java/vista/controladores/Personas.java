@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import controlador.ControlPersona;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,7 +16,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.TipoContacto;
 import modelo.auxiliares.TipoDocumento;
+import modelo.persona.Contacto;
+import modelo.persona.IContacto;
 import modelo.persona.IPersona;
 
 /**
@@ -47,7 +51,7 @@ public class Personas extends ControladorVista implements Initializable {
 	}
 
 	/** Vacía los controles generales */
-	private void generalVaciarCampos() {
+	private void generalVaciarControles() {
 	    txtPersonasDocumento.clear();
 	    txtPersonasNombre.clear();
 	}
@@ -85,8 +89,8 @@ public class Personas extends ControladorVista implements Initializable {
                 dialogoConfirmacion(TITULO, "Eliminar Persona", resultado.getMensaje());
                 personaSeleccionada = null;
 
-                generalVaciarCampos();
-                datosVaciarCampos();
+                generalVaciarControles();
+                datosVaciarControles();
                 break;
             default:
                 throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
@@ -99,6 +103,8 @@ public class Personas extends ControladorVista implements Initializable {
 	    cmbDatosTipoDocumento.setItems(
 	        FXCollections.observableArrayList(
 	            TipoDocumento.getLista()));
+
+	    datosMostrarPersona();
 	}
 
 	/** Muestra los datos de la persona seleccionada: */
@@ -113,7 +119,7 @@ public class Personas extends ControladorVista implements Initializable {
 	}
 
 	/** Vacía los campos de datos */
-	private void datosVaciarCampos() {
+	private void datosVaciarControles() {
 	    txtDatosApellido.clear();
 	    txtDatosNombre.clear();
 	    cmbDatosTipoDocumento.getSelectionModel().clearSelection();
@@ -152,31 +158,119 @@ public class Personas extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Contactos ---------------------------- //
 
+	private IContacto contactoSeleccionado = null;
+	private ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
+
+	public class FilaContacto {
+	    private int id;
+	    private TipoContacto tipo;
+	    private String dato;
+	    public FilaContacto(IContacto contacto) {
+	        this.id = contacto.getId();
+	        this.tipo = contacto.getTipo();
+	        this.dato = contacto.getDato();
+	    }
+	    public String getTipo() {
+	        return this.tipo.getDescripcion();
+	    }
+	    public String getDato() {
+	        return this.dato;
+	    }
+	    public IContacto getContacto() {
+	        return new Contacto(this.id, this.tipo, this.dato);
+	    }
+	}
+
+	/** Refresca la tabla de contactos */
+	private void actualizarTablaContactos() {
+	    filasContactos.clear();
+	    if (personaSeleccionada != null) {
+            for (IContacto contacto : personaSeleccionada.getContactos()) {
+                filasContactos.add(
+                    new FilaContacto(contacto));
+            }
+        }
+	}
+
+	/** Muestra los datos del contacto seleccionado: */
+    private void contactosMostrarContacto() {
+        if (contactoSeleccionado != null) {
+            cmbContactosTipo.getSelectionModel().select(contactoSeleccionado.getTipo());;
+            txtContactosDato.setText(contactoSeleccionado.getDato());
+        }
+    }
+
+	/** Vacía los campos de datos del contacto */
+    private void contactosVaciarControles() {
+        cmbContactosTipo.getSelectionModel().clearSelection();
+        txtContactosDato.clear();
+    }
+
+
+	@FXML private void inicializarContactos() {
+	    inicializarTabla("Contactos");
+
+	    actualizarTablaContactos();
+
+	    cmbContactosTipo.setItems(
+	        FXCollections.observableArrayList(
+	            TipoContacto.getLista()));
+
+	    contactosMostrarContacto();
+	}
+
 	@FXML private Button btnContactosNuevo;
 	@FXML public void nuevoContacto(ActionEvent event) {
-
+	    contactoSeleccionado = this.controlPersona.getIContacto();
+	    contactosVaciarControles();
 	}
 
 	@FXML private Button btnContactosGuardar;
 	@FXML public void guardarContacto(ActionEvent event) {
+	    contactoSeleccionado.setTipo(cmbContactosTipo.getSelectionModel().getSelectedItem());
+	    contactoSeleccionado.setDato(txtContactosDato.getText());
 
+	    personaSeleccionada.getContactos().add(contactoSeleccionado);
+	    this.controlPersona.modificarPersona(personaSeleccionada);
+
+	    actualizarTablaContactos();
 	}
 
 	@FXML private Button btnContactosDescartar;
 	@FXML public void descartarContacto(ActionEvent event) {
-
+	    contactoSeleccionado = null;
+	    contactosVaciarControles();
 	}
 
 	@FXML private Button btnContactosEliminar;
 	@FXML public void eliminarContacto(ActionEvent event) {
+	    FilaContacto filaSeleccionada = this.tblContactos.getSelectionModel().getSelectedItem();
+	    contactoSeleccionado = filaSeleccionada.getContacto();
 
+	    personaSeleccionada.getContactos().remove(contactoSeleccionado);
+	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+
+	    switch(resultado.getEstado()) {
+            case DELETE_ERROR:
+                alertaError(TITULO, "Eliminar Contacto", resultado.getMensaje());
+                personaSeleccionada.getContactos().add(contactoSeleccionado);
+                break;
+            case DELETE_OK:
+                dialogoConfirmacion(TITULO, "Eliminar Contacto", resultado.getMensaje());
+                contactoSeleccionado = null;
+                contactosVaciarControles();
+                break;
+            default:
+                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+        }
+	    actualizarTablaContactos();
 	}
 
-	@FXML private TableView<?> tblContactos;
-	@FXML private TableColumn<?, ?> colContactosTipo;
-	@FXML private TableColumn<?, ?> colContactosDato;
+	@FXML private TableView<FilaContacto> tblContactos;
+	@FXML private TableColumn<FilaContacto, String> colContactosTipo;
+	@FXML private TableColumn<FilaContacto, String> colContactosDato;
 
-	@FXML private ComboBox<?> cmbContactosTipo;
+	@FXML private ComboBox<TipoContacto> cmbContactosTipo;
 	@FXML private TextField txtContactosDato;
 
 // -------------------------- Pestaña Domicilios ---------------------------- //
