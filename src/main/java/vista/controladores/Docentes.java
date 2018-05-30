@@ -52,7 +52,7 @@ public class Docentes extends ControladorVista {
 	private ControlDivision controlDivision = new ControlDivision(this);
 	private ControlDocente controlDocente = new ControlDocente(this);
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
-	public IDocente docenteSeleccionado = this.controlDocente.getIDocente();
+	public IDocente docenteSeleccionado;
 
 	private static final String TITULO = "Docentes";
 
@@ -569,19 +569,19 @@ public class Docentes extends ControladorVista {
 	protected Set<IIncentivo> incentivosNuevos = new HashSet<IIncentivo>();
 	protected Set<IIncentivo> incentivosBorrados = new HashSet<IIncentivo>();
 
-	class FilaIncentivo {
-	    private int fecha;
+	public class FilaIncentivo {
+	    private int anio;
 	    public FilaIncentivo(IIncentivo incentivo) {
-	        this.fecha = incentivo.getFecha().getValue();
+	        this.anio = incentivo.getFecha().getValue();
 	    }
-	    public int getFecha() {
-	        return this.fecha;
+	    public int getAnio() {
+	        return this.anio;
 	    }
-	    public void setFecha(int fecha) {
-	        this.fecha = fecha;
+	    public void setAnio(int fecha) {
+	        this.anio = fecha;
 	    }
 	    public IIncentivo getIncentivo() {
-	        return new Incentivo(Year.of(this.fecha));
+	        return new Incentivo(Year.of(this.anio));
 	    }
 	}
 
