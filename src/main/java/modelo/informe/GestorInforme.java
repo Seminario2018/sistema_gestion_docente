@@ -13,7 +13,7 @@ import persistencia.ManejoDatos;
 
 public class GestorInforme {
 
-	public EstadoOperacion nuevoInforme(TipoInforme informe) {
+	public EstadoOperacion nuevoInforme(ITipoInforme informe) {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			String table = "TiposInformes";
@@ -55,7 +55,7 @@ public class GestorInforme {
 	
 
 
-	public void agregarColumna(TipoInforme informe, ColumnaInforme col) throws Exception {
+	public void agregarColumna(ITipoInforme informe, ColumnaInforme col) throws Exception {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Columnas";
@@ -90,7 +90,7 @@ public class GestorInforme {
 	}
 
 
-	public EstadoOperacion modificarInforme(TipoInforme informe) {
+	public EstadoOperacion modificarInforme(ITipoInforme informe) {
 		try {
 			ManejoDatos e = new ManejoDatos();
 			String tabla = "TiposInformes";
@@ -132,7 +132,7 @@ public class GestorInforme {
 
 
 
-	public ArrayList<ITipoInforme> listarTipoInforme(ITipoInforme informe) {
+	public ArrayList<ITipoInforme> listarInforme(ITipoInforme informe) {
 
 		ArrayList<ITipoInforme> informes = new ArrayList<ITipoInforme>();
 		String condicion = "TRUE";

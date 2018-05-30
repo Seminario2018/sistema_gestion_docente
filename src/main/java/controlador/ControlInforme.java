@@ -25,9 +25,8 @@ public class ControlInforme {
 		return this.gestorInforme.nuevoInforme(informe);
 	}
 	
-	public ArrayList<ITipoInforme> listarProyecto(ITipoInforme informe) {
-		
-		return this.gestorInforme.listarProyecto(informe);
+	public ArrayList<ITipoInforme> listarInforme(ITipoInforme informe) {
+		return this.gestorInforme.listarInforme(informe);
 	}
 	
 	
