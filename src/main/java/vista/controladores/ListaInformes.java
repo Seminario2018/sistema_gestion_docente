@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
-public class ListaInformes implements Initializable {
+public class ListaInformes extends ControladorVista implements Initializable {
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)

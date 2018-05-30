@@ -13,6 +13,7 @@ import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -43,7 +44,7 @@ import utilidades.Utilidades;
  * @version 1.0, 1 de may. de 2018
  */
 @SuppressWarnings("rawtypes")
-public class Docentes extends ControladorVista {
+public class Docentes extends ControladorVista implements Initializable {
 
 	public void initialize(URL arg0, ResourceBundle arg1) {
 

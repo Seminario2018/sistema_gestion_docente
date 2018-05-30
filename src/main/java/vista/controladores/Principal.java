@@ -53,17 +53,17 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void pantallaRoles(ActionEvent event) {
-
+    	this.gestor.lanzarPantalla("Roles", null);
     }
 
     @FXML
     void pantallaUsuarios(ActionEvent event) {
-
+    	this.gestor.lanzarPantalla("Usuarios", null);
     }
 
     @FXML
     void pantallaPersonas(ActionEvent event) {
-
+    	this.gestor.lanzarPantalla("Personas", null);
     }
 
     @FXML
@@ -73,7 +73,7 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void pantallaProgramas(ActionEvent event) {
-
+    	this.gestor.lanzarPantalla("Programas", null);
     }
 
     @FXML
@@ -83,7 +83,7 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void pantallaListaInformes(ActionEvent event) {
-
+    	this.gestor.lanzarPantalla("ListaInformes", null);
     }
 		
 }

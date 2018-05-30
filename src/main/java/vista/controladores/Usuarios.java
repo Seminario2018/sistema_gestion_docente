@@ -16,7 +16,7 @@ import javafx.scene.control.TextField;
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
-public class Usuarios implements Initializable {
+public class Usuarios extends ControladorVista implements Initializable {
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
