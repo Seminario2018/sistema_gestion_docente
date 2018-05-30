@@ -613,7 +613,7 @@ public class Docentes extends ControladorVista implements Initializable {
     	    filasIncentivos.add(new FilaIncentivo(nuevoIncentivo));
     	    incentivosNuevos.add(nuevoIncentivo);
 	    } catch (NumberFormatException nfe) {
-	        alertaError("Docentes", "Error de formato", "La fecha tiene que ser un número");
+	        alertaError(TITULO, "Error de formato", "La fecha tiene que ser un número");
 	    }
 	}
 
