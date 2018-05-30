@@ -81,7 +81,7 @@
             </GridPane>
             <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
               <tabs>
-                <Tab text="Datos">
+                <Tab onSelectionChanged="#inicializarDatos" text="Datos">
                      <content>
                         <GridPane vgap="10.0">
                            <columnConstraints>
