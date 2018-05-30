@@ -390,4 +390,9 @@ public class GestorPersona {
         return new Contacto();
     }
 
+
+	public IDomicilio getIDomicilio() {
+        return new Domicilio();
+    }
+
 }

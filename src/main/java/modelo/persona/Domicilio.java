@@ -11,7 +11,7 @@ public class Domicilio implements IDomicilio {
 	private String ciudad;
 	private String codigoPostal;
 	private String direccion;
-	
+
 	public Domicilio(int id, String provincia, String ciudad, String codigoPostal, String direccion) {
 		super();
 		this.id = id;
@@ -21,11 +21,17 @@ public class Domicilio implements IDomicilio {
 		this.direccion = direccion;
 	}
 
-	public int getId() {
+	public Domicilio() {
+
+    }
+
+    @Override
+    public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	@Override
+    public void setId(int id) {
 		this.id = id;
 	}
 
@@ -68,10 +74,10 @@ public class Domicilio implements IDomicilio {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	
+
 	@Override
 	public IDomicilio clone() {
 		return new Domicilio(id, provincia, ciudad, codigoPostal, direccion);
 	}
-	
+
 }
