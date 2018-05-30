@@ -3,6 +3,7 @@ package vista.controladores;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,15 @@ public abstract class ControladorVista {
 
 	public void setGestor(GestorPantalla gestor) {
 		this.gestor = gestor;
+	}
+	
+	/**
+	 * Recibe argumentos durante la inicialización para setear parámetros,
+	 * e.g la pantalla Búsqueda se inicializa con parámetros para buscar Docentes
+	 * Como es opcional, se debe agregar comportamiento con @Override
+	 */
+	public void recibirParametros(Map<String, Object> args) {
+		
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package vista.controladores;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javafx.fxml.Initializable;
@@ -34,6 +35,11 @@ public class Busqueda extends ControladorVista implements Initializable {
 	
 	@FXML private Button btnBusquedaSeleccionar;
 	@FXML public void seleccionar(ActionEvent event) {
+		
+	}
+	
+	@Override
+	public void recibirParametros(Map<String, Object> args) {
 		
 	}
 

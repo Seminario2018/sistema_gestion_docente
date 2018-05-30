@@ -112,10 +112,16 @@ public class GestorPantalla {
 					}
 				});
 				
-				this.internalPane.getChildren().add(window);
+				Object controlador = loader.getController(); 
 				
-				this.controladoresActivos.put(nombre, loader.getController());
+				this.controladoresActivos.put(nombre, (ControladorVista) controlador);
 				this.pantallasAbiertas.put(nombre, window);
+				
+				if (args != null && !args.isEmpty())
+					if (controlador instanceof ControladorVista)
+						((ControladorVista) controlador).recibirParametros(args);
+				
+				this.internalPane.getChildren().add(window);
 
 			}
 		} catch (IOException e) {
