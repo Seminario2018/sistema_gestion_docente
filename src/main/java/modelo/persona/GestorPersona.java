@@ -400,4 +400,49 @@ public class GestorPersona {
         return new Titulo();
     }
 
+
+	public EstadoOperacion agregarContacto(IPersona persona, IContacto contacto) {
+        return null;
+    }
+
+    public EstadoOperacion modificarContacto(IPersona persona, IContacto contacto) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion quitarContacto(IPersona persona, IContacto contacto) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion agregarDomicilio(IPersona persona, IDomicilio domicilio) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion modificarDomicilio(IPersona persona, IDomicilio domicilio) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion quitarDomicilio(IPersona persona, IDomicilio domicilio) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion agregarTitulo(IPersona persona, ITitulo titulo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion modificarTitulo(IPersona persona, ITitulo titulo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public EstadoOperacion quitarTitulo(IPersona persona, ITitulo titulo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

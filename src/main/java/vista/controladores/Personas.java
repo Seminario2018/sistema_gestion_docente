@@ -225,15 +225,15 @@ public class Personas extends ControladorVista implements Initializable {
 	    contactoSeleccionado.setTipo(cmbContactosTipo.getSelectionModel().getSelectedItem());
 	    contactoSeleccionado.setDato(txtContactosDato.getText());
 
-	    personaSeleccionada.getContactos().add(contactoSeleccionado);
-
-	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+	    EstadoOperacion resultado = this.controlPersona.guardarContacto(personaSeleccionada, contactoSeleccionado);
         switch (resultado.getEstado()) {
+            case INSERT_ERROR:
             case UPDATE_ERROR:
-                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                alertaError(TITULO, "Guardar Contacto", resultado.getMensaje());
                 break;
+            case INSERT_OK:
             case UPDATE_OK:
-                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                dialogoConfirmacion(TITULO, "Guardar Contacto", resultado.getMensaje());
                 break;
             default:
                 throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
@@ -252,13 +252,11 @@ public class Personas extends ControladorVista implements Initializable {
 	    FilaContacto filaSeleccionada = this.tblContactos.getSelectionModel().getSelectedItem();
 	    contactoSeleccionado = filaSeleccionada.getContacto();
 
-	    personaSeleccionada.getContactos().remove(contactoSeleccionado);
-	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+	    EstadoOperacion resultado = this.controlPersona.quitarContacto(personaSeleccionada, contactoSeleccionado);
 
 	    switch(resultado.getEstado()) {
             case DELETE_ERROR:
                 alertaError(TITULO, "Eliminar Contacto", resultado.getMensaje());
-                personaSeleccionada.getContactos().add(contactoSeleccionado);
                 break;
             case DELETE_OK:
                 dialogoConfirmacion(TITULO, "Eliminar Contacto", resultado.getMensaje());
@@ -355,20 +353,19 @@ public class Personas extends ControladorVista implements Initializable {
 	    domicilioSeleccionado.setCodigoPostal(txtDomiciliosCP.getText());
 	    domicilioSeleccionado.setDireccion(txtDomiciliosDireccion.getText());
 
-	    personaSeleccionada.getDomicilios().add(domicilioSeleccionado);
-
-        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+        EstadoOperacion resultado = this.controlPersona.guardarDomicilio(personaSeleccionada, domicilioSeleccionado);
         switch (resultado.getEstado()) {
+            case INSERT_ERROR:
             case UPDATE_ERROR:
-                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                alertaError(TITULO, "Guardar Domicilio", resultado.getMensaje());
                 break;
+            case INSERT_OK:
             case UPDATE_OK:
-                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                dialogoConfirmacion(TITULO, "Guardar Domicilio", resultado.getMensaje());
                 break;
             default:
                 throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
         }
-
         domiciliosActualizarTabla();
 	}
 
@@ -383,13 +380,11 @@ public class Personas extends ControladorVista implements Initializable {
 	    FilaDomicilio filaSeleccionada = this.tblDomicilios.getSelectionModel().getSelectedItem();
         domicilioSeleccionado = filaSeleccionada.getDomicilio();
 
-        personaSeleccionada.getDomicilios().remove(domicilioSeleccionado);
-        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+        EstadoOperacion resultado = this.controlPersona.quitarDomicilio(personaSeleccionada, domicilioSeleccionado);
 
         switch(resultado.getEstado()) {
             case DELETE_ERROR:
                 alertaError(TITULO, "Eliminar Domicilio", resultado.getMensaje());
-                personaSeleccionada.getDomicilios().add(domicilioSeleccionado);
                 break;
             case DELETE_OK:
                 dialogoConfirmacion(TITULO, "Eliminar Domicilio", resultado.getMensaje());
@@ -466,15 +461,17 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnTitulosAgregar;
 	@FXML public void agregarTitulo(ActionEvent event) {
 	    ITitulo tituloNuevo = this.controlPersona.getITitulo();
-	    personaSeleccionada.getTitulos().add(tituloNuevo);
+	    tituloNuevo.setNombre(txtTitulosTitulo.getText());
 
-	    EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
+	    EstadoOperacion resultado = this.controlPersona.guardarTitulo(personaSeleccionada, tituloSeleccionado);
 	    switch (resultado.getEstado()) {
+	        case INSERT_ERROR:
             case UPDATE_ERROR:
-                alertaError(TITULO, "Modificar Persona", resultado.getMensaje());
+                alertaError(TITULO, "Guardar Título", resultado.getMensaje());
                 break;
+            case INSERT_OK:
             case UPDATE_OK:
-                dialogoConfirmacion(TITULO, "Modificar Persona", resultado.getMensaje());
+                dialogoConfirmacion(TITULO, "Guardar Título", resultado.getMensaje());
                 break;
             default:
                 throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
@@ -487,13 +484,10 @@ public class Personas extends ControladorVista implements Initializable {
 	    FilaTitulo filaSeleccionada = this.tblTitulos.getSelectionModel().getSelectedItem();
         tituloSeleccionado = filaSeleccionada.getTitulo();
 
-        personaSeleccionada.getTitulos().remove(tituloSeleccionado);
-        EstadoOperacion resultado = this.controlPersona.modificarPersona(personaSeleccionada);
-
+        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccionada, tituloSeleccionado);
         switch(resultado.getEstado()) {
             case DELETE_ERROR:
                 alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
-                personaSeleccionada.getTitulos().add(tituloSeleccionado);
                 break;
             case DELETE_OK:
                 dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
