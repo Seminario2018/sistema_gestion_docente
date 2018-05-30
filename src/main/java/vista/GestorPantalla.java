@@ -62,7 +62,7 @@ public class GestorPantalla {
 			Parent root = loader.load();
 			
 			this.pantallaPrincipal = loader.getController();
-			this.pantallaPrincipal.setGestor(this);
+			this.pantallaPrincipal.setGestorPantalla(this);
 			this.internalPane = (Pane) loader.getNamespace().get(ID_MAIN_PANE);
 			
 			Scene scene = new Scene(root);

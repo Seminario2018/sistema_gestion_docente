@@ -20,14 +20,14 @@ import vista.GestorPantalla;
  */
 public abstract class ControladorVista {
 
-	protected GestorPantalla gestor;
+	protected GestorPantalla gestorPantalla;
 
-	public GestorPantalla getGestor() {
-		return gestor;
+	public GestorPantalla getGestorPantalla() {
+		return gestorPantalla;
 	}
 
-	public void setGestor(GestorPantalla gestor) {
-		this.gestor = gestor;
+	public void setGestorPantalla(GestorPantalla gestor) {
+		this.gestorPantalla = gestor;
 	}
 	
 	/**

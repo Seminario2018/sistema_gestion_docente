@@ -53,37 +53,37 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void pantallaRoles(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Roles", null);
+    	this.gestorPantalla.lanzarPantalla("Roles", null);
     }
 
     @FXML
     void pantallaUsuarios(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Usuarios", null);
+    	this.gestorPantalla.lanzarPantalla("Usuarios", null);
     }
 
     @FXML
     void pantallaPersonas(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Personas", null);
+    	this.gestorPantalla.lanzarPantalla("Personas", null);
     }
 
     @FXML
     void pantallaDocentes(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Docentes", null);
+    	this.gestorPantalla.lanzarPantalla("Docentes", null);
     }
 
     @FXML
     void pantallaProgramas(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Programas", null);
+    	this.gestorPantalla.lanzarPantalla("Programas", null);
     }
 
     @FXML
     void pantallaProyectos(ActionEvent event) {
-    	this.gestor.lanzarPantalla("Proyectos", null);
+    	this.gestorPantalla.lanzarPantalla("Proyectos", null);
     }
 
     @FXML
     void pantallaListaInformes(ActionEvent event) {
-    	this.gestor.lanzarPantalla("ListaInformes", null);
+    	this.gestorPantalla.lanzarPantalla("ListaInformes", null);
     }
 		
 }
