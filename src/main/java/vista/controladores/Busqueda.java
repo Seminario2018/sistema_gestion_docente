@@ -36,6 +36,8 @@ public class Busqueda extends ControladorVista implements Initializable {
 	
 	public static final String KEY_TIPO = "tipo";
 	public static final String KEY_CONTROLADOR = "controlador";
+	public static final String KEY_RESULTADO = "resultado";
+	public static final String TITULO = "Busqueda";
 	
 	private String tipo;
 	private ControlCargo controlCargo;

@@ -112,7 +112,8 @@ public class GestorPantalla {
 					}
 				});
 				
-				Object controlador = loader.getController(); 
+				Object controlador = loader.getController();
+				((ControladorVista) controlador).setGestorPantalla(this); 
 				
 				this.controladoresActivos.put(nombre, (ControladorVista) controlador);
 				this.pantallasAbiertas.put(nombre, window);

@@ -2,8 +2,10 @@ package vista.controladores;
 
 import java.net.URL;
 import java.time.Year;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import controlador.ControlAuxiliar;
@@ -62,15 +64,20 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public TextField txtDocentesNombre;
 
 	@FXML private void buscarDocente() {
-	    /* TEST Docentes: Selección de docente */
-        // Recupera al docente legajo 143191
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(Busqueda.KEY_TIPO, TITULO);
+		args.put(Busqueda.KEY_CONTROLADOR, this);
+		
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO, args);
+		/* TEST Docentes: Selección de docente */
+        /* Recupera al docente legajo 143191
 	    IDocente docenteBusqueda = this.controlDocente.getIDocente();
 	    docenteBusqueda.setLegajo(143191);
 	    docenteSeleccionado = this.controlDocente
 	        .listarDocente(docenteBusqueda)
 	        .get(0);
         actualizarCamposGeneral();
-        //*/
+        */
 	}
 
 	@FXML private void nuevoDocente() {
