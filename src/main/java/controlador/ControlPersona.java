@@ -29,7 +29,7 @@ public class ControlPersona {
     }
 
     public List<IPersona> listarPersonas(IPersona persona) {
-        return this.listarPersonas(persona);
+        return this.gestorPersona.listarPersonas(persona);
     }
 
     public List<IDomicilio> getDomicilios(IPersona persona) {
