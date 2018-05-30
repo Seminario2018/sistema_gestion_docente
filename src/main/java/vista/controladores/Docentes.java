@@ -65,6 +65,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private void buscarDocente() {
 		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(Busqueda.KEY_NUEVO, false);
 		args.put(Busqueda.KEY_TIPO, TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
 		

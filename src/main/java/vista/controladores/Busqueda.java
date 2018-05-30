@@ -34,6 +34,7 @@ import utilidades.Utilidades;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Busqueda extends ControladorVista implements Initializable {
 	
+	public static final String KEY_NUEVO = "nuevo";
 	public static final String KEY_TIPO = "tipo";
 	public static final String KEY_CONTROLADOR = "controlador";
 	public static final String KEY_RESULTADO = "resultado";
@@ -72,20 +73,26 @@ public class Busqueda extends ControladorVista implements Initializable {
 	
 	@FXML private Button btnBusquedaSeleccionar;
 	@FXML public void seleccionar(ActionEvent event) {
-		Object fila = tblBusqueda.getSelectionModel().getSelectedItem();
-		try {
-			Method m = this.getClass().getDeclaredMethod("seleccionar" + this.tipo, Object.class);
-			m.invoke(this, fila);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (!tblBusqueda.getSelectionModel().isEmpty()) {
+			Object fila = tblBusqueda.getSelectionModel().getSelectedItem();
+			try {
+				Method m = this.getClass().getDeclaredMethod("seleccionar" + this.tipo, Object.class);
+				m.invoke(this, fila);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+	}
+	
+	@FXML public void actualizarLista() {
+		// TODO seleccionar de las vistas filtrando por txtBusquedaCriterio
 	}
 	
 	@Override
 	public void recibirParametros(Map<String, Object> args) {
 		this.tipo = (String) args.get(KEY_TIPO);
 		this.controladorRespuesta = (ControladorVista) args.get(KEY_CONTROLADOR);
+		this.btnBusquedaNuevo.setVisible((boolean) args.get(KEY_NUEVO));
 		try {
 			Method m = this.getClass().getDeclaredMethod("inicializar" + this.tipo);
 			m.invoke(this);
@@ -97,8 +104,8 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public void inicializarTabla(Class fila) {
 		this.tblBusqueda.getColumns().clear();
 		Field[] campos = fila.getDeclaredFields();
-		for (Field campo : campos) {
-			String varName = campo.getName();
+		for (int i = 0; i < campos.length-1; i++) {
+			String varName = campos[i].getName();
 			TableColumn columna = new TableColumn<>(Utilidades.primeraMayuscula(varName));
 			columna.setCellValueFactory(new PropertyValueFactory(varName));
 			this.tblBusqueda.getColumns().add(columna);
@@ -106,8 +113,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 		this.tblBusqueda.setItems(this.filasBusqueda);
 	}
 
-// ------------------------------- Específico ------------------------------- //
-	
+// -------------------------------- Docentes -------------------------------- //
 	public class FilaDocente {
 		private int legajo;
 		private String nombre;
@@ -133,14 +139,21 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public void inicializarDocentes() {
 		inicializarTabla(FilaDocente.class);
 		this.controlDocente = new ControlDocente(this);
-		
+		actualizarListaDocentes();
+	}
+	
+	public void actualizarListaDocentes() {
+		// TODO filtrar la vista
 		this.listaBusqueda = new ArrayList<>(this.controlDocente.listarDocente(null));
 		for (Object docente : this.listaBusqueda) {
 			if (docente instanceof IDocente) {
-				FilaDocente fc = new FilaDocente((IDocente) docente); 
+				FilaDocente fc = new FilaDocente((IDocente) docente);
 				this.filasBusqueda.add(fc);
 			}
 		}
 	}
-
+	
+	public void seleccionarDocentes() {
+		
+	}
 }
