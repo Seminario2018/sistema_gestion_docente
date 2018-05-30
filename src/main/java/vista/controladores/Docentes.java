@@ -125,6 +125,16 @@ public class Docentes extends ControladorVista {
 	@FXML public ComboBox<EstadoDocente> cmbDatosEstado;
 	@FXML public ComboBox<CategoriaInvestigacion> cmbDatosCategoria;
 
+	@FXML private void inicializarDatos() {
+	    this.cmbDatosEstado.setItems(
+            FXCollections.observableArrayList(
+                ControlAuxiliar.listarEstadosDocente()));
+
+	    this.cmbDatosCategoria.setItems(
+	        FXCollections.observableArrayList(
+                ControlAuxiliar.listarCategoriasInvestigacion()));
+	}
+
 	@FXML private void mostrarDatos() {
         if (docenteSeleccionado != null) {
             IPersona persona = docenteSeleccionado.getPersona();
@@ -554,6 +564,8 @@ public class Docentes extends ControladorVista {
 	@FXML protected TableView<FilaIncentivo> tblIncentivos;
 	@FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
 	protected ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
+
+	// Cambios en los incentivos:
 	protected Set<IIncentivo> incentivosNuevos = new HashSet<IIncentivo>();
 	protected Set<IIncentivo> incentivosBorrados = new HashSet<IIncentivo>();
 
@@ -585,6 +597,9 @@ public class Docentes extends ControladorVista {
 	@FXML public void inicializarTablaIncentivos() {
 		inicializarTabla("Incentivos");
 	    listarIncentivosTabla();
+
+	    incentivosNuevos.clear();
+	    incentivosBorrados.clear();
 	}
 
 	@FXML private void nuevoIncentivo() {
@@ -602,10 +617,14 @@ public class Docentes extends ControladorVista {
 	}
 
 	@FXML private void guardarIncentivo() {
+	    // Borrar incentivos:
 	    for (IIncentivo incentivoBorrado : incentivosBorrados) {
 	        docenteSeleccionado.quitarIncentivo(incentivoBorrado);
 	        this.controlDocente.quitarIncentivo(docenteSeleccionado, incentivoBorrado);
 	    }
+	    incentivosBorrados.clear();
+
+	    // Incentivos nuevos:
 	    for (IIncentivo incentivoNuevo : incentivosNuevos) {
 	        docenteSeleccionado.agregarIncentivo(incentivoNuevo);
 	        this.controlDocente.agregarIncentivo(docenteSeleccionado, incentivoNuevo);

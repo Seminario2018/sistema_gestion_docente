@@ -29,7 +29,7 @@ public class CategoriaInvestigacion {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+
     public void guardar() {
     	if(this.existe()) {
     		this.actualizar();
@@ -43,15 +43,15 @@ public class CategoriaInvestigacion {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "CategoriasInvestigacion";
-			String campos = "id, Descripcion";			
+			String campos = "id, Descripcion";
 			String valores = this.getId() + ", '" + this.getDescripcion() + "'";
-			
+
 			md.insertar(tabla, campos, valores);
-			
+
 		}catch (Exception e){
-			
+
 		}
-		
+
 	}
 
 	private void actualizar() {
@@ -60,13 +60,13 @@ public class CategoriaInvestigacion {
 			String tabla = "CategoriasInvestigacion";
 			String campos = "Descripcion = '" + this.getDescripcion() + "'";
 			String condicion = "id = " + this.getId();
-			
+
 			md.update(tabla, campos, condicion);
-			
+
 		}catch (Exception e){
-			
+
 		}
-		
+
 	}
 
 	private boolean existe() {
@@ -75,18 +75,18 @@ public class CategoriaInvestigacion {
 			String tabla = "CategoriasInvestigacion";
 			String campos = "id";
 			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
-			
+
 			if (md.select(tabla, campos, condicion).isEmpty()) {
 				return false;
 			}else {
 				return true;
 			}
-			
-			
+
+
 		}catch (Exception e){
 			return false;
 		}
-		
+
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class CategoriaInvestigacion {
 	public static List<CategoriaInvestigacion> getLista() {
 		ArrayList<CategoriaInvestigacion> categorias = new ArrayList<CategoriaInvestigacion>();
 		ManejoDatos md = new ManejoDatos();
-		ArrayList<Hashtable<String, String>> res = md.select("CategoriasInvestigacion", "`id`, `Descripcion`");
+		ArrayList<Hashtable<String, String>> res = md.select("CategoriasInvestigacion", "*");
 		for (Hashtable<String, String> reg : res) {
 			CategoriaInvestigacion cat = new CategoriaInvestigacion();
 			cat.setId(Integer.parseInt(reg.get("id")));
@@ -123,18 +123,18 @@ public class CategoriaInvestigacion {
 			return new CategoriaInvestigacion();
 		}
 	}
-	
+
 	public static int getMaxID() {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "CategoriasInvestigacion";
 			String campos = "Max(id)";
-			
+
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
 			int maxID = Integer.parseInt(res.get(0).get("Max(id)"));
 			return maxID;
-			
-			
+
+
 		}catch (Exception e){
 			return 0;
 		}
