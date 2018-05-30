@@ -16,19 +16,19 @@ public class GestorPersona {
 	public EstadoOperacion nuevaPersona(IPersona persona) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			
-			
+
+
 			persona.getTipoDocumento().guardarTipoDocumento();
 
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
-			
+
 
 			String table = "Personas";
 			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`";
 			String valores = tipoDoc + ", '" + nroDoc + "', "
 					+ "'" + persona.getApellido() + "', '" + persona.getNombre();
-			
+
 			if (persona.getFechaNacimiento() != null) {
 				String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
 				campos += ", `FechaNacimiento`";
@@ -55,7 +55,7 @@ public class GestorPersona {
 				}
 
 			}
-			
+
 
 			if (persona.getTitulos() != null) {
 				if (!persona.getTitulos().isEmpty()) {
@@ -82,11 +82,11 @@ public class GestorPersona {
 	private void insertarTitulos(IPersona persona, ITitulo titulo) {
 		ManejoDatos md = new ManejoDatos();
 		int esMayor = titulo.isEsMayor() ? 1 : 0;
-		
+
 		if (titulo.getId() == -1) {
 			titulo.setId(this.getMax("Titulos", "id"));
 		}
-		
+
 		String table = "Titulos";
 		String campos = "`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
 		String valores = titulo.getId() + ", "
@@ -100,11 +100,11 @@ public class GestorPersona {
 
 	private void insetarDomicilios(IPersona persona, IDomicilio domicilio) {
 		ManejoDatos md = new ManejoDatos();
-		
+
 		if (domicilio.getId() == -1) {
 			domicilio.setId(this.getMax("Domicilios", "iddomicilios"));
 		}
-		
+
 		String table = "Domicilios";
 		String campos =	"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`, `CodigoPostal`, `Direccion`";
 		String valores =domicilio.getId() + ", "
@@ -118,13 +118,13 @@ public class GestorPersona {
 
 	public void insertarContactos(IPersona persona, IContacto contacto) {
 		ManejoDatos md = new ManejoDatos();
-		
+
 		contacto.getTipo().guardar();
-		
+
 		if (contacto.getId() == -1) {
 			contacto.setId(this.getMax("Contactos", "idcontacto"));
 		}
-		
+
 		String table = "Contactos";
 		String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
 		String valores = contacto.getId() + ", "
@@ -156,17 +156,17 @@ public class GestorPersona {
 	public EstadoOperacion modificarPersona(IPersona persona) {
 
 		try {
-			
+
 			persona.getEstado().guardar();
-			
+
 			ManejoDatos md = new ManejoDatos();
 			String table = "Personas";
 			String condicion =	" TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
 
 			String campos =	"`Apellido` = '" + persona.getApellido() + "', "
 							+ "`Nombre` = '" + persona.getNombre() + "'";
-			
-			
+
+
 			if (persona.getFechaNacimiento() != null) {
 				campos += ", `FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'";
 			}
@@ -196,7 +196,7 @@ public class GestorPersona {
 			String condicion = this.armarCondicion(persona);
 
 			ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
-			
+
 			//`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`
 			for (Hashtable<String, String> reg : res) {
 				Persona p = new Persona();
@@ -204,8 +204,8 @@ public class GestorPersona {
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p.setApellido(reg.get("Apellido"));
 				p.setNombre(reg.get("Nombre"));
-				
-				
+
+
 				if (!reg.get("FechaNacimiento").equals("")) {
 					String[] fnac = reg.get("FechaNacimiento").split("-");
 					p.setFechaNacimiento(LocalDate.of(Integer.parseInt(fnac[0]), Integer.parseInt(fnac[1]),
@@ -221,7 +221,7 @@ public class GestorPersona {
 			}
 
 		} catch (Exception e) {
-			
+
 			personas = new ArrayList<IPersona>();
 		}
 
@@ -346,11 +346,11 @@ public class GestorPersona {
 		}
 		return condicion;
 	}
-	
+
 	private int getMax(String tabla,String campo) {
 		try {
 			String campos = "MAX(" + campo + ")";
-			
+
 			ManejoDatos md = new ManejoDatos();
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
@@ -359,10 +359,10 @@ public class GestorPersona {
 		} catch (Exception e) {
 			return 0;
 		}
-		
+
 	}
-	
-	
+
+
 	public static boolean existePersona(IPersona persona) {
 		String tabla = "Personas";
 		if (persona == null || persona.getTipoDocumento() == null || persona.getNroDocumento() == -1) {
@@ -379,5 +379,10 @@ public class GestorPersona {
 			return false;
 		}
 	}
+
+
+	public IPersona getIPersona() {
+        return new Persona();
+    }
 
 }
