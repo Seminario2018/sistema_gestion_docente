@@ -197,7 +197,7 @@ public class GestorDocente {
 	public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {
 		ManejoDatos md = new ManejoDatos();
 		String tabla = "Incentivos";
-		String condicion = " Legajo = " + docente.getLegajo() + ", Fecha = '" + incentivo.getFecha() + "'";
+		String condicion = " Legajo = " + docente.getLegajo() + " AND Fecha = '" + incentivo.getFecha() + "'";
 
 		md.delete(tabla, condicion);
 
