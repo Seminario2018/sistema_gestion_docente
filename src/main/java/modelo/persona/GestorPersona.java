@@ -395,4 +395,9 @@ public class GestorPersona {
         return new Domicilio();
     }
 
+
+	public ITitulo getITitulo() {
+        return new Titulo();
+    }
+
 }

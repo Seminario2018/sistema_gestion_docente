@@ -13,6 +13,11 @@ public class Titulo implements ITitulo {
 	    this.esMayor = esMayor;
 	}
 
+    public Titulo() {
+
+    }
+
+
     @Override
     public ITitulo clone() {
         return (ITitulo) new Titulo(
@@ -42,11 +47,13 @@ public class Titulo implements ITitulo {
         this.nombre = nombre;
     }
 
+    @Override
     public boolean isEsMayor() {
 		return esMayor;
 	}
 
-	public void setEsMayor(boolean esMayor) {
+	@Override
+    public void setEsMayor(boolean esMayor) {
 		this.esMayor = esMayor;
 	}
 

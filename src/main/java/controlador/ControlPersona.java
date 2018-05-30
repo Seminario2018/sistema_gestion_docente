@@ -58,4 +58,9 @@ public class ControlPersona {
         return this.gestorPersona.getIDomicilio();
     }
 
+
+    public ITitulo getITitulo() {
+        return this.gestorPersona.getITitulo();
+    }
+
 }
