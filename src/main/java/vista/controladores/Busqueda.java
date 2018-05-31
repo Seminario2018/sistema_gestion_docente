@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import modelo.busqueda.BusquedaDocente;
+import modelo.docente.IDocente;
 import utilidades.Utilidades;
 
 /**
@@ -69,7 +71,17 @@ public class Busqueda extends ControladorVista implements Initializable {
 			Object fila = tblBusqueda.getSelectionModel().getSelectedItem();
 			try {
 				Method m = this.getClass().getDeclaredMethod("seleccionar" + this.tipo, Object.class);
-				m.invoke(this, fila);
+				Object valor = m.invoke(this, fila);
+				if (valor != null) {
+					Map<String, Object> args = new HashMap<String, Object>();
+					// Borrar la "s" del final (DocenteS, PersonaS)
+					args.put(Busqueda.KEY_SELECCION, this.tipo.substring(0, this.tipo.length()-1));
+					args.put(Busqueda.KEY_VALOR, valor);
+					this.controladorRespuesta.recibirParametros(args);
+					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
+				} else {
+//					TODO this.gestorPantalla.mensajeEstado("Debe seleccionar una fila de la grilla");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -118,7 +130,10 @@ public class Busqueda extends ControladorVista implements Initializable {
 						this.txtBusquedaCriterio.getText()));
 	}
 	
-	public void seleccionarDocentes() {
-		
+	public Object seleccionarDocentes(Object fila) {
+		if (fila instanceof BusquedaDocente) {
+			return this.control.seleccionarDocente((BusquedaDocente) fila);
+		}
+		return null;
 	}
 }

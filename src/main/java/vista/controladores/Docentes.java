@@ -55,19 +55,14 @@ public class Docentes extends ControladorVista implements Initializable {
 	        actualizarCamposGeneral();
 		}
 	}
-
-	public void setCargoDocenteSeleccion(ICargoDocente cargoDocenteSeleccion) {
-		this.cargoDocenteSeleccion = cargoDocenteSeleccion;
+	
+	public void setPersonaSeleccion(Object personaSeleccion) {
+		if (personaSeleccion instanceof IPersona) {
+			this.docenteSeleccion.setPersona((IPersona) personaSeleccion);
+			actualizarCamposDatos();
+		}
 	}
-
-	public void setAreaSeleccion(IArea areaSeleccion) {
-		this.areaSeleccion = areaSeleccion;
-	}
-
-	public void setCargoSeleccion(ICargo cargoSeleccion) {
-		this.cargoSeleccion = cargoSeleccion;
-	}
-
+	
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 	}
@@ -89,7 +84,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_TIPO, TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
 		
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO, args);
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
 	@FXML private void nuevoDocente() {

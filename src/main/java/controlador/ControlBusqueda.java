@@ -5,6 +5,7 @@ import java.util.List;
 
 import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.GestorBusqueda;
+import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
 import vista.controladores.ControladorVista;
 
@@ -16,7 +17,8 @@ public class ControlBusqueda {
 	
 	private ControladorVista vista;
 
-	GestorBusqueda gestor = new GestorBusqueda();
+	GestorBusqueda gestorBusqueda = new GestorBusqueda();
+	GestorDocente gestorDocente = new GestorDocente();
 	
 	public ControlBusqueda(ControladorVista vista) {
 		super();
@@ -38,6 +40,12 @@ public class ControlBusqueda {
 			}
 		}
 		return filasBusqueda;
-		//return this.gestor.listarDocente(criterio);
+		//return this.gestorBusqueda.listarDocente(criterio);
+	}
+	
+	public IDocente seleccionarDocente(BusquedaDocente bd) {
+		IDocente doc = this.gestorDocente.getIDocente();
+		doc.setLegajo(bd.getLegajo());
+		return this.gestorDocente.listarDocente(doc).get(0);
 	}
 }

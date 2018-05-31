@@ -69,6 +69,7 @@ public class GestorPantalla {
 			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 			preferenciasVentana("Principal");
+			this.primaryStage.setMaximized(true);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,13 +78,20 @@ public class GestorPantalla {
 
 	
 	public void lanzarPantalla(String nombre, Map<String, Object> args) {		
-		try {
+		try {			
 			// La pantalla ya existe y hay que traerla al frente
 			if (pantallasAbiertas.get(nombre) != null) {
 				pantallasAbiertas.get(nombre).toFront();
 
 			} else {
-				FXMLLoader loader = getLoader(nombre);
+				FXMLLoader loader;
+				// Si se trata de la pantalla genérica de búsquedas
+				if (nombre.contains("Busqueda") && !nombre.equals("BusquedaCargoDocente")) {
+					loader = getLoader("Busqueda");
+				} else {
+					loader = getLoader(nombre);
+				}
+				
 				Parent root = loader.load();
 				
 				Window window = new Window();
@@ -107,8 +115,7 @@ public class GestorPantalla {
 				window.setOnClosedAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
-						controladoresActivos.remove(nombre);
-						pantallasAbiertas.remove(nombre);
+						pantallaCerrada(nombre);
 					}
 				});
 				
@@ -143,6 +150,35 @@ public class GestorPantalla {
 		preferenciasVentana(stage);
 		
 		*/
+	}
+	
+	/**
+	 * Cerrar una pantalla
+	 * @param nombre el nombre de la pantalla a cerrar
+	 */
+	public void cerrarPantalla(String nombre) {
+		Window w = this.pantallasAbiertas.get(nombre);
+		if (w != null) {
+			pantallaCerrada(nombre);
+			w.close();
+		}
+	}
+	
+	/**
+	 * Se ejecuta al cerrar una pantalla, e.g. la pantalla de Búsqueda luego de
+	 * seleccionar una fila o la pantalla de Búsqueda de una pantalla que ya no existe,
+	 * e.g. se cierra Docente con la pantalla "Busqueda Persona" abierta.
+	 * 
+	 * @param nombre el nombre de la pantalla
+	 */
+	public void pantallaCerrada(String nombre) {
+		this.controladoresActivos.remove(nombre);
+		this.pantallasAbiertas.remove(nombre);
+		// Cerrar la pantalla de búsqueda asociada
+		Window busqueda = this.pantallasAbiertas.get("Busqueda " + nombre);
+		if (busqueda != null) {
+			busqueda.close();			
+		}
 	}
 	
 

@@ -68,7 +68,7 @@ public class GestorDocente {
 				+"', `NroDocumento`= '"+ docente.getPersona().getNroDocumento() + "', Estado = " + docente.getEstado().getId();
 
 			if (docente.getObservaciones() != null && !docente.getObservaciones().equals("")) {
-				campos += "`Observaciones`= '" + docente.getObservaciones() +  "'";
+				campos += ", `Observaciones`= '" + docente.getObservaciones() +  "'";
 			}
 
 			if (docente.getCategoriaInvestigacion() != null) {
