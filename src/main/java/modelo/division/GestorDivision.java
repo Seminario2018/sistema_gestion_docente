@@ -7,8 +7,6 @@ import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
-import modelo.docente.Docente;
-import modelo.docente.GestorDocente;
 import persistencia.ManejoDatos;
 
 public class GestorDivision {
