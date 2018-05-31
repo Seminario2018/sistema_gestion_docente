@@ -9,12 +9,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import controlador.ControlBusqueda;
-import controlador.ControlCargo;
-import controlador.ControlDivision;
-import controlador.ControlDocente;
-import controlador.ControlInvestigacion;
-import controlador.ControlPersona;
-import controlador.ControlUsuario;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import modelo.docente.IDocente;
+import modelo.busqueda.BusquedaDocente;
 import utilidades.Utilidades;
 
 /**
@@ -45,11 +39,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public static final String TITULO = "Busqueda";
 	
 	private String tipo;
-	private ControlCargo controlCargo;
-	private ControlDocente controlDocente;
-	private ControlInvestigacion controlInvestigacion;
-	private ControlPersona controlPersona;
-	private ControlUsuario controlUsuario;
 	private ControlBusqueda control = new ControlBusqueda(this);
 	// Recibe la respuesta (selección)
 	private ControladorVista controladorRespuesta;
@@ -66,7 +55,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 	@FXML private TableView tblBusqueda;
 	@FXML private List<TableColumn> colsBusqueda = new ArrayList<TableColumn>();
 	private ObservableList<Object> filasBusqueda = FXCollections.observableArrayList();
-	private List<?> listaBusqueda;
 	
 	@FXML private TextField txtBusquedaCriterio;
 	
@@ -108,7 +96,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public void inicializarTabla(Class fila) {
 		this.tblBusqueda.getColumns().clear();
 		Field[] campos = fila.getDeclaredFields();
-		for (int i = 0; i < campos.length-1; i++) {
+		for (int i = 0; i < campos.length; i++) {
 			String varName = campos[i].getName();
 			TableColumn columna = new TableColumn<>(Utilidades.primeraMayuscula(varName));
 			columna.setCellValueFactory(new PropertyValueFactory(varName));
@@ -117,49 +105,17 @@ public class Busqueda extends ControladorVista implements Initializable {
 		this.tblBusqueda.setItems(this.filasBusqueda);
 	}
 
-// -------------------------------- Docentes -------------------------------- //
-	public class FilaDocente {
-		private int legajo;
-		private String nombre;
-		public FilaDocente(int legajo, String apellido, String nombre) {
-			super();
-			this.legajo = legajo;
-			this.nombre = apellido + " " + nombre;
-		}
-		public FilaDocente(IDocente docente) {
-			super();
-			this.legajo = docente.getLegajo();
-			this.nombre = docente.getPersona().getApellido() + " " + docente.getPersona().getNombre();
-		}
-		public int getLegajo() {
-			return legajo;
-		}
-		public void setLegajo(int legajo) {
-			this.legajo = legajo;
-		}
-		public String getNombre() {
-			return nombre;
-		}
-		public void setNombre(String nombre) {
-			this.nombre = nombre;
-		}
-	}
-	
+// -------------------------------- Docentes -------------------------------- //	
 	public void inicializarDocentes() {
-		inicializarTabla(FilaDocente.class);
-		this.controlDocente = new ControlDocente(this);
+		inicializarTabla(BusquedaDocente.class);
 		actualizarListaDocentes();
 	}
 	
 	public void actualizarListaDocentes() {
-		// TODO filtrar la vista
-		this.listaBusqueda = new ArrayList<>(this.control.listarDocente(null));
-		for (Object docente : this.listaBusqueda) {
-			if (docente instanceof IDocente) {
-				FilaDocente fc = new FilaDocente((IDocente) docente);
-				this.filasBusqueda.add(fc);
-			}
-		}
+		this.filasBusqueda.clear();
+		this.filasBusqueda.addAll(
+				this.control.listarDocente(
+						this.txtBusquedaCriterio.getText()));
 	}
 	
 	public void seleccionarDocentes() {
