@@ -1,42 +1,42 @@
 delete from Permisos;
-delete from usuarios;
-delete from roles;
+delete from Usuarios;
+delete from Roles;
 
-ALTER TABLE `areas` 
+ALTER TABLE `Areas` 
 DROP FOREIGN KEY `Division`,
 DROP FOREIGN KEY `fk_Areas_1`;
-ALTER TABLE `areas` 
+ALTER TABLE `Areas` 
 ADD CONSTRAINT `Division`
   FOREIGN KEY (`Division`)
-  REFERENCES `divisiones` (`Codigo`)
+  REFERENCES `Divisiones` (`Codigo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_Areas_1`
   FOREIGN KEY (`SubAreaDe`)
-  REFERENCES `areas` (`Codigo`)
+  REFERENCES `Areas` (`Codigo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
 
-ALTER TABLE `cargosdocentes` 
+ALTER TABLE `CargosDocentes` 
 DROP FOREIGN KEY `areaDoc`,
 DROP FOREIGN KEY `cargo`,
 DROP FOREIGN KEY `legajo`;
-ALTER TABLE `cargosdocentes` 
+ALTER TABLE `CargosDocentes` 
 ADD CONSTRAINT `areaDoc`
   FOREIGN KEY (`Area`)
-  REFERENCES `areas` (`Codigo`)
+  REFERENCES `Areas` (`Codigo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `cargo`
   FOREIGN KEY (`Cargo`)
-  REFERENCES `cargos` (`Codigo`)
+  REFERENCES `Cargos` (`Codigo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `legajo`
   FOREIGN KEY (`Legajo`)
-  REFERENCES `docentes` (`Legajo`)
+  REFERENCES `Docentes` (`Legajo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
@@ -44,102 +44,102 @@ ADD CONSTRAINT `legajo`
 
 
 
-ALTER TABLE `contactos` 
+ALTER TABLE `Contactos` 
 DROP FOREIGN KEY `fk_Contactos_2`;
-ALTER TABLE `contactos` 
+ALTER TABLE `Contactos` 
 ADD CONSTRAINT `fk_Contactos_2`
   FOREIGN KEY (`Tipo`)
-  REFERENCES `tiposcontactos` (`id`)
+  REFERENCES `TiposContactos` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
 
 
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 DROP FOREIGN KEY `fk_docentes_1`,
 DROP FOREIGN KEY `fk_docentes_3`;
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 ADD CONSTRAINT `fk_docentes_1`
   FOREIGN KEY (`TipoDocumento` , `NroDocumento`)
-  REFERENCES `personas` (`TipoDocumento` , `NroDocumento`)
+  REFERENCES `Personas` (`TipoDocumento` , `NroDocumento`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_docentes_3`
   FOREIGN KEY (`CategoriaInvestigacion`)
-  REFERENCES `categoriasinvestigacion` (`id`)
+  REFERENCES `CategoriasInvestigacion` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
 
-ALTER TABLE `personas` 
+ALTER TABLE `Personas` 
 DROP FOREIGN KEY `EstPersona`,
 DROP FOREIGN KEY `tipoDoc`;
-ALTER TABLE `personas` 
+ALTER TABLE `Personas` 
 ADD CONSTRAINT `EstPersona`
   FOREIGN KEY (`Estado`)
-  REFERENCES `estadospersonas` (`idEstado`)
+  REFERENCES `EstadosPersonas` (`idEstado`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `tipoDoc`
   FOREIGN KEY (`TipoDocumento`)
-  REFERENCES `tiposdocumentos` (`id`)
+  REFERENCES `TiposDocumentos` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
 
-ALTER TABLE `programasinvestigacion` 
+ALTER TABLE `ProgramasInvestigacion` 
 DROP FOREIGN KEY `fk_programainvestigacion_1`;
-ALTER TABLE `programasinvestigacion` 
+ALTER TABLE `ProgramasInvestigacion` 
 ADD CONSTRAINT `fk_programainvestigacion_1`
   FOREIGN KEY (`Estado`)
-  REFERENCES `estadosprogramas` (`id`)
+  REFERENCES `EstadosProgramas` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
-ALTER TABLE `prorrogas` 
+ALTER TABLE `Prorrogas` 
 DROP FOREIGN KEY `fk_Prorrogas_1`;
-ALTER TABLE `prorrogas` 
+ALTER TABLE `Prorrogas` 
 ADD CONSTRAINT `fk_Prorrogas_1`
   FOREIGN KEY (`Proyecto`)
-  REFERENCES `proyectos` (`id`)
+  REFERENCES `Proyectos` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
 
-ALTER TABLE `proyectos` 
+ALTER TABLE `Proyectos` 
 DROP FOREIGN KEY `dir`,
 DROP FOREIGN KEY `fk_proyecto_1`,
 DROP FOREIGN KEY `programainves`;
-ALTER TABLE `proyectos` 
+ALTER TABLE `Proyectos` 
 ADD CONSTRAINT `dir`
   FOREIGN KEY (`Director`)
-  REFERENCES `docentes` (`Legajo`)
+  REFERENCES `Docentes` (`Legajo`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_proyecto_1`
   FOREIGN KEY (`Estado`)
-  REFERENCES `estadosproyectos` (`idEstadoProyecto`)
+  REFERENCES `EstadosProyectos` (`idEstadoProyecto`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `programainves`
   FOREIGN KEY (`Programa`)
-  REFERENCES `programasinvestigacion` (`id`)
+  REFERENCES `ProgramasIvestigacion` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
 
-ALTER TABLE `rendisiones` 
-RENAME TO  `rendiciones` ;
+ALTER TABLE `Eendisiones` 
+RENAME TO  `Rendiciones` ;
 
 
 
-ALTER TABLE `rolesxusuario` 
+ALTER TABLE `RolesXUsuario` 
 DROP FOREIGN KEY `fk_RolesXUsuario_2`;
-ALTER TABLE `rolesxusuario` 
+ALTER TABLE `RolesXUsuario` 
 DROP INDEX `fk_RolesXUsuario_2_idx` ;
 
 ALTER TABLE `Permisos` 
@@ -147,26 +147,26 @@ DROP FOREIGN KEY `fk_Permiso_1`;
 ALTER TABLE `Permisos` 
 DROP INDEX `fk_Permisos_2_idx` ;
 
-ALTER TABLE `roles` 
+ALTER TABLE `Roles` 
 ADD COLUMN `id` INT NOT NULL FIRST,
 ADD COLUMN `descripcion` VARCHAR(60) NULL AFTER `nombre`,
 DROP PRIMARY KEY,
 ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `rolesxusuario` 
+ALTER TABLE `Rolesxusuario` 
 DROP FOREIGN KEY `fk_RolesXUsuario_1`;
-ALTER TABLE `rolesxusuario` 
+ALTER TABLE `Rolesxusuario` 
 CHANGE COLUMN `Rol` `Rol` INT NOT NULL ,
 ADD INDEX `fk_rolesxusuario_2_idx` (`Rol` ASC);
-ALTER TABLE `rolesxusuario` 
+ALTER TABLE `RolesXUsuario` 
 ADD CONSTRAINT `fk_RolesXUsuario_1`
   FOREIGN KEY (`Usuario`)
-  REFERENCES `usuarios` (`Usuario`)
+  REFERENCES `Usuarios` (`Usuario`)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
 ADD CONSTRAINT `fk_rolesxusuario_2`
   FOREIGN KEY (`Rol`)
-  REFERENCES `roles` (`id`)
+  REFERENCES `Roles` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
@@ -183,37 +183,37 @@ ADD CONSTRAINT `fk_Permiso_2`
   ON UPDATE CASCADE,
 ADD CONSTRAINT `fk_Permiso_1`
   FOREIGN KEY (`Rol`)
-  REFERENCES `roles` (`id`)
+  REFERENCES `Roles` (`id`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
 
 
 
-ALTER TABLE `titulos` 
+ALTER TABLE `Titulos` 
 DROP FOREIGN KEY `fk_titulos_1`;
-ALTER TABLE `titulos` 
+ALTER TABLE `Titulos` 
 ADD CONSTRAINT `fk_titulos_1`
   FOREIGN KEY (`TipoDocumento` , `NroDocumento`)
-  REFERENCES `personas` (`TipoDocumento` , `NroDocumento`)
+  REFERENCES `Personas` (`TipoDocumento` , `NroDocumento`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
   
 
   
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 DROP FOREIGN KEY `fk_docentes_3`;
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 DROP INDEX `fk_docentes_3_idx` ;
 
-ALTER TABLE `categoriasinvestigacion` 
+ALTER TABLE `CategoriasInvestigacion` 
 CHANGE COLUMN `id` `id` INT(11) NOT NULL ;
 
 
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 ADD INDEX `fk_docentes_3_idx` (`CategoriaInvestigacion` ASC);
-ALTER TABLE `docentes` 
+ALTER TABLE `Docentes` 
 ADD CONSTRAINT `fk_docentes_3`
   FOREIGN KEY (`CategoriaInvestigacion`)
-  REFERENCES `categoriasinvestigacion` (`id`)
+  REFERENCES `CategoriasInvestigacion` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;

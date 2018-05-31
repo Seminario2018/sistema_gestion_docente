@@ -1,3 +1,0 @@
-ALTER TABLE `plumasdocentes`.`Areas` 
-CHANGE COLUMN `Desde` `Desde` DATE NULL DEFAULT NULL ,
-CHANGE COLUMN `Hasta` `Hasta` DATE NULL DEFAULT NULL ;
