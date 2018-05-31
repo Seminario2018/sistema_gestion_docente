@@ -402,47 +402,249 @@ public class GestorPersona {
 
 
 	public EstadoOperacion agregarContacto(IPersona persona, IContacto contacto) {
-        return null;
+		try {
+			ManejoDatos md = new ManejoDatos();
+
+
+			persona.getTipoDocumento().guardarTipoDocumento();
+			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
+			String nroDoc = String.valueOf(persona.getNroDocumento());
+
+
+			if (contacto.getId() == -1) {
+				contacto.setId(this.getMax("Contactos", "idcontacto"));
+			}
+
+			String table = "Contactos";
+			String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
+			String valores =contacto.getId() + ", "
+					+ tipoDoc + ", '" 
+					+ nroDoc + "', "
+					+ contacto.getTipo().getId() + ", '" 
+					+ contacto.getDato() + "'";
+
+			md.insertar(table, campos, valores);
+		
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El contacto se creo correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el contacto");
+			}
+
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el contacto");
+
+		}
     }
 
     public EstadoOperacion modificarContacto(IPersona persona, IContacto contacto) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+
+			persona.getEstado().guardar();
+
+			ManejoDatos md = new ManejoDatos();
+			String table = "Contactos";
+			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `idcontacto`='"+contacto.getId()+"'";
+
+			String campos =	"`Tipo` = '" + contacto.getTipo() + "', "
+							+ "`Valor` = '" + contacto.getDato() + "'";
+
+
+		
+			md.update(table, campos, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El contacto se modifico correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+		}
     }
 
     public EstadoOperacion quitarContacto(IPersona persona, IContacto contacto) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+			ManejoDatos md = new ManejoDatos();
+			String table = "Contactos";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", Valor = '" + contacto.getDato() + "'";
+
+			md.delete(table, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El Cantacto se eliminó correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+		}
     }
 
     public EstadoOperacion agregarDomicilio(IPersona persona, IDomicilio domicilio) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+			ManejoDatos md = new ManejoDatos();
+
+
+			persona.getTipoDocumento().guardarTipoDocumento();
+			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
+			String nroDoc = String.valueOf(persona.getNroDocumento());
+
+			if (domicilio.getId() == -1) {
+				domicilio.setId(this.getMax("Domicilios", "iddomicilios"));
+			}
+
+			String table = "Domicilios";
+			String campos =	"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`, `CodigoPostal`, `Direccion`";
+			String valores =domicilio.getId() + ", "
+					+ tipoDoc + ", '" 
+					+ nroDoc + "', '"
+					+ domicilio.getProvincia() + "', '" 
+					+ domicilio.getCiudad() + "', "
+					+ "'" + domicilio.getCodigoPostal() + "', '" 
+					+ domicilio.getDireccion() + "'";
+
+			md.insertar(table, campos, valores);
+			
+		
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El Domicilio se creo correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el domicilio");
+			}
+
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el domicilio");
+
+		}
     }
 
     public EstadoOperacion modificarDomicilio(IPersona persona, IDomicilio domicilio) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+
+			persona.getEstado().guardar();
+
+			ManejoDatos md = new ManejoDatos();
+			String table = "Domicilios";
+			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `iddomicilio`='"+domicilio.getId()+"'";
+
+			String campos =	"`Provincia` = '" + domicilio.getProvincia() + "', "
+							+ "`Ciudad` = '" + domicilio.getCiudad() + "', "
+			                 + "`CodigoPostal` = '" + domicilio.getCodigoPostal() + "', "
+			                +"`Direccion` = '" + domicilio.getDireccion() + "'";
+
+		
+			md.update(table, campos, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+		}
     }
 
     public EstadoOperacion quitarDomicilio(IPersona persona, IDomicilio domicilio) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+			ManejoDatos md = new ManejoDatos();
+			String table = "Domicilios";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", IdDpmicilio = '" + domicilio.getId() + "'";
+
+			md.delete(table, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El Domicilio se eliminó correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Domicilio");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Domicilio");
+		}
     }
 
     public EstadoOperacion agregarTitulo(IPersona persona, ITitulo titulo) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+			ManejoDatos md = new ManejoDatos();
+
+
+			persona.getTipoDocumento().guardarTipoDocumento();
+			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
+			String nroDoc = String.valueOf(persona.getNroDocumento());
+
+			int esMayor = titulo.isEsMayor() ? 1 : 0;
+
+			if (titulo.getId() == -1) {
+				titulo.setId(this.getMax("Titulos", "id"));
+			}
+
+			String table = "Titulos";
+			String campos = "`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
+			String valores = titulo.getId() + ", "
+					+ tipoDoc+ ", '" 
+					+ nroDoc + "', "+ "'"
+					+ titulo.getNombre() + "', " 
+					+ esMayor;
+
+			md.insertar(table, campos, valores);
+		
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El titulo se creo correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el titulo");
+			}
+
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el titulo");
+
+		}
     }
 
     public EstadoOperacion modificarTitulo(IPersona persona, ITitulo titulo) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+
+			persona.getEstado().guardar();
+			int esMayor = titulo.isEsMayor() ? 1 : 0;
+			ManejoDatos md = new ManejoDatos();
+			String table = "Titulos";
+			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `titulo`='"+titulo.getId()+"'";
+
+			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
+							+esMayor;
+
+		
+			md.update(table, campos, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+		}
     }
 
     public EstadoOperacion quitarTitulo(IPersona persona, ITitulo titulo) {
-        // TODO Auto-generated method stub
-        return null;
+    	try {
+			ManejoDatos md = new ManejoDatos();
+			String table = "Titulos";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", Id = '" + titulo.getId() + "'";
+
+			md.delete(table, condicion);
+
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El titulo se eliminó correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo titulo el Domicilio");
+			}
+		} catch (Exception e) {
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo titulo el Domicilio");
+		}
     }
 
 }
