@@ -11,11 +11,13 @@ import javafx.fxml.Initializable;
  */
 public class ListaInformes extends ControladorVista implements Initializable {
 
+	public static final String TITULO = "ListaInformes";
+	
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
-
+	
 }

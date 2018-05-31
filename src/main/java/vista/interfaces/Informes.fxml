@@ -30,22 +30,22 @@
                 <RowConstraints minHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnInformesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar" GridPane.columnIndex="1">
+                  <Button fx:id="btnInformesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardar" text="Guardar" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnInformesGuardarComo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar como" GridPane.columnIndex="2">
+                  <Button fx:id="btnInformesGuardarComo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarComo" text="Guardar como" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnInformesExcel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exportar a Excel" GridPane.columnIndex="3">
+                  <Button fx:id="btnInformesExcel" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportar" text="Exportar a Excel" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnInformesVolver" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Volver a la lista">
+                  <Button fx:id="btnInformesVolver" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#volver" text="Volver a la lista">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -143,39 +143,39 @@
                       <RowConstraints vgrow="NEVER" />
                     </rowConstraints>
                      <children>
-                        <Button fx:id="btnFiltroDuplica" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Duplicar">
+                        <Button fx:id="btnFiltroDuplicar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#duplicarColumna" text="Duplicar">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btnFiltroVer" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ver" GridPane.columnIndex="1">
+                        <Button fx:id="btnFiltroVer" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#verColumna" text="Ver" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btnFiltroOrdena" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ordenar" GridPane.columnIndex="2">
+                        <Button fx:id="btnFiltroOrdenar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#ordenarColumna" text="Ordenar" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btnFiltroSubir" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Subir" GridPane.columnIndex="3">
+                        <Button fx:id="btnFiltroSubir" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#subirColumna" text="Subir" GridPane.columnIndex="3">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </Button>
-                        <Button fx:id="btnFiltroBajar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Bajar" GridPane.columnIndex="4">
+                        <Button fx:id="btnFiltroBajar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#bajarColumna" text="Bajar" GridPane.columnIndex="4">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </Button>
                         <TableView fx:id="tblFiltro" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
                           <columns>
-                            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Columna" />
-                            <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Nombre" />
-                              <TableColumn editable="false" prefWidth="75.0" sortable="false" text="Visible" />
-                              <TableColumn prefWidth="75.0" text="Ordenar" />
-                              <TableColumn prefWidth="75.0" text="Filtro" />
-                              <TableColumn prefWidth="75.0" text="Cálculo" />
+                            <TableColumn fx:id="colFiltroColumna" editable="false" prefWidth="75.0" sortable="false" text="Columna" />
+                            <TableColumn fx:id="colFiltroNombre" editable="false" prefWidth="75.0" sortable="false" text="Nombre" />
+                              <TableColumn fx:id="colFiltroVisible" editable="false" prefWidth="75.0" sortable="false" text="Visible" />
+                              <TableColumn fx:id="colFiltroOrdenar" prefWidth="75.0" text="Ordenar" />
+                              <TableColumn fx:id="colFiltroFiltro" prefWidth="75.0" text="Filtro" />
+                              <TableColumn fx:id="colFiltroCalculo" prefWidth="75.0" text="Cálculo" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -220,7 +220,7 @@
                            </GridPane.margin>
                         </ComboBox>
                         <TextField fx:id="txtFiltroCondicion" minWidth="-Infinity" prefWidth="150.0" promptText="Ingrese la condición a filtrar" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="btnFiltroCalculo" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="75.0" promptText="Cálculo" GridPane.columnSpan="2" GridPane.rowIndex="2">
+                        <ComboBox fx:id="cmbFiltroCalculo" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="75.0" promptText="Cálculo" GridPane.columnSpan="2" GridPane.rowIndex="2">
                            <GridPane.margin>
                               <Insets right="10.0" />
                            </GridPane.margin>
@@ -234,12 +234,12 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="btnFiltroAplicar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aplicar">
+                              <Button fx:id="btnFiltroAplicar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#aplicarFiltro" text="Aplicar">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="btnFiltroLimpiar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Limpiar" GridPane.columnIndex="1">
+                              <Button fx:id="btnFiltroLimpiar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#limpiarFiltro" text="Limpiar" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
