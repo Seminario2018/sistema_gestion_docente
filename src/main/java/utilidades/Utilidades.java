@@ -1,5 +1,7 @@
 package utilidades;
 
+import java.util.List;
+
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 10 de may. de 2018
@@ -45,5 +47,47 @@ public class Utilidades {
 	        return original;
 	    }
 	    return original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+	
+	/**
+	 * Devuelve un String, resultado de juntar la List (parecido a implode en PHP)
+	 * @param list la lista a juntar
+	 * @param separator separador entre los elementos del list
+	 * @return el String resultado de juntar la List
+	 */
+	public static String joinString(List<String> list, String separator) {
+		if (list == null || list.isEmpty()) {
+			return "";
+		}
+		separator = separator == null ? "" : separator;
+		String res = "";
+		int i = 0;
+		while (i < list.size()-1) {			
+			res += list.get(i) + separator;
+			i++;
+		}
+		res += list.get(i);
+		return res;
+	}
+	
+	/**
+	 * Devuelve un String, resultado de juntar la List (parecido a implode en PHP)
+	 * @param list la lista a juntar
+	 * @param separator separador entre los elementos del list
+	 * @return el String resultado de juntar la List
+	 */
+	public static String joinString(String[] list, String separator) {
+		if (list == null || list.length <= 0) {
+			return "";
+		}
+		separator = separator == null ? "" : separator;
+		String res = "";
+		int i = 0;
+		while (i < list.length-1) {			
+			res += list[i] + separator;
+			i++;
+		}
+		res += list[i];
+		return res;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import controlador.ControlBusqueda;
 import controlador.ControlCargo;
 import controlador.ControlDivision;
 import controlador.ControlDocente;
@@ -37,16 +38,19 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public static final String KEY_NUEVO = "nuevo";
 	public static final String KEY_TIPO = "tipo";
 	public static final String KEY_CONTROLADOR = "controlador";
-	public static final String KEY_RESULTADO = "resultado";
+	// Devuelve el tipo de dato seleccionado, por ejemplo "Area"
+	public static final String KEY_SELECCION = "seleccion";
+	// Devuelve el dato seleccionado
+	public static final String KEY_VALOR = "valor";
 	public static final String TITULO = "Busqueda";
 	
 	private String tipo;
 	private ControlCargo controlCargo;
-	private ControlDivision controlDivision;
 	private ControlDocente controlDocente;
 	private ControlInvestigacion controlInvestigacion;
 	private ControlPersona controlPersona;
 	private ControlUsuario controlUsuario;
+	private ControlBusqueda control = new ControlBusqueda(this);
 	// Recibe la respuesta (selección)
 	private ControladorVista controladorRespuesta;
 
@@ -117,6 +121,11 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public class FilaDocente {
 		private int legajo;
 		private String nombre;
+		public FilaDocente(int legajo, String apellido, String nombre) {
+			super();
+			this.legajo = legajo;
+			this.nombre = apellido + " " + nombre;
+		}
 		public FilaDocente(IDocente docente) {
 			super();
 			this.legajo = docente.getLegajo();
@@ -144,7 +153,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	
 	public void actualizarListaDocentes() {
 		// TODO filtrar la vista
-		this.listaBusqueda = new ArrayList<>(this.controlDocente.listarDocente(null));
+		this.listaBusqueda = new ArrayList<>(this.control.listarDocente(null));
 		for (Object docente : this.listaBusqueda) {
 			if (docente instanceof IDocente) {
 				FilaDocente fc = new FilaDocente((IDocente) docente);
