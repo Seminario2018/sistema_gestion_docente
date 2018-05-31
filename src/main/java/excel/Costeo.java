@@ -1,28 +1,163 @@
 package excel;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.List;
-
-import modelo.cargo.Cargo;
-import modelo.cargo.GestorCargo;
+import controlador.ControlCargo;
+import controlador.ControlDocente;
+import controlador.ControlPersona;
 import modelo.cargo.ICargo;
-import modelo.docente.CargoDocente;
-import modelo.docente.Docente;
-import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
-import modelo.persona.GestorPersona;
 import modelo.persona.IPersona;
-import modelo.persona.Persona;
 
+@SuppressWarnings("unused")
 public class Costeo {
 
-    private static GestorCargo gestorCargo = new GestorCargo();
-    private static GestorDocente gestorDocente = new GestorDocente();
-    private static GestorPersona gestorPersona = new GestorPersona();
+    /**
+     * Clase que analiza una fila de la planilla de costeo.
+     *
+     * @author LeoAM
+     *
+     */
+    private static class FilaCosteo {
 
-    public static void importar(String archivo)
-            throws UnsupportedOperationException {
+        // Columnas:
+        private int legajo;
+        private String apellido;
+        private String nombre;
+        private int categoria;
+        private int cargo;
+        private String esc;
+        private int fuente;
+        private int prog;
+        private int subProg;
+        private int proy;
+        private int act;
+        private int obra;
+        private int fin;
+        private int func;
+        private float remConAporte;
+        private float remSinAporte;
+        private float descuento;
+        private float neto;
+        private float jubilacion;
+        private float ley;
+        private float obraSocial;
+        private float ansal;
+        private float art;
+        private float seguro;
 
+        private IPersona persona;
+        private IDocente docente;
+        private ICargoDocente cargoDocente;
+        private float costo;
+
+        public FilaCosteo(List<String> filaGrilla) throws ParseException {
+            // Inicializar formateador de decimales:
+            NumberFormat nf = NumberFormat.getInstance();
+
+            // Sacar los datos de las celdas de la fila:
+            this.legajo = Integer.parseInt(filaGrilla.get(0).trim());
+            this.apellido = filaGrilla.get(1).trim();
+            this.nombre = filaGrilla.get(2).trim();
+            this.categoria = Integer.parseInt(filaGrilla.get(3).trim());
+            this.cargo = Integer.parseInt(filaGrilla.get(4).trim());
+            this.esc = filaGrilla.get(5).trim();
+            this.fuente = Integer.parseInt(filaGrilla.get(6).trim());
+            this.prog = Integer.parseInt(filaGrilla.get(7).trim());
+            this.subProg = Integer.parseInt(filaGrilla.get(8).trim());
+            this.proy = Integer.parseInt(filaGrilla.get(9).trim());
+            this.act = Integer.parseInt(filaGrilla.get(10).trim());
+            this.obra = Integer.parseInt(filaGrilla.get(11).trim());
+            this.fin = Integer.parseInt(filaGrilla.get(12).trim());
+            this.func = Integer.parseInt(filaGrilla.get(13).trim());
+
+            this.remConAporte = nf.parse(filaGrilla.get(14)).floatValue();
+            this.remSinAporte = nf.parse(filaGrilla.get(15)).floatValue();
+            this.descuento = nf.parse(filaGrilla.get(16)).floatValue();
+            this.neto = nf.parse(filaGrilla.get(17)).floatValue();
+            this.jubilacion = nf.parse(filaGrilla.get(18)).floatValue();
+            this.ley = nf.parse(filaGrilla.get(19)).floatValue();
+            this.obraSocial = nf.parse(filaGrilla.get(20)).floatValue();
+            this.ansal = nf.parse(filaGrilla.get(21)).floatValue();
+            this.art = nf.parse(filaGrilla.get(22)).floatValue();
+            this.seguro = nf.parse(filaGrilla.get(23)).floatValue();
+
+            crearPersona();
+            crearDocente();
+            crearCargoDocente();
+            calcularCosto();
+        }
+
+        private void crearPersona() {
+            ControlPersona ctrlPersona = new ControlPersona();
+
+            IPersona personaBusqueda = ctrlPersona.getIPersona();
+            personaBusqueda.setApellido(this.apellido);
+            personaBusqueda.setNombre(this.nombre);
+
+            List<IPersona> listaPersonas = ctrlPersona.listarPersonas(personaBusqueda);
+            if (listaPersonas.size() == 1) {
+                this.persona = listaPersonas.get(0);
+            } else {
+                throw new UnsupportedOperationException("Más de una o ninguna persona con el nombre y apellido para una fila en planilla.");
+            }
+        }
+
+        private void crearDocente() {
+            ControlDocente ctrlDocente = new ControlDocente(null);
+            IDocente docenteBusqueda = ctrlDocente.getIDocente();
+            docenteBusqueda.setLegajo(this.legajo);
+
+            List<IDocente> listaDocentes = ctrlDocente.listarDocente(docenteBusqueda);
+            this.docente = listaDocentes.get(0);
+        }
+
+        private void crearCargoDocente() {
+            ControlCargo ctrlCargo = new ControlCargo();
+            ControlDocente ctrlDocente = new ControlDocente(null);
+
+            ICargo cargoBusqueda = ctrlCargo.getICargo();
+            cargoBusqueda.setCodigo(this.categoria);
+            ICargo cargo = ctrlCargo.listarCargo(cargoBusqueda).get(0);
+
+            ICargoDocente cargoDocenteBusqueda = ctrlDocente.getICargoDocente();
+            cargoDocenteBusqueda.setId(this.cargo);
+            cargoDocenteBusqueda.setCargo(cargo);
+            this.cargoDocente = ctrlDocente.listarCargosDocente(this.docente, cargoDocenteBusqueda).get(0);
+        }
+
+        private void calcularCosto() {
+            assert(this.cargoDocente != null) : "cargoDocente null";
+            float costo =
+                remConAporte
+                + remSinAporte
+                - descuento
+                + neto
+                + jubilacion
+                + ley
+                + obraSocial
+                + ansal
+                + art
+                + seguro;
+            this.cargoDocente.setUltimoCosto(costo);
+        }
+
+        public IPersona getPersona() {
+            return this.persona;
+        }
+
+        public IDocente getDocente() {
+            return this.docente;
+        }
+
+        public ICargoDocente getCargoDocente() {
+            return this.cargoDocente;
+        }
+    }
+
+    public static void importar(String archivo) throws UnsupportedOperationException, ParseException {
         List<List<String>> grilla = Excel.importar(archivo);
 
         // Saco los encabezados:
@@ -33,59 +168,13 @@ public class Costeo {
         grilla.remove(grilla.size() - 1);
         grilla.remove(grilla.size() - 1);
 
-        for (List<String> fila : grilla) {
-            int legajo = Integer.parseInt(fila.get(0));
-            String apellido = fila.get(1);
-            String nombre = fila.get(2);
-//            int idCategoria = Integer.parseInt(fila.get(3));
-            int codigoCargo = Integer.parseInt(fila.get(4));
-//            String esc = fila.get(5);
-//            int fuente = Integer.parseInt(fila.get(6));
-//            int prog = Integer.parseInt(fila.get(7));
-//            int subProg = Integer.parseInt(fila.get(8));
-//            int proy = Integer.parseInt(fila.get(9));
-//            int act = Integer.parseInt(fila.get(10));
-//            int obra = Integer.parseInt(fila.get(11));
-//            int fin = Integer.parseInt(fila.get(12));
-//            int func = Integer.parseInt(fila.get(13));
-//            int remConAporte = Integer.parseInt(fila.get(14));
-//            int remSinAporte = Integer.parseInt(fila.get(15));
-//            int descuento = Integer.parseInt(fila.get(16));
-//            int neto = Integer.parseInt(fila.get(17));
-//            int jubilacion = Integer.parseInt(fila.get(18));
-//            int ley = Integer.parseInt(fila.get(19));
-//            int obraSocial = Integer.parseInt(fila.get(20));
-//            int ansal = Integer.parseInt(fila.get(21));
-//            int art = Integer.parseInt(fila.get(22));
-//            int seguro = Integer.parseInt(fila.get(23));
-
-            // DONE Cargar persona
-            List<IPersona> listaPersonas = gestorPersona.listarPersonas(
-                    new Persona(apellido, nombre, null, null, 0, null, null, null, null));
-            if (listaPersonas.size() == 1) {
-                IPersona persona = listaPersonas.get(0);
-
-                // DONE Cargar docente
-                IDocente docente = gestorDocente.listarDocente(
-                        new Docente(persona, legajo, "", null, null, null, null))
-                        .get(0);
-
-                // DONE Cargar cargoDocente
-                ICargo cargo = gestorCargo.listarCargo(
-                        new Cargo(codigoCargo, null, 0))
-                        .get(0);
-
-                ICargoDocente cd = new CargoDocente();
-                cd.setCargo(cargo);
-                ICargoDocente cargoDocente = gestorDocente
-                        .listarCargo(docente, cd)
-                        .get(0);
-
-            } else {
-                throw new UnsupportedOperationException(
-                        "Más de una persona con el mismo nombre y apellido para una fila en planilla.");
-            }
+        for (List<String> filaGrilla : grilla) {
+            FilaCosteo filaCosteo = new FilaCosteo(filaGrilla);
             // TODO Hacer (?)
+
+            /* TEST Fila costeo */
+            System.out.printf("%d\t%f\n", filaCosteo.getDocente().getLegajo(), filaCosteo.getCargoDocente().getUltimoCosto());
+            //*/
         }
     }
 }
