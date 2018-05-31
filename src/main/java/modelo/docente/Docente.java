@@ -105,6 +105,7 @@ public class Docente implements IDocente {
 			EstadoDocente estado = new EstadoDocente();
 			estado.setId(Integer.parseInt(reg.get("Estado")));
 			estado = EstadoDocente.getEstado(estado);
+			this.setEstado(estado);
 		}
 		
 		return estado;
