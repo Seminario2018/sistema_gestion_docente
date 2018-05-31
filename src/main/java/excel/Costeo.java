@@ -4,7 +4,9 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import controlador.ControlDocente;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
+import modelo.docente.IDocente;
 
 /**
  * Clase que importa el costeo de una planilla Excel.
@@ -31,9 +33,30 @@ public class Costeo {
         }
     }
 
-    /** Actualiza el último costo del cargoDocente. */
-    private static void actualizarCosto(ICargoDocente cargoDocente, float costo) {
+    /**
+     * Actualiza el último costo del cargoDocente, y lo persiste en la base de datos.
+     * @param cargoDocente CargoDocente a actualizar.
+     * @param costo Nuevo costo del cargodocente.
+     * @param legajoDocente Legajo del docente.
+     * */
+    private static void actualizarCosto(ICargoDocente cargoDocente, float costo, int legajoDocente) {
+        // Actualizar último costo:
         cargoDocente.setUltimoCosto(costo);
+
+        // Instancia de docente:
+        IDocente d = ctrlDocente.getIDocente();
+        d.setLegajo(legajoDocente);
+
+        // Persistir cambio:
+        EstadoOperacion resultado = ctrlDocente.guardarCargoDocente(d, cargoDocente);
+        switch (resultado.getEstado()) {
+            case UPDATE_ERROR:
+                throw new RuntimeException("Error de modificación de cargo docente: " + resultado.getMensaje());
+            case UPDATE_OK:
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
     }
 
     /**
@@ -52,11 +75,13 @@ public class Costeo {
 
         for (List<String> filaGrilla : grilla) {
             try {
-                int id = Integer.parseInt(filaGrilla.get(3).trim());
+                int legajo = Integer.parseInt(filaGrilla.get(0).trim());
+
+                int id = Integer.parseInt(filaGrilla.get(4).trim());
                 ICargoDocente cargoDocente = buscarCargoDocente(id);
 
                 float remConAporte = NumberFormat.getInstance().parse(filaGrilla.get(14)).floatValue();
-                actualizarCosto(cargoDocente, remConAporte);
+                actualizarCosto(cargoDocente, remConAporte, legajo);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             } catch (ParseException e) {
