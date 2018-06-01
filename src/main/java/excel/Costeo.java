@@ -2,6 +2,7 @@ package excel;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import controlador.ControlDocente;
 import modelo.auxiliares.EstadoOperacion;
@@ -42,6 +43,7 @@ public class Costeo {
     private static void actualizarCosto(ICargoDocente cargoDocente, float costo, int legajoDocente) {
         // Actualizar último costo:
         cargoDocente.setUltimoCosto(costo);
+        cargoDocente.setFechaUltCost(LocalDate.now());
 
         // Instancia de docente:
         IDocente d = ctrlDocente.getIDocente();
