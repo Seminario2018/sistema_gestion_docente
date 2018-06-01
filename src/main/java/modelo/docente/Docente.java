@@ -86,7 +86,7 @@ public class Docente implements IDocente {
 			cat = CategoriaInvestigacion.getCategoria(cat);
 			this.setCategoriaInvestigacion(cat);
 		}
-		
+
 		return categoriaInvestigacion;
 	}
 
@@ -101,13 +101,13 @@ public class Docente implements IDocente {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Docentes", "Estado", "Legajo = " + this.getLegajo());
 			Hashtable<String, String> reg = res.get(0);
-			
+
 			EstadoDocente estado = new EstadoDocente();
 			estado.setId(Integer.parseInt(reg.get("Estado")));
 			estado = EstadoDocente.getEstado(estado);
 			this.setEstado(estado);
 		}
-		
+
 		return estado;
 	}
 
@@ -143,7 +143,7 @@ public class Docente implements IDocente {
 		if (incentivos.isEmpty()) {
 			this.cargarIncentivos();
 		}
-		
+
 		return incentivos;
 	}
 
@@ -195,7 +195,7 @@ public class Docente implements IDocente {
 
 	private void cargarIncentivos() {
 		GestorDocente gd = new GestorDocente();
-		ArrayList<IIncentivo> incentivos = gd.listarIncentivos(this, null);
+		List<IIncentivo> incentivos = gd.listarIncentivos(this, null);
 		for (IIncentivo iIncentivo : incentivos) {
 			this.agregarIncentivo(iIncentivo);
 		}
@@ -204,7 +204,7 @@ public class Docente implements IDocente {
 
 	private void cargarCargos() {
 		GestorDocente gd = new GestorDocente();
-		ArrayList<ICargoDocente> cargos = gd.listarCargo(this, null);
+		List<ICargoDocente> cargos = gd.listarCargo(this, null);
 		for (ICargoDocente iCargo : cargos) {
 			this.agregarCargoDocente(iCargo);
 		}
