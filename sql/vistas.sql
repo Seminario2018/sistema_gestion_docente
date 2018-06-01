@@ -48,20 +48,19 @@ CREATE VIEW `ViewRoles` AS
     SELECT 
         `Roles`.`id` AS `id`, `Roles`.`nombre` AS `nombre`
     FROM
-        `Roles`
+        `Roles`;
 
 CREATE VIEW `ViewArea` AS
     SELECT 
         `Areas`.`Codigo` AS `Codigo`,
         `Areas`.`Descripcion` AS `Descripcion`
     FROM
-        `Areas`
+        `Areas`;
 
 
 CREATE VIEW `ViewCargo` AS
     SELECT 
         `Cargos`.`Descripcion` AS `Descripcion`
     FROM
-        `Cargos`
-
+        `Cargos`;
 

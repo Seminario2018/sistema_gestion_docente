@@ -13,8 +13,8 @@ import utilidades.Utilidades;
  */
 public class GestorBusqueda {
 
-	public List<BusquedaDocente> listarDocente(String criterio) {
-		String tabla = "VistaDocente"; // ??? el nombre que quieras
+	public List<BusquedaDocente> listarDocentes(String criterio) {
+		String tabla = "ViewDocente";
 		String campos = "legajo,apellido,nombre";
 		String condicion = "TRUE";
 		List<BusquedaDocente> docentes = new ArrayList<BusquedaDocente>();

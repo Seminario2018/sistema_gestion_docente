@@ -88,8 +88,41 @@ public class Busqueda extends ControladorVista implements Initializable {
 		}
 	}
 	
-	@FXML public void actualizarLista() {
-		// TODO seleccionar de las vistas filtrando por txtBusquedaCriterio
+	class EditThread implements Runnable {
+		private Busqueda b;
+		public EditThread(Busqueda b) {
+			this.b = b;
+		}
+		/* (non-Javadoc)
+		 * @see java.lang.Runnable#run()
+		 */
+		@Override
+		public void run() {
+			try {
+				Thread.sleep(30);
+				b.actualizarLista();
+			} catch (InterruptedException e) {
+				// Nada
+			}
+		}
+	}
+	
+	private Thread editThread;
+	
+	/**
+	 * Método que se llama con cada tecleo
+	 */
+	@FXML public void editarTexto() {
+		if (this.editThread != null) {
+			try {
+				this.editThread.wait();
+				this.editThread.interrupt();
+			} catch (InterruptedException e) {
+				// Nada
+			}
+		}
+		this.editThread = new Thread(new EditThread(this));
+		this.editThread.start();
 	}
 	
 	@Override
@@ -98,11 +131,15 @@ public class Busqueda extends ControladorVista implements Initializable {
 		this.controladorRespuesta = (ControladorVista) args.get(KEY_CONTROLADOR);
 		this.btnBusquedaNuevo.setVisible((boolean) args.get(KEY_NUEVO));
 		try {
-			Method m = this.getClass().getDeclaredMethod("inicializar" + this.tipo);
-			m.invoke(this);
-		} catch (Exception e) {
+			inicializar(Class.forName("modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1)));
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void inicializar(Class c) {
+		inicializarTabla(c);
+		actualizarLista();
 	}
 	
 	public void inicializarTabla(Class fila) {
@@ -117,23 +154,18 @@ public class Busqueda extends ControladorVista implements Initializable {
 		this.tblBusqueda.setItems(this.filasBusqueda);
 	}
 
-// -------------------------------- Docentes -------------------------------- //	
-	public void inicializarDocentes() {
-		inicializarTabla(BusquedaDocente.class);
-		actualizarListaDocentes();
-	}
-	
-	public void actualizarListaDocentes() {
+	public void actualizarLista() {
 		this.filasBusqueda.clear();
-		this.filasBusqueda.addAll(
-				this.control.listarDocente(
-						this.txtBusquedaCriterio.getText()));
+		try {
+			Method m = this.control.getClass().getDeclaredMethod("listar" + this.tipo, String.class);
+			this.filasBusqueda.addAll(m.invoke(this.control, this.txtBusquedaCriterio.getText()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+// -------------------------------- Docentes -------------------------------- //	
 	
 	public Object seleccionarDocentes(Object fila) {
-		if (fila instanceof BusquedaDocente) {
-			return this.control.seleccionarDocente((BusquedaDocente) fila);
-		}
-		return null;
+		return this.control.seleccionarDocente(fila);
 	}
 }

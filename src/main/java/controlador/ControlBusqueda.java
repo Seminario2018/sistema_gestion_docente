@@ -25,8 +25,9 @@ public class ControlBusqueda {
 		this.vista = vista;
 	}
 	
-	public List<BusquedaDocente> listarDocente(String criterio) {
+	public List<BusquedaDocente> listarDocentes(String criterio) {
 		// TEST
+		/*
 		ControlDocente control = new ControlDocente(this.vista);
 		List<IDocente> listaBusqueda = new ArrayList<>(control.listarDocente(null));
 		List<BusquedaDocente> filasBusqueda = new ArrayList<>();
@@ -40,12 +41,17 @@ public class ControlBusqueda {
 			}
 		}
 		return filasBusqueda;
-		//return this.gestorBusqueda.listarDocente(criterio);
+		*/
+		return this.gestorBusqueda.listarDocentes(criterio);
 	}
 	
-	public IDocente seleccionarDocente(BusquedaDocente bd) {
-		IDocente doc = this.gestorDocente.getIDocente();
-		doc.setLegajo(bd.getLegajo());
-		return this.gestorDocente.listarDocente(doc).get(0);
+	public IDocente seleccionarDocente(Object fila) {
+		if (fila instanceof BusquedaDocente) {
+			BusquedaDocente bd = (BusquedaDocente) fila;
+			IDocente doc = this.gestorDocente.getIDocente();
+			doc.setLegajo(bd.getLegajo());
+			return this.gestorDocente.listarDocente(doc).get(0);
+		}
+		return null;
 	}
 }
