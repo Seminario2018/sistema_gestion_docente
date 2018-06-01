@@ -50,4 +50,18 @@ CREATE VIEW `ViewRoles` AS
     FROM
         `Roles`
 
+CREATE VIEW `ViewArea` AS
+    SELECT 
+        `Areas`.`Codigo` AS `Codigo`,
+        `Areas`.`Descripcion` AS `Descripcion`
+    FROM
+        `Areas`
+
+
+CREATE VIEW `ViewCargo` AS
+    SELECT 
+        `Cargos`.`Descripcion` AS `Descripcion`
+    FROM
+        `Cargos`
+
 
