@@ -20,8 +20,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import modelo.busqueda.BusquedaDocente;
-import modelo.docente.IDocente;
 import utilidades.Utilidades;
 
 /**
@@ -67,24 +65,25 @@ public class Busqueda extends ControladorVista implements Initializable {
 	
 	@FXML private Button btnBusquedaSeleccionar;
 	@FXML public void seleccionar(ActionEvent event) {
+		// Borrar la "s" del final (DocenteS, PersonaS)
+		String varName = this.tipo.substring(0, this.tipo.length()-1);
 		if (!tblBusqueda.getSelectionModel().isEmpty()) {
 			Object fila = tblBusqueda.getSelectionModel().getSelectedItem();
 			try {
-				Method m = this.getClass().getDeclaredMethod("seleccionar" + this.tipo, Object.class);
-				Object valor = m.invoke(this, fila);
+				Method m = this.control.getClass().getDeclaredMethod("seleccionar" + varName, Object.class);
+				Object valor = m.invoke(this.control, fila);
 				if (valor != null) {
 					Map<String, Object> args = new HashMap<String, Object>();
-					// Borrar la "s" del final (DocenteS, PersonaS)
-					args.put(Busqueda.KEY_SELECCION, this.tipo.substring(0, this.tipo.length()-1));
+					args.put(Busqueda.KEY_SELECCION, varName);
 					args.put(Busqueda.KEY_VALOR, valor);
 					this.controladorRespuesta.recibirParametros(args);
 					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
-				} else {
-//					TODO this.gestorPantalla.mensajeEstado("Debe seleccionar una fila de la grilla");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else {
+//			TODO this.gestorPantalla.mensajeEstado("Debe seleccionar una fila de la grilla");
 		}
 	}
 	
@@ -99,30 +98,29 @@ public class Busqueda extends ControladorVista implements Initializable {
 		@Override
 		public void run() {
 			try {
-				Thread.sleep(30);
-				b.actualizarLista();
+				Thread.sleep(300);
+				if (!Thread.interrupted())
+					b.actualizarLista();
 			} catch (InterruptedException e) {
 				// Nada
 			}
 		}
 	}
 	
-	private Thread editThread;
-	
+//	private Thread editThread;
 	/**
 	 * Método que se llama con cada tecleo
 	 */
 	@FXML public void editarTexto() {
+		/*
 		if (this.editThread != null) {
-			try {
-				this.editThread.wait();
+			if (!this.editThread.isInterrupted())
 				this.editThread.interrupt();
-			} catch (InterruptedException e) {
-				// Nada
-			}
 		}
 		this.editThread = new Thread(new EditThread(this));
 		this.editThread.start();
+		*/
+		actualizarLista();
 	}
 	
 	@Override
@@ -158,14 +156,10 @@ public class Busqueda extends ControladorVista implements Initializable {
 		this.filasBusqueda.clear();
 		try {
 			Method m = this.control.getClass().getDeclaredMethod("listar" + this.tipo, String.class);
-			this.filasBusqueda.addAll(m.invoke(this.control, this.txtBusquedaCriterio.getText()));
+			this.filasBusqueda.addAll((List)
+					m.invoke(this.control, this.txtBusquedaCriterio.getText()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-// -------------------------------- Docentes -------------------------------- //	
-	
-	public Object seleccionarDocentes(Object fila) {
-		return this.control.seleccionarDocente(fila);
 	}
 }

@@ -18,7 +18,7 @@
       <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <TextField fx:id="txtBusquedaCriterio" promptText="Ingrese el criterio de búsqueda" GridPane.columnSpan="2147483647">
+      <TextField fx:id="txtBusquedaCriterio" onKeyTyped="#editarTexto" promptText="Ingrese el criterio de búsqueda" GridPane.columnSpan="2147483647">
          <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </VBox.margin>

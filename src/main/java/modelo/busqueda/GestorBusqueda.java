@@ -15,12 +15,12 @@ public class GestorBusqueda {
 
 	public List<BusquedaDocente> listarDocentes(String criterio) {
 		String tabla = "ViewDocente";
-		String campos = "legajo,apellido,nombre";
+		String campos = "Legajo, Apellido, Nombre";
 		String condicion = "TRUE";
 		List<BusquedaDocente> docentes = new ArrayList<BusquedaDocente>();
 		
 		if (criterio != null && !criterio.equals("")) {
-			condicion = armarCondicion(campos.split(","), criterio);
+			condicion = armarCondicion(campos.split(", "), criterio);
 		}
 		
 		try {
@@ -28,9 +28,9 @@ public class GestorBusqueda {
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				BusquedaDocente doc = new BusquedaDocente(
-						Integer.parseInt(reg.get("legajo")),
-						reg.get("apellido"),
-						reg.get("nombre"));
+						Integer.parseInt(reg.get("Legajo")),
+						reg.get("Apellido"),
+						reg.get("Nombre"));
 				docentes.add(doc);
 			} 
 		} catch (Exception e) {
@@ -43,7 +43,7 @@ public class GestorBusqueda {
 	public String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {
-			condicion[i] = campos[i] + " LIKE " + criterio;
+			condicion[i] = campos[i] + " LIKE '%" + criterio + "%'";
 		}
 		return Utilidades.joinString(condicion, " OR ");
 	}
