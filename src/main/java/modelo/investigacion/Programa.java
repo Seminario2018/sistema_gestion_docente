@@ -105,7 +105,7 @@ public class Programa implements IPrograma {
     		Docente doc = new Docente();
 			doc.setLegajo(Integer.parseInt(reg.get("Director")));
 			GestorDocente gd = new GestorDocente();
-			doc = (Docente) gd.listarDocente(doc).get(0);
+			doc = (Docente) gd.listarDocentes(doc).get(0);
 					
 			this.setDirector(doc);
     	}
@@ -128,7 +128,7 @@ public class Programa implements IPrograma {
     			Docente doc = new Docente();
     			GestorDocente gd = new GestorDocente();
 				doc.setLegajo(Integer.parseInt(reg.get("Codirector")));
-				doc = (Docente) gd.listarDocente(doc).get(0);
+				doc = (Docente) gd.listarDocentes(doc).get(0);
 				this.setCodirector(doc);
 			}
     	}

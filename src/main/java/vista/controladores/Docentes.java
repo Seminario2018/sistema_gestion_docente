@@ -59,7 +59,25 @@ public class Docentes extends ControladorVista implements Initializable {
 	public void setPersonaSeleccion(Object personaSeleccion) {
 		if (personaSeleccion instanceof IPersona) {
 			this.docenteSeleccion.setPersona((IPersona) personaSeleccion);
-			actualizarCamposDatos();
+			txtDatosDocumento.setText(
+                    String.valueOf(((IPersona) personaSeleccion).getNroDocumento()));
+            txtDatosNombre.setText(
+            		((IPersona) personaSeleccion).getApellido() + ", "
+            		+ ((IPersona) personaSeleccion).getNombre());
+		}
+	}
+	
+	public void setAreaSeleccion(Object areaSeleccion) {
+		if (areaSeleccion instanceof IArea) {
+			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
+			this.txtCargosArea.setText(((IArea) areaSeleccion).getCodigo());
+		}
+	}
+	
+	public void setCargoSeleccion(Object cargoSeleccion) {
+		if (cargoSeleccion instanceof ICargo) {
+			this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
+			this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
 		}
 	}
 	
@@ -72,7 +90,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
 	public IDocente docenteSeleccion;
 
-	private static final String TITULO = "Docentes";
+	public static final String TITULO = "Docentes";
 
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
@@ -81,14 +99,14 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML private void buscarDocente() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put(Busqueda.KEY_NUEVO, false);
-		args.put(Busqueda.KEY_TIPO, TITULO);
+		args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
 		
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
 	@FXML private void nuevoDocente() {
-
+		this.docenteSeleccion = this.controlDocente.getIDocente();
     }
 
 	@FXML private void eliminarDocente() {
@@ -203,8 +221,13 @@ public class Docentes extends ControladorVista implements Initializable {
 	    mostrarDatos();
 	}
 
-	@FXML private void buscarPersona() {
-	    // TODO "Seleccionar Persona"
+	@FXML private void seleccionarPersona() {
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(Busqueda.KEY_NUEVO, false);
+		args.put(Busqueda.KEY_TIPO, Personas.TITULO);
+		args.put(Busqueda.KEY_CONTROLADOR, this);
+		
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
 
 	private void actualizarCamposDatos() {
@@ -352,19 +375,18 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	public void actualizarTablaCargos() {
-		// TODO actualizarTablaCargos()
-		/*
-		this.listaCargos = this.control.getListaCargosDocentes();
-		for (ICargoDocente cargo : this.listaCargos) {
-			FilaCargo fc = new FilaCargo(
-					cargo.getId(),
-					cargo.getArea().getDescripcion(),
-					cargo.getCargo().getDescripcion(),
-					cargo.getEstado().getDescripcion()
-					);
-			this.filasCargos.add(fc);
+		if (this.docenteSeleccion != null) {
+			this.listaCargos = this.controlDocente.listarCargosDocente(this.docenteSeleccion, null);
+			for (ICargoDocente cargo : this.listaCargos) {
+				FilaCargo fc = new FilaCargo(
+						cargo.getId(),
+						cargo.getArea().getDescripcion(),
+						cargo.getCargo().getDescripcion(),
+						cargo.getEstado().getDescripcion()
+						);
+				this.filasCargos.add(fc);
+			}
 		}
-		 */
 	}
 
 	@FXML public TableView tblCargos;

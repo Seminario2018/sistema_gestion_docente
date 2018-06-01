@@ -34,7 +34,7 @@ public class ControlDivision {
     }
 
     public List<IArea> listarAreas(IArea area) {
-        return this.gestorArea.listarArea(area);
+        return this.gestorArea.listarAreas(area);
     }
 
 //  Divisiones

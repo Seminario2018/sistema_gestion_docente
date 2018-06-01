@@ -40,6 +40,37 @@ public class GestorBusqueda {
 		return docentes;
 	}
 	
+	
+	
+	public List<BusquedaPersona> listarPersonas(String criterio) {
+		String tabla = "ViewPersona";
+		String campos = "NroDocumento, Apellido, Nombre";
+		String condicion = "TRUE";
+		List<BusquedaPersona> personas = new ArrayList<BusquedaPersona>();
+		
+		if (criterio != null && !criterio.equals("")) {
+			condicion = armarCondicion(campos.split(", "), criterio);
+		}
+		
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+			for (Hashtable<String, String> reg : res) {
+				BusquedaPersona per = new BusquedaPersona(
+						Integer.parseInt(reg.get("NroDocumento")),
+						reg.get("Apellido"),
+						reg.get("Nombre"));
+				personas.add(per);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return personas;
+	}
+
+	
+	
 	public String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {

@@ -108,7 +108,7 @@ public class Area implements IArea {
 			if (!reg.get("Responsable").equals("")) {
 				Docente responsable = new Docente(null, Integer.parseInt(reg.get("Responsable")), null, null, null, null, null);
 				GestorDocente gd = new GestorDocente();
-				responsable = (Docente) gd.listarDocente(responsable).get(0);
+				responsable = (Docente) gd.listarDocentes(responsable).get(0);
 			}
 		}
 		return this.responsable;
@@ -160,7 +160,7 @@ public class Area implements IArea {
 				Area a = new Area();
 				a.setCodigo(reg.get("SubAreaDe"));
 				GestorArea ga = new GestorArea();
-				a = (Area) ga.listarArea(a).get(0);
+				a = (Area) ga.listarAreas(a).get(0);
 				this.setAreaDe(a);
 			}
 		}

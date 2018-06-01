@@ -51,7 +51,7 @@ public class GestorPersona {
 
 			if (persona.getDomicilios() != null && !persona.getDomicilios().isEmpty()) {
 				for(IDomicilio domicilio : persona.getDomicilios()) {
-					this.insetarDomicilios(persona, domicilio);
+					this.insertarDomicilios(persona, domicilio);
 				}
 
 			}
@@ -98,7 +98,7 @@ public class GestorPersona {
 
 	}
 
-	private void insetarDomicilios(IPersona persona, IDomicilio domicilio) {
+	private void insertarDomicilios(IPersona persona, IDomicilio domicilio) {
 		ManejoDatos md = new ManejoDatos();
 
 		if (domicilio.getId() == -1) {

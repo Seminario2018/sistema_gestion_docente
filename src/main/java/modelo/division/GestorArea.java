@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import persistencia.ManejoDatos;
@@ -151,7 +152,7 @@ public class GestorArea {
 
     }
 
-    public List<IArea> listarArea(IArea area) {
+    public List<IArea> listarAreas(IArea area) {
         ArrayList<IArea> areas = new ArrayList<IArea>();
 
         try {
@@ -206,5 +207,9 @@ public class GestorArea {
             return false;
         }
     }
+
+	public IArea getIArea() {
+		return new Area();
+	}
 
 }

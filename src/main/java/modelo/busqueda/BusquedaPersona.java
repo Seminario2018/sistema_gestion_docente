@@ -13,7 +13,7 @@ public class BusquedaPersona {
 	public BusquedaPersona(int documento, String apellido, String nombre) {
 		super();
 		this.documento = documento;
-		this.nombre = apellido + " " + nombre;
+		this.nombre = apellido + ", " + nombre;
 	}
 	public int getDocumento() {
 		return documento;

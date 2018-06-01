@@ -45,7 +45,7 @@ public class ControlDocente {
 	}
 	
 	public List<IDocente> listarDocente(IDocente docente) {
-		return this.gestorDocente.listarDocente(docente);
+		return this.gestorDocente.listarDocentes(docente);
 	}
 	
 

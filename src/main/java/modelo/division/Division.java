@@ -81,7 +81,7 @@ public class Division implements IDivision {
 					GestorDocente gd = new GestorDocente();
 					Docente profesor = new Docente(null, Integer.parseInt(reg.get("Jefe")), null, null, null, null,
 							null);
-					profesor = (Docente) gd.listarDocente(profesor).get(0);
+					profesor = (Docente) gd.listarDocentes(profesor).get(0);
 					this.setJefe(profesor);
 			}
     	}

@@ -70,8 +70,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 		if (!tblBusqueda.getSelectionModel().isEmpty()) {
 			Object fila = tblBusqueda.getSelectionModel().getSelectedItem();
 			try {
-				Method m = this.control.getClass().getDeclaredMethod("seleccionar" + varName, Object.class);
-				Object valor = m.invoke(this.control, fila);
+				Object valor = this.control.seleccionar(fila);
 				if (valor != null) {
 					Map<String, Object> args = new HashMap<String, Object>();
 					args.put(Busqueda.KEY_SELECCION, varName);

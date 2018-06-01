@@ -140,7 +140,7 @@ public class Proyecto implements IProyecto {
 			Hashtable<String, String> reg = res.get(0);
             Docente profesor = new Docente(null, Integer.parseInt(reg.get("Director")), null, null, null, null, null);
             GestorDocente gd = new GestorDocente();
-            profesor = (Docente) gd.listarDocente(profesor).get(0);
+            profesor = (Docente) gd.listarDocentes(profesor).get(0);
             this.setDirector(profesor);
 		}
 		return this.director;
@@ -160,7 +160,7 @@ public class Proyecto implements IProyecto {
 			if (!reg.get("Codirector").equals("")) {
             	Docente profesor = new Docente(null, Integer.parseInt(reg.get("Codirector")), null, null, null, null, null);
                 GestorDocente gd = new GestorDocente();
-                profesor = (Docente) gd.listarDocente(profesor).get(0);
+                profesor = (Docente) gd.listarDocentes(profesor).get(0);
                 this.setCodirector(profesor);
             }
 		}

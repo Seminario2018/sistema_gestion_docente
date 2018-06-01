@@ -107,7 +107,7 @@ public class GestorDocente {
 
 	}
 
-	public List<IDocente> listarDocente(IDocente docente) {
+	public List<IDocente> listarDocentes(IDocente docente) {
 		String tabla = "Docentes";
 		String condicion = "TRUE";
 		if (docente != null) {

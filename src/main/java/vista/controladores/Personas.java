@@ -29,7 +29,7 @@ import modelo.persona.ITitulo;
  */
 public class Personas extends ControladorVista implements Initializable {
 
-    private static final String TITULO = "Personas";
+    public static final String TITULO = "Personas";
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)

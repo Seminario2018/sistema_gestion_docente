@@ -13,7 +13,7 @@ public class BusquedaDocente {
 	public BusquedaDocente(int legajo, String apellido, String nombre) {
 		super();
 		this.legajo = legajo;
-		this.nombre = apellido + " " + nombre;
+		this.nombre = apellido + ", " + nombre;
 	}
 	public int getLegajo() {
 		return legajo;

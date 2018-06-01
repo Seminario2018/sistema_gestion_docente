@@ -103,7 +103,7 @@ public class CargoDocente implements ICargoDocente {
 			GestorArea ga = new GestorArea();
 			IArea a = new Area();
 			a.setCodigo(reg.get("Area"));
-			a = ga.listarArea(a).get(0);
+			a = ga.listarAreas(a).get(0);
 			this.setArea(a);
 		}
         return this.area;
