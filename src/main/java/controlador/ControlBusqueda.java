@@ -3,9 +3,12 @@ package controlador;
 import java.util.List;
 
 import modelo.busqueda.BusquedaArea;
+import modelo.busqueda.BusquedaCargo;
 import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.GestorBusqueda;
+import modelo.cargo.GestorCargo;
+import modelo.cargo.ICargo;
 import modelo.division.GestorArea;
 import modelo.division.IArea;
 import modelo.docente.GestorDocente;
@@ -26,6 +29,7 @@ public class ControlBusqueda {
 	private GestorDocente gestorDocente;
 	private GestorPersona gestorPersona;
 	private GestorArea gestorArea;
+	private GestorCargo gestorCargo;
 
 	
 	public ControlBusqueda(ControladorVista vista) {
@@ -39,6 +43,14 @@ public class ControlBusqueda {
 	
 	public List<BusquedaPersona> listarPersonas(String criterio) {
 		return this.gestorBusqueda.listarPersonas(criterio);
+	}
+	
+	public List<BusquedaArea> listarAreas(String criterio) {
+		return this.gestorBusqueda.listarAreas(criterio);
+	}
+	
+	public List<BusquedaCargo> listarCargos(String criterio) {
+		return this.gestorBusqueda.listarCargos(criterio);
 	}
 	
 	public Object seleccionar(Object fila) {
@@ -64,6 +76,14 @@ public class ControlBusqueda {
 			IArea area = this.gestorArea.getIArea();
 			area.setCodigo(ba.getCodigo());
 			return this.gestorArea.listarAreas(area).get(0);
+		}
+		
+		if (fila instanceof BusquedaCargo) {
+			BusquedaCargo bc = (BusquedaCargo) fila;
+			this.gestorCargo = new GestorCargo();
+			ICargo Cargo = this.gestorCargo.getICargo();
+			Cargo.setCodigo(bc.getCodigo());
+			return this.gestorCargo.listarCargos(Cargo).get(0);
 		}
 		
 		return null;

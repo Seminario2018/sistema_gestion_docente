@@ -9,6 +9,12 @@ delete from EstadosCargos;
 delete from EstadosDocentes;
 delete from EstadosPersonas;
 delete from TiposDocumentos;
+delete from TiposCargos;
+
+
+insert into TiposCargos values
+(0, 'Ordinario'),
+(1, 'Interino');
 
 
 insert into TiposDocumentos values

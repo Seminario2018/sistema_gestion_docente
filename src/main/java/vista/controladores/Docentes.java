@@ -481,22 +481,19 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_TIPO, "Areas");
 		args.put(Busqueda.KEY_CONTROLADOR, this);
 		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Áreas", args);
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
 
 	public ICargo cargoSeleccion;
 	@FXML public TextField txtCargosCargo;
 	@FXML public Button btnCargosCargo;
 	@FXML private void seleccionarCargo() {
-        // TODO Seleccionar Cargo
-	    /* TEST Prueba Cargo*/
-		ICargo c = new Cargo(213, "Profesor Titular Exclusiva", 40);
-		cargoSeleccion = c;
-
-        //*/
-		// TODO Sacar lista de cargos de la BD (?)
-		List<ICargo> listaCargos = this.controlDocente.listarCargos(null);
-		txtCargosCargo.setText(cargoSeleccion.getDescripcion());
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(Busqueda.KEY_NUEVO, false);
+		args.put(Busqueda.KEY_TIPO, "Cargos");
+		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Cargos", args);
     }
 
 

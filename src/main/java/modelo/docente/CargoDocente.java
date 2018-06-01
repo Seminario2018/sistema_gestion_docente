@@ -99,12 +99,14 @@ public class CargoDocente implements ICargoDocente {
 		if (area == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "Area", "Codigo = " + this.getId());
-			Hashtable<String, String> reg = res.get(0);
-			GestorArea ga = new GestorArea();
-			IArea a = new Area();
-			a.setCodigo(reg.get("Area"));
-			a = ga.listarAreas(a).get(0);
-			this.setArea(a);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				GestorArea ga = new GestorArea();
+				IArea a = new Area();
+				a.setCodigo(reg.get("Area"));
+				a = ga.listarAreas(a).get(0);
+				this.setArea(a);
+			}
 		}
         return this.area;
     }
@@ -122,7 +124,7 @@ public class CargoDocente implements ICargoDocente {
 			Hashtable<String, String> reg = res.get(0);
     		GestorCargo gc = new GestorCargo();
 			Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
-			car = (Cargo) gc.listarCargo(car).get(0);
+			car = (Cargo) gc.listarCargos(car).get(0);
 			this.setCargo(car);
     	}
         return this.cargo;

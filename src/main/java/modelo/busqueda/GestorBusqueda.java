@@ -68,10 +68,66 @@ public class GestorBusqueda {
 		
 		return personas;
 	}
+	
+	
+	
+	public List<BusquedaArea> listarAreas(String criterio) {
+		String tabla = "ViewArea";
+		String campos = "Codigo, Descripcion";
+		String condicion = "TRUE";
+		List<BusquedaArea> areas = new ArrayList<BusquedaArea>();
+		
+		if (criterio != null && !criterio.equals("")) {
+			condicion = armarCondicion(campos.split(", "), criterio);
+		}
+		
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+			for (Hashtable<String, String> reg : res) {
+				BusquedaArea area = new BusquedaArea(
+						reg.get("Codigo"),
+						reg.get("Descripcion"));
+				areas.add(area);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return areas;
+	}
+	
+	
+	
+	public List<BusquedaCargo> listarCargos(String criterio) {
+		String tabla = "ViewCargo";
+		String campos = "Codigo, Descripcion";
+		String condicion = "TRUE";
+		List<BusquedaCargo> cargos = new ArrayList<BusquedaCargo>();
+		
+		if (criterio != null && !criterio.equals("")) {
+			condicion = armarCondicion(campos.split(", "), criterio);
+		}
+		
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+			for (Hashtable<String, String> reg : res) {
+				BusquedaCargo cargo = new BusquedaCargo(
+						Integer.parseInt(reg.get("Codigo")),
+						reg.get("Descripcion"));
+				cargos.add(cargo);
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return cargos;
+	}
 
 	
 	
-	public String armarCondicion(String[] campos, String criterio) {
+	private String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {
 			condicion[i] = campos[i] + " LIKE '%" + criterio + "%'";

@@ -22,7 +22,7 @@ public class ControlCargo {
     }
 
     public List<ICargo> listarCargo(ICargo cargo) {
-        return this.gestorCargo.listarCargo(cargo);
+        return this.gestorCargo.listarCargos(cargo);
     }
 
     public ICargo getICargo() {

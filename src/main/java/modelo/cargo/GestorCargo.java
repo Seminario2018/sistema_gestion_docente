@@ -56,7 +56,7 @@ public class GestorCargo {
         }
     }
 
-    public List<ICargo> listarCargo(ICargo cargo) {
+    public List<ICargo> listarCargos(ICargo cargo) {
         String condicion = "TRUE";
         String tabla = "Cargos";
         String campos = "*";

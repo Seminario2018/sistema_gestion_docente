@@ -114,7 +114,7 @@ public class ControlDocente {
     }
 
     public List<ICargo> listarCargos(ICargo cargo) {
-        return this.gestorCargo.listarCargo(cargo);
+        return this.gestorCargo.listarCargos(cargo);
     }
 
 //  Incentivos

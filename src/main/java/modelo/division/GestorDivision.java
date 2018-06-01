@@ -29,7 +29,7 @@ public class GestorDivision {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Jefe` = '" + division.getJefe() + "'";
+                condicion += " `Jefe` = '" + division.getJefe().getLegajo() + "'";
             }
             if (division.getDisposicion() != null) {
                 if (!condicion.equals("")) {
