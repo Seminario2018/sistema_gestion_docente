@@ -3,12 +3,9 @@ package modelo.usuario;
 
 public enum Modulo {
 	GENERAL,
-	ESTACION,
-	GRUPOS,
+	ROLES,
 	USUARIOS,
-	CARGOS,
 	DOCENTES,
 	INVESTIGACION,
-	VER_INFORMES,
-	EDIT_INFORMES;
+	INFORMES,
 }
