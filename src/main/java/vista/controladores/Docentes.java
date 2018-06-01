@@ -41,6 +41,7 @@ import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
 import utilidades.Utilidades;
+import vista.GestorPantalla;
 
 /**
  * @author Martín Tomás Juran
@@ -101,7 +102,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_NUEVO, false);
 		args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
-		
+		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
@@ -223,10 +224,10 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private void seleccionarPersona() {
 		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(Busqueda.KEY_NUEVO, false);
+		args.put(Busqueda.KEY_NUEVO, true);
 		args.put(Busqueda.KEY_TIPO, Personas.TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
-		
+		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
 
@@ -475,40 +476,12 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
 	@FXML private void seleccionarArea() {
-        // TODO Seleccionar Área
-
-		/* TEST Prueba Área *
-		TipoContacto tipoContactoJefe = new TipoContacto();
-		tipoContactoJefe.setId(0);
-		tipoContactoJefe.setDescripcion("MailLaboral");
-
-		IContacto contactoJefe = new Contacto(1, tipoContactoJefe, "semint2018@gmail.com");
-
-		IPersona personaJefe = new Persona();
-		personaJefe.setContactos(Arrays.asList(contactoJefe));
-
-	    IDocente docenteJefe = new Docente();
-	    docenteJefe.setLegajo(121899);
-	    docenteJefe.setPersona(personaJefe);
-
-	    IDivision divisionBiologia = new Division(1, "Biología", docenteJefe, null, null, null);
-
-		IArea a = new Area("B1", "Biología 1", divisionBiologia, null, null, null, null, null);
-
-		areaSeleccionada = a;
-        /* TEST Prueba Area 02*/
-	    System.out.printf(">>> seleccionarArea <<<");
-	    IArea a = new Area();
-	    a.setCodigo("CO.01.00");
-	    areaSeleccion = this.controlDivision.listarAreas(a).get(0);
-
-	    //*/
-		// TODO Sacar lista de áreas de la BD (?)
-//	    List<IArea> listaAreas = this.controlDivision.listarAreas(null);
-//	    assert(!listaAreas.isEmpty());
-//	    areaSeleccionada = listaAreas.get(0);
-
-		txtCargosArea.setText(areaSeleccion.getDescripcion());
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put(Busqueda.KEY_NUEVO, false);
+		args.put(Busqueda.KEY_TIPO, "Areas");
+		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Áreas", args);
     }
 
 	public ICargo cargoSeleccion;

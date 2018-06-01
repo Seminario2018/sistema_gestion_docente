@@ -1,7 +1,9 @@
 package vista;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 
@@ -9,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -20,7 +21,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import jfxtras.scene.control.window.CloseIcon;
-import jfxtras.scene.control.window.MinimizeIcon;
 import jfxtras.scene.control.window.Window;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
@@ -50,6 +50,9 @@ public class GestorPantalla {
 	Pane internalPane;
 	Map<String, ControladorVista> controladoresActivos = new HashMap<String, ControladorVista>();
 	Map<String, Window> pantallasAbiertas = new HashMap<String, Window>();
+	Map<String, List<Window>> pantallasHijas = new HashMap<String, List<Window>>();
+	
+	public static final String KEY_PADRE = "padre";
 
 	public void lanzarPantallaPrincipal(IUsuario usuario) {
 		
@@ -125,10 +128,22 @@ public class GestorPantalla {
 				this.controladoresActivos.put(nombre, (ControladorVista) controlador);
 				this.pantallasAbiertas.put(nombre, window);
 				
-				if (args != null && !args.isEmpty())
+				// Una pantalla está llamando a otra
+				if (args != null && !args.isEmpty()) {
+					Object oPadre = args.get(GestorPantalla.KEY_PADRE);
+					if (oPadre != null && oPadre instanceof String) {
+						String padre = (String) oPadre;
+						List<Window> hijas = this.pantallasHijas.get(padre);
+						if (hijas == null) {
+							this.pantallasHijas.put(padre, new ArrayList<Window>());
+						}
+						this.pantallasHijas.get(padre).add(window);
+					}
+					
 					if (controlador instanceof ControladorVista)
 						((ControladorVista) controlador).recibirParametros(args);
-				
+				}
+					
 				this.internalPane.getChildren().add(window);
 
 			}
@@ -174,10 +189,12 @@ public class GestorPantalla {
 	public void pantallaCerrada(String nombre) {
 		this.controladoresActivos.remove(nombre);
 		this.pantallasAbiertas.remove(nombre);
-		// Cerrar la pantalla de búsqueda asociada
-		Window busqueda = this.pantallasAbiertas.get("Busqueda " + nombre);
-		if (busqueda != null) {
-			busqueda.close();			
+		// Cerrar las pantallas hijas
+		List<Window> hijas = this.pantallasHijas.get(nombre);
+		if (hijas != null) {
+			for (Window hija : hijas) {
+				hija.close();
+			}
 		}
 	}
 	
@@ -187,7 +204,7 @@ public class GestorPantalla {
 	 * @param stage - el Stage a modificar.
 	 * @param loader - el FXMLLoader para obtener el mainPane.
 	 */
-	private void permitirArrastrar(Stage stage, FXMLLoader loader) {
+	public void permitirArrastrar(Stage stage, FXMLLoader loader) {
 		
 		Node mainPane = (Node) loader.getNamespace().get(ID_MAIN_PANE);
 		
