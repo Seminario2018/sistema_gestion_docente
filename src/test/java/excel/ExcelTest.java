@@ -66,7 +66,7 @@ public class ExcelTest {
 	    assert(Files.exists(Paths.get(archivo))) : "El archivo no existe";
 	    try {
             Costeo.importar(archivo);
-        } catch (UnsupportedOperationException | ParseException e) {
+        } catch (UnsupportedOperationException e) {
             e.printStackTrace();
         }
 	}

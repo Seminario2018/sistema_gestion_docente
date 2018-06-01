@@ -97,7 +97,7 @@ public class ManejoDatos {
 
         String query =
             "select " + campos + " from " + tabla + " where " + condicion;
-        System.out.printf("%s\n", query);
+        System.out.println(query);
 
         Connection connection = con.conectar();
         try {
