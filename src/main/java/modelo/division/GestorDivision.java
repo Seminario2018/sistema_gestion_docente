@@ -150,8 +150,6 @@ public class GestorDivision {
                 d.setCodigo(reg.get("Codigo"));
                 d.setDescripcion(reg.get("Descripcion"));
 
- 
-
 				if (!reg.get("Disposicion").equals("")) {
 					d.setDisposicion(reg.get("Disposicion"));
 				}

@@ -60,18 +60,27 @@ public class NotificacionCargo {
          */
 
         String asunto = operacionAsunto + " de cargo";
-        String mensaje = "Al docente:\n\n" + "\tLegajo: " + docente.getLegajo() + "\n" + "\tApellido: " + docente.getPersona().getApellido() + "\n" + "\tNombre: " + docente.getPersona().getNombre() + "\n" + "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n" + "\tCargo: " + cargoDocente.getCargo().getDescripcion() + "\n" + "\tÁrea: " + cargoDocente.getArea().getDescripcion() + "\n" + "\tDivisión: " + cargoDocente.getArea().getDivision().getDescripcion() + "\n" + "\tTipo de cargo: " + cargoDocente.getTipoCargo().getDescripcion() + "\n" + "\tEstado de cargo: " + cargoDocente.getEstado().getDescripcion() + "\n";
+        String mensaje = "Al docente:\n\n"
+        		+ "\tLegajo: " + docente.getLegajo()+ "\n" 
+        		+ "\tApellido: " + docente.getPersona().getApellido() + "\n" 
+        		+ "\tNombre: " + docente.getPersona().getNombre() + "\n" 
+        		+ "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n" 
+        		+ "\tCargo: " + cargoDocente.getCargo().getDescripcion() + "\n" 
+        		+ "\tÁrea: " + cargoDocente.getArea().getDescripcion() + "\n" 
+        		+ "\tDivisión: " + cargoDocente.getArea().getDivision().getDescripcion() + "\n"
+        		+ "\tTipo de cargo: " + cargoDocente.getTipoCargo().getDescripcion() + "\n" 
+        		+ "\tEstado de cargo: " + cargoDocente.getEstado().getDescripcion() + "\n";
 
         List<IContacto> contactosJefe = cargoDocente.getArea().getDivision().getJefe().getPersona().getContactos();
 
         if (contactosJefe.isEmpty()) {
-            throw new RuntimeException("El jefe de división no tiene contactos!");
+        	throw new RuntimeException("El jefe de división no tiene contactos!");
         }
 
         // Se envía un mail a cada contacto del tipo MailLaboral del jefe:
         StringBuilder destinos = new StringBuilder();
         for (IContacto contacto : contactosJefe) {
-            if (contacto.getTipo().getDescripcion().equals("MailLaboral")) {
+            if (contacto.getTipo().getDescripcion().equals("Mail Laboral")) {
                 destinos.append(contacto.getDato()).append(",");
             }
         }

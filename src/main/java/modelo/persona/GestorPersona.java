@@ -281,7 +281,7 @@ public class GestorPersona {
 				tc.setId(Integer.parseInt(reg.get("Tipo")));;
 				tc = TipoContacto.getTipoContacto(tc);
 				IContacto c =
-						new Contacto(Integer.parseInt(reg.get("idcontacto")), tc, reg.get("valor"));
+						new Contacto(Integer.parseInt(reg.get("idcontacto")), tc, reg.get("Valor"));
 				contactos.add(c);
 			}
 			return contactos;

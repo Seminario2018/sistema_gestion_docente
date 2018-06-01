@@ -273,9 +273,12 @@ public class GestorDocente {
 			String campos = "`Codigo`, `Legajo`, `Area`, `Cargo`, `TipoCargo`, `EstadoCargo`";
 
 			//`UltimoCosto`, `FechaUltimoCosto`
-			String valores = cargoDocente.getId() + ", " + docente.getLegajo() + ", '" + cargoDocente.getArea().getCodigo() + "', "
-					+ cargoDocente.getCargo().getCodigo() + ", " + cargoDocente.getTipoCargo().getId() + ", "
-					+ cargoDocente.getEstado().getId();
+			String valores = cargoDocente.getId() 
+					+ ", " + docente.getLegajo()
+					+ ", '" + cargoDocente.getArea().getCodigo() 
+					+ "', " + cargoDocente.getCargo().getCodigo() 
+					+ ", " + cargoDocente.getTipoCargo().getId() 
+					+ ", " + cargoDocente.getEstado().getId();
 
 			if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
 				campos += ", Disposicion";
@@ -329,8 +332,8 @@ public class GestorDocente {
 
 	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
 		try {
-			String campos = "`Legajo` "+docente.getLegajo()+", `Area` = '" + cargoDocente.getArea().getCodigo() + "', "
-					+ "`Cargo` " + cargoDocente.getCargo().getCodigo() + ", "
+			String campos = "`Legajo` = "+docente.getLegajo()+", `Area` = '" + cargoDocente.getArea().getCodigo() + "', "
+					+ "`Cargo` = " + cargoDocente.getCargo().getCodigo() + ", "
 					+ "`TipoCargo` = " + cargoDocente.getTipoCargo().getId() + ", "
 					+ "`EstadoCargo` = " + cargoDocente.getEstado().getId();
 
@@ -407,9 +410,9 @@ public class GestorDocente {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "CargosDocentes";
-			String campos = "`Codigo`, `Disposicion`, `DispDesde`, `DispHasta`, "
-					+ "`Resolucion`, `ResDesde`, `ResHasta`, "
-					+ "`UltimoCosto`, `FechaUltimoCosto`";
+			String campos = "Codigo, Disposicion, DispDesde, DispHasta, "
+					+ "Resolucion, ResDesde, ResHasta, "
+					+ "UltimoCosto, FechaUltimoCosto";
 			ArrayList<Hashtable<String,String>> res = md.select(tabla, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				CargoDocente c = new CargoDocente();

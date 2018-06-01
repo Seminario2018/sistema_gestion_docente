@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import controlador.ControlAuxiliar;
-import controlador.ControlDivision;
 import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
@@ -29,9 +28,7 @@ import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
-import modelo.cargo.Cargo;
 import modelo.cargo.ICargo;
-import modelo.division.Area;
 import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -71,7 +68,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	public void setAreaSeleccion(Object areaSeleccion) {
 		if (areaSeleccion instanceof IArea) {
 			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
-			this.txtCargosArea.setText(((IArea) areaSeleccion).getCodigo());
+			this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
 		}
 	}
 	
@@ -86,7 +83,6 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	}
 
-	private ControlDivision controlDivision = new ControlDivision(this);
 	private ControlDocente controlDocente = new ControlDocente(this);
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
 	public IDocente docenteSeleccion;
@@ -335,26 +331,6 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public void inicializarTablaCargos() {
 		inicializarTabla("Cargos");
 
-		/* TEST Docente de prueba: *
-	    IPersona personaSeleccionada = new Persona(
-	            "Juran", "Martín Tomás",
-	            null, null, 21345678, null, null, null, null);
-
-	    docenteSeleccionado = new Docente();
-	    docenteSeleccionado.setLegajo(143191);
-	    docenteSeleccionado.setPersona(personaSeleccionada);
-
-	    this.txtDocentesLegajo.setText(
-	    		String.valueOf(docenteSeleccionado.getLegajo())
-	    		);
-
-	    this.txtDocentesNombre.setText(
-	    		docenteSeleccionado.getPersona().getApellido()
-	    		+ ", " +
-	    		docenteSeleccionado.getPersona().getNombre()
-	    		);
-	    //*/
-
 	    /* DONE Popular estados y tipos */
 	    this.cmbCargosEstado.setItems(
                 FXCollections.observableArrayList(
@@ -366,11 +342,13 @@ public class Docentes extends ControladorVista implements Initializable {
 
         /* DONE Popular tabla con cargosDocente de docenteSeleccionado */
         // Agarro todos los cargos docente del docente seleccionado:
-        List<ICargoDocente> listaCD = this.controlDocente.listarCargosDocente(docenteSeleccion, null);
-        for (ICargoDocente cd : listaCD) {
-            // Muestro los cargosDocente en la tabla:
-            this.filasCargos.add(
-                    new FilaCargo(cd));
+        if (docenteSeleccion != null) {
+        	List<ICargoDocente> listaCD = this.controlDocente.listarCargosDocente(docenteSeleccion, null);
+	        for (ICargoDocente cd : listaCD) {
+	            // Muestro los cargosDocente en la tabla:
+	            this.filasCargos.add(
+	                    new FilaCargo(cd));
+	        }
         }
         //*/
 	}
@@ -401,54 +379,31 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
-		// Obtener un ICargoDocente vacío
-		cargoDocenteSeleccion = this.controlDocente.getICargoDocente();
-		/* TEST *
-		cargoDocenteSeleccionado.setId(idCargoDocente++);
-		//*/
+		this.cargoDocenteSeleccion = this.controlDocente.getICargoDocente();
 		vaciarCamposCargos();
-		System.out.println(btnCargosNuevo.getStyleClass());
 	}
 
 	@FXML public Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
-
 		try {
-			cargoDocenteSeleccion.setUltimoCosto(
-		    		Utilidades.stringToFloat(txtCargosCosto.getText()));
+			this.cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
+			this.cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
+			this.cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
+			this.cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
+			this.cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
+			this.cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
+			this.cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
+			this.cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
 
-			cargoDocenteSeleccion.setArea(areaSeleccion);
-			cargoDocenteSeleccion.setCargo(cargoSeleccion);
-			cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
-			cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
-			cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
-			cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
-			cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
-			cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
-			cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
-			cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
+			this.cargoDocenteSeleccion.setUltimoCosto(
+					Utilidades.stringToFloat(txtCargosCosto.getText()));
+			this.cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
 
-			cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
-
-			this.controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
-
-			/* FilaCargo fc = new FilaCargo(
-					cargoDocenteSeleccionado.getId(),
-					cargoDocenteSeleccionado.getArea().getDescripcion(),
-					cargoDocenteSeleccionado.getCargo().getDescripcion(),
-					cargoDocenteSeleccionado.getEstado().getDescripcion()
-					);
-
-			this.filasCargos.add(fc);
-			*/
-
-			// TODO Reemplazar por actualizarTablaCargos()
-			this.filasCargos.add(
-			        new FilaCargo(cargoDocenteSeleccion));
-
+			this.controlDocente.guardarCargoDocente(this.docenteSeleccion, this.cargoDocenteSeleccion);
 		} catch (IllegalArgumentException e) {
 			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
 		}
+		actualizarTablaCargos();
 	}
 
 	@FXML public Button btnCargosDescartar;
@@ -460,19 +415,20 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML public Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
-	    // DONE Eliminar cargo
-	    FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-        this.filasCargos.remove(fila);
-
-        EstadoOperacion estado = this.controlDocente.quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
-        if (estado.getEstado() != EstadoOperacion.CodigoEstado.INSERT_OK) {
-            alertaError("Cargos", "Quitar Cargo Docente", "No se pudo quitar el cargo.");
-        }
+		if (!this.tblCargos.getSelectionModel().isEmpty()) {
+			FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
+			ICargoDocente cd = this.controlDocente.getICargoDocente();
+			cd.setId(fila.getId());
+	        EstadoOperacion estado = this.controlDocente.quitarCargoDocente(docenteSeleccion, cd);
+	        if (estado.getEstado() != EstadoOperacion.CodigoEstado.DELETE_OK) {
+	            alertaError("Cargos", "Quitar Cargo Docente", "No se pudo quitar el cargo.");
+	        } else {
+	        	this.filasCargos.remove(fila);
+	        }
+		}
 	}
 
-
-
-	public IArea areaSeleccion;
+	
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
 	@FXML private void seleccionarArea() {
@@ -484,7 +440,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
 
-	public ICargo cargoSeleccion;
+	
 	@FXML public TextField txtCargosCargo;
 	@FXML public Button btnCargosCargo;
 	@FXML private void seleccionarCargo() {

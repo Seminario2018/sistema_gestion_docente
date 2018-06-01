@@ -1,3 +1,4 @@
+delete from CargosDocentes;
 delete from Areas where Areas.SubAreaDe is not null;
 delete from Areas;
 delete from Divisiones;
@@ -19,6 +20,14 @@ insert into TiposCargos values
 
 insert into TiposDocumentos values
 (0, 'DNI');
+
+
+insert into TiposContactos values
+(0, 'Mail Laboral'),
+(1, 'Mail Personal'),
+(2, 'Teléfono Laboral'),
+(3, 'Teléfono Particular'),
+(4, 'Teléfono Celular');
 
 
 insert into EstadosPersonas values 
@@ -75,7 +84,7 @@ insert into Cargos values
 # Jefes de División
 insert into Personas values 
 (0, 9675920, 'Gonzalez', 'Julián', '1945-03-29', 0),
-(0, 17200893, 'Panesco', 'Guillermo', '1967-10-02', 0),
+(0, 17200893, 'Cisneros', 'Guillermo', '1967-10-02', 0),
 (0, 11242536, 'Urritiaga', 'Daniel Alfonso', '1951-05-12', 0),
 (0, 12675920, 'Alcaraz', 'Marcelo Fernando', '1955-11-08', 0),
 (0, 16405290, 'Fernandez Perez', 'Julieta', '1964-02-28', 0),
@@ -123,6 +132,15 @@ insert into Personas values
 
 # Equipo
 (0, 39586150, 'Juran', 'Martín Tomás', '1996-06-29', 0);
+
+
+insert into contactos values
+(0, 0, 9675920, 0, 'semint2018@gmail.com'),
+(0, 0, 17200893, 0, 'semint2018@gmail.com'),
+(0, 0, 11242536, 0, 'semint2018@gmail.com'),
+(0, 0, 12675920, 0, 'semint2018@gmail.com'),
+(0, 0, 16405290, 0, 'semint2018@gmail.com'),
+(0, 0, 15603702, 0, 'semint2018@gmail.com');
 
 
 # Jefes de División

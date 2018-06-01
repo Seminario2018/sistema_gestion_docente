@@ -20,6 +20,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import utilidades.Utilidades;
 
 /**
@@ -122,6 +123,17 @@ public class Busqueda extends ControladorVista implements Initializable {
 		actualizarLista();
 	}
 	
+	// Verificar si apretó Enter
+	@FXML public void keyPressed(KeyEvent event) {
+		switch (event.getCode()) {
+		case ENTER:
+			if (!this.tblBusqueda.getSelectionModel().isEmpty()) {
+				seleccionar(null);
+			}
+		default:
+		}
+	}
+	
 	@Override
 	public void recibirParametros(Map<String, Object> args) {
 		this.tipo = (String) args.get(KEY_TIPO);
@@ -137,6 +149,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public void inicializar(Class c) {
 		inicializarTabla(c);
 		actualizarLista();
+		this.txtBusquedaCriterio.requestFocus();
 	}
 	
 	public void inicializarTabla(Class fila) {
@@ -157,6 +170,9 @@ public class Busqueda extends ControladorVista implements Initializable {
 			Method m = this.control.getClass().getDeclaredMethod("listar" + this.tipo, String.class);
 			this.filasBusqueda.addAll((List)
 					m.invoke(this.control, this.txtBusquedaCriterio.getText()));
+			if (this.filasBusqueda.size() > 0) {
+				this.tblBusqueda.getSelectionModel().select(0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

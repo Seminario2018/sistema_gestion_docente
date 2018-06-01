@@ -86,7 +86,7 @@ public class Area implements IArea {
 				Division d = new Division();
 				d.setCodigo(reg.get("Division"));	
 				GestorDivision gestorDivision = new GestorDivision();
-				d = (Division) gestorDivision.listarDivision(d).get(0);
+				this.division = (Division) gestorDivision.listarDivision(d).get(0);
 			}
 		}
 		
