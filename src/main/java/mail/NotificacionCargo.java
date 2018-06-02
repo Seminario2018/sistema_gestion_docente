@@ -13,68 +13,100 @@ public class NotificacionCargo {
     private static String mailDesde = "semint2018@gmail.com";
     private static String contrasena = "semintunlu";
 
-    public static void notificar(EstadoOperacion estadoOperacion, IDocente docente, ICargoDocente cargoDocente) {
+    private ICargoDocente cargoDocente;
+    private IDocente docente;
 
-        String operacionAsunto;
-        String operacionMensaje;
+    /**
+     * Inicializa los objetos de cargodocente necesarios para armar el mensaje
+     * de la notificación. <br>
+     * Los objetos inicializados son:
+     * <ul>
+     *     <li>area (luego se obtiene la división)</li>
+     *     <li>cargo</li>
+     *     <li>tipo de cargo</li>
+     *     <li>estado de cargo</li>
+     * </ul>
+     */
+    private void cargoDocenteObtenerReferencias() {
+        this.cargoDocente.getArea();
+        this.cargoDocente.getCargo();
+        this.cargoDocente.getTipoCargo();
+        this.cargoDocente.getEstado();
+    }
 
+    /**
+     * Inicia un objeto de notificación, guardando una referencia al docente y
+     * al cargo docente a notificar.
+     * @param docente Docente del cargo
+     * @param cargoDocente Cargo
+     */
+    public NotificacionCargo(IDocente docente, ICargoDocente cargoDocente) {
+        this.cargoDocente = cargoDocente;
+        this.docente = docente;
+
+        cargoDocenteObtenerReferencias();
+    }
+
+    /** Arma el asunto del mensaje de acuerdo al resultado de la operación */
+    private static String armarAsunto(EstadoOperacion estadoOperacion) {
+        String asunto;
         switch (estadoOperacion.getEstado()) {
             case INSERT_OK:
-                operacionAsunto = "Adición";
-                operacionMensaje = "agregó";
+                asunto = "Adición";
                 break;
             case UPDATE_OK:
-                operacionAsunto = "Actualización";
-                operacionMensaje = "actualizó";
+                asunto = "Actualización";
                 break;
             case DELETE_OK:
-                operacionAsunto = "Quita";
-                operacionMensaje = "quitó";
+                asunto = "Quita";
                 break;
+            default:
+                throw new UnsupportedOperationException(
+                    "EstadoOperacion no soportado");
+        }
+        return asunto + " de cargo";
+    }
+
+    /** Devuelve la operación que se realizó de acuerdo al resultado de la
+     * operación */
+    private static String armarOperacionMensaje(EstadoOperacion estadoOperacion) {
+        switch (estadoOperacion.getEstado()) {
+            case INSERT_OK:
+                return "agregó";
+            case UPDATE_OK:
+                return "actualizó";
+            case DELETE_OK:
+                return "quitó";
             default:
                 throw new UnsupportedOperationException("EstadoOperacion no soportado");
         }
-        /*
-         * String asunto = String.format("%s de cargo", operacionAsunto);
-         * String mensaje = String.format(
-         * "Se %s el siguiente cargo para el docente:\n"
-         * + "\tLegajo: %d\n"
-         * + "\tApellido: %s\n"
-         * + "\tNombre: %s\n"
-         * + "el siguiente cargo:\n"
-         * + "\tCargo: %s\n"
-         * + "\tÁrea: %s\n"
-         * + "\tDivisión: %d\n"
-         * + "\tTipo de cargo: %s\n"
-         * + "\tEstado de cargo: %s\n",
-         * operacionMensaje,
-         * docente.getLegajo(),
-         * docente.getPersona().getApellido(),
-         * docente.getPersona().getNombre(),
-         * cargoDocente.getCargo().getDescripcion(),
-         * cargoDocente.getArea().getDescripcion(),
-         * cargoDocente.getArea().getDivision().getDescripcion(),
-         * cargoDocente.getTipoCargo().getDescripcion(),
-         * cargoDocente.getEstado().getDescripcion()
-         * );
-         */
+    }
 
-        String asunto = operacionAsunto + " de cargo";
+    /**
+     * Notifica por mail el agregado, modificación o eliminación del cargo
+     * docente, según indicado en {@code NotificacionCargo(IDocente,
+     * ICargoDocente)}.
+     * @param estadoOperacion Resultado de la operación.
+     */
+    public void notificar(EstadoOperacion estadoOperacion) {
+        String asunto = armarAsunto(estadoOperacion);
+        String operacionMensaje = armarOperacionMensaje(estadoOperacion);
+
         String mensaje = "Al docente:\n\n"
-        		+ "\tLegajo: " + docente.getLegajo()+ "\n" 
-        		+ "\tApellido: " + docente.getPersona().getApellido() + "\n" 
-        		+ "\tNombre: " + docente.getPersona().getNombre() + "\n" 
-        		+ "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n" 
-        		+ "\tCargo: " + cargoDocente.getCargo().getDescripcion() + "\n" 
-        		+ "\tÁrea: " + cargoDocente.getArea().getDescripcion() + "\n" 
-        		+ "\tDivisión: " + cargoDocente.getArea().getDivision().getDescripcion() + "\n"
-        		+ "\tTipo de cargo: " + cargoDocente.getTipoCargo().getDescripcion() + "\n" 
-        		+ "\tEstado de cargo: " + cargoDocente.getEstado().getDescripcion() + "\n";
+            + "\tLegajo: " + docente.getLegajo()+ "\n"
+            + "\tApellido: " + docente.getPersona().getApellido() + "\n"
+            + "\tNombre: " + docente.getPersona().getNombre() + "\n"
+            + "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n"
+            + "\tCargo: " + cargoDocente.getCargo().getDescripcion() + "\n"
+            + "\tÁrea: " + cargoDocente.getArea().getDescripcion() + "\n"
+            + "\tDivisión: " + cargoDocente.getArea().getDivision().getDescripcion() + "\n"
+            + "\tTipo de cargo: " + cargoDocente.getTipoCargo().getDescripcion() + "\n"
+            + "\tEstado de cargo: " + cargoDocente.getEstado().getDescripcion() + "\n";
 
+        // Obtengo todos los contactos del jefe de la división:
         List<IContacto> contactosJefe = cargoDocente.getArea().getDivision().getJefe().getPersona().getContactos();
-
         if (contactosJefe.isEmpty()) {
-        	throw new RuntimeException("El jefe de división no tiene contactos!");
+            throw new RuntimeException("El jefe de división no tiene contactos!");
         }
 
         // Se envía un mail a cada contacto del tipo MailLaboral del jefe:

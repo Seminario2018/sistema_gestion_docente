@@ -1,7 +1,6 @@
 package controlador;
 
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import modelo.division.GestorArea;
 import modelo.division.GestorDivision;
@@ -35,6 +34,10 @@ public class ControlDivision {
 
     public List<IArea> listarAreas(IArea area) {
         return this.gestorArea.listarAreas(area);
+    }
+
+    public IArea getIArea() {
+        return this.gestorArea.getIArea();
     }
 
 //  Divisiones
