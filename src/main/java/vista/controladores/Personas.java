@@ -160,7 +160,7 @@ public class Personas extends ControladorVista implements Initializable {
 // --------------------------- Pestaña Contactos ---------------------------- //
 
 	private IContacto contactoSeleccionado = null;
-	private ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
+	protected ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
 
 	public class FilaContacto {
 	    private IContacto contacto;
@@ -236,7 +236,8 @@ public class Personas extends ControladorVista implements Initializable {
                 dialogoConfirmacion(TITULO, "Guardar Contacto", resultado.getMensaje());
                 break;
             default:
-                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+                throw new RuntimeException("Estado de modificación no esperado: " 
+                		+ resultado.getEstado().toString() + ": " + resultado.getMensaje());
         }
 	    contactosActualizarTabla();
 	}
@@ -269,9 +270,9 @@ public class Personas extends ControladorVista implements Initializable {
 	    contactosActualizarTabla();
 	}
 
-	@FXML private TableView<FilaContacto> tblContactos;
-	@FXML private TableColumn<FilaContacto, String> colContactosTipo;
-	@FXML private TableColumn<FilaContacto, String> colContactosDato;
+	@FXML protected TableView<FilaContacto> tblContactos;
+	@FXML protected TableColumn<FilaContacto, String> colContactosTipo;
+	@FXML protected TableColumn<FilaContacto, String> colContactosDato;
 
 	@FXML private ComboBox<TipoContacto> cmbContactosTipo;
 	@FXML private TextField txtContactosDato;
@@ -279,7 +280,7 @@ public class Personas extends ControladorVista implements Initializable {
 // -------------------------- Pestaña Domicilios ---------------------------- //
 
 	private IDomicilio domicilioSeleccionado = null;
-    private ObservableList<FilaDomicilio> filasDomicilios = FXCollections.observableArrayList();
+    protected ObservableList<FilaDomicilio> filasDomicilios = FXCollections.observableArrayList();
 
     public class FilaDomicilio {
         private IDomicilio domicilio;
@@ -397,11 +398,11 @@ public class Personas extends ControladorVista implements Initializable {
         domiciliosActualizarTabla();
 	}
 
-	@FXML private TableView<FilaDomicilio> tblDomicilios;
-	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosProvincia;
-	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosCiudad;
-	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosCP;
-	@FXML private TableColumn<FilaDomicilio, String> colDomiciliosDireccion;
+	@FXML protected TableView<FilaDomicilio> tblDomicilios;
+	@FXML protected TableColumn<FilaDomicilio, String> colDomiciliosProvincia;
+	@FXML protected TableColumn<FilaDomicilio, String> colDomiciliosCiudad;
+	@FXML protected TableColumn<FilaDomicilio, String> colDomiciliosCP;
+	@FXML protected TableColumn<FilaDomicilio, String> colDomiciliosDireccion;
 
 	@FXML private ComboBox<String> cmbDomiciliosProvincia;
 	@FXML private TextField txtDomiciliosCiudad;
@@ -411,7 +412,7 @@ public class Personas extends ControladorVista implements Initializable {
 // ---------------------------- Pestaña Títulos ----------------------------- //
 
 	private ITitulo tituloSeleccionado = null;
-	private ObservableList<FilaTitulo> filasTitulos = FXCollections.observableArrayList();
+	protected ObservableList<FilaTitulo> filasTitulos = FXCollections.observableArrayList();
 
 	public class FilaTitulo {
 	    private ITitulo titulo;
@@ -500,8 +501,8 @@ public class Personas extends ControladorVista implements Initializable {
         titulosActualizarTabla();
 	}
 
-	@FXML private TableView<FilaTitulo> tblTitulos;
-	@FXML private TableColumn<FilaTitulo, String> colTitulosTitulo;
-	@FXML private TableColumn<FilaTitulo, Boolean> colTituloMayor;
+	@FXML protected TableView<FilaTitulo> tblTitulos;
+	@FXML protected TableColumn<FilaTitulo, String> colTitulosTitulo;
+	@FXML protected TableColumn<FilaTitulo, Boolean> colTituloMayor;
 
 }

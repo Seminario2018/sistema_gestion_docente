@@ -438,12 +438,6 @@ public class GestorDocente {
             if (cargo.getId() != -1) {
                 condicion += " AND `Codigo` = " + cargo.getId();
             }
-            if (docente != null) {
-                if (!condicion.equals("")) {
-                    condicion += " AND ";
-                }
-                condicion += "`Legajo` = " + docente.getLegajo();
-            }
             if (cargo.getArea() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
@@ -486,6 +480,12 @@ public class GestorDocente {
                 }
                 condicion += "`CostoActual` = " + cargo.getUltimoCosto();
             }
+        }
+        if (docente != null) {
+            if (!condicion.equals("")) {
+                condicion += " AND ";
+            }
+            condicion += "`Legajo` = " + docente.getLegajo();
         }
         return condicion;
     }

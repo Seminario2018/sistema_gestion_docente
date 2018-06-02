@@ -468,7 +468,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Contactos";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", Valor = '" + contacto.getDato() + "'";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ "' AND Valor = '" + contacto.getDato() + "'";
 
 			md.delete(table, condicion);
 

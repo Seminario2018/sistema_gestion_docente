@@ -21,7 +21,7 @@ public class ControlPersona {
     }
 
     public EstadoOperacion modificarPersona(IPersona persona) {
-        return this.gestorPersona.eliminarPersona(persona);
+        return this.gestorPersona.modificarPersona(persona);
     }
 
     public EstadoOperacion eliminarPersona(IPersona persona) {

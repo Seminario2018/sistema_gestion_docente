@@ -132,7 +132,7 @@ public class NotificacionCargo2 {
     	// Si se crea un nuevo mail, agregar asunto y saludo
     	if (mailActual == null || mailActual.isEmpty()) {
 			mailActual = new HashMap<String, String>();
-			asunto = "Se han actualizado Cargos en la División " 
+			asunto = "[Plumas 2] Se han actualizado Cargos en la División " 
 		        		+ cargo.getArea().getDivision().getDescripcion();
     	        
 	        mensaje = "Estimado/a Sr/a. " + cargo.getArea().getDivision().getJefe().getPersona().getApellido() + ",\n\n"
@@ -166,7 +166,7 @@ public class NotificacionCargo2 {
 	            + "\tDivisión: " + cargo.getArea().getDivision().getDescripcion() + "\n"
 	            + "\tTipo de cargo: " + cargo.getTipoCargo().getDescripcion() + "\n"
 	            + "\tEstado de cargo: " + cargo.getEstado().getDescripcion() + "\n\n"
-	            + "--------------------------------------------------------------------------------";
+	            + "--------------------------------------------------------------------------------\n\n";
 
     	
     	// Guardar el mail para enviar

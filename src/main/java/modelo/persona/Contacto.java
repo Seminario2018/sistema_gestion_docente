@@ -9,7 +9,7 @@ import modelo.auxiliares.TipoContacto;
 
 public class Contacto implements IContacto {
 
-    private int id;
+    private int id = -1;
     private TipoContacto tipo;
     private String dato; //https://facebook.com/usuario
 

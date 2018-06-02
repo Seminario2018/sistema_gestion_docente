@@ -1,9 +1,13 @@
 package modelo.persona;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoPersona;
-import modelo.auxiliares.TipoDocumento;;
+import modelo.auxiliares.TipoContacto;
+import modelo.auxiliares.TipoDocumento;
+import persistencia.ManejoDatos;;
 
 /**
  * @author Martín Tomás Juran
@@ -119,7 +123,30 @@ public class Persona implements IPersona {
 
 	@Override
 	public List<IContacto> getContactos() {
-		return contactos;
+		if (this.contactos == null) {
+			List<IContacto> contactos = new ArrayList<IContacto>();
+			try {
+				ManejoDatos md = new ManejoDatos();
+				String table = "Contactos";
+				String campos = "*";
+				String condicion = " TipoDocumento =" + this.tipoDocumento.getId()
+						+ " AND NroDocumento = '" + this.nroDocumento + "'";
+				ArrayList<Hashtable<String, String>> res =
+						md.select(table, campos, condicion);
+				for (Hashtable<String, String> reg : res) {
+					TipoContacto tc = new TipoContacto();
+					tc.setId(Integer.parseInt(reg.get("Tipo")));;
+					tc = TipoContacto.getTipoContacto(tc);
+					IContacto c =
+							new Contacto(Integer.parseInt(reg.get("idcontacto")), tc, reg.get("Valor"));
+					contactos.add(c);
+				}
+				return contactos;
+			} catch (Exception e) {
+				return new ArrayList<IContacto>();
+			}
+		}
+		return this.contactos;
 	}
 
 	@Override

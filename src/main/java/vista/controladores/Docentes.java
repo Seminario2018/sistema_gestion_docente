@@ -362,18 +362,19 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	public void actualizarTablaCargos() {
-		if (this.filasCargos != null)
+		if (this.filasCargos != null) {
 			this.filasCargos.clear();
-		if (this.docenteSeleccion != null) {
-			this.listaCargos = this.controlDocente.listarCargosDocente(this.docenteSeleccion, null);
-			for (ICargoDocente cargo : this.listaCargos) {
-				FilaCargo fc = new FilaCargo(
-						cargo.getId(),
-						cargo.getArea().getDescripcion(),
-						cargo.getCargo().getDescripcion(),
-						cargo.getEstado().getDescripcion()
-						);
-				this.filasCargos.add(fc);
+			if (this.docenteSeleccion != null) {
+				this.listaCargos = this.controlDocente.listarCargosDocente(this.docenteSeleccion, null);
+				for (ICargoDocente cargo : this.listaCargos) {
+					FilaCargo fc = new FilaCargo(
+							cargo.getId(),
+							cargo.getArea().getDescripcion(),
+							cargo.getCargo().getDescripcion(),
+							cargo.getEstado().getDescripcion()
+							);
+					this.filasCargos.add(fc);
+				}
 			}
 		}
 	}
