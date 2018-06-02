@@ -111,7 +111,8 @@ public class GestorDocente {
         String condicion = "TRUE";
 
         if (docente != null) {
-            condicion = this.armarCondicionDocente(docente);
+        	IDocenteg doc = (IDocenteg) docente;
+            condicion = this.armarCondicionDocente(doc);
         }
 
         List<IDocente> docentes = new ArrayList<IDocente>();
@@ -137,23 +138,24 @@ public class GestorDocente {
         return docentes;
     }
 
-    private String armarCondicionDocente(IDocente docente) {
+    private String armarCondicionDocente(IDocenteg docente) {
         String condicion = "";
+        
         if (docente.getLegajo() > 0) {
             condicion += "`Legajo` = " + docente.getLegajo();
         }
-        if (docente.getPersona() != null) {
-            if (docente.getPersona().getTipoDocumento() != null) {
+        if (docente.getPersona2() != null) {
+            if (docente.getPersona2().getTipoDocumento() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`TipoDocumento` = " + docente.getPersona().getTipoDocumento().getId();
+                condicion += "`TipoDocumento` = " + docente.getPersona2().getTipoDocumento().getId();
             }
-            if (docente.getPersona().getNroDocumento() > 0) {
+            if (docente.getPersona2().getNroDocumento() > 0) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`NroDocumento` = '" + docente.getPersona().getNroDocumento() + "'";
+                condicion += "`NroDocumento` = '" + docente.getPersona2().getNroDocumento() + "'";
             }
         }
         if (docente.getObservaciones() != null) {
@@ -162,17 +164,17 @@ public class GestorDocente {
             }
             condicion += "`Observaciones` = '" + docente.getObservaciones() + "'";
         }
-        if (docente.getCategoriaInvestigacion() != null) {
+        if (docente.getCategoriaInvestigacion2() != null) {
             if (!condicion.equals("")) {
                 condicion += " AND ";
             }
-            condicion += "`CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion().getId();
+            condicion += "`CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion2().getId();
         }
-        if (docente.getEstado() != null) {
+        if (docente.getEstado2() != null) {
             if (!condicion.equals("")) {
                 condicion += " AND ";
             }
-            condicion += "`Estado` = " + docente.getEstado().getId();
+            condicion += "`Estado` = " + docente.getEstado2().getId();
         }
 
         return condicion;
@@ -432,35 +434,38 @@ public class GestorDocente {
         return cargos;
     }
 
-    private String armarCondicionCargo(ICargoDocente cargo, IDocente docente) {
+    private String armarCondicionCargo(ICargoDocente car, IDocente docente) {
         String condicion = "TRUE";
+        ICargoDocenteg cargo = (ICargoDocenteg) car;
+        
+        
         if (cargo != null) {
             if (cargo.getId() != -1) {
                 condicion += " AND `Codigo` = " + cargo.getId();
             }
-            if (cargo.getArea() != null) {
+            if (cargo.getArea2() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`Area` = '" + cargo.getArea().getCodigo() + "'";
+                condicion += "`Area` = '" + cargo.getArea2().getCodigo() + "'";
             }
-            if (cargo.getCargo() != null) {
+            if (cargo.getCargo2() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`Cargo` = " + cargo.getCargo().getCodigo();
+                condicion += "`Cargo` = " + cargo.getCargo2().getCodigo();
             }
-            if (cargo.getTipoCargo() != null) {
+            if (cargo.getTipoCargo2() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`TipoCargo` = " + cargo.getTipoCargo().getId();
+                condicion += "`TipoCargo` = " + cargo.getTipoCargo2().getId();
             }
-            if (cargo.getEstado() != null) {
+            if (cargo.getEstado2() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`EstadoCargo` = " + cargo.getEstado().getId();
+                condicion += "`EstadoCargo` = " + cargo.getEstado2().getId();
             }
             if (cargo.getDisposicion() != null) {
                 if (!condicion.equals("")) {

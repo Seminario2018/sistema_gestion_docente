@@ -11,7 +11,7 @@ import modelo.persona.IPersona;
 import modelo.persona.Persona;
 import persistencia.ManejoDatos;
 
-public class Docente implements IDocente {
+public class Docente implements IDocente, IDocenteg {
 	private IPersona persona;
 	private int legajo;
 	private String observaciones;
@@ -209,6 +209,23 @@ public class Docente implements IDocente {
 			this.agregarCargoDocente(iCargo);
 		}
 
+	}
+
+	@Override
+	public CategoriaInvestigacion getCategoriaInvestigacion2() {
+		return this.categoriaInvestigacion;
+	}
+
+	@Override
+	public EstadoDocente getEstado2() {
+		// TODO Auto-generated method stub
+		return this.estado;
+	}
+
+	@Override
+	public IPersona getPersona2() {
+		// TODO Auto-generated method stub
+		return this.persona;
 	}
 
 

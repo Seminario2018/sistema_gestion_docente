@@ -14,7 +14,7 @@ import modelo.division.GestorArea;
 import modelo.division.IArea;
 import persistencia.ManejoDatos;
 
-public class CargoDocente implements ICargoDocente {
+public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 	private int id = -1;
 	private IArea area;
 	private ICargo cargo;
@@ -249,5 +249,25 @@ public class CargoDocente implements ICargoDocente {
     public void setEstado(EstadoCargo estado) {
         this.estado = estado;
     }
+
+	@Override
+	public IArea getArea2() {
+		return this.area;
+	}
+
+	@Override
+	public ICargo getCargo2() {
+		return this.cargo;
+	}
+
+	@Override
+	public TipoCargo getTipoCargo2() {
+		return this.tipoCargo;
+	}
+
+	@Override
+	public EstadoCargo getEstado2() {
+		return this.estado;
+	}
 
 }

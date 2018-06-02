@@ -11,8 +11,9 @@ import persistencia.ManejoDatos;
 
 public class GestorDivision {
 
-    private String armarCondicion(IDivision division) {
+    private String armarCondicion(IDivision div) {
         String condicion = "TRUE";
+        IDivisiong division = (IDivisiong) div;
         if (division != null) {
             condicion = "";
             if (division.getCodigo() != null) {
@@ -25,11 +26,11 @@ public class GestorDivision {
                 condicion +=
                     " `Descripcion` = '" + division.getDescripcion() + "'";
             }
-            if (division.getJefe().getLegajo() != 0) {
+            if (division.getJefe2().getLegajo() != 0) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Jefe` = '" + division.getJefe().getLegajo() + "'";
+                condicion += " `Jefe` = '" + division.getJefe2().getLegajo() + "'";
             }
             if (division.getDisposicion() != null) {
                 if (!condicion.equals("")) {

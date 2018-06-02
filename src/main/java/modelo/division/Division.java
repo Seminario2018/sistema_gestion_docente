@@ -9,7 +9,7 @@ import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
-public class Division implements IDivision {
+public class Division implements IDivision, IDivisiong {
 
 	private String codigo;
 	private String descripcion;
@@ -123,5 +123,10 @@ public class Division implements IDivision {
     public void setDispHasta(LocalDate dispHasta) {
         this.dispHasta = dispHasta;
     }
+
+	@Override
+	public IDocente getJefe2() {
+		return this.jefe;
+	}
 
 }
