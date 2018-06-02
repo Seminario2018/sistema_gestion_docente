@@ -1,8 +1,5 @@
 package mail;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -15,8 +12,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class Mail implements IMail {
-	
-	public static List<Map<String, String>> colaMails = new ArrayList<Map<String, String>>();
 
     /* (non-Javadoc)
      * @see mail.IMail#enviarEmail(mail.IDocente, mail.ICargo)

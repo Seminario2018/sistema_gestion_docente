@@ -282,6 +282,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	private void vaciarCamposCargos() {
 		txtCargosArea.clear();
 		txtCargosCargo.clear();
+		cmbCargosEstado.getSelectionModel().clearSelection();
+		cmbCargosTipo.getSelectionModel().clearSelection();
 		txtCargosDisp.clear();
 		dtpCargosDispDesde.getEditor().clear();
 		dtpCargosDispHasta.getEditor().clear();
@@ -328,8 +330,14 @@ public class Docentes extends ControladorVista implements Initializable {
 		        cargoDocenteSeleccion.getFechaUltCost());
 	}
 
+	@SuppressWarnings("unchecked")
 	@FXML public void inicializarTablaCargos() {
 		inicializarTabla("Cargos");
+		this.tblCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+		    if (newSelection != null) {
+		        seleccionarCargoDocente();
+		    }
+		});
 
 	    /* DONE Popular estados y tipos */
 	    this.cmbCargosEstado.setItems(
@@ -354,6 +362,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	public void actualizarTablaCargos() {
+		if (this.filasCargos != null)
+			this.filasCargos.clear();
 		if (this.docenteSeleccion != null) {
 			this.listaCargos = this.controlDocente.listarCargosDocente(this.docenteSeleccion, null);
 			for (ICargoDocente cargo : this.listaCargos) {
@@ -366,6 +376,13 @@ public class Docentes extends ControladorVista implements Initializable {
 				this.filasCargos.add(fc);
 			}
 		}
+	}
+	
+	/**
+	 * Método que se ejecuta cuando se selecciona un Cargo Docente
+	 */
+	public void actualizarCamposCargos() {
+		
 	}
 
 	@FXML public TableView tblCargos;

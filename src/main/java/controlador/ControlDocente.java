@@ -2,7 +2,7 @@ package controlador;
 
 import java.util.ArrayList;
 import java.util.List;
-import mail.NotificacionCargo;
+import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
@@ -55,13 +55,14 @@ public class ControlDocente {
 	}
 
     public EstadoOperacion guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
-        NotificacionCargo notificacion = new NotificacionCargo(docente, cargoDocente);
+//        NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
         if (cargoDocente.getId() == -1) {
             // Se agrega un nuevo Cargo Docente
             EstadoOperacion resultado = gestorDocente.agregarCargoDocente(docente, cargoDocente);
             switch (resultado.getEstado()) {
                 case INSERT_OK:
-                    notificacion.notificar(resultado);
+//                	notificacion.notificar(resultado);
+                    NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                     break;
                 default:
                     System.out.printf("%s\n", resultado.getMensaje());
@@ -73,7 +74,8 @@ public class ControlDocente {
             EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
             switch (resultado.getEstado()) {
                 case UPDATE_OK:
-                    notificacion.notificar(resultado);
+//                    notificacion.notificar(resultado);
+                	NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                     break;
                 default:
                     System.out.printf("%s\n", resultado.getMensaje());
@@ -84,11 +86,12 @@ public class ControlDocente {
     }
 
     public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
-        NotificacionCargo notificacion = new NotificacionCargo(docente, cargoDocente);
+//        NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
         EstadoOperacion resultado = gestorDocente.quitarCargoDocente(docente, cargoDocente);
         switch (resultado.getEstado()) {
             case DELETE_OK:
-                notificacion.notificar(resultado);
+//                notificacion.notificar(resultado);
+            	NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                 break;
             default:
                 throw new RuntimeException("Estado de eliminación de cargoDocente no esperado: " + resultado.getMensaje());

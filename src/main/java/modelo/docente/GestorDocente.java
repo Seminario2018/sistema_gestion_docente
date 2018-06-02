@@ -448,7 +448,7 @@ public class GestorDocente {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`Area` = " + cargo.getArea().getCodigo();
+                condicion += "`Area` = '" + cargo.getArea().getCodigo() + "'";
             }
             if (cargo.getCargo() != null) {
                 if (!condicion.equals("")) {
@@ -460,13 +460,13 @@ public class GestorDocente {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`Tipo_Cargo` = '" + cargo.getTipoCargo().getDescripcion() + "'";
+                condicion += "`TipoCargo` = " + cargo.getTipoCargo().getId();
             }
             if (cargo.getEstado() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`Estado_Cargo` = '" + cargo.getEstado().getDescripcion() + "'";
+                condicion += "`EstadoCargo` = " + cargo.getEstado().getId();
             }
             if (cargo.getDisposicion() != null) {
                 if (!condicion.equals("")) {

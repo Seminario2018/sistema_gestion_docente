@@ -11,6 +11,7 @@ delete from EstadosDocentes;
 delete from EstadosPersonas;
 delete from TiposDocumentos;
 delete from TiposCargos;
+delete from TiposContactos;
 
 
 insert into TiposCargos values
@@ -134,13 +135,16 @@ insert into Personas values
 (0, 39586150, 'Juran', 'Martín Tomás', '1996-06-29', 0);
 
 
+
 insert into contactos values
+# Jefes de División
 (0, 0, 9675920, 0, 'semint2018@gmail.com'),
-(0, 0, 17200893, 0, 'semint2018@gmail.com'),
+(0, 0, 17200893, 0, 'tomasjuran96@gmail.com'),
 (0, 0, 11242536, 0, 'semint2018@gmail.com'),
 (0, 0, 12675920, 0, 'semint2018@gmail.com'),
 (0, 0, 16405290, 0, 'semint2018@gmail.com'),
 (0, 0, 15603702, 0, 'semint2018@gmail.com');
+
 
 
 # Jefes de División
