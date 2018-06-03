@@ -127,7 +127,7 @@ ADD CONSTRAINT `fk_proyecto_1`
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `programainves`
   FOREIGN KEY (`Programa`)
-  REFERENCES `ProgramasIvestigacion` (`id`)
+  REFERENCES `ProgramasInvestigacion` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
