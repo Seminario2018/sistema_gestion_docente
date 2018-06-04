@@ -24,9 +24,9 @@ public class GestorDivision {
                     condicion += " AND ";
                 }
                 condicion +=
-                    " `Descripcion` = '" + division.getDescripcion() + "'";
+                     " `Descripcion` = '" + division.getDescripcion() + "'";
             }
-            if (division.getJefe2().getLegajo() != 0) {
+            if (division.getJefe2() != null && division.getJefe2().getLegajo() != -1) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }

@@ -13,7 +13,7 @@ import persistencia.ManejoDatos;;
  * @author Martín Tomás Juran
  * @version 1.0, 28 de abr. de 2018
  */
-public class Persona implements IPersona {
+public class Persona implements IPersona, IPersonag {
 
 	private String apellido;
 	private String nombre;
@@ -186,6 +186,16 @@ public class Persona implements IPersona {
 	@Override
 	public IPersona clone(){
 		return new Persona(apellido, nombre, fechaNacimiento, tipoDocumento, nroDocumento, domicilios, contactos, titulos, estado);
+	}
+
+	@Override
+	public TipoDocumento getTipoDocumento2() {
+		return this.tipoDocumento;
+	}
+
+	@Override
+	public EstadoPersona getEstado2() {
+		return this.estado;
 	}
 
 }

@@ -480,8 +480,10 @@ public class GestorProyecto {
 		return condicion;
 	}
 
-	private String armarCondicion(IProyecto proyecto, IPrograma programa) {
+	private String armarCondicion(IProyecto p, IPrograma programa) {
 
+		IProyectog proyecto = (IProyectog) p;
+		
         String condicion = "TRUE";
         if (proyecto != null) {
             if (proyecto.getId() != 0) {
@@ -493,8 +495,8 @@ public class GestorProyecto {
             if (proyecto.getDescripcion() != "") {
                 condicion += " AND `Descripcion` = '" + proyecto.getDescripcion() + "'";
             }
-            if (proyecto.getDirector() != null) {
-                condicion += " AND `Director` = '" + proyecto.getDirector() + "'";
+            if (proyecto.getDirector2() != null) {
+                condicion += " AND `Director` = " + proyecto.getDirector2().getLegajo();
             }
             if (proyecto.getFechaPresentacion() != null) {
                 condicion += " AND `Fecha_Presentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()).toString() + "'";
@@ -508,8 +510,8 @@ public class GestorProyecto {
             if (proyecto.getFechaFin() != null) {
                 condicion += " AND `Fecha_Fin` = " + Date.valueOf(proyecto.getFechaFin()).toString() + "'";
             }
-            if (proyecto.getEstado() != null) {
-                condicion += " AND `Estado`= '" + proyecto.getEstado() + "'";
+            if (proyecto.getEstado2() != null) {
+                condicion += " AND `Estado`= " + proyecto.getEstado2();
             }
         }
         if (programa != null) {

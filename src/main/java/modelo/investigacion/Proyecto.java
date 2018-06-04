@@ -11,7 +11,7 @@ import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
-public class Proyecto implements IProyecto {
+public class Proyecto implements IProyecto, IProyectog {
 	private int id;
 	private String nombre;
 	private String resumen;
@@ -273,5 +273,17 @@ public class Proyecto implements IProyecto {
 	@Override
 	public void quitarProrroga(IProrroga prorroga) {
 		this.prorrogas.remove(prorroga);
+	}
+	@Override
+	public IDocente getDirector2() {
+		return this.director;
+	}
+	@Override
+	public IDocente getCodirector2() {
+		return this.codirector;
+	}
+	@Override
+	public EstadoProyecto getEstado2() {
+		return this.estado;
 	}
 }

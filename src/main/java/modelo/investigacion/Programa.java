@@ -11,7 +11,7 @@ import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
-public class Programa implements IPrograma {
+public class Programa implements IPrograma, IProgramag {
 	private int id;
 	private String nombre;
 	private String disposicion;
@@ -201,5 +201,20 @@ public class Programa implements IPrograma {
     public void quitarProyecto(IProyecto proyecto) {
         this.proyectos.remove(proyecto);
     }
+
+	@Override
+	public IDocente getDirector2() {
+		return this.director;
+	}
+
+	@Override
+	public IDocente getCodirector2() {
+		return this.codirector;
+	}
+
+	@Override
+	public EstadoPrograma getEstado2() {
+		return this.estado;
+	}
 
 }

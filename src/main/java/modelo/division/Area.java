@@ -9,7 +9,7 @@ import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
-public class Area implements IArea {
+public class Area implements IArea, IAreag {
 
 	private String codigo;
 	private String descripcion;
@@ -170,6 +170,21 @@ public class Area implements IArea {
 	@Override
 	public void setAreaDe(IArea subAreaDe) {
 		this.subAreaDe = subAreaDe;
+	}
+
+	@Override
+	public IDivision getDivision2() {
+		return this.division;
+	}
+
+	@Override
+	public IDocente getDocenteResponsable2() {
+		return this.responsable;
+	}
+
+	@Override
+	public IArea getAreaDe2() {
+		return this.subAreaDe;
 	}
 
 }

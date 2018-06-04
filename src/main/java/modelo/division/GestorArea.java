@@ -12,8 +12,10 @@ import persistencia.ManejoDatos;
 
 public class GestorArea {
 
-    private String armarCondicion(IArea area) {
+    private String armarCondicion(IArea a) {
 
+    	IAreag area = (IAreag) a;
+    	
         String condicion = "TRUE";
         if (area != null) {
             if (!area.getCodigo().equals("")) {
@@ -25,17 +27,17 @@ public class GestorArea {
                 }
                 condicion += " `Descripcion` = '" + area.getDescripcion() + "'";
             }
-            if (area.getDivision() != null) {
+            if (area.getDivision2() != null && area.getDivision2().getCodigo() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Division` = '" + area.getDivision().getCodigo() + "'";
+                condicion += " `Division` = '" + area.getDivision2().getCodigo() + "'";
             }
-            if (area.getDocenteResponsable() != null) {
+            if (area.getDocenteResponsable2() != null && area.getDocenteResponsable2().getLegajo() != -1) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Responsable` = '" + area.getDocenteResponsable().getLegajo() + "'";
+                condicion += " `Responsable` = " + area.getDocenteResponsable2().getLegajo();
             }
             if (!area.getDisposicion().equals("")) {
                 if (!condicion.equals("")) {
@@ -57,11 +59,11 @@ public class GestorArea {
                 condicion += " `Hasta` = " + Date.valueOf(area.getDispHasta()).toString() + "'";
             }
 
-            if (area.getAreaDe() != null) {
+            if (area.getAreaDe2() != null ) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Subarea_De` = " + Date.valueOf(area.getDispHasta()).toString() + "'";
+                condicion += " `Subarea_De` = '" + area.getAreaDe2().getCodigo() + "'";
             }
         }
         return condicion;

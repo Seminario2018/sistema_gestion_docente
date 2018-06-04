@@ -200,7 +200,7 @@ public class GestorPersona {
 
 			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 
-			//`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`
+			
 			for (Hashtable<String, String> reg : res) {
 				Persona p = new Persona();
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
@@ -312,16 +312,18 @@ public class GestorPersona {
 		}
 	}
 
-	private String armarCondicion(IPersona persona) {
+	private String armarCondicion(IPersona p) {
+		IPersonag persona = (IPersonag) p;
+		
 		String condicion = "TRUE";
 		if (persona != null) {
 			condicion = "";
 
 			List<String> condiciones = new ArrayList<String>();
 
-			if (persona.getTipoDocumento() != null) {
+			if (persona.getTipoDocumento2() != null) {
 				condiciones.add("`TipoDocumento` = "
-						+ persona.getTipoDocumento().getId());
+						+ persona.getTipoDocumento2().getId());
 			}
 			if (persona.getNroDocumento() != 0) {
 				condiciones.add("`NroDocumento` = '" + persona.getNroDocumento()
@@ -338,8 +340,8 @@ public class GestorPersona {
 						+ Date.valueOf(persona.getFechaNacimiento()).toString()
 						+ "'");
 			}
-			if (persona.getEstado() != null) {
-				condiciones.add("`Estado` = " + persona.getEstado().getId());
+			if (persona.getEstado2() != null) {
+				condiciones.add("`Estado` = " + persona.getEstado2().getId());
 			}
 
 			if (!condiciones.isEmpty()) {
