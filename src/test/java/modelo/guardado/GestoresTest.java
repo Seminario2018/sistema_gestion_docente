@@ -23,10 +23,10 @@ import modelo.docente.Docente;
 import modelo.docente.GestorDocente;
 import modelo.persona.*;
 
-public class GuardadoTest {
+public class GestoresTest {
 
 	@Test
-	public void test() {
+	public void guardadoTest() {
 		EstadoPersona ep = new EstadoPersona();
 		ep.setId(0);
 		ep = EstadoPersona.getEstado(ep);
@@ -125,5 +125,54 @@ public class GuardadoTest {
 		System.out.println(gd.agregarCargoDocente(doc, cd));		
 
 	}
+	
+	@Test
+	public void modificacionTest() {
+		
+		EstadoDocente estado = new EstadoDocente();
+		estado.setId(2);
+		estado = EstadoDocente.getEstado(estado);
+		
+		TipoDocumento td = new TipoDocumento();
+		td.setId(0);
+		td = TipoDocumento.getTipo(td);
+		
+		Persona p = new Persona();
+		p.setApellido("Marazzo");
+		p.setNombre("Leonardo José");
+		p.setFechaNacimiento(LocalDate.of(1997, 06, 22));
+		p.setTipoDocumento(td);
+		p.setNroDocumento(40455634);
+		
+		Docente doc = new Docente();
+		doc.setPersona(p);
+		doc.setEstado(estado);
+		doc.setLegajo(143112);
+		
+		GestorDocente gd = new GestorDocente();
+		System.out.println(gd.modificarDocente(doc).getMensaje());
+		
+		CargoDocente cd = new CargoDocente();
+		cd.setId(1);
+		cd.setUltimoCosto(200000);
+		cd.setFechaUltCost(LocalDate.of(2018, 6, 4));
+		
+		System.out.println(gd.modificarCargoDocente(doc, cd));
+
+	}
+	
+	
+	@Test
+	public void eliminacionTest() {
+		GestorDocente gd = new GestorDocente();
+		Docente doc = new Docente();
+		doc.setLegajo(143112);
+		CargoDocente cd = new CargoDocente();
+		cd.setId(1);
+		
+		gd.quitarCargoDocente(doc, cd);
+	}
+	
+	
 
 }
