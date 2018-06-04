@@ -14,7 +14,7 @@ public class Titulo implements ITitulo {
 	}
 
     public Titulo() {
-
+        this.id = -1;
     }
 
 
