@@ -22,7 +22,7 @@ public class Domicilio implements IDomicilio {
 	}
 
 	public Domicilio() {
-
+	    this.id = -1;
     }
 
     @Override
