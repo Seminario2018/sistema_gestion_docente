@@ -200,7 +200,7 @@ public class GestorPersona {
 
 			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 
-			
+
 			for (Hashtable<String, String> reg : res) {
 				Persona p = new Persona();
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
@@ -246,8 +246,7 @@ public class GestorPersona {
 			String condicion = this.armarCondicion2(persona);
 			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
-				Domicilio d =
-						new Domicilio(Integer.parseInt(reg.get("iddomicilios")), reg.get("Provincia"), reg.get("Ciudad"), reg.get("CodigoPostal"), reg.get("Domicilio"));
+				IDomicilio d = new Domicilio(Integer.parseInt(reg.get("iddomicilios")), reg.get("Provincia"), reg.get("Ciudad"), reg.get("CodigoPostal"), reg.get("Direccion"));
 				domicilios.add(d);
 			}
 			return domicilios;
@@ -314,7 +313,7 @@ public class GestorPersona {
 
 	private String armarCondicion(IPersona p) {
 		IPersonag persona = (IPersonag) p;
-		
+
 		String condicion = "TRUE";
 		if (persona != null) {
 			condicion = "";
