@@ -136,7 +136,7 @@ insert into Personas values
 
 
 
-insert into contactos values
+insert into Contactos values
 # Jefes de División
 (0, 0, 9675920, 0, 'semint2018@gmail.com'),
 (0, 0, 17200893, 0, 'tomasjuran96@gmail.com'),

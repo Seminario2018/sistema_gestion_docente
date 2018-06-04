@@ -30,7 +30,7 @@ public class GestorDivision {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Jefe` = '" + division.getJefe2().getLegajo() + "'";
+                condicion += " `Jefe` = " + division.getJefe2().getLegajo();
             }
             if (division.getDisposicion() != null) {
                 if (!condicion.equals("")) {
@@ -61,17 +61,18 @@ public class GestorDivision {
         return condicion;
     }
 
-    public EstadoOperacion nuevaDivision(IDivision division) {
+    public EstadoOperacion nuevaDivision(IDivision div) {
         try {
-
+        	IDivisiong division = (IDivisiong) div;
+        	
             ManejoDatos e = new ManejoDatos();
             String table = "Divisiones";
             String campos = "`Codigo`, `Descripcion`";
             String valores = "'" + division.getCodigo() + "', '" + division.getDescripcion() + "'";
             //`Jefe`, `Disposicion`, `Desde`, `Hasta`
-            if (division.getJefe() != null) {
+            if (division.getJefe2() != null) {
             	campos += ", Jefe";
-            	valores += ", " + division.getJefe().getLegajo();
+            	valores += ", " + division.getJefe2().getLegajo();
             }
             if (division.getDisposicion() != null && !division.getDisposicion().equals("")) {
             	campos += ", Disposicion";
@@ -101,7 +102,7 @@ public class GestorDivision {
             String tabla = "Divisiones";
             String campos = "`Descripcion` = '" + division.getDescripcion() + "'";
             if (division.getJefe() != null) {
-            	campos += ", `Jefe`= '" + division.getJefe().getLegajo() + "'";
+            	campos += ", `Jefe`= " + division.getJefe().getLegajo();
             }
             if (division.getDisposicion() != null && !division.getDisposicion().equals("")) {
             	campos += ", Disposicion = '" + division.getDisposicion() + "'";
@@ -125,7 +126,7 @@ public class GestorDivision {
     public EstadoOperacion eliminarDivision(IDivision division) {
         try {
             ManejoDatos e = new ManejoDatos();
-            e.delete("`Divisiones`", "Codigo = " + division.getCodigo());
+            e.delete("`Divisiones`", "Codigo = '" + division.getCodigo() + "'");
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminó correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la division");

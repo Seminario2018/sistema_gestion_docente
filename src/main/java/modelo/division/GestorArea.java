@@ -49,14 +49,14 @@ public class GestorArea {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Desde` = " + Date.valueOf(area.getDispDesde()).toString() + "'";
+                condicion += " `Desde` = '" + Date.valueOf(area.getDispDesde()).toString() + "'";
             }
 
             if (area.getDispHasta() != null) {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += " `Hasta` = " + Date.valueOf(area.getDispHasta()).toString() + "'";
+                condicion += " `Hasta` = '" + Date.valueOf(area.getDispHasta()).toString() + "'";
             }
 
             if (area.getAreaDe2() != null ) {
@@ -69,20 +69,22 @@ public class GestorArea {
         return condicion;
     }
 
-    public EstadoOperacion nuevaArea(IArea area) {
+    public EstadoOperacion nuevaArea(IArea a) {
 
         try {
+        	IAreag area = (IAreag) a;
+        	
             ManejoDatos e = new ManejoDatos();
             String table = "Areas";
             String campos = "`Codigo`, `Division`";
-            String valores = "'" + area.getCodigo() + "', '" + area.getDivision().getCodigo() + "'";
+            String valores = "'" + area.getCodigo() + "', '" + area.getDivision2().getCodigo() + "'";
             if (area.getDescripcion() != null && !area.getDescripcion().equals("")) {
                 campos += ", Descripcion";
-                valores += ", '" + area.getDocenteResponsable().getLegajo() + "'";
+                valores += ", '" + area.getDocenteResponsable2().getLegajo() + "'";
             }
-            if (area.getDocenteResponsable() != null) {
+            if (area.getDocenteResponsable2() != null) {
                 campos += ", Responsable";
-                valores += ", " + area.getDocenteResponsable();
+                valores += ", " + area.getDocenteResponsable2().getLegajo();
             }
             if (area.getDisposicion() != null && !area.getDisposicion().equals("")) {
                 campos += ", Disposicion";
@@ -96,9 +98,9 @@ public class GestorArea {
                 campos += ", Hasta";
                 valores += ", '" + Date.valueOf(area.getDispHasta()) + "'";
             }
-            if (area.getAreaDe() != null) {
+            if (area.getAreaDe2() != null) {
                 campos += ", `SubAreaDe`";
-                valores += ", '" + area.getAreaDe().getCodigo() + "'";
+                valores += ", '" + area.getAreaDe2().getCodigo() + "'";
             }
             e.insertar(table, campos, valores);
             return e.isEstado()
@@ -119,7 +121,7 @@ public class GestorArea {
                 campos += ", `Descripcion` = '" + area.getDescripcion() + "'";
             }
             if (area.getDocenteResponsable() != null) {
-                campos += ", `Responsable`= '" + area.getDocenteResponsable().getLegajo() + "',";
+                campos += ", `Responsable`= " + area.getDocenteResponsable().getLegajo();
             }
             if (area.getDispDesde() != null) {
                 campos += ", `Desde`" + Date.valueOf(area.getDispDesde()) + "',";
@@ -144,7 +146,7 @@ public class GestorArea {
     public EstadoOperacion eliminarArea(IArea area) {
         try {
             ManejoDatos e = new ManejoDatos();
-            e.delete("`Areas`", "Codigo = " + area.getCodigo());
+            e.delete("`Areas`", "Codigo = '" + area.getCodigo() + "'");
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "El area se eliminó correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el area");

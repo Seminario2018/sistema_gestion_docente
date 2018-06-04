@@ -17,7 +17,7 @@ public class GestorCargo {
             if (cargo.getCodigo() == -1) {
                 cargo.setCodigo(this.getCodigoMax() + 1);
             }
-            String valores = "'" + cargo.getCodigo() + "', '" + cargo.getDescripcion() + "', " + cargo.getCargaHoraria();
+            String valores = cargo.getCodigo() + ", '" + cargo.getDescripcion() + "', " + cargo.getCargaHoraria();
             e.insertar(table, campos, valores);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El cargo se creo correctamente")
@@ -33,7 +33,7 @@ public class GestorCargo {
             ManejoDatos e = new ManejoDatos();
             String tabla = "cargo";
             String campos = "`Descripcion` = '" + cargo.getDescripcion() + "', " + "`CargaHoraria`= '" + cargo.getCargaHoraria() + "'";
-            String condicion = "`Codigo` = '" + cargo.getCodigo() + "'";
+            String condicion = "`Codigo` = " + cargo.getCodigo();
             e.update(tabla, campos, condicion);
             return e.isEstado()
                 ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El cargo se modificó correctamente")
@@ -104,9 +104,9 @@ public class GestorCargo {
         int cod = 1;
         try {
             ManejoDatos md = new ManejoDatos();
-            ArrayList<Hashtable<String, String>> res = md.select("cargo", "MAX(codigo");
+            ArrayList<Hashtable<String, String>> res = md.select("cargo", "MAX(codigo)");
             for (Hashtable<String, String> reg : res) {
-                cod = Integer.parseInt(reg.get("MAX(codigo"));
+                cod = Integer.parseInt(reg.get("MAX(codigo)"));
             }
         } catch (Exception e) {
             e.printStackTrace();

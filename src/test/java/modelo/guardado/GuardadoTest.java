@@ -100,9 +100,11 @@ public class GuardadoTest {
 		area.setAreaDe(null);
 		
 		GestorArea ga = new GestorArea();
-		System.out.println(ga.nuevaArea(area));
+		System.out.println(ga.nuevaArea(area).getMensaje());
 		
-		Cargo car = new Cargo(-1, "Titular", 20);
+		Cargo car = new Cargo(213, "Profesor Titular Exclusiva", 40);
+		
+		
 		
 		CargoDocente cd = new CargoDocente();
 		cd.setId(-1);

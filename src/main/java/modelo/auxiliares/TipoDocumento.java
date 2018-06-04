@@ -92,11 +92,13 @@ public class TipoDocumento {
 			String tabla = "TiposDocumentos";
 			String campos = "id";
 			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 
-			if(md.select(tabla, campos, condicion).isEmpty()) {
-				return false;
-			}else {
+			if (!res.isEmpty()) {
+				this.id = Integer.parseInt(res.get(0).get("id"));
 				return true;
+			}else {
+				return false;
 			}
 		} catch (Exception e) {
 			return false;

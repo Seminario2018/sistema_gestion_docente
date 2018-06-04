@@ -10,37 +10,39 @@ import persistencia.ManejoDatos;
 
 public class GestorDocente {
 
-    public EstadoOperacion nuevoDocente(IDocente docente) {
+    public EstadoOperacion nuevoDocente(IDocente doc) {
         try {
+        	IDocenteg docente = (IDocenteg) doc;
+        	
             ManejoDatos md = new ManejoDatos();
-            docente.getEstado().guardar();
+            docente.getEstado2().guardar();
 
             String table = "Docentes";
             String campos = "`Legajo`, `TipoDocumento`, `NroDocumento`,  `Estado`";
-            String valores = docente.getLegajo() + ", " + docente.getPersona().getTipoDocumento().getId() + ", "
-                    + "'" + docente.getPersona().getNroDocumento() + "', " + docente.getEstado().getId();
+            String valores = docente.getLegajo() + ", " + docente.getPersona2().getTipoDocumento().getId() + ", "
+                    + "'" + docente.getPersona2().getNroDocumento() + "', " + docente.getEstado2().getId();
 
             if (docente.getObservaciones() != null && !docente.getObservaciones().equals("")) {
                 campos += ", Observaciones";
                 valores += ", '" + docente.getObservaciones() + "'";
             }
 
-            if (docente.getCategoriaInvestigacion() != null) {
-                docente.getCategoriaInvestigacion().guardar();
+            if (docente.getCategoriaInvestigacion2() != null) {
+                docente.getCategoriaInvestigacion2().guardar();
                 campos += ", CategoriaInvestigacion";
-                valores += ", " + docente.getCategoriaInvestigacion().getId();
+                valores += ", " + docente.getCategoriaInvestigacion2().getId();
             }
 
             md.insertar(table, campos, valores);
 
-            if (docente.getIncentivos() != null) {
-                for (IIncentivo incentivo : docente.getIncentivos()) {
+            if (docente.getIncentivos2() != null) {
+                for (IIncentivo incentivo : docente.getIncentivos2()) {
                     this.agregarIncentivo(docente, incentivo);
                 }
             }
 
-            if (docente.getCargosDocentes() != null) {
-                for (ICargoDocente cargoDocente : docente.getCargosDocentes()) {
+            if (docente.getCargosDocentes2() != null) {
+                for (ICargoDocente cargoDocente : docente.getCargosDocentes2()) {
                     this.agregarCargoDocente(docente, cargoDocente);
                 }
             }
@@ -180,7 +182,7 @@ public class GestorDocente {
         return condicion;
     }
 
-    public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
+    public EstadoOperacion agregarIncentivo(IDocenteg docente, IIncentivo incentivo) {
         ManejoDatos md = new ManejoDatos();
 
         String tabla = "Incentivos";
@@ -235,7 +237,7 @@ public class GestorDocente {
 
         // Incentivo:
         if ((incentivo != null) && (incentivo.getFecha() != null)) {
-            condiciones.add("Year = '" + incentivo.getFecha().toString() + "'");
+            condiciones.add("Fecha = '" + incentivo.getFecha().toString() + "'");
         }
 
         if (condiciones.isEmpty()) {
@@ -246,10 +248,10 @@ public class GestorDocente {
 
     }
 
-    public EstadoOperacion agregarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
+    public EstadoOperacion agregarCargoDocente(IDocenteg docente, ICargoDocente cargoDocente) {
         try {
-            // cargoDocente.getEstado().guardar();
-            // cargoDocente.getTipoCargo().guardar();
+            cargoDocente.getEstado().guardar();
+            cargoDocente.getTipoCargo().guardar();
 
             if (cargoDocente.getId() == -1) {
                 cargoDocente.setId(this.getCodigoMax() + 1);
@@ -366,7 +368,7 @@ public class GestorDocente {
     public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
         try {
             ManejoDatos md = new ManejoDatos();
-            String condicion = String.format("Codigo = '%d'", cargoDocente.getId());
+            String condicion = "Codigo = " + cargoDocente.getId();
             md.delete("CargosDocentes", condicion);
 
             if (md.isEstado()) {

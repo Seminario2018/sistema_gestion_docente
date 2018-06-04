@@ -27,12 +27,12 @@ public class GestorPersona {
 			String table = "Personas";
 			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`";
 			String valores = tipoDoc + ", '" + nroDoc + "', "
-					+ "'" + persona.getApellido() + "', '" + persona.getNombre();
+					+ "'" + persona.getApellido() + "', '" + persona.getNombre() + "'";
 
 			if (persona.getFechaNacimiento() != null) {
 				String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
 				campos += ", `FechaNacimiento`";
-				valores += "'" + fechaNac + "'";
+				valores += ", '" + fechaNac + "'";
 			}
 			if (persona.getEstado() != null) {
 				persona.getEstado().guardar();
@@ -217,9 +217,7 @@ public class GestorPersona {
 				if (!reg.get("Estado").equals("")) {
 					p.setEstado(this.getEstado(reg.get("Estado")));
 				}
-				p.setTitulos(this.getTitulos(p));
-				p.setContactos(this.getContactos(p));
-				p.setDomicilios(this.getDomicilios(p));
+
 				personas.add(p);
 			}
 

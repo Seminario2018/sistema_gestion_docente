@@ -228,6 +228,17 @@ public class Docente implements IDocente, IDocenteg {
 		return this.persona;
 	}
 
+	@Override
+	public List<IIncentivo> getIncentivos2() {
+		// TODO Auto-generated method stub
+		return this.incentivos;
+	}
+
+	@Override
+	public List<ICargoDocente> getCargosDocentes2() {
+		return this.cargosDocentes;
+	}
+
 
 
 

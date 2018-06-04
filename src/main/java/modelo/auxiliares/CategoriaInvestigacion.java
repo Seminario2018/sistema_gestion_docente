@@ -15,28 +15,28 @@ public class CategoriaInvestigacion {
 	private String descripcion;
 
 	public int getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getDescripcion() {
-        return this.descripcion;
-    }
+	public String getDescripcion() {
+		return this.descripcion;
+	}
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 
-    public void guardar() {
-    	if(this.existe()) {
-    		this.actualizar();
-    	}else {
-    		this.insertar();
-    	}
-    }
+	public void guardar() {
+		if(this.existe()) {
+			this.actualizar();
+		}else {
+			this.insertar();
+		}
+	}
 
 	private void insertar() {
 		this.setId(CategoriaInvestigacion.getMaxID()+1);
@@ -76,10 +76,13 @@ public class CategoriaInvestigacion {
 			String campos = "id";
 			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 
-			if (md.select(tabla, campos, condicion).isEmpty()) {
-				return false;
-			}else {
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+
+			if (!res.isEmpty()) {
+				this.id = Integer.parseInt(res.get(0).get("id"));
 				return true;
+			}else {
+				return false;
 			}
 
 
@@ -142,7 +145,7 @@ public class CategoriaInvestigacion {
 	}
 
 	@Override
-    public String toString() {
-        return this.descripcion;
-    }
+	public String toString() {
+		return this.descripcion;
+	}
 }

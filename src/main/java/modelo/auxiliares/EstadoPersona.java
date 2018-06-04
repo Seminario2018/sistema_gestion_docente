@@ -80,10 +80,12 @@ public class EstadoPersona {
 			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
-			if (res.isEmpty()) {
-				return false;
-			}else {
+
+			if (!res.isEmpty()) {
+				this.id = Integer.parseInt(res.get(0).get("idEstado"));
 				return true;
+			}else {
+				return false;
 			}
 			
 			

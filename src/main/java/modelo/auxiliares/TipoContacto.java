@@ -34,8 +34,8 @@ public class TipoContacto {
     
     public void guardar() {
     	if (this.existe()) {
-    		this.actualizar();
-    	}else {
+    		this.obtenerID();
+    }else {
     		this.insertar();
     	}
     	
@@ -58,18 +58,14 @@ public class TipoContacto {
 		
 	}
 
-	private void actualizar() {
+	private void obtenerID() {
 		try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "TiposContactos";
-			String campos = "Descripcion = '" + this.getDescripcion() + "'";
-			String condicion = "id = " + this.getId();
-			
-			md.update(tabla, campos, condicion);
-			
-		}catch (Exception e) {
-			
-		}
+    		ManejoDatos md = new ManejoDatos();
+    		ArrayList<Hashtable<String, String>> res = md.select("TiposContactos", "id", "Descripcion = '" + this.getDescripcion() + "'");
+    		this.setId(Integer.parseInt(res.get(0).get("id")));
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
 		
 	}
 
@@ -80,10 +76,13 @@ public class TipoContacto {
 			String campos = "id";
 			String condicion = "Descripcion = '" +  this.getDescripcion() + "'";
 			
-			if (md.select(tabla, campos, condicion).isEmpty()) {
-				return false;
-			}else {
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+
+			if (!res.isEmpty()) {
+				this.id = Integer.parseInt(res.get(0).get("id"));
 				return true;
+			}else {
+				return false;
 			}
 			
 		}catch (Exception e){

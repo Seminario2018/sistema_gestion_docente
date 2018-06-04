@@ -79,7 +79,10 @@ public class EstadoProyecto {
 			String campos = "idEstadoProyecto";
 			String condicion = "Descripcion = '" + this.getDescripcion() + "'";
 			
-			if (md.select(tabla, campos, condicion).isEmpty()) {
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+
+			if (!res.isEmpty()) {
+				this.id = Integer.parseInt(res.get(0).get("idEstadoProyecto"));
 				return true;
 			}else {
 				return false;
