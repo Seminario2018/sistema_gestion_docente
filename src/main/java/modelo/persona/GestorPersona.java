@@ -85,7 +85,7 @@ public class GestorPersona {
 		int esMayor = titulo.isEsMayor() ? 1 : 0;
 
 		if (titulo.getId() == -1) {
-			titulo.setId(this.getMax("Titulos", "id"));
+			titulo.setId(this.getMax("Titulos", "id") + 1);
 		}
 
 		String table = "Titulos";
@@ -103,7 +103,7 @@ public class GestorPersona {
 		ManejoDatos md = new ManejoDatos();
 
 		if (domicilio.getId() == -1) {
-			domicilio.setId(this.getMax("Domicilios", "iddomicilios"));
+			domicilio.setId(this.getMax("Domicilios", "iddomicilios") + 1);
 		}
 
 		String table = "Domicilios";
@@ -123,7 +123,7 @@ public class GestorPersona {
 		contacto.getTipo().guardar();
 
 		if (contacto.getId() == -1) {
-			contacto.setId(this.getMax("Contactos", "idcontacto"));
+			contacto.setId(this.getMax("Contactos", "idcontacto") + 1);
 		}
 
 		String table = "Contactos";
@@ -198,7 +198,7 @@ public class GestorPersona {
 			String campos = "*";
 			String condicion = this.armarCondicion(persona);
 
-			ArrayList<Hashtable<String, String>> res = md.select(table, campos, condicion);
+			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 
 			//`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`, `FechaNacimiento`, `Estado`
 			for (Hashtable<String, String> reg : res) {
@@ -244,8 +244,7 @@ public class GestorPersona {
 			String table = "Domicilios";
 			String campos = "*";
 			String condicion = this.armarCondicion2(persona);
-			ArrayList<Hashtable<String, String>> res =
-					md.select(table, campos, condicion);
+			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				Domicilio d =
 						new Domicilio(Integer.parseInt(reg.get("iddomicilios")), reg.get("Provincia"), reg.get("Ciudad"), reg.get("CodigoPostal"), reg.get("Domicilio"));
@@ -278,8 +277,7 @@ public class GestorPersona {
 			String table = "Contactos";
 			String campos = "*";
 			String condicion = this.armarCondicion2(persona);
-			ArrayList<Hashtable<String, String>> res =
-					md.select(table, campos, condicion);
+			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				TipoContacto tc = new TipoContacto();
 				tc.setId(Integer.parseInt(reg.get("Tipo")));;
@@ -302,11 +300,9 @@ public class GestorPersona {
 			String table = "Titulos";
 			String campos = "*";
 			String condicion = this.armarCondicion2(persona);
-			ArrayList<Hashtable<String, String>> res =
-					md.select(table, campos, condicion);
+			List<Hashtable<String, String>> res = md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
-				ITitulo t =
-						new Titulo(Integer.parseInt(reg.get("id")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
+				ITitulo t = new Titulo(Integer.parseInt(reg.get("id")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
 				titulos.add(t);
 			}
 			return titulos;
@@ -359,7 +355,7 @@ public class GestorPersona {
 
 			ManejoDatos md = new ManejoDatos();
 
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
+			List<Hashtable<String, String>> res = md.select(tabla, campos);
 			int max = Integer.parseInt(res.get(0).get(campos));
 			return max;
 		} catch (Exception e) {
@@ -379,7 +375,7 @@ public class GestorPersona {
 				+ "NroDocumento = '" + persona.getNroDocumento() + "'";
 		try {
 			ManejoDatos md = new ManejoDatos();
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			return !(res.isEmpty());
 
 		}catch (Exception e) {
@@ -418,7 +414,7 @@ public class GestorPersona {
 
 
 			if (contacto.getId() == -1) {
-				contacto.setId(this.getMax("Contactos", "idcontacto"));
+				contacto.setId(this.getMax("Contactos", "idcontacto") + 1);
 			}
 
 			String table = "Contactos";
@@ -505,7 +501,7 @@ public class GestorPersona {
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
 			if (domicilio.getId() == -1) {
-				domicilio.setId(this.getMax("Domicilios", "iddomicilios"));
+				domicilio.setId(this.getMax("Domicilios", "iddomicilios") + 1);
 			}
 
 			String table = "Domicilios";
