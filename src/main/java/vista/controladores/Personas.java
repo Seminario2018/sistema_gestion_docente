@@ -40,14 +40,14 @@ public class Personas extends ControladorVista implements Initializable {
 
 // -------------------------------- General --------------------------------- //
 
-	private IPersona personaSeleccionada = null;
+	private IPersona personaSeleccion = null;
 	private ControlPersona controlPersona = new ControlPersona();
 
 	/** Muestra los datos de la persona en los controles generales */
 	private void generalMostrarPersona() {
-	    if (personaSeleccionada != null) {
-	        txtPersonasDocumento.setText(String.valueOf(personaSeleccionada.getNroDocumento()));
-	        txtPersonasNombre.setText(personaSeleccionada.getNombreCompleto());
+	    if (personaSeleccion != null) {
+	        txtPersonasDocumento.setText(String.valueOf(personaSeleccion.getNroDocumento()));
+	        txtPersonasNombre.setText(personaSeleccion.getNombreCompleto());
 	    }
 	}
 
@@ -63,11 +63,11 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnPersonasBuscar;
 	@FXML public void buscarPersona(ActionEvent event) {
 	    /* TEST General: Selección de persona */
-        // Recuperar la persona con DNI = 10071374
+        // Recuperar la persona con DNI = 17200893
         IPersona personaBusqueda = this.controlPersona.getIPersona();
-        personaBusqueda.setNroDocumento(10071374);
+        personaBusqueda.setNroDocumento(17200893);
         List<IPersona> listaPersonas = this.controlPersona.listarPersonas(personaBusqueda);
-        personaSeleccionada = listaPersonas.get(0);
+        personaSeleccion = listaPersonas.get(0);
         //*/
         generalMostrarPersona();
         datosMostrarPersona();
@@ -80,7 +80,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnPersonasEliminar;
 	@FXML public void eliminarPersona(ActionEvent event) {
-	    EstadoOperacion resultado = this.controlPersona.eliminarPersona(personaSeleccionada);
+	    EstadoOperacion resultado = this.controlPersona.eliminarPersona(personaSeleccion);
 
 	    switch(resultado.getEstado()) {
             case DELETE_ERROR:
@@ -88,7 +88,7 @@ public class Personas extends ControladorVista implements Initializable {
                 break;
             case DELETE_OK:
                 dialogoConfirmacion(TITULO, "Eliminar Persona", resultado.getMensaje());
-                personaSeleccionada = null;
+                personaSeleccion = null;
 
                 generalVaciarControles();
                 datosVaciarControles();
@@ -110,12 +110,12 @@ public class Personas extends ControladorVista implements Initializable {
 
 	/** Muestra los datos de la persona seleccionada: */
 	private void datosMostrarPersona() {
-	    if (personaSeleccionada != null) {
-	        txtDatosApellido.setText(personaSeleccionada.getApellido());
-	        txtDatosNombre.setText(personaSeleccionada.getNombre());
-	        cmbDatosTipoDocumento.getSelectionModel().select(personaSeleccionada.getTipoDocumento());
-	        txtDatosDocumento.setText(String.valueOf(personaSeleccionada.getNroDocumento()));
-	        dtpDatosFechaNacimiento.setValue(personaSeleccionada.getFechaNacimiento());
+	    if (personaSeleccion != null) {
+	        txtDatosApellido.setText(personaSeleccion.getApellido());
+	        txtDatosNombre.setText(personaSeleccion.getNombre());
+	        cmbDatosTipoDocumento.getSelectionModel().select(personaSeleccion.getTipoDocumento());
+	        txtDatosDocumento.setText(String.valueOf(personaSeleccion.getNroDocumento()));
+	        dtpDatosFechaNacimiento.setValue(personaSeleccion.getFechaNacimiento());
 	    }
 	}
 
@@ -130,15 +130,15 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosGuardar;
 	@FXML public void guardarPersona(ActionEvent event) {
-	    if (personaSeleccionada != null) {
+	    if (personaSeleccion != null) {
 	        try {
-	            personaSeleccionada.setNroDocumento(Integer.parseInt(txtDatosDocumento.getText()));
-    	        personaSeleccionada.setApellido(txtDatosApellido.getText());
-    	        personaSeleccionada.setNombre(txtDatosNombre.getText());
-    	        personaSeleccionada.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
-    	        personaSeleccionada.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
+	            personaSeleccion.setNroDocumento(Integer.parseInt(txtDatosDocumento.getText()));
+    	        personaSeleccion.setApellido(txtDatosApellido.getText());
+    	        personaSeleccion.setNombre(txtDatosNombre.getText());
+    	        personaSeleccion.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
+    	        personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
 
-    	        this.controlPersona.modificarPersona(personaSeleccionada);
+    	        this.controlPersona.modificarPersona(personaSeleccion);
 	        } catch (NumberFormatException nfe) {
 	            alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
 	        }
@@ -159,7 +159,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Contactos ---------------------------- //
 
-	private IContacto contactoSeleccionado = null;
+	private IContacto contactoSeleccion = null;
 	protected ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
 
 	public class FilaContacto {
@@ -181,8 +181,8 @@ public class Personas extends ControladorVista implements Initializable {
 	/** Refresca la tabla de contactos */
 	private void contactosActualizarTabla() {
 	    filasContactos.clear();
-	    if (personaSeleccionada != null) {
-            for (IContacto contacto : personaSeleccionada.getContactos()) {
+	    if (personaSeleccion != null) {
+            for (IContacto contacto : personaSeleccion.getContactos()) {
                 filasContactos.add(
                     new FilaContacto(contacto));
             }
@@ -191,9 +191,9 @@ public class Personas extends ControladorVista implements Initializable {
 
 	/** Muestra los datos del contacto seleccionado: */
     private void contactosMostrarContacto() {
-        if (contactoSeleccionado != null) {
-            cmbContactosTipo.getSelectionModel().select(contactoSeleccionado.getTipo());;
-            txtContactosDato.setText(contactoSeleccionado.getDato());
+        if (contactoSeleccion != null) {
+            cmbContactosTipo.getSelectionModel().select(contactoSeleccion.getTipo());;
+            txtContactosDato.setText(contactoSeleccion.getDato());
         }
     }
 
@@ -206,6 +206,12 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private void inicializarContactos() {
 	    inicializarTabla("Contactos");
+	    tblContactos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                contactoSeleccion = newSelection.getContacto();
+                contactosMostrarContacto();
+            }
+        });
 
 	    contactosActualizarTabla();
 
@@ -216,16 +222,16 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnContactosNuevo;
 	@FXML public void nuevoContacto(ActionEvent event) {
-	    contactoSeleccionado = this.controlPersona.getIContacto();
+	    contactoSeleccion = this.controlPersona.getIContacto();
 	    contactosVaciarControles();
 	}
 
 	@FXML private Button btnContactosGuardar;
 	@FXML public void guardarContacto(ActionEvent event) {
-	    contactoSeleccionado.setTipo(cmbContactosTipo.getSelectionModel().getSelectedItem());
-	    contactoSeleccionado.setDato(txtContactosDato.getText());
+	    contactoSeleccion.setTipo(cmbContactosTipo.getSelectionModel().getSelectedItem());
+	    contactoSeleccion.setDato(txtContactosDato.getText());
 
-	    EstadoOperacion resultado = this.controlPersona.guardarContacto(personaSeleccionada, contactoSeleccionado);
+	    EstadoOperacion resultado = this.controlPersona.guardarContacto(personaSeleccion, contactoSeleccion);
         switch (resultado.getEstado()) {
             case INSERT_ERROR:
             case UPDATE_ERROR:
@@ -236,7 +242,7 @@ public class Personas extends ControladorVista implements Initializable {
                 dialogoConfirmacion(TITULO, "Guardar Contacto", resultado.getMensaje());
                 break;
             default:
-                throw new RuntimeException("Estado de modificación no esperado: " 
+                throw new RuntimeException("Estado de modificación no esperado: "
                 		+ resultado.getEstado().toString() + ": " + resultado.getMensaje());
         }
 	    contactosActualizarTabla();
@@ -244,30 +250,36 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnContactosDescartar;
 	@FXML public void descartarContacto(ActionEvent event) {
-	    contactoSeleccionado = null;
+	    contactoSeleccion = null;
 	    contactosVaciarControles();
 	}
 
 	@FXML private Button btnContactosEliminar;
 	@FXML public void eliminarContacto(ActionEvent event) {
-	    FilaContacto filaSeleccionada = this.tblContactos.getSelectionModel().getSelectedItem();
-	    contactoSeleccionado = filaSeleccionada.getContacto();
+        if (contactoSeleccion != null) {
+            EstadoOperacion resultado = this.controlPersona
+                .quitarContacto(personaSeleccion, contactoSeleccion);
 
-	    EstadoOperacion resultado = this.controlPersona.quitarContacto(personaSeleccionada, contactoSeleccionado);
-
-	    switch(resultado.getEstado()) {
-            case DELETE_ERROR:
-                alertaError(TITULO, "Eliminar Contacto", resultado.getMensaje());
-                break;
-            case DELETE_OK:
-                dialogoConfirmacion(TITULO, "Eliminar Contacto", resultado.getMensaje());
-                contactoSeleccionado = null;
-                contactosVaciarControles();
-                break;
-            default:
-                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO,
+                        "Eliminar Contacto",
+                        resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    dialogoConfirmacion(TITULO,
+                        "Eliminar Contacto",
+                        resultado.getMensaje());
+                    contactoSeleccion = null;
+                    contactosVaciarControles();
+                    break;
+                default:
+                    throw new RuntimeException(
+                        "Estado de eliminación no esperado: " + resultado
+                            .getMensaje());
+            }
+            contactosActualizarTabla();
         }
-	    contactosActualizarTabla();
 	}
 
 	@FXML protected TableView<FilaContacto> tblContactos;
@@ -279,7 +291,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Domicilios ---------------------------- //
 
-	private IDomicilio domicilioSeleccionado = null;
+	private IDomicilio domicilioSeleccion = null;
     protected ObservableList<FilaDomicilio> filasDomicilios = FXCollections.observableArrayList();
 
     public class FilaDomicilio {
@@ -304,26 +316,29 @@ public class Personas extends ControladorVista implements Initializable {
         }
     }
 
+
     /** Refresca la tabla de domicilios */
     private void domiciliosActualizarTabla() {
         filasDomicilios.clear();
-        if (personaSeleccionada != null) {
-            for (IDomicilio domicilio: personaSeleccionada.getDomicilios()) {
+        if (personaSeleccion != null) {
+            for (IDomicilio domicilio: personaSeleccion.getDomicilios()) {
                 filasDomicilios.add(
                     new FilaDomicilio(domicilio));
             }
         }
     }
 
+
     /** Muestra los datos del domicilio seleccionado: */
     private void domiciliosMostrarDomicilio() {
-        if (domicilioSeleccionado != null) {
-            cmbDomiciliosProvincia.getSelectionModel().select(domicilioSeleccionado.getProvincia());
-            txtDomiciliosCiudad.setText(domicilioSeleccionado.getCiudad());
-            txtDomiciliosCP.setText(domicilioSeleccionado.getCodigoPostal());
-            txtDomiciliosDireccion.setText(domicilioSeleccionado.getDireccion());
+        if (domicilioSeleccion != null) {
+            cmbDomiciliosProvincia.getSelectionModel().select(domicilioSeleccion.getProvincia());
+            txtDomiciliosCiudad.setText(domicilioSeleccion.getCiudad());
+            txtDomiciliosCP.setText(domicilioSeleccion.getCodigoPostal());
+            txtDomiciliosDireccion.setText(domicilioSeleccion.getDireccion());
         }
     }
+
 
     /** Vacía los controles de datos del domicilio */
     private void domiciliosVaciarControles() {
@@ -335,6 +350,12 @@ public class Personas extends ControladorVista implements Initializable {
 
     @FXML private void inicializarDomicilios() {
         inicializarTabla("Domicilios");
+        tblDomicilios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                domicilioSeleccion = newSelection.getDomicilio();
+                domiciliosMostrarDomicilio();
+            }
+        });
 
         domiciliosActualizarTabla();
 
@@ -343,18 +364,18 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDomiciliosNuevo;
 	@FXML public void nuevoDomicilio(ActionEvent event) {
-	    domicilioSeleccionado = this.controlPersona.getIDomicilio();
+	    domicilioSeleccion = this.controlPersona.getIDomicilio();
 	    domiciliosVaciarControles();
 	}
 
 	@FXML private Button btnDomiciliosGuardar;
 	@FXML public void guardarDomicilio(ActionEvent event) {
-	    domicilioSeleccionado.setProvincia(cmbDomiciliosProvincia.getSelectionModel().getSelectedItem());
-	    domicilioSeleccionado.setCiudad(txtDomiciliosCiudad.getText());
-	    domicilioSeleccionado.setCodigoPostal(txtDomiciliosCP.getText());
-	    domicilioSeleccionado.setDireccion(txtDomiciliosDireccion.getText());
+	    domicilioSeleccion.setProvincia(cmbDomiciliosProvincia.getSelectionModel().getSelectedItem());
+	    domicilioSeleccion.setCiudad(txtDomiciliosCiudad.getText());
+	    domicilioSeleccion.setCodigoPostal(txtDomiciliosCP.getText());
+	    domicilioSeleccion.setDireccion(txtDomiciliosDireccion.getText());
 
-        EstadoOperacion resultado = this.controlPersona.guardarDomicilio(personaSeleccionada, domicilioSeleccionado);
+        EstadoOperacion resultado = this.controlPersona.guardarDomicilio(personaSeleccion, domicilioSeleccion);
         switch (resultado.getEstado()) {
             case INSERT_ERROR:
             case UPDATE_ERROR:
@@ -372,30 +393,30 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDomicilioDescartar;
 	@FXML public void descartarDomicilio(ActionEvent event) {
-	    domicilioSeleccionado = null;
+	    domicilioSeleccion = null;
         domiciliosVaciarControles();
 	}
 
 	@FXML private Button btnDomiciliosEliminar;
 	@FXML public void eliminarDomicilio(ActionEvent event) {
-	    FilaDomicilio filaSeleccionada = this.tblDomicilios.getSelectionModel().getSelectedItem();
-        domicilioSeleccionado = filaSeleccionada.getDomicilio();
+	    if (domicilioSeleccion != null) {
+    	    EstadoOperacion resultado = this.controlPersona
+    	        .quitarDomicilio(personaSeleccion, domicilioSeleccion);
 
-        EstadoOperacion resultado = this.controlPersona.quitarDomicilio(personaSeleccionada, domicilioSeleccionado);
-
-        switch(resultado.getEstado()) {
-            case DELETE_ERROR:
-                alertaError(TITULO, "Eliminar Domicilio", resultado.getMensaje());
-                break;
-            case DELETE_OK:
-                dialogoConfirmacion(TITULO, "Eliminar Domicilio", resultado.getMensaje());
-                domicilioSeleccionado = null;
-                domiciliosVaciarControles();
-                break;
-            default:
-                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
-        }
-        domiciliosActualizarTabla();
+            switch(resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Domicilio", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    dialogoConfirmacion(TITULO, "Eliminar Domicilio", resultado.getMensaje());
+                    domicilioSeleccion = null;
+                    domiciliosVaciarControles();
+                    break;
+                default:
+                    throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+            }
+            domiciliosActualizarTabla();
+	    }
 	}
 
 	@FXML protected TableView<FilaDomicilio> tblDomicilios;
@@ -411,7 +432,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 // ---------------------------- Pestaña Títulos ----------------------------- //
 
-	private ITitulo tituloSeleccionado = null;
+	private ITitulo tituloSeleccion = null;
 	protected ObservableList<FilaTitulo> filasTitulos = FXCollections.observableArrayList();
 
 	public class FilaTitulo {
@@ -433,8 +454,8 @@ public class Personas extends ControladorVista implements Initializable {
 	/** Refresca la tabla de títulos */
     private void titulosActualizarTabla() {
         filasTitulos.clear();
-        if (personaSeleccionada != null) {
-            for (ITitulo titulo : personaSeleccionada.getTitulos()) {
+        if (personaSeleccion != null) {
+            for (ITitulo titulo : personaSeleccion.getTitulos()) {
                 filasTitulos.add(new FilaTitulo(titulo));
             }
         }
@@ -442,8 +463,8 @@ public class Personas extends ControladorVista implements Initializable {
 
     /** Muestra los datos del titulo seleccionado: */
     private void titulosMostrarTitulo() {
-        if (domicilioSeleccionado != null) {
-            txtTitulosTitulo.setText(tituloSeleccionado.getNombre());
+        if (tituloSeleccion != null) {
+            txtTitulosTitulo.setText(tituloSeleccion.getNombre());
         }
     }
 
@@ -454,6 +475,12 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private void inicializarTitulos() {
 	    inicializarTabla("Titulos");
+	    tblTitulos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                tituloSeleccion = newSelection.getTitulo();
+                titulosMostrarTitulo();
+            }
+        });
 	    titulosActualizarTabla();
 	}
 
@@ -461,10 +488,10 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnTitulosAgregar;
 	@FXML public void agregarTitulo(ActionEvent event) {
-	    ITitulo tituloNuevo = this.controlPersona.getITitulo();
-	    tituloNuevo.setNombre(txtTitulosTitulo.getText());
+	    tituloSeleccion = this.controlPersona.getITitulo();
+	    tituloSeleccion.setNombre(txtTitulosTitulo.getText());
 
-	    EstadoOperacion resultado = this.controlPersona.guardarTitulo(personaSeleccionada, tituloSeleccionado);
+	    EstadoOperacion resultado = this.controlPersona.guardarTitulo(personaSeleccion, tituloSeleccion);
 	    switch (resultado.getEstado()) {
 	        case INSERT_ERROR:
             case UPDATE_ERROR:
@@ -483,16 +510,16 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnTitulosQuitar;
 	@FXML public void quitarTitulo(ActionEvent event) {
 	    FilaTitulo filaSeleccionada = this.tblTitulos.getSelectionModel().getSelectedItem();
-        tituloSeleccionado = filaSeleccionada.getTitulo();
+        tituloSeleccion = filaSeleccionada.getTitulo();
 
-        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccionada, tituloSeleccionado);
+        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccion, tituloSeleccion);
         switch(resultado.getEstado()) {
             case DELETE_ERROR:
                 alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
                 break;
             case DELETE_OK:
                 dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
-                tituloSeleccionado = null;
+                tituloSeleccion = null;
                 titulosVaciarControles();
                 break;
             default:
