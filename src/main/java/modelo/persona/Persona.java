@@ -112,6 +112,10 @@ public class Persona implements IPersona {
 
 	@Override
 	public List<IDomicilio> getDomicilios() {
+	    if (this.domicilios == null) {
+	        GestorPersona gestorPersona = new GestorPersona();
+	        return gestorPersona.getDomicilios(this);
+	    }
 		return domicilios;
 	}
 
@@ -156,6 +160,10 @@ public class Persona implements IPersona {
 
 	@Override
 	public List<ITitulo> getTitulos() {
+	    if (titulos == null) {
+	        GestorPersona gestorPersona = new GestorPersona();
+	        return gestorPersona.getTitulos(this);
+	    }
 		return titulos;
 	}
 
