@@ -73,6 +73,7 @@ public class GestorPersona {
 			}
 
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear la persona");
 
 		}
@@ -149,6 +150,7 @@ public class GestorPersona {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
 			}
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
 		}
 	}
@@ -182,6 +184,7 @@ public class GestorPersona {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
 			}
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
 		}
 	}
@@ -221,7 +224,7 @@ public class GestorPersona {
 			}
 
 		} catch (Exception e) {
-
+		    e.printStackTrace();
 			personas = new ArrayList<IPersona>();
 		}
 
@@ -250,6 +253,7 @@ public class GestorPersona {
 			}
 			return domicilios;
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new ArrayList<IDomicilio>();
 		}
 
@@ -286,6 +290,7 @@ public class GestorPersona {
 			}
 			return contactos;
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new ArrayList<IContacto>();
 		}
 	}
@@ -301,11 +306,12 @@ public class GestorPersona {
 					md.select(table, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				ITitulo t =
-						new Titulo(Integer.parseInt(reg.get("idtitulos")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
+						new Titulo(Integer.parseInt(reg.get("id")), reg.get("Nombre"), Integer.parseInt(reg.get("EsMayor")) == 1);
 				titulos.add(t);
 			}
 			return titulos;
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return new ArrayList<ITitulo>();
 		}
 	}
@@ -357,6 +363,7 @@ public class GestorPersona {
 			int max = Integer.parseInt(res.get(0).get(campos));
 			return max;
 		} catch (Exception e) {
+		    e.printStackTrace();
 			return 0;
 		}
 
@@ -376,6 +383,7 @@ public class GestorPersona {
 			return !(res.isEmpty());
 
 		}catch (Exception e) {
+		    e.printStackTrace();
 			return false;
 		}
 	}
@@ -445,7 +453,7 @@ public class GestorPersona {
 
 			ManejoDatos md = new ManejoDatos();
 			String table = "Contactos";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `idcontacto`='"+contacto.getId()+"'";
+			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `idcontacto`="+contacto.getId();
 
 			String campos =	"`Tipo` = '" + contacto.getTipo() + "', "
 							+ "`Valor` = '" + contacto.getDato() + "'";
@@ -535,7 +543,7 @@ public class GestorPersona {
 
 			ManejoDatos md = new ManejoDatos();
 			String table = "Domicilios";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `iddomicilio`='"+domicilio.getId()+"'";
+			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento().getId() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "', `iddomicilios`="+domicilio.getId();
 
 			String campos =	"`Provincia` = '" + domicilio.getProvincia() + "', "
 							+ "`Ciudad` = '" + domicilio.getCiudad() + "', "
@@ -561,7 +569,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Domicilios";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", IdDpmicilio = '" + domicilio.getId() + "'";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + " AND NroDocumento = '" + persona.getNroDocumento()+ " AND idDomicilios = " + domicilio.getId();
 
 			md.delete(table, condicion);
 
@@ -625,7 +633,7 @@ public class GestorPersona {
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "', `NroDocumento` = '" + persona.getNroDocumento() + "', `titulo`='"+titulo.getId()+"'";
+			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `titulo`='"+titulo.getId()+"'";
 
 			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
 							+esMayor;
@@ -649,7 +657,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento()+ ", Id = '" + titulo.getId() + "'";
+			String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ "' AND Id = " + titulo.getId();
 
 			md.delete(table, condicion);
 
