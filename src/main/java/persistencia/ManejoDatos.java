@@ -6,6 +6,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import utilidades.LogQuery;
 
 public class ManejoDatos {
 
@@ -24,7 +25,7 @@ public class ManejoDatos {
         estado = true;
 
         String query = "DELETE FROM " + tabla + " WHERE " + condicion;
-        System.out.println(query);
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
@@ -42,10 +43,8 @@ public class ManejoDatos {
         estado = true;
         String mensaje = "Se inserto la fila correctamente";
 
-        String query =
-            "insert into " + tabla + " (" + campos + ") values (" + valores
-                + ")";
-        System.out.println(query);
+        String query = "insert into " + tabla + " (" + campos + ") values (" + valores + ")";
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
@@ -66,7 +65,7 @@ public class ManejoDatos {
         ArrayList<Hashtable<String, String>> res = new ArrayList<>();
 
         String query = "select " + campos + " from " + tabla;
-        System.out.printf("%s\n", query);
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
@@ -86,7 +85,7 @@ public class ManejoDatos {
         } finally {
         	con.desconectar();
             connection = null;
-            
+
         }
         return res;
     }
@@ -97,7 +96,7 @@ public class ManejoDatos {
 
         String query =
             "select " + campos + " from " + tabla + " where " + condicion;
-        System.out.println(query);
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
@@ -117,7 +116,7 @@ public class ManejoDatos {
         } finally {
         	con.desconectar();
             connection = null;
-            
+
         }
         return res;
     }
@@ -126,7 +125,7 @@ public class ManejoDatos {
         String mensaje = "Se actualizo correctamente la tabla";
 
         String query = "update " + tabla + " on " + campos;
-        System.out.printf("%s\n", query);
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
@@ -147,7 +146,7 @@ public class ManejoDatos {
 
         String query =
             "update " + tabla + " set " + campos + " where " + condicion;
-        System.out.printf("%s\n", query);
+        LogQuery.log(query);
 
         Connection connection = con.conectar();
         try {
