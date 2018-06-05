@@ -173,7 +173,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    public String getDato() {
 	        return this.contacto.getDato();
 	    }
-	    public IContacto getContacto() {
+	    public IContacto getInstanciaContacto() {
 	        return this.contacto;
 	    }
 	}
@@ -208,7 +208,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    inicializarTabla("Contactos");
 	    tblContactos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                contactoSeleccion = newSelection.getContacto();
+                contactoSeleccion = newSelection.getInstanciaContacto();
                 contactosMostrarContacto();
             }
         });
@@ -305,17 +305,16 @@ public class Personas extends ControladorVista implements Initializable {
         public String getCiudad() {
             return this.domicilio.getCiudad();
         }
-        public String getCodigoPostal() {
+        public String getCP() {
             return this.domicilio.getCodigoPostal();
         }
         public String getDireccion() {
             return this.domicilio.getDireccion();
         }
-        public IDomicilio getDomicilio() {
+        public IDomicilio getInstanciaDomicilio() {
             return this.domicilio;
         }
     }
-
 
     /** Refresca la tabla de domicilios */
     private void domiciliosActualizarTabla() {
@@ -328,7 +327,6 @@ public class Personas extends ControladorVista implements Initializable {
         }
     }
 
-
     /** Muestra los datos del domicilio seleccionado: */
     private void domiciliosMostrarDomicilio() {
         if (domicilioSeleccion != null) {
@@ -338,7 +336,6 @@ public class Personas extends ControladorVista implements Initializable {
             txtDomiciliosDireccion.setText(domicilioSeleccion.getDireccion());
         }
     }
-
 
     /** Vacía los controles de datos del domicilio */
     private void domiciliosVaciarControles() {
@@ -352,7 +349,7 @@ public class Personas extends ControladorVista implements Initializable {
         inicializarTabla("Domicilios");
         tblDomicilios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                domicilioSeleccion = newSelection.getDomicilio();
+                domicilioSeleccion = newSelection.getInstanciaDomicilio();
                 domiciliosMostrarDomicilio();
             }
         });
@@ -446,7 +443,10 @@ public class Personas extends ControladorVista implements Initializable {
 	    public boolean esMayor() {
 	        return this.titulo.isEsMayor();
 	    }
-	    public ITitulo getTitulo() {
+	    public String getTitulo() {
+	        return this.titulo.getNombre();
+	    }
+	    public ITitulo getInstanciaTitulo() {
 	        return this.titulo;
 	    }
 	}
@@ -477,7 +477,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    inicializarTabla("Titulos");
 	    tblTitulos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                tituloSeleccion = newSelection.getTitulo();
+                tituloSeleccion = newSelection.getInstanciaTitulo();
                 titulosMostrarTitulo();
             }
         });
@@ -509,23 +509,22 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnTitulosQuitar;
 	@FXML public void quitarTitulo(ActionEvent event) {
-	    FilaTitulo filaSeleccionada = this.tblTitulos.getSelectionModel().getSelectedItem();
-        tituloSeleccion = filaSeleccionada.getTitulo();
-
-        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccion, tituloSeleccion);
-        switch(resultado.getEstado()) {
-            case DELETE_ERROR:
-                alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
-                break;
-            case DELETE_OK:
-                dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
-                tituloSeleccion = null;
-                titulosVaciarControles();
-                break;
-            default:
-                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
-        }
-        titulosActualizarTabla();
+	    if (tituloSeleccion != null) {
+	        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccion, tituloSeleccion);
+	        switch(resultado.getEstado()) {
+	            case DELETE_ERROR:
+	                alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
+	                break;
+	            case DELETE_OK:
+	                dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
+	                tituloSeleccion = null;
+	                titulosVaciarControles();
+	                break;
+	            default:
+	                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+	        }
+	        titulosActualizarTabla();
+	    }
 	}
 
 	@FXML protected TableView<FilaTitulo> tblTitulos;
