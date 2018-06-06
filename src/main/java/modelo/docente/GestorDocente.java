@@ -13,7 +13,7 @@ public class GestorDocente {
     public EstadoOperacion nuevoDocente(IDocente doc) {
         try {
         	IDocenteg docente = (IDocenteg) doc;
-        	
+
             ManejoDatos md = new ManejoDatos();
             docente.getEstado2().guardar();
 
@@ -142,7 +142,7 @@ public class GestorDocente {
 
     private String armarCondicionDocente(IDocenteg docente) {
         String condicion = "";
-        
+
         if (docente.getLegajo() > 0) {
             condicion += "`Legajo` = " + docente.getLegajo();
         }
@@ -439,8 +439,8 @@ public class GestorDocente {
     private String armarCondicionCargo(ICargoDocente car, IDocente docente) {
         String condicion = "TRUE";
         ICargoDocenteg cargo = (ICargoDocenteg) car;
-        
-        
+
+
         if (cargo != null) {
             if (cargo.getId() != -1) {
                 condicion += " AND `Codigo` = " + cargo.getId();
@@ -529,6 +529,7 @@ public class GestorDocente {
         }
     }
 
+    // Plantillas vacías ======================================================
     /**
      * @return Una plantilla ICargoDocente vacía
      */
@@ -541,5 +542,13 @@ public class GestorDocente {
      */
     public IDocente getIDocente() {
         return new Docente();
+    }
+
+
+    /**
+     * @return Una plantilla IIncentivo vacía
+     */
+    public IIncentivo getIIncentivo() {
+        return new Incentivo();
     }
 }

@@ -9,6 +9,7 @@ import modelo.cargo.ICargo;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import modelo.docente.IDocenteg;
 import modelo.docente.IIncentivo;
 import vista.controladores.ControladorVista;
 
@@ -58,7 +59,7 @@ public class ControlDocente {
 //        NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
         if (cargoDocente.getId() == -1) {
             // Se agrega un nuevo Cargo Docente
-            EstadoOperacion resultado = gestorDocente.agregarCargoDocente(docente, cargoDocente);
+            EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
             switch (resultado.getEstado()) {
                 case INSERT_OK:
 //                	notificacion.notificar(resultado);
@@ -121,8 +122,13 @@ public class ControlDocente {
     }
 
 //  Incentivos
+
+    public IIncentivo getIIncentivo() {
+        return this.gestorDocente.getIIncentivo();
+    }
+
     public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
-        return this.gestorDocente.agregarIncentivo(docente, incentivo);
+        return this.gestorDocente.agregarIncentivo((IDocenteg) docente, incentivo);
     }
 
     public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {

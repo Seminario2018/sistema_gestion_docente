@@ -9,6 +9,11 @@ public class Incentivo implements IIncentivo {
 	    this.fecha = fecha;
 	}
 
+    public Incentivo() {
+
+    }
+
+
     @Override
     public IIncentivo clone() {
         return (IIncentivo) new Incentivo(this.fecha);
