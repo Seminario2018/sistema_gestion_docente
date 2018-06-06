@@ -12,6 +12,7 @@ import java.util.Set;
 import controlador.ControlAuxiliar;
 import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
+import excel.Costeo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -53,7 +54,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	        actualizarCamposGeneral();
 		}
 	}
-	
+
 	public void setPersonaSeleccion(Object personaSeleccion) {
 		if (personaSeleccion instanceof IPersona) {
 			this.docenteSeleccion.setPersona((IPersona) personaSeleccion);
@@ -64,22 +65,23 @@ public class Docentes extends ControladorVista implements Initializable {
             		+ ((IPersona) personaSeleccion).getNombre());
 		}
 	}
-	
+
 	public void setAreaSeleccion(Object areaSeleccion) {
 		if (areaSeleccion instanceof IArea) {
 			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
 			this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
 		}
 	}
-	
+
 	public void setCargoSeleccion(Object cargoSeleccion) {
 		if (cargoSeleccion instanceof ICargo) {
 			this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
 			this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
 		}
 	}
-	
-	public void initialize(URL arg0, ResourceBundle arg1) {
+
+	@Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
 
 	}
 
@@ -116,7 +118,8 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 	@FXML private void importarUltimoCosto() {
-
+	    Costeo.importar(elegirArchivo(TITULO));
+	    dialogoConfirmacion(TITULO, "Importar Último Costo", "Los costos fueron actualizados.");
     }
 
 	private void actualizarCamposGeneral() {
@@ -147,11 +150,12 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.txtDocentesLegajo.clear();
 		this.txtDocentesNombre.clear();
 	}
-	
+
 	/**
 	 * Recibir parámetros de la pantalla de búsqueda
 	 */
-	public void recibirParametros(Map<String, Object> args) {
+	@Override
+    public void recibirParametros(Map<String, Object> args) {
 		Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
 		if (oSeleccion != null) {
 			String seleccion = (String) oSeleccion;
@@ -378,12 +382,12 @@ public class Docentes extends ControladorVista implements Initializable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Método que se ejecuta cuando se selecciona un Cargo Docente
 	 */
 	public void actualizarCamposCargos() {
-		
+
 	}
 
 	@FXML public TableView tblCargos;
@@ -446,7 +450,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		}
 	}
 
-	
+
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
 	@FXML private void seleccionarArea() {
@@ -458,7 +462,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
 
-	
+
 	@FXML public TextField txtCargosCargo;
 	@FXML public Button btnCargosCargo;
 	@FXML private void seleccionarCargo() {

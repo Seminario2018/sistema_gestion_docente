@@ -5,7 +5,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,11 +24,11 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 public class Excel {
 
-	public static List<List<String>> importar(String path) {
+	public static List<List<String>> importar(File archivo) {
 
 		try {
 			// Creating a Workbook from an Excel file (.xls or .xlsx)
-			Workbook workbook = WorkbookFactory.create(new File(path));
+			Workbook workbook = WorkbookFactory.create(archivo);
 
 			 // Getting the Sheet at index zero
 	        Sheet sheet = workbook.getSheetAt(0);

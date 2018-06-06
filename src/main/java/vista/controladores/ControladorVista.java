@@ -1,5 +1,6 @@
 package vista.controladores;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import vista.GestorPantalla;
 
 /**
@@ -154,5 +157,16 @@ public abstract class ControladorVista {
 	    alerta.setHeaderText(encabezado);
         alerta.setContentText(contenido);
         alerta.showAndWait();
+	}
+
+	/**
+	 * Abre una ventana para permitir seleccionar un archivo.
+	 * @param titulo Título de la ventana
+	 * @return Archivo seleccionado
+	 */
+	public File elegirArchivo(String titulo) {
+	    FileChooser fileChooser = new FileChooser();
+	    fileChooser.setTitle(titulo);
+	    return fileChooser.showOpenDialog(new Stage());
 	}
 }

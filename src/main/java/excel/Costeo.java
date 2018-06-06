@@ -1,5 +1,6 @@
 package excel;
 
+import java.io.File;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -66,7 +67,7 @@ public class Costeo {
      * docentes, y actualiza los costos de los cargos docentes correspondientes.
      * @param archivo Ruta del archivo de la planilla de cálculo.
      */
-    public static void importar(String archivo) {
+    public static void importar(File archivo) {
         List<List<String>> grilla = Excel.importar(archivo);
 
         // Saco los encabezados y las últimas filas con las fórmulas:
