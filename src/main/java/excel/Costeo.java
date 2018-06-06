@@ -1,10 +1,13 @@
 package excel;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
+import org.apache.poi.EncryptedDocumentException;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import controlador.ControlDocente;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
@@ -66,8 +69,11 @@ public class Costeo {
      * Importa de una planilla de Excel los datos sobre las remuneraciones de los
      * docentes, y actualiza los costos de los cargos docentes correspondientes.
      * @param archivo Ruta del archivo de la planilla de cálculo.
+     * @throws IOException
+     * @throws InvalidFormatException
+     * @throws EncryptedDocumentException
      */
-    public static void importar(File archivo) {
+    public static void importar(File archivo) throws EncryptedDocumentException, InvalidFormatException, IOException {
         List<List<String>> grilla = Excel.importar(archivo);
 
         // Saco los encabezados y las últimas filas con las fórmulas:

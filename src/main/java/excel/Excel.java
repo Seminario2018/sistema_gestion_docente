@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -24,43 +25,34 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  */
 public class Excel {
 
-	public static List<List<String>> importar(File archivo) {
+	public static List<List<String>> importar(File archivo) throws EncryptedDocumentException, InvalidFormatException, IOException {
 
-		try {
-			// Creating a Workbook from an Excel file (.xls or .xlsx)
-			Workbook workbook = WorkbookFactory.create(archivo);
+		// Creating a Workbook from an Excel file (.xls or .xlsx)
+		Workbook workbook = WorkbookFactory.create(archivo);
 
-			 // Getting the Sheet at index zero
-	        Sheet sheet = workbook.getSheetAt(0);
+		 // Getting the Sheet at index zero
+        Sheet sheet = workbook.getSheetAt(0);
 
-	        // Create a DataFormatter to format and get each cell's value as String
-	        DataFormatter dataFormatter = new DataFormatter();
+        // Create a DataFormatter to format and get each cell's value as String
+        DataFormatter dataFormatter = new DataFormatter();
 
-			List<List<String>> data = new ArrayList<List<String>>();
+		List<List<String>> data = new ArrayList<List<String>>();
 
-			int i = 0;
+		int i = 0;
 
-			for (Row row : sheet) {
-				// Create the row
-				data.add(i, new ArrayList<String>());
+		for (Row row : sheet) {
+			// Create the row
+			data.add(i, new ArrayList<String>());
 
-				for (Cell cell : row) {
-					// Get the cell data
-					data.get(i).add(dataFormatter.formatCellValue(cell));
-				}
-
-				i++;
+			for (Cell cell : row) {
+				// Get the cell data
+				data.get(i).add(dataFormatter.formatCellValue(cell));
 			}
 
-			return data;
-
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		} catch (InvalidFormatException e) {
-			e.printStackTrace();
-			return null;
+			i++;
 		}
+
+		return data;
 	}
 
 	public static boolean exportar(String path, List<String> encabezados, List<List<String>> grilla) {
