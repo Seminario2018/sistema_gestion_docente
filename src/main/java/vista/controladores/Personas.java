@@ -55,6 +55,13 @@ public class Personas extends ControladorVista implements Initializable {
 	private void generalVaciarControles() {
 	    txtPersonasDocumento.clear();
 	    txtPersonasNombre.clear();
+
+	    // Vaciar controles de las pestañas:
+	    vaciarTablas();
+	    datosVaciarControles();
+	    contactosVaciarControles();
+	    domiciliosVaciarControles();
+	    titulosVaciarControles();
 	}
 
 	@FXML private TextField txtPersonasDocumento;
@@ -69,13 +76,15 @@ public class Personas extends ControladorVista implements Initializable {
         List<IPersona> listaPersonas = this.controlPersona.listarPersonas(personaBusqueda);
         personaSeleccion = listaPersonas.get(0);
         //*/
+
         generalMostrarPersona();
         datosMostrarPersona();
 	}
 
 	@FXML private Button btnPersonasNueva;
 	@FXML public void nuevaPersona(ActionEvent event) {
-
+	    personaSeleccion = this.controlPersona.getIPersona();
+	    generalVaciarControles();
 	}
 
 	@FXML private Button btnPersonasEliminar;
@@ -91,7 +100,6 @@ public class Personas extends ControladorVista implements Initializable {
                     personaSeleccion = null;
 
                     generalVaciarControles();
-                    datosVaciarControles();
                     break;
                 default:
                     throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());

@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -29,14 +28,14 @@ public abstract class ControladorVista {
 	public void setGestorPantalla(GestorPantalla gestor) {
 		this.gestorPantalla = gestor;
 	}
-	
+
 	/**
 	 * Recibe argumentos durante la inicialización para setear parámetros,
 	 * e.g la pantalla Búsqueda se inicializa con parámetros para buscar Docentes
 	 * Como es opcional, se debe agregar comportamiento con @Override
 	 */
 	public void recibirParametros(Map<String, Object> args) {
-		
+
 	}
 
 	/**
@@ -107,6 +106,26 @@ public abstract class ControladorVista {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/** Vacía todas las tablas de la vista.<br>
+	 * Lo hace vaciando todas las listas observables asignadas a cada tabla. */
+	@SuppressWarnings("rawtypes")
+    public void vaciarTablas() {
+	    try {
+            Class<? extends ControladorVista> clase = this.getClass();
+
+            // Busca todos los atributos que sean "filasX":
+            for (Field campo : clase.getDeclaredFields()) {
+                if (campo.getName().startsWith("filas")) {
+                    ObservableList filas = (ObservableList) campo.get(this);
+                    filas.clear();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	/**
