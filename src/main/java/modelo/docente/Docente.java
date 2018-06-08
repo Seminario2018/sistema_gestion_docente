@@ -125,6 +125,11 @@ public class Docente implements IDocente, IDocenteg {
 	}
 
 	@Override
+    public void setCargosDocentes(List<ICargoDocente> cargosDocentes) {
+        this.cargosDocentes = cargosDocentes;
+    }
+
+	@Override
     public void agregarCargoDocente(ICargoDocente planta) {
 		this.cargosDocentes.add(planta);
 //		GestorDocente gd = new GestorDocente();
@@ -147,6 +152,10 @@ public class Docente implements IDocente, IDocenteg {
 		return incentivos;
 	}
 
+	@Override
+    public void setIncentivos(List<IIncentivo> incentivos) {
+	    this.incentivos = incentivos;
+	}
 
 	@Override
 	public void agregarIncentivo(IIncentivo incentivo) {
@@ -238,8 +247,6 @@ public class Docente implements IDocente, IDocenteg {
 	public List<ICargoDocente> getCargosDocentes2() {
 		return this.cargosDocentes;
 	}
-
-
 
 
 }

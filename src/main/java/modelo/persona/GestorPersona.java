@@ -428,7 +428,7 @@ public class GestorPersona {
 
 
 			if (md.isEstado()) {
-			    persona.setContactos(null);
+			    persona.setContactos(new ArrayList<IContacto>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El contacto se creo correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el contacto");
@@ -458,7 +458,7 @@ public class GestorPersona {
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
-			    persona.setContactos(null);
+			    persona.setContactos(new ArrayList<IContacto>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El contacto se modifico correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
@@ -478,7 +478,7 @@ public class GestorPersona {
 			md.delete(table, condicion);
 
 			if (md.isEstado()) {
-			    persona.setContactos(null);
+			    persona.setContactos(new ArrayList<IContacto>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El Cantacto se eliminó correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
@@ -518,7 +518,7 @@ public class GestorPersona {
 
 
 			if (md.isEstado()) {
-			    persona.setDomicilios(null);
+			    persona.setDomicilios(new ArrayList<IDomicilio>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El Domicilio se creo correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el domicilio");
@@ -549,7 +549,7 @@ public class GestorPersona {
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
-			    persona.setDomicilios(null);
+			    persona.setDomicilios(new ArrayList<IDomicilio>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
@@ -569,7 +569,7 @@ public class GestorPersona {
 			md.delete(table, condicion);
 
 			if (md.isEstado()) {
-			    persona.setDomicilios(null);
+			    persona.setDomicilios(new ArrayList<IDomicilio>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El Domicilio se eliminó correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Domicilio");
@@ -608,7 +608,7 @@ public class GestorPersona {
 
 
 			if (md.isEstado()) {
-			    persona.setTitulos(null);
+			    persona.setTitulos(new ArrayList<ITitulo>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El titulo se creo correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el titulo");
@@ -637,7 +637,7 @@ public class GestorPersona {
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
-			    persona.setTitulos(null);
+			    persona.setTitulos(new ArrayList<ITitulo>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
@@ -657,7 +657,7 @@ public class GestorPersona {
 			md.delete(table, condicion);
 
 			if (md.isEstado()) {
-			    persona.setTitulos(null);
+			    persona.setTitulos(new ArrayList<ITitulo>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El titulo se eliminó correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo titulo el Domicilio");

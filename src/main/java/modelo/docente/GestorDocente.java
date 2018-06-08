@@ -190,6 +190,7 @@ public class GestorDocente {
         String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo();
         md.insertar(tabla, campos, valores);
         if (md.isEstado()) {
+            ((IDocente) docente).setIncentivos(new ArrayList<IIncentivo>());
             return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
                 "El incentivo se creó correctamente");
         } else {
@@ -204,9 +205,14 @@ public class GestorDocente {
         String condicion = " Legajo = " + docente.getLegajo() + " AND Fecha = '" + incentivo.getFecha() + "'";
 
         md.delete(tabla, condicion);
-
-        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-            "El incentivo se quitó correctamente");
+        if (md.isEstado()) {
+            docente.setIncentivos(new ArrayList<IIncentivo>());
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
+                "El incentivo se quitó correctamente");
+        } else {
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
+                "El incentivo no se quitó");
+        }
     }
 
     public List<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo) {
@@ -302,6 +308,7 @@ public class GestorDocente {
             }
             md.insertar("CargosDocentes", campos, valores);
             if (md.isEstado()) {
+                ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
                     "El Cargo Docente se agregó correctamente");
             } else {
@@ -353,6 +360,7 @@ public class GestorDocente {
             ManejoDatos md = new ManejoDatos();
             md.update("CargosDocentes", campos, condicion);
             if (md.isEstado()) {
+                ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK,
                     "El CargoDocente se modificó correctamente");
             } else {
@@ -372,6 +380,7 @@ public class GestorDocente {
             md.delete("CargosDocentes", condicion);
 
             if (md.isEstado()) {
+                ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
                     "El CargoDocente se quitó correctamente");
             } else {

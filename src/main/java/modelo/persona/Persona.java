@@ -112,7 +112,7 @@ public class Persona implements IPersona, IPersonag {
 
 	@Override
 	public List<IDomicilio> getDomicilios() {
-	    if (this.domicilios == null) {
+	    if (this.domicilios.isEmpty()) {
 	        GestorPersona gestorPersona = new GestorPersona();
 	        this.domicilios = gestorPersona.getDomicilios(this);
 	    }
@@ -127,7 +127,7 @@ public class Persona implements IPersona, IPersonag {
 
 	@Override
 	public List<IContacto> getContactos() {
-		if (this.contactos == null) {
+		if (this.contactos.isEmpty()) {
 			List<IContacto> contactos = new ArrayList<IContacto>();
 			try {
 				ManejoDatos md = new ManejoDatos();
@@ -160,7 +160,7 @@ public class Persona implements IPersona, IPersonag {
 
 	@Override
 	public List<ITitulo> getTitulos() {
-	    if (titulos == null) {
+	    if (titulos.isEmpty()) {
 	        GestorPersona gestorPersona = new GestorPersona();
 	        this.titulos = gestorPersona.getTitulos(this);
 	    }
