@@ -127,8 +127,8 @@ public class Docente implements IDocente, IDocenteg {
 	@Override
     public void agregarCargoDocente(ICargoDocente planta) {
 		this.cargosDocentes.add(planta);
-		GestorDocente gd = new GestorDocente();
-		gd.agregarCargoDocente(this, planta);
+//		GestorDocente gd = new GestorDocente();
+//		gd.agregarCargoDocente(this, planta);
 	}
 
 	@Override

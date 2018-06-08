@@ -4,13 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.Year;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import controlador.ControlAuxiliar;
@@ -38,7 +37,6 @@ import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
-import modelo.docente.Incentivo;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
@@ -55,7 +53,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	public void setDocenteSeleccion(Object docenteSeleccion) {
 		if (docenteSeleccion instanceof IDocente) {
 			this.docenteSeleccion = (IDocente) docenteSeleccion;
-	        actualizarCamposGeneral();
+	        generalMostrarDocente();
 		}
 	}
 
@@ -110,13 +108,14 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private void nuevoDocente() {
 		this.docenteSeleccion = this.controlDocente.getIDocente();
+		generalVaciarControles();
     }
 
 	@FXML private void eliminarDocente() {
 	    if (docenteSeleccion != null) {
 	        this.controlDocente.eliminarDocente(docenteSeleccion);
 	        docenteSeleccion = null;
-	        vaciarCamposGeneral();
+	        generalVaciarControles();
 	        dialogoConfirmacion(TITULO, "Eliminar docente", "El docente fue eliminado con éxito.");
 	    }
     }
@@ -141,33 +140,30 @@ public class Docentes extends ControladorVista implements Initializable {
         }
     }
 
-	private void actualizarCamposGeneral() {
-		vaciarCamposGeneral();
-		if (this.docenteSeleccion != null) {
-			this.txtDocentesLegajo.setText(
-					String.valueOf(docenteSeleccion.getLegajo()));
-			if (this.docenteSeleccion.getPersona() != null) {
-				this.txtDocentesNombre.setText(
-						this.docenteSeleccion
-							.getPersona().getApellido()
-						+ ", " +
-						this.docenteSeleccion
-							.getPersona().getNombre()
-						);
-			}
-		}
+	private void generalMostrarDocente() {
+		generalVaciarControles();
+		if (docenteSeleccion != null) {
+			txtDocentesLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
+			txtDocentesNombre.setText(docenteSeleccion.getPersona().getNombreCompleto());
 
-		actualizarCamposDatos();
-		actualizarTablaCargos();
-//		TODO
-//		actualizarTablaInvestigacion();
-//		actualizarTablaIncentivos();
-//		actualizarObservaciones();
+			datosMostrarDocente();
+	        cargosActualizarTabla();
+	        investigacionActualizarTabla();
+	        incentivosActualizarTabla();
+	        mostrarObservaciones();
+		}
 	}
 
-	private void vaciarCamposGeneral() {
+	/** Vacía los controles generales y los de todas las pestañas */
+	private void generalVaciarControles() {
 		this.txtDocentesLegajo.clear();
 		this.txtDocentesNombre.clear();
+
+		// Vaciar controles de las pestañas:
+		vaciarTablas();
+		datosVaciarControles();
+		cargosVaciarControles();
+		observacionesVaciarControles();
 	}
 
 	/**
@@ -195,18 +191,9 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public ComboBox<EstadoDocente> cmbDatosEstado;
 	@FXML public ComboBox<CategoriaInvestigacion> cmbDatosCategoria;
 
-	@FXML private void inicializarDatos() {
-	    this.cmbDatosEstado.setItems(
-            FXCollections.observableArrayList(
-                ControlAuxiliar.listarEstadosDocente()));
-
-	    this.cmbDatosCategoria.setItems(
-	        FXCollections.observableArrayList(
-                ControlAuxiliar.listarCategoriasInvestigacion()));
-	}
-
-	@FXML private void mostrarDatos() {
-        if (docenteSeleccion != null) {
+	/** Muestra los datos de la persona seleccionada: */
+	private void datosMostrarDocente() {
+	    if (docenteSeleccion != null) {
             IPersona persona = docenteSeleccion.getPersona();
             txtDatosDocumento.setText(
                     String.valueOf(persona.getNroDocumento()));
@@ -219,6 +206,29 @@ public class Docentes extends ControladorVista implements Initializable {
             cmbDatosCategoria.getSelectionModel().select(
                     docenteSeleccion.getCategoriaInvestigacion());
         }
+	}
+
+	/** Vacía los controles de datos */
+	private void datosVaciarControles() {
+        txtDatosDocumento.clear();
+        txtDatosNombre.clear();
+        txtDatosLegajo.clear();
+        cmbDatosEstado.getSelectionModel().clearSelection();
+        cmbDatosCategoria.getSelectionModel().clearSelection();
+    }
+
+	@FXML private void inicializarDatos() {
+	    this.cmbDatosEstado.setItems(
+            FXCollections.observableArrayList(
+                ControlAuxiliar.listarEstadosDocente()));
+
+	    this.cmbDatosCategoria.setItems(
+	        FXCollections.observableArrayList(
+                ControlAuxiliar.listarCategoriasInvestigacion()));
+	}
+
+	@FXML private void mostrarDatos() {
+	    datosMostrarDocente();
 	}
 
 	@FXML private void guardarDatos() {
@@ -237,8 +247,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	@FXML private void descartarDatos() {
-	    // TODO Descartar cambios.
-	    mostrarDatos();
+	    datosMostrarDocente();
 	}
 
 	@FXML private void seleccionarPersona() {
@@ -250,225 +259,170 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
 
-	private void actualizarCamposDatos() {
-		vaciarCamposDatos();
-		mostrarDatos();
-	}
-
-	private void vaciarCamposDatos() {
-		txtDatosDocumento.clear();
-		txtDatosNombre.clear();
-		txtDatosLegajo.clear();
-		cmbDatosEstado.getSelectionModel().clearSelection();
-		cmbDatosCategoria.getSelectionModel().clearSelection();
-	}
-
 // ----------------------------- Pestaña Cargos ----------------------------- //
+	private ICargoDocente cargoDocenteSeleccion;
+    protected ObservableList<FilaCargo> filasCargos = FXCollections.observableArrayList();
+
 	public class FilaCargo {
-		public int id;
-		public String area;
-		public String cargo;
-		public String estado;
-		public FilaCargo(int id, String area,
-				String cargo, String estado) {
-			super();
-			this.id = id;
-			this.area = area;
-			this.cargo = cargo;
-			this.estado = estado;
-		}
+	    private ICargoDocente cargoDocente;
+
 		/**
 		 * Crea una FilaCargo a partir de un cargoDocente.
 		 * @param cd Cargo docente
 		 */
 		public FilaCargo(ICargoDocente cd) {
-		    super();
-		    this.id = cd.getId();
-		    this.area = cd.getArea().getDescripcion();
-		    this.cargo = cd.getCargo().getDescripcion();
-		    this.estado = cd.getEstado().getDescripcion();
+		    this.cargoDocente = cd;
 		}
-		public int getId() { return id; }
-		public void setId(int idCargo) { this.id = idCargo; }
-		public String getArea() { return area; }
-		public void setArea(String area) { this.area = area; }
-		public String getCargo() { return cargo; }
-		public void setCargo(String cargo) { this.cargo = cargo; }
-		public String getEstado() { return estado; }
-		public void setEstado(String estado) { this.estado = estado; }
+		public int getId() {
+		    return this.cargoDocente.getId();
+		}
+		public String getArea() {
+		    return this.cargoDocente.getArea().getDescripcion();
+		}
+		public String getCargo() {
+		    return this.cargoDocente.getCargo().getDescripcion();
+		}
+		public String getEstado() {
+		    return this.cargoDocente.getEstado().getDescripcion();
+		}
+		public ICargoDocente getInstanciaCargoDocente() {
+		    return this.cargoDocente;
+		}
 	}
 
-	public ICargoDocente cargoDocenteSeleccion;
-	public List<ICargoDocente> listaCargos;
-	public ObservableList<FilaCargo> filasCargos;
+	/** Refresca la tabla de cargos */
+    public void cargosActualizarTabla() {
+        filasCargos.clear();
+        if (docenteSeleccion != null) {
+            for (ICargoDocente cargoDocente : docenteSeleccion.getCargosDocentes()) {
+                filasCargos.add(new FilaCargo(cargoDocente));
+            }
+        }
+    }
 
-	private void vaciarCamposCargos() {
+    /** Muestra los datos del cargo seleccionado: */
+    private void cargosMostrarCargoDocente() {
+        if (cargoDocenteSeleccion != null) {
+            txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
+            txtCargosCargo.setText(cargoDocenteSeleccion.getCargo().getDescripcion());
+            cmbCargosEstado.getSelectionModel().select(cargoDocenteSeleccion.getEstado());
+            cmbCargosTipo.getSelectionModel().select(cargoDocenteSeleccion.getTipoCargo());
+            txtCargosDisp.setText(cargoDocenteSeleccion.getDisposicion());
+            dtpCargosDispDesde.setValue(cargoDocenteSeleccion.getDispDesde());
+            dtpCargosDispHasta.setValue(cargoDocenteSeleccion.getDispHasta());
+            txtCargosRes.clear();
+            dtpCargosResDesde.setValue(cargoDocenteSeleccion.getResDesde());
+            dtpCargosResHasta.setValue(cargoDocenteSeleccion.getResHasta());
+            txtCargosCosto.setText(String.valueOf(cargoDocenteSeleccion.getUltimoCosto()));
+            dtpCargosCosto.setValue(cargoDocenteSeleccion.getFechaUltCost());
+        }
+    }
+
+    /** Vacía los controles de datos del cargo */
+	private void cargosVaciarControles() {
 		txtCargosArea.clear();
 		txtCargosCargo.clear();
 		cmbCargosEstado.getSelectionModel().clearSelection();
 		cmbCargosTipo.getSelectionModel().clearSelection();
 		txtCargosDisp.clear();
-		dtpCargosDispDesde.getEditor().clear();
-		dtpCargosDispHasta.getEditor().clear();
+		dtpCargosDispDesde.setValue(null);
+		dtpCargosDispHasta.setValue(null);
 		txtCargosRes.clear();
-		dtpCargosResDesde.getEditor().clear();
-		dtpCargosResHasta.getEditor().clear();
+		dtpCargosResDesde.setValue(null);
+		dtpCargosResHasta.setValue(null);
 		txtCargosCosto.clear();
-		dtpCargosCosto.getEditor().clear();
+		dtpCargosCosto.setValue(null);
 	}
 
-	@FXML public void seleccionarCargoDocente() {
-		// DONE cargoDocenteSeleccionado = seleccionado de tblCargoDocente;
-		FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-		ICargoDocente cd = this.controlDocente.getICargoDocente();
-		// Busco el cargoDocente en la BD según su id:
-		cd.setId(fila.getId());
-		List<ICargoDocente> listaCargosDocente = this.controlDocente.listarCargosDocente(docenteSeleccion, cd);
-		cargoDocenteSeleccion = listaCargosDocente.get(0);
-
-		// DONE Mostrar datos del cargo docente seleccionado en los controles:
-		txtCargosArea.setText(
-		        cargoDocenteSeleccion.getArea().getDescripcion());
-		txtCargosCargo.setText(
-		        cargoDocenteSeleccion.getCargo().getDescripcion());
-		cmbCargosEstado.getSelectionModel().select(
-		        cargoDocenteSeleccion.getEstado());
-		cmbCargosTipo.getSelectionModel().select(
-		        cargoDocenteSeleccion.getTipoCargo());
-		txtCargosDisp.setText(
-		        cargoDocenteSeleccion.getDisposicion());
-		dtpCargosDispDesde.setValue(
-		        cargoDocenteSeleccion.getDispDesde());
-		dtpCargosDispHasta.setValue(
-		        cargoDocenteSeleccion.getDispHasta());
-		txtCargosRes.setText(
-		        cargoDocenteSeleccion.getResolucion());
-		dtpCargosResDesde.setValue(
-		        cargoDocenteSeleccion.getResDesde());
-		dtpCargosResHasta.setValue(
-                cargoDocenteSeleccion.getResHasta());
-		txtCargosCosto.setText(
-		        String.valueOf(cargoDocenteSeleccion.getUltimoCosto()));
-		dtpCargosCosto.setValue(
-		        cargoDocenteSeleccion.getFechaUltCost());
-	}
-
-	@SuppressWarnings("unchecked")
 	@FXML public void inicializarTablaCargos() {
 		inicializarTabla("Cargos");
-		this.tblCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+		tblCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 		    if (newSelection != null) {
-		        seleccionarCargoDocente();
+		        cargoDocenteSeleccion = newSelection.getInstanciaCargoDocente();
+		        cargosMostrarCargoDocente();
 		    }
 		});
 
-	    /* DONE Popular estados y tipos */
-	    this.cmbCargosEstado.setItems(
+		cargosActualizarTabla();
+
+	    // Popular estados de cargo y tipos de cargo:
+	    cmbCargosEstado.setItems(
                 FXCollections.observableArrayList(
                         ControlAuxiliar.listarEstadosCargo()));
 
-        this.cmbCargosTipo.setItems(
+        cmbCargosTipo.setItems(
                 FXCollections.observableArrayList(
                         ControlAuxiliar.listarTiposCargo()));
-
-        /* DONE Popular tabla con cargosDocente de docenteSeleccionado */
-        // Agarro todos los cargos docente del docente seleccionado:
-        if (docenteSeleccion != null) {
-        	List<ICargoDocente> listaCD = this.controlDocente.listarCargosDocente(docenteSeleccion, null);
-	        for (ICargoDocente cd : listaCD) {
-	            // Muestro los cargosDocente en la tabla:
-	            this.filasCargos.add(
-	                    new FilaCargo(cd));
-	        }
-        }
-        //*/
 	}
-
-	public void actualizarTablaCargos() {
-		if (this.filasCargos != null) {
-			this.filasCargos.clear();
-			if (this.docenteSeleccion != null) {
-				this.listaCargos = this.controlDocente.listarCargosDocente(this.docenteSeleccion, null);
-				for (ICargoDocente cargo : this.listaCargos) {
-					FilaCargo fc = new FilaCargo(
-							cargo.getId(),
-							cargo.getArea().getDescripcion(),
-							cargo.getCargo().getDescripcion(),
-							cargo.getEstado().getDescripcion()
-							);
-					this.filasCargos.add(fc);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Método que se ejecuta cuando se selecciona un Cargo Docente
-	 */
-	public void actualizarCamposCargos() {
-
-	}
-
-	@FXML public TableView tblCargos;
-	@FXML public TableColumn colCargosId;
-	@FXML public TableColumn colCargosArea;
-	@FXML public TableColumn colCargosCargo;
-	@FXML public TableColumn colCargosEstado;
-
-	// Pruebas
-	int idCargoDocente = 0;
 
 	@FXML public Button btnCargosNuevo;
 	@FXML public void nuevoCargo() {
-		this.cargoDocenteSeleccion = this.controlDocente.getICargoDocente();
-		vaciarCamposCargos();
+	    if (docenteSeleccion != null) {
+    		cargoDocenteSeleccion = controlDocente.getICargoDocente();
+    		cargosVaciarControles();
+	    }
 	}
 
 	@FXML public Button btnCargosGuardar;
 	@FXML public void guardarCargo() {
-		try {
-			this.cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
-			this.cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
-			this.cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
-			this.cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
-			this.cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
-			this.cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
-			this.cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
-			this.cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
+	    if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
+    		try {
 
-			this.cargoDocenteSeleccion.setUltimoCosto(
-					Utilidades.stringToFloat(txtCargosCosto.getText()));
-			this.cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
+    		    float ultimoCosto = Utilidades.stringToFloat(txtCargosCosto.getText());
 
-			this.controlDocente.guardarCargoDocente(this.docenteSeleccion, this.cargoDocenteSeleccion);
-		} catch (IllegalArgumentException e) {
-			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
-		}
-		actualizarTablaCargos();
+    			cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
+    			cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
+    			cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
+    			cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
+    			cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
+    			cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
+    			cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
+    			cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
+
+    			cargoDocenteSeleccion.setUltimoCosto(ultimoCosto);
+    			cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
+
+    			controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
+    		} catch (IllegalArgumentException e) {
+    			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
+    		}
+    		cargosActualizarTabla();
+	    }
 	}
 
 	@FXML public Button btnCargosDescartar;
 	@FXML public void descartarCargo() {
 	    cargoDocenteSeleccion = null;
-	    vaciarCamposCargos();
-	    // TODO actualizarCamposCargos(); Se ejecuta cuando se selecciona un cargo docente
+	    cargosVaciarControles();
 	}
 
 	@FXML public Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
-		if (!this.tblCargos.getSelectionModel().isEmpty()) {
-			FilaCargo fila = (FilaCargo) tblCargos.getSelectionModel().getSelectedItem();
-			ICargoDocente cd = this.controlDocente.getICargoDocente();
-			cd.setId(fila.getId());
-	        EstadoOperacion estado = this.controlDocente.quitarCargoDocente(docenteSeleccion, cd);
-	        if (estado.getEstado() != EstadoOperacion.CodigoEstado.DELETE_OK) {
-	            alertaError("Cargos", "Quitar Cargo Docente", "No se pudo quitar el cargo.");
-	        } else {
-	        	this.filasCargos.remove(fila);
-	        }
-		}
-	}
+	    if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
+	        EstadoOperacion resultado = controlDocente
+	            .quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
 
+	        switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO,
+                        "Eliminar Cargo",
+                        resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    dialogoConfirmacion(TITULO,
+                        "Eliminar Cargo",
+                        resultado.getMensaje());
+                    cargoDocenteSeleccion = null;
+                    cargosVaciarControles();
+                    break;
+                default:
+                    throw new RuntimeException(
+                        "Estado de eliminación no esperado: "
+                        + resultado.getMensaje());
+            }
+            cargosActualizarTabla();
+	    }
+	}
 
 	@FXML public TextField txtCargosArea;
 	@FXML public Button btnCargosArea;
@@ -481,7 +435,6 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
 
-
 	@FXML public TextField txtCargosCargo;
 	@FXML public Button btnCargosCargo;
 	@FXML private void seleccionarCargo() {
@@ -493,6 +446,11 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Cargos", args);
     }
 
+	@FXML public TableView<FilaCargo> tblCargos;
+    @FXML public TableColumn colCargosId;
+    @FXML public TableColumn colCargosArea;
+    @FXML public TableColumn colCargosCargo;
+    @FXML public TableColumn colCargosEstado;
 
 	@FXML public ComboBox<EstadoCargo> cmbCargosEstado;
 
@@ -510,53 +468,53 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public DatePicker dtpCargosCosto;
 
 // ----------------------------- Pestaña Investigación ---------------------- //
-	// TODO Pestaña "Investigación"
-	@FXML private TextField txtInvestigacionCategoria;
-	@FXML protected TableView<FilaInvestigacion> tblInvestigacion;
-	protected ObservableList<FilaInvestigacion> filasInvestigacion;
+	protected ObservableList<FilaInvestigacion> filasInvestigacion = FXCollections.observableArrayList();
 
 	public class FilaInvestigacion {
-	    private int id;
-	    private String nombre;
-	    private String area;
-	    private String cargo;
+	    @SuppressWarnings("unused")
+        private ICargoDocente cargoDocente;
+	    private IIntegrante integrante;
+	    private IProyecto proyecto;
 
-        public FilaInvestigacion(int id, String nombre, String area, String cargo) {
-            this.id = id;
-            this.nombre = nombre;
-            this.area = area;
-            this.cargo = cargo;
-        }
-	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente) {
-	        this.id = proyecto.getId();
-	        this.nombre = proyecto.getNombre();
-	        this.setArea(cargoDocente.getArea().getDescripcion());
-	        this.setCargo(cargoDocente.getCargo().getDescripcion());
+	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente, IIntegrante integrante) {
+	        this.cargoDocente = cargoDocente;
+	        this.integrante = integrante;
+	        this.proyecto = proyecto;
 	    }
 	    public int getId() {
-	        return this.id;
-	    }
-	    public void setId(int id) {
-	        this.id = id;
+	        return this.proyecto.getId();
 	    }
 	    public String getNombre() {
-	        return this.nombre;
-	    }
-	    public void setNombre(String nombre) {
-	        this.nombre = nombre;
+	        return this.proyecto.getNombre();
 	    }
 		public String getArea() {
-			return area;
-		}
-		public void setArea(String area) {
-			this.area = area;
+		    // TODO Investigación: Obtener área
+//			return this.cargoDocente.getArea().getDescripcion();
+			return "";
 		}
 		public String getCargo() {
-			return cargo;
+		    // TODO Investigación: Obtener cargo
+//			return this.cargoDocente.getCargo().getDescripcion();
+		    return integrante.getCargo();
 		}
-		public void setCargo(String cargo) {
-			this.cargo = cargo;
-		}
+	}
+
+	/** Refresca la tabla de investigación */
+	private void investigacionActualizarTabla() {
+	    filasInvestigacion.clear();
+	    if (docenteSeleccion != null) {
+	        // Lista con todos los proyectos (?):
+	        List<IProyecto> listaProyectos = this.controlInvestigacion.listarProyecto(null);
+	        for (IProyecto proyecto : listaProyectos) {
+	            for (IIntegrante integrante : proyecto.getIntegrantes()) {
+	                if (integrante.getLegajo() == docenteSeleccion.getLegajo()) {
+	                    // TODO Investigación: Falta especificar cargoDocente
+	                    filasInvestigacion.add(new FilaInvestigacion(proyecto, null, integrante));
+	                    break;
+	                }
+	            }
+	        }
+	    }
 	}
 
 	@FXML private void inicializarInvestigacion() {
@@ -565,112 +523,142 @@ public class Docentes extends ControladorVista implements Initializable {
 	        CategoriaInvestigacion ci = docenteSeleccion.getCategoriaInvestigacion();
 	        txtInvestigacionCategoria.setText(ci.getDescripcion());
 	    }
-
-	    // Lista con todos los proyectos (?):
-        List<IProyecto> listaProyectos = this.controlInvestigacion.listarProyecto(null);
-        for (IProyecto proyecto : listaProyectos) {
-            for (IIntegrante integrante : proyecto.getIntegrantes()) {
-                if (integrante.getLegajo() == docenteSeleccion.getLegajo()) {
-                    // TODO Investigación: Falta el área
-                    FilaInvestigacion fila = new FilaInvestigacion(proyecto.getId(), proyecto.getNombre(), "", integrante.getCargo());
-                    filasInvestigacion.add(fila);
-                    break;
-                }
-            }
-        }
+	    investigacionActualizarTabla();
 	}
+
+	@FXML private TextField txtInvestigacionCategoria;
+	@FXML protected TableView<FilaInvestigacion> tblInvestigacion;
+    @FXML protected TableColumn<FilaInvestigacion, Integer> colInvestigacionId;
+    @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionNombre;
+    @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionArea;
+    @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionCargo;
+
 // ----------------------------- Pestaña Incentivos ------------------------- //
-	// DONE Pestaña "Incentivos"
-	@FXML protected TextField txtIncentivosAnio;
-	@FXML protected TableView<FilaIncentivo> tblIncentivos;
-	@FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
-	protected ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
 
-	// Cambios en los incentivos:
-	protected Set<IIncentivo> incentivosNuevos = new HashSet<IIncentivo>();
-	protected Set<IIncentivo> incentivosBorrados = new HashSet<IIncentivo>();
+    private IIncentivo incentivoSeleccion = null;
+    protected ObservableList<FilaIncentivo> filasIncentivos = FXCollections.observableArrayList();
 
-	public class FilaIncentivo {
-	    private int anio;
-	    public FilaIncentivo(IIncentivo incentivo) {
-	        this.anio = incentivo.getFecha().getValue();
-	    }
-	    public int getAnio() {
-	        return this.anio;
-	    }
-	    public void setAnio(int fecha) {
-	        this.anio = fecha;
-	    }
-	    public IIncentivo getIncentivo() {
-	        return new Incentivo(Year.of(this.anio));
-	    }
-	}
+    public class FilaIncentivo {
+        private IIncentivo incentivo;
+        public FilaIncentivo(IIncentivo incentivo) {
+            this.incentivo = incentivo;
+        }
+        public int getAnio() {
+            return this.incentivo.getFecha().getValue();
+        }
+        public IIncentivo getInstanciaIncentivo() {
+            return this.incentivo;
+        }
+    }
 
-	private void listarIncentivosTabla() {
-	    if (docenteSeleccion != null) {
-	        filasIncentivos.clear();
-	        for (IIncentivo incentivo : docenteSeleccion.getIncentivos()) {
+    /** Refresca la tabla de incentivos */
+    private void incentivosActualizarTabla() {
+        filasIncentivos.clear();
+        if (docenteSeleccion != null) {
+            for (IIncentivo incentivo: docenteSeleccion.getIncentivos()) {
                 filasIncentivos.add(new FilaIncentivo(incentivo));
             }
-	    }
-	}
+        }
+    }
+
+    /** Muestra los datos del incentivo seleccionado: */
+    private void incentivosMostrarIncentivo() {
+        if (incentivoSeleccion != null) {
+            txtIncentivosAnio.setText(incentivoSeleccion.getFecha().toString());
+        }
+    }
+
+    /** Vacía los controles de datos del incentivo */
+    private void incentivosVaciarControles() {
+        txtIncentivosAnio.clear();
+    }
 
 	@FXML public void inicializarTablaIncentivos() {
 		inicializarTabla("Incentivos");
-	    listarIncentivosTabla();
-
-	    incentivosNuevos.clear();
-	    incentivosBorrados.clear();
+		tblIncentivos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                incentivoSeleccion = newSelection.getInstanciaIncentivo();
+                incentivosMostrarIncentivo();
+            }
+        });
+		incentivosActualizarTabla();
 	}
 
 	@FXML private void nuevoIncentivo() {
-	    try {
-	        // Creo incentivo:
-    	    IIncentivo nuevoIncentivo = new Incentivo(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
-    	    incentivosNuevos.add(nuevoIncentivo);
-
-    	    // Agrego a tabla de incentivos:
-    	    filasIncentivos.add(new FilaIncentivo(nuevoIncentivo));
-    	    incentivosNuevos.add(nuevoIncentivo);
-	    } catch (NumberFormatException nfe) {
-	        alertaError(TITULO, "Error de formato", "La fecha tiene que ser un número");
+	    if (docenteSeleccion != null) {
+    	    incentivoSeleccion = controlDocente.getIIncentivo();
+    	    incentivosVaciarControles();
 	    }
 	}
 
 	@FXML private void guardarIncentivo() {
-	    // Borrar incentivos:
-	    for (IIncentivo incentivoBorrado : incentivosBorrados) {
-	        docenteSeleccion.quitarIncentivo(incentivoBorrado);
-	        this.controlDocente.quitarIncentivo(docenteSeleccion, incentivoBorrado);
-	    }
-	    incentivosBorrados.clear();
+	    if (docenteSeleccion != null && incentivoSeleccion != null) {
+	        try {
+	            incentivoSeleccion.setFecha(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
 
-	    // Incentivos nuevos:
-	    for (IIncentivo incentivoNuevo : incentivosNuevos) {
-	        docenteSeleccion.agregarIncentivo(incentivoNuevo);
-	        this.controlDocente.agregarIncentivo(docenteSeleccion, incentivoNuevo);
+	            EstadoOperacion resultado = controlDocente.agregarIncentivo(docenteSeleccion, incentivoSeleccion);
+	            switch (resultado.getEstado()) {
+	                case INSERT_ERROR:
+	                case UPDATE_ERROR:
+	                    alertaError(TITULO, "Guardar Incentivo", resultado.getMensaje());
+	                    break;
+	                case INSERT_OK:
+	                case UPDATE_OK:
+	                    dialogoConfirmacion(TITULO, "Guardar Incentivo", resultado.getMensaje());
+	                    break;
+	                default:
+	                    throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+	            }
+	            incentivosActualizarTabla();
+
+	        } catch (DateTimeException e) {
+	            alertaError(TITULO, "Guardar Incentivo", "El año ingresado es inválido");
+	        } catch (NumberFormatException e) {
+	            alertaError(TITULO, "Guardar Incentivo", "El año debe ser numérico");
+	        }
 	    }
-	    incentivosNuevos.clear();
 	}
 
 	@FXML private void descartarIncentivo() {
-	    // Quito todos los cambios a los incentivos del docente:
-	    incentivosBorrados.clear();
-	    incentivosNuevos.clear();
-
-	    // Cambio la tabla para mostrar los incentivos originales:
-	    listarIncentivosTabla();
+	    incentivoSeleccion = null;
+	    incentivosVaciarControles();
 	}
 
 	@FXML private void eliminarIncentivo() {
-	    FilaIncentivo fila = tblIncentivos.getSelectionModel().getSelectedItem();
-	    incentivosBorrados.add(fila.getIncentivo());
-	    filasIncentivos.remove(fila);
+	    if (docenteSeleccion != null && incentivoSeleccion != null) {
+	        EstadoOperacion resultado = controlDocente
+                .quitarIncentivo(docenteSeleccion, incentivoSeleccion);
+
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Incentivo", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    dialogoConfirmacion(TITULO, "Eliminar Incentivo", resultado.getMensaje());
+                    cargoDocenteSeleccion = null;
+                    incentivosVaciarControles();
+                    break;
+                default:
+                    throw new RuntimeException(
+                        "Estado de eliminación no esperado: "
+                        + resultado.getMensaje());
+            }
+            incentivosActualizarTabla();
+	    }
 	}
+
+	@FXML protected TextField txtIncentivosAnio;
+    @FXML protected TableView<FilaIncentivo> tblIncentivos;
+    @FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
 
 // ----------------------------- Pestaña Observaciones ---------------------- //
 	// DONE Pestaña "Observaciones"
 	@FXML private TextArea txtaObservaciones;
+
+	/** Vacía los controles de observaciones */
+	private void observacionesVaciarControles() {
+	    txtaObservaciones.clear();
+	}
 
 	@FXML private void guardarObservaciones() {
 	    if (docenteSeleccion != null) {
@@ -686,7 +674,6 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	@FXML private void descartarObservaciones() {
-	    // TODO "Descartar cambios"
 	    mostrarObservaciones();
 	}
 }
