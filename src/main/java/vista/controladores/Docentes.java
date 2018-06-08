@@ -1,5 +1,6 @@
 package vista.controladores;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -122,9 +123,12 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private void importarUltimoCosto() {
 	    try {
-            Costeo.importar(elegirArchivo(TITULO));
-            dialogoConfirmacion(TITULO, "Importar Último Costo",
-                "Los costos fueron actualizados.");
+	        File archivo = elegirArchivo(TITULO);
+	        if (archivo != null) {
+                Costeo.importar(elegirArchivo(TITULO));
+                dialogoConfirmacion(TITULO, "Importar Último Costo",
+                    "Los costos fueron actualizados.");
+	        }
         } catch (EncryptedDocumentException e) {
             alertaError(TITULO, "Importar Último Costo",
                 "El archivo está protegido por contraseña");
