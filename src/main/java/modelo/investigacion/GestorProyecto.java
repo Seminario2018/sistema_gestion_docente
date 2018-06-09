@@ -330,7 +330,7 @@ public class GestorProyecto {
             }
 
             for (IRendicion rendicion : subsidio.getRendiciones()) {
-				this.agregarRendicion(rendicion);
+				this.agregarRendicion(rendicion, proyecto, subsidio);
 			}
 
             e.insertar(table, campos, valores);
@@ -539,13 +539,14 @@ public class GestorProyecto {
     	return maxid;
 	}
 
-    public EstadoOperacion agregarRendicion(IRendicion rendicion) {
+    public EstadoOperacion agregarRendicion(IRendicion rendicion, IProyecto proyecto, ISubsidio subsidio) {
     	try {
 			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Rendisiones";
-			String campos = "`id`, `Fecha`, `Monto`";
-			String valores = rendicion.getId() + ", '" + Date.valueOf(rendicion.getFecha()) + "', " + rendicion.getMonto();
+			String campos = "`id`, `Proyecto`, `YearSubsidio`, `Fecha`, `Monto`";
+			String valores = rendicion.getId() + ", " + proyecto.getId() + ", " + subsidio.getFecha()  + ", "
+					+ "'" + Date.valueOf(rendicion.getFecha()) + "', " + rendicion.getMonto();
 
 			if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
 				campos += ", Observaciones";
