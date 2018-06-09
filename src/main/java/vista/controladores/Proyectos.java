@@ -508,26 +508,23 @@ public class Proyectos extends ControladorVista implements Initializable {
 
     private void llenarCamposProrrogas() {
         if (prorrogaSeleccionada != null) {
-            dtpProrrogasInicio.setValue(prorrogaSeleccionada.getFechaInicio());
             dtpProrrogasFinalizacion.setValue(prorrogaSeleccionada.getFechaFin());
             txtProrrogasDisp.setText(prorrogaSeleccionada.getDisposicion());
         }
     }
 
 	class FilaProrroga {
-	    private LocalDate fechaInicio;
+
 	    private LocalDate fechaFin;
 	    public FilaProrroga(IProrroga prorroga) {
-	        this.fechaInicio = prorroga.getFechaInicio();
+	        this.fechaFin = prorroga.getFechaFin();
 	    }
-	    public LocalDate getFechaInicio() {
-    	    return this.fechaInicio;
-        }
         public LocalDate getfechaFin() {
             return this.fechaFin;
         }
+        
         public IProrroga getProrroga() {
-            return new Prorroga(null, fechaInicio, fechaFin);
+        	return new Prorroga(null, this.fechaFin);
         }
 	}
 
@@ -545,14 +542,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnProrrogasNueva;
     @FXML void nuevaProrroga(ActionEvent event) {
-        prorrogaSeleccionada = new Prorroga(null, null, null);
+        prorrogaSeleccionada = new Prorroga(null, null);
         limpiarCamposProrrogas();
     }
 
     @FXML void guardarProrroga(ActionEvent event) {
         if (prorrogaSeleccionada != null) {
             try {
-                prorrogaSeleccionada.setFechaInicio(dtpProrrogasInicio.getValue());
                 prorrogaSeleccionada.setFechaFin(dtpProrrogasFinalizacion.getValue());
                 prorrogaSeleccionada.setDisposicion(txtProrrogasDisp.getText());
 
