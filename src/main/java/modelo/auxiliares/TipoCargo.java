@@ -105,7 +105,7 @@ public class TipoCargo {
         try {
             List<TipoCargo> listaTipos = new ArrayList<TipoCargo>();
             ManejoDatos md = new ManejoDatos();
-            ArrayList<Hashtable<String, String>> res = md.select("tiposcargos", "*");
+            ArrayList<Hashtable<String, String>> res = md.select("TiposCargos", "*");
 
             for (Hashtable<String, String> reg : res) {
                 TipoCargo tc = new TipoCargo();
