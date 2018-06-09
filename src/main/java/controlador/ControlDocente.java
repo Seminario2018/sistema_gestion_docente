@@ -33,7 +33,7 @@ public class ControlDocente {
 	}
 
 	public EstadoOperacion guardarDocente(IDocente docente) {
-	    if (docente.getLegajo() == -1) {
+	    if (!this.gestorDocente.existeDocente(docente)) {
 	        return this.gestorDocente.nuevoDocente(docente);
 	    } else {
 	        return this.gestorDocente.modificarDocente(docente);
