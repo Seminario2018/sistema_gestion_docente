@@ -241,8 +241,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	                cmbDatosEstado.getSelectionModel().getSelectedItem());
 	        docenteSeleccion.setCategoriaInvestigacion(
 	                cmbDatosCategoria.getSelectionModel().getSelectedItem());
-	        // TODO Modificar persona en ControlPersona
-	        this.controlDocente.modificarDocente(docenteSeleccion);
+
+	        this.controlDocente.guardarDocente(docenteSeleccion);
 	    }
 	}
 

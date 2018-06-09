@@ -32,6 +32,14 @@ public class ControlDocente {
 		return this.gestorDocente.getIDocente();
 	}
 
+	public EstadoOperacion guardarDocente(IDocente docente) {
+	    if (docente.getLegajo() == -1) {
+	        return this.gestorDocente.nuevoDocente(docente);
+	    } else {
+	        return this.gestorDocente.modificarDocente(docente);
+	    }
+	}
+
 	public EstadoOperacion nuevoDocente(IDocente docente) {
 	    return this.gestorDocente.nuevoDocente(docente);
 	}
