@@ -402,10 +402,6 @@ public class GestorProyecto {
             String campos = "`Proyecto`, `Disposicion`";
             String valores = proyecto.getId() + "', '" + prorroga.getDisposicion() + "'";
 
-            if (prorroga.getFechaInicio() != null) {
-            	campos += ", Fecha_inicio";
-            	valores += ", '" + Date.valueOf(prorroga.getFechaInicio()) + "'";
-            }
             if (prorroga.getFechaFin() != null) {
             	campos += ", Fecha_fin";
             	valores += ", '" + Date.valueOf(prorroga.getFechaFin()) + "'";
@@ -438,18 +434,13 @@ public class GestorProyecto {
 				Prorroga p = new Prorroga();
 				p.setDisposicion(reg.get("Disposicion"));
 
-				if (!reg.get("Fecha_inicio").equals("")) {
-					String[] fecha = reg.get("Fecha_inicio").split("-");
-					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]),
-							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
-					p.setFechaInicio(f);
-				}
 				if (!reg.get("Fecha_fin").equals("")) {
 					String[] fecha = reg.get("Fecha_fin").split("-");
 					LocalDate f = LocalDate.of(Integer.parseInt(fecha[0]),
 							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 					p.setFechaFin(f);
 				}
+				
 				prorrogas.add(p);
 			}
 		} catch (Exception e) {
@@ -465,9 +456,6 @@ public class GestorProyecto {
 		if (prorroga != null) {
 			if (prorroga.getDisposicion() != null && !prorroga.getDisposicion().equals("")) {
 				condicion += " AND Disposicion = '" + prorroga.getDisposicion() + "'";
-			}
-			if (prorroga.getFechaInicio() != null) {
-				condicion += " AND Fecha_inicio = '" + Date.valueOf(prorroga.getFechaInicio()) + "'";
 			}
 			if (prorroga.getFechaFin() != null) {
 				condicion += " AND Fecha_fin = '" + Date.valueOf(prorroga.getFechaFin()) + "'";

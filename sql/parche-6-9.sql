@@ -17,3 +17,9 @@ ADD CONSTRAINT `fk_Rendisiones_1`
   REFERENCES `plumasdocentes`.`Subsidios` (`Proyecto` , `Year`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+  
+  
+ALTER TABLE `Prorrogas` 
+DROP COLUMN `Fecha_inicio`,
+CHANGE COLUMN `Fecha_fin` `FechaFin` DATE NULL DEFAULT NULL ;
