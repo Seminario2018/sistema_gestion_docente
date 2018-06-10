@@ -1,6 +1,5 @@
 package controlador;
 
-import java.util.ArrayList;
 import java.util.List;
 import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoOperacion;
@@ -8,9 +7,11 @@ import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
+import modelo.docente.ICargoFaltante;
 import modelo.docente.IDocente;
 import modelo.docente.IDocenteg;
 import modelo.docente.IIncentivo;
+import modelo.docente.gestorCargosFaltantes;
 import vista.controladores.ControladorVista;
 
 public class ControlDocente {
@@ -18,6 +19,7 @@ public class ControlDocente {
 	private ControladorVista vista;
 
 	private GestorCargo gestorCargo = new GestorCargo();
+	private gestorCargosFaltantes gestorCargosFaltantes = new gestorCargosFaltantes();
 	private GestorDocente gestorDocente = new GestorDocente();
 
 
@@ -33,7 +35,7 @@ public class ControlDocente {
 	}
 
 	public EstadoOperacion guardarDocente(IDocente docente) {
-	    if (!this.gestorDocente.existeDocente(docente)) {
+	    if (!GestorDocente.existeDocente(docente)) {
 	        return this.gestorDocente.nuevoDocente(docente);
 	    } else {
 	        return this.gestorDocente.modificarDocente(docente);
@@ -129,23 +131,41 @@ public class ControlDocente {
         return this.gestorCargo.listarCargos(cargo);
     }
 
-//  Incentivos
+//  Cargos faltantes
+    public ICargoFaltante getICargoFaltante() {
+        return this.gestorCargosFaltantes.getICargoFaltante();
+    }
 
+    public EstadoOperacion guardarCargoFaltante(ICargoFaltante cargo) {
+        return this.gestorCargosFaltantes.agregarCargoFaltante(cargo);
+    }
+
+    public EstadoOperacion eliminarCargoFaltante(ICargoFaltante cargo) {
+        return this.gestorCargosFaltantes.eliminarCargoFaltante(cargo);
+    }
+
+    public List<ICargoFaltante> listarCargosFaltantes() {
+        return this.gestorCargosFaltantes.listarCargosFaltantes();
+    }
+
+//  Incentivos
     public IIncentivo getIIncentivo() {
         return this.gestorDocente.getIIncentivo();
     }
+
 
     public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
         return this.gestorDocente.agregarIncentivo((IDocenteg) docente, incentivo);
     }
 
+
     public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {
         return this.gestorDocente.quitarIncentivo(docente, incentivo);
     }
 
+
     public List<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo) {
-        // TODO sacar incentivos de GestorDocente.
-        return new ArrayList<IIncentivo>();
+        return this.gestorDocente.listarIncentivos(docente, incentivo);
     }
 
 }
