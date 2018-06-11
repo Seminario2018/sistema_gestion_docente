@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.auxiliares.TipoContacto;
 import modelo.auxiliares.TipoDocumento;
 import modelo.persona.IContacto;
@@ -391,11 +392,8 @@ public class Personas extends ControladorVista implements Initializable {
 	    public FilaTitulo(ITitulo titulo) {
 	        this.titulo = titulo;
 	    }
-	    public String getNombre() {
-	        return this.titulo.getNombre();
-	    }
-	    public boolean esMayor() {
-	        return this.titulo.isEsMayor();
+	    public String getMayor() {
+	        return this.titulo.isEsMayor() ? "Mayor" : "";
 	    }
 	    public String getTitulo() {
 	        return this.titulo.getNombre();
@@ -476,8 +474,20 @@ public class Personas extends ControladorVista implements Initializable {
 	            // Y marco el título actual como el mayor:
 	            tituloSeleccion.setEsMayor(true);
 
-	            // Y persisto:
-	            exitoGuardado(controlPersona.guardarTitulo(personaSeleccion, tituloSeleccion), TITULO, "Seleccionar título de mayor grado");
+	            // Y persisto los cambios en todos los títulos:
+	            boolean exito = true;
+	            for (ITitulo titulo : personaSeleccion.getTitulos()) {
+	                EstadoOperacion resultado = controlPersona.guardarTitulo(personaSeleccion, titulo);
+	                if (resultado.getEstado() != CodigoEstado.UPDATE_OK) {
+	                    exito = false;
+	                }
+	            }
+
+	            if (exito) {
+	                dialogoConfirmacion(TITULO, "Seleccionar mayor título", "El título fue seleccionado como mayor.");
+	            } else {
+	                alertaError(TITULO, "Seleccionar mayor título", "El título no pudo modificarse.");
+	            }
 
 	            titulosActualizarTabla();
 	        }
@@ -486,6 +496,6 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML protected TableView<FilaTitulo> tblTitulos;
 	@FXML protected TableColumn<FilaTitulo, String> colTitulosTitulo;
-	@FXML protected TableColumn<FilaTitulo, Boolean> colTituloMayor;
+	@FXML protected TableColumn<FilaTitulo, String> colTitulosMayor;
 
 }

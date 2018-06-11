@@ -627,7 +627,7 @@ public class GestorPersona {
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `titulo`='"+titulo.getId()+"'";
+			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `id`='"+titulo.getId()+"'";
 
 			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
 							+ "`EsMayor` = " + esMayor;
