@@ -564,7 +564,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Domicilios";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + " AND NroDocumento = '" + persona.getNroDocumento()+ " AND idDomicilios = " + domicilio.getId();
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ " AND idDomicilios = " + domicilio.getId();
 
 			md.delete(table, condicion);
 
@@ -628,7 +628,7 @@ public class GestorPersona {
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `titulo`='"+titulo.getId()+"'";
+			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `titulo`='"+titulo.getId()+"'";
 
 			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
 							+esMayor;
