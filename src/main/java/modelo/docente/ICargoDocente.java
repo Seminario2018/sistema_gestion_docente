@@ -35,4 +35,5 @@ public interface ICargoDocente {
     public void setResHasta(LocalDate resHasta);
     public EstadoCargo getEstado();
     public void setEstado(EstadoCargo estado);
+    public IDocente getDocente();
 }

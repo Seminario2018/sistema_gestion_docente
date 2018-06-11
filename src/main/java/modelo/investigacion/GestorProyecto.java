@@ -192,8 +192,9 @@ public class GestorProyecto {
         return proyectos;
     }
 
-    public EstadoOperacion AgregarIntegrante(IProyecto proyecto, IIntegrante integrante) {
+    public EstadoOperacion AgregarIntegrante(IProyecto proyecto, IIntegrante i) {
         try {
+        	IIntegranteg integrante = (IIntegranteg) i;
         	if (integrante.getId() == -1) {
         		integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
         	}
@@ -202,9 +203,9 @@ public class GestorProyecto {
             String campos = "`id`, `Proyecto`";
             String valores = integrante.getId() + ", " + proyecto.getId();
 
-            if (integrante.getLegajo() != -1) {
-            	campos += ", Legajo";
-            	valores += ", " + integrante.getLegajo();
+            if (integrante.getCargoDocente2() != null) {
+            	campos = ", CargoDocente";
+            	valores = ", " + integrante.getCargoDocente2();
             }
             if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
             	campos += ", Apellido";
@@ -256,10 +257,7 @@ public class GestorProyecto {
 			for (Hashtable<String, String> reg : res) {
 				Integrante i = new Integrante();
 				i.setId(Integer.parseInt(reg.get("id")));
-
-				if (!reg.get("Legajo").equals("")) {
-					i.setLegajo(Integer.parseInt(reg.get("Legajo")));
-				}
+				
 				if (!reg.get("Apellido").equals("")) {
 					i.setApellido(reg.get("Apellido"));
 				}

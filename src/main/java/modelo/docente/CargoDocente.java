@@ -269,5 +269,24 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 	public EstadoCargo getEstado2() {
 		return this.estado;
 	}
+	
+	public IDocente getDocente() {
+		IDocente docente = new Docente(); 
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "CargosDocentes";
+			String campos = "Legajo";
+			String condicion = "Codigo = " + this.id;
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+			Hashtable<String, String> reg = res.get(0);
+			docente.setLegajo(Integer.parseInt(reg.get("Legajo")));
+			GestorDocente gd = new GestorDocente();
+			docente = gd.listarDocentes(docente).get(0);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			docente = new Docente();
+		}
+		return docente;
+	}
 
 }
