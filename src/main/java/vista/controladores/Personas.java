@@ -71,9 +71,9 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML public void buscarPersona(ActionEvent event) {
 	    /* TEST General: Selección de persona */
         // Recuperar la persona con DNI = 17200893
-        IPersona personaBusqueda = this.controlPersona.getIPersona();
+        IPersona personaBusqueda = controlPersona.getIPersona();
         personaBusqueda.setNroDocumento(17200893);
-        List<IPersona> listaPersonas = this.controlPersona.listarPersonas(personaBusqueda);
+        List<IPersona> listaPersonas = controlPersona.listarPersonas(personaBusqueda);
         personaSeleccion = listaPersonas.get(0);
         //*/
 
@@ -83,26 +83,16 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnPersonasNueva;
 	@FXML public void nuevaPersona(ActionEvent event) {
-	    personaSeleccion = this.controlPersona.getIPersona();
+	    personaSeleccion = controlPersona.getIPersona();
 	    generalVaciarControles();
 	}
 
 	@FXML private Button btnPersonasEliminar;
 	@FXML public void eliminarPersona(ActionEvent event) {
 	    if (personaSeleccion != null) {
-            EstadoOperacion resultado = this.controlPersona.eliminarPersona(personaSeleccion);
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Persona", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    dialogoConfirmacion(TITULO, "Eliminar Persona", resultado.getMensaje());
-                    personaSeleccion = null;
-
-                    generalVaciarControles();
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+            if (exitoEliminar(controlPersona.eliminarPersona(personaSeleccion), TITULO, "Eliminar Persona")) {
+                personaSeleccion = null;
+                generalVaciarControles();
             }
         }
 	}
@@ -147,7 +137,8 @@ public class Personas extends ControladorVista implements Initializable {
     	        personaSeleccion.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
     	        personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
 
-    	        this.controlPersona.modificarPersona(personaSeleccion);
+    	        exitoGuardado(controlPersona.guardarPersona(personaSeleccion), TITULO, "Guardar Persona");
+
 	        } catch (NumberFormatException nfe) {
 	            alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
 	        }
@@ -230,8 +221,10 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnContactosNuevo;
 	@FXML public void nuevoContacto(ActionEvent event) {
-	    contactoSeleccion = this.controlPersona.getIContacto();
-	    contactosVaciarControles();
+	    if (personaSeleccion != null) {
+    	    contactoSeleccion = controlPersona.getIContacto();
+    	    contactosVaciarControles();
+	    }
 	}
 
 	@FXML private Button btnContactosGuardar;
@@ -240,20 +233,8 @@ public class Personas extends ControladorVista implements Initializable {
     	    contactoSeleccion.setTipo(cmbContactosTipo.getSelectionModel().getSelectedItem());
     	    contactoSeleccion.setDato(txtContactosDato.getText());
 
-    	    EstadoOperacion resultado = this.controlPersona.guardarContacto(personaSeleccion, contactoSeleccion);
-            switch (resultado.getEstado()) {
-                case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Contacto", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Contacto", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                    		+ resultado.getEstado().toString() + ": " + resultado.getMensaje());
-            }
+    	    EstadoOperacion resultado = controlPersona.guardarContacto(personaSeleccion, contactoSeleccion);
+            exitoGuardado(resultado, TITULO, "Guardar Contacto");
     	    contactosActualizarTabla();
 	    }
 	}
@@ -267,26 +248,10 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnContactosEliminar;
 	@FXML public void eliminarContacto(ActionEvent event) {
         if (personaSeleccion != null && contactoSeleccion != null) {
-            EstadoOperacion resultado = this.controlPersona
-                .quitarContacto(personaSeleccion, contactoSeleccion);
-
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO,
-                        "Eliminar Contacto",
-                        resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    dialogoConfirmacion(TITULO,
-                        "Eliminar Contacto",
-                        resultado.getMensaje());
-                    contactoSeleccion = null;
-                    contactosVaciarControles();
-                    break;
-                default:
-                    throw new RuntimeException(
-                        "Estado de eliminación no esperado: " + resultado
-                            .getMensaje());
+            EstadoOperacion resultado = controlPersona.quitarContacto(personaSeleccion, contactoSeleccion);
+            if (exitoEliminar(resultado, TITULO, "Eliminar Contacto")) {
+                contactoSeleccion = null;
+                contactosVaciarControles();
             }
             contactosActualizarTabla();
         }
@@ -371,7 +336,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDomiciliosNuevo;
 	@FXML public void nuevoDomicilio(ActionEvent event) {
-	    domicilioSeleccion = this.controlPersona.getIDomicilio();
+	    domicilioSeleccion = controlPersona.getIDomicilio();
 	    domiciliosVaciarControles();
 	}
 
@@ -383,19 +348,7 @@ public class Personas extends ControladorVista implements Initializable {
     	    domicilioSeleccion.setCodigoPostal(txtDomiciliosCP.getText());
     	    domicilioSeleccion.setDireccion(txtDomiciliosDireccion.getText());
 
-            EstadoOperacion resultado = this.controlPersona.guardarDomicilio(personaSeleccion, domicilioSeleccion);
-            switch (resultado.getEstado()) {
-                case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Domicilio", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Domicilio", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
-            }
+            exitoGuardado(controlPersona.guardarDomicilio(personaSeleccion, domicilioSeleccion), TITULO, "Guardar Domicilio");
             domiciliosActualizarTabla();
 	    }
 	}
@@ -409,21 +362,10 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnDomiciliosEliminar;
 	@FXML public void eliminarDomicilio(ActionEvent event) {
 	    if (personaSeleccion != null && domicilioSeleccion != null) {
-    	    EstadoOperacion resultado = this.controlPersona
-    	        .quitarDomicilio(personaSeleccion, domicilioSeleccion);
-
-            switch(resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Domicilio", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    dialogoConfirmacion(TITULO, "Eliminar Domicilio", resultado.getMensaje());
-                    domicilioSeleccion = null;
-                    domiciliosVaciarControles();
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
-            }
+    	    if (exitoEliminar(controlPersona.quitarDomicilio(personaSeleccion, domicilioSeleccion), TITULO, "Eliminar Domicilio")) {
+    	        domicilioSeleccion = null;
+                domiciliosVaciarControles();
+    	    }
             domiciliosActualizarTabla();
 	    }
 	}
@@ -501,22 +443,10 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnTitulosAgregar;
 	@FXML public void agregarTitulo(ActionEvent event) {
 	    if (personaSeleccion != null && tituloSeleccion != null) {
-    	    tituloSeleccion = this.controlPersona.getITitulo();
+    	    tituloSeleccion = controlPersona.getITitulo();
     	    tituloSeleccion.setNombre(txtTitulosTitulo.getText());
 
-    	    EstadoOperacion resultado = this.controlPersona.guardarTitulo(personaSeleccion, tituloSeleccion);
-    	    switch (resultado.getEstado()) {
-    	        case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Título", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Título", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
-            }
+    	    exitoGuardado(controlPersona.guardarTitulo(personaSeleccion, tituloSeleccion), TITULO, "Guardar Título");
     	    titulosActualizarTabla();
 	    }
 	}
@@ -524,18 +454,9 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML private Button btnTitulosQuitar;
 	@FXML public void quitarTitulo(ActionEvent event) {
 	    if (personaSeleccion != null && tituloSeleccion != null) {
-	        EstadoOperacion resultado = this.controlPersona.quitarTitulo(personaSeleccion, tituloSeleccion);
-	        switch(resultado.getEstado()) {
-	            case DELETE_ERROR:
-	                alertaError(TITULO, "Eliminar Titulo", resultado.getMensaje());
-	                break;
-	            case DELETE_OK:
-	                dialogoConfirmacion(TITULO, "Eliminar Titulo", resultado.getMensaje());
-	                tituloSeleccion = null;
-	                titulosVaciarControles();
-	                break;
-	            default:
-	                throw new RuntimeException("Estado de eliminación no esperado: " + resultado.getMensaje());
+	        if (exitoEliminar(controlPersona.quitarTitulo(personaSeleccion, tituloSeleccion), TITULO, "Eliminar Título")) {
+	            tituloSeleccion = null;
+                titulosVaciarControles();
 	        }
 	        titulosActualizarTabla();
 	    }

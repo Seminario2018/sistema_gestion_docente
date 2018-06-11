@@ -47,9 +47,9 @@ public class Persona implements IPersona, IPersonag {
 		this.fechaNacimiento = null;
 		this.tipoDocumento = null;
 		this.nroDocumento = 0;
-		this.domicilios = null;
-		this.contactos = null;
-		this.titulos = null;
+		this.domicilios = new ArrayList<IDomicilio>();
+		this.contactos = new ArrayList<IContacto>();
+		this.titulos = new ArrayList<ITitulo>();
 		this.estado = null;
 	}
 
