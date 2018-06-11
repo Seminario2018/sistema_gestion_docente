@@ -463,7 +463,7 @@
                                                    </GridPane.margin>
                                                 </Label>
                                                 <TextField fx:id="txtRendicionesMonto" promptText="Ingrese el monto de la rendición" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                <ComboBox minWidth="125.0" GridPane.columnIndex="1" />
+                                                <ComboBox fx:id="cmbRendicionesAnio" minWidth="125.0" GridPane.columnIndex="1" />
                                                 <Label text="Año del Subsidio" />
                                              </children>
                                              <columnConstraints>
