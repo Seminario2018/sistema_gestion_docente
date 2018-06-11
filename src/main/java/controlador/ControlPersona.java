@@ -16,12 +16,12 @@ public class ControlPersona {
 
     private GestorPersona gestorPersona = new GestorPersona();
 
-    public EstadoOperacion nuevaPersona(IPersona persona) {
-        return this.gestorPersona.nuevaPersona(persona);
-    }
-
-    public EstadoOperacion modificarPersona(IPersona persona) {
-        return this.gestorPersona.modificarPersona(persona);
+    public EstadoOperacion guardarPersona(IPersona persona) {
+        if (persona.getNroDocumento() == 0) {
+            return gestorPersona.nuevaPersona(persona);
+        } else {
+            return gestorPersona.modificarPersona(persona);
+        }
     }
 
     public EstadoOperacion eliminarPersona(IPersona persona) {

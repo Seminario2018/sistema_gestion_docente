@@ -19,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
@@ -26,11 +27,7 @@ import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
-import modelo.investigacion.Integrante;
-import modelo.investigacion.Prorroga;
 import modelo.investigacion.Proyecto;
-import modelo.investigacion.Rendicion;
-import modelo.investigacion.Subsidio;
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
@@ -51,11 +48,33 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------------- General --------------------------------- //
 
-	private IProyecto proyectoSeleccionado = null;
+	private IProyecto proyectoSeleccion = null;
 
 	@FXML private TabPane tabpaneProyectos;
 	@FXML private TextField txtProyectosId;
 	@FXML private TextField txtProyectosNombre;
+
+	/** Muestra los datos del proyecto seleccionado en los controles generales */
+    private void generalMostrarProyecto() {
+        if (proyectoSeleccion != null) {
+            txtProyectosId.setText(String.valueOf(proyectoSeleccion.getId()));
+            txtProyectosNombre.setText(proyectoSeleccion.getNombre());
+        }
+    }
+
+	/** Vacía los controles generales y los de todas las pestañas */
+    private void generalVaciarControles() {
+        txtProyectosId.clear();
+        txtProyectosNombre.clear();
+
+        // Vaciar controles de las pestañas:
+        vaciarTablas();
+        datosVaciarControles();
+        subsidiosVaciarControles();
+        rendicionesVaciarControles();
+        prorrogasVaciarControles();
+        resumenVaciarControles();
+    }
 
 	@FXML private Button btnProyectosBuscar;
 	@FXML void buscarProyecto(ActionEvent event) {
@@ -69,10 +88,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 	                alertaError(TITULO, "Búsqueda de Proyectos", "No se encontró el proyecto para el id indicado.");
 	                break;
 	            case 1:  // Se encontró el proyecto:
-	                proyectoSeleccionado = proyectos.get(0);
+	                proyectoSeleccion = proyectos.get(0);
 	                // Cambiar a pestaña datos:
 	                tabpaneProyectos.getSelectionModel().select(0);
-	                llenarCamposDatos();
+	                datosMostrarProyecto();
 	                break;
 	            default: // Se encontró más de un proyecto (Error):
 	                throw new RuntimeException("Se encontró más de un proyecto para un id");
@@ -86,66 +105,107 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnProyectosNuevo;
 	@FXML void nuevoProyecto(ActionEvent event) {
-	    // TODO Nuevo Proyecto
+	    this.proyectoSeleccion = controlInvestigacion.getIProyecto();
+        generalVaciarControles();
 	}
 
 	@FXML private Button btnProyectosEliminar;
     @FXML void eliminarProyecto(ActionEvent event) {
-        this.controlInvestigacion.eliminarProyecto(proyectoSeleccionado);
-        proyectoSeleccionado = null;
+        if (proyectoSeleccion != null) {
+            EstadoOperacion resultado = controlInvestigacion.eliminarProyecto(proyectoSeleccion);
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Proyecto", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    proyectoSeleccion = null;
+                    generalVaciarControles();
+                    dialogoConfirmacion(TITULO, "Eliminar Proyecto", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+        }
     }
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 
-    private IDocente directorSeleccionado = null;
-    private IDocente codirectorSeleccionado = null;
+    private IDocente directorSeleccion = null;
+    private IDocente codirectorSeleccion = null;
 
-    private void llenarCamposDatos() {
-        // Coloco los valores del proyecto en los controles:
-        txtDatosNombre.setText(proyectoSeleccionado.getNombre());
-        txtDatosDirector.setText(proyectoSeleccionado.getDirector().getPersona().getNombre());
-        txtDatosCodirector.setText(proyectoSeleccionado.getCodirector().getPersona().getNombre());
-        cmbDatosEstado.getSelectionModel().select(proyectoSeleccionado.getEstado());
-        // TODO Disposición de proyecto?
-        dtpDatosPresentacion.setValue(proyectoSeleccionado.getFechaPresentacion());
-        dtpDatosAprobacion.setValue(proyectoSeleccionado.getFechaAprobacion());
-        dtpDatosInicio.setValue(proyectoSeleccionado.getFechaInicio());
-        dtpDatosFinalizacion.setValue(proyectoSeleccionado.getFechaFin());
+    /** Muestra los datos del proyecto seleccionado */
+    private void datosMostrarProyecto() {
+        if (proyectoSeleccion != null) {
+            txtDatosNombre.setText(proyectoSeleccion.getNombre());
+            txtDatosDirector.setText(proyectoSeleccion.getDirector().getPersona().getNombreCompleto());
+            txtDatosCodirector.setText(proyectoSeleccion.getCodirector().getPersona().getNombreCompleto());
+            cmbDatosEstado.getSelectionModel().select(proyectoSeleccion.getEstado());
+            dtpDatosPresentacion.setValue(proyectoSeleccion.getFechaPresentacion());
+            dtpDatosAprobacion.setValue(proyectoSeleccion.getFechaAprobacion());
+            dtpDatosInicio.setValue(proyectoSeleccion.getFechaInicio());
+            dtpDatosFinalizacion.setValue(proyectoSeleccion.getFechaFin());
+        }
+    }
+
+    /** Vacía los controles de datos */
+    private void datosVaciarControles() {
+        txtDatosNombre.clear();
+        txtDatosDirector.clear();
+        directorSeleccion = null;
+        txtDatosCodirector.clear();
+        codirectorSeleccion = null;
+        cmbDatosEstado.getSelectionModel().clearSelection();
+        dtpDatosPresentacion.setValue(null);
+        dtpDatosAprobacion.setValue(null);
+        dtpDatosInicio.setValue(null);
+        dtpDatosFinalizacion.setValue(null);
     }
 
     @FXML private void inicializarDatos() {
         cmbDatosEstado.setItems(
                 FXCollections.observableArrayList(
                         EstadoProyecto.getLista()));
+
+        datosMostrarProyecto();
     }
 
 	@FXML private Button btnDatosGuardar;
 	@FXML void guardarProyecto(ActionEvent event) {
-	    // Actualizo valores del proyecto seleccionado:
-	    proyectoSeleccionado.setNombre(txtDatosNombre.getText());
-	    proyectoSeleccionado.setDirector(directorSeleccionado);
-	    proyectoSeleccionado.setCodirector(codirectorSeleccionado);
-	    proyectoSeleccionado.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
-	    // TODO Disposición de proyecto?
-	    proyectoSeleccionado.setFechaPresentacion(dtpDatosPresentacion.getValue());
-	    proyectoSeleccionado.setFechaAprobacion(dtpDatosAprobacion.getValue());
-	    proyectoSeleccionado.setFechaInicio(dtpDatosInicio.getValue());
-	    proyectoSeleccionado.setFechaFin(dtpDatosFinalizacion.getValue());
+	    if (proyectoSeleccion != null) {
+	        proyectoSeleccion.setNombre(txtDatosNombre.getText());
+	        proyectoSeleccion.setDirector(directorSeleccion);
+	        proyectoSeleccion.setCodirector(codirectorSeleccion);
+	        proyectoSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+	        proyectoSeleccion.setFechaPresentacion(dtpDatosPresentacion.getValue());
+	        proyectoSeleccion.setFechaAprobacion(dtpDatosAprobacion.getValue());
+	        proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
+	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
 
-	    this.controlInvestigacion.modificarProyecto(proyectoSeleccionado, null);
+	        EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoSeleccion, null);
+	        switch (resultado.getEstado()) {
+	            case INSERT_ERROR:
+	            case UPDATE_ERROR:
+	                alertaError(TITULO, "Guardar Proyecto", resultado.getMensaje());
+	            case INSERT_OK:
+                case UPDATE_OK:
+                    dialogoConfirmacion(TITULO, "Guardar Proyecto", resultado.getMensaje());
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+	        }
+	    }
 	}
 
 	@FXML private Button btnDatosDescartar;
     @FXML void descartarProyecto(ActionEvent event) {
-        llenarCamposDatos();
+        datosMostrarProyecto();
     }
 
-	@FXML private TextField txtDatosNombre;
-
-	@FXML private TextField txtDatosDirector;
-	@FXML private Button btnDatosDirector;
+    @FXML private TextField txtDatosDirector;
+    @FXML private Button btnDatosDirector;
 	@FXML void buscarDirector(ActionEvent event) {
-	    // TODO directorSeleccionado = ???
+	    // TODO directorSeleccion = ???
 	}
 
 	@FXML private TextField txtDatosCodirector;
@@ -154,32 +214,74 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    // TODO codirectorSeleccionado = ???
 	}
 
-	@FXML private ComboBox<EstadoProyecto> cmbDatosEstado;
-
-	@FXML private TextField txtDatosDisp;
-
-	@FXML private DatePicker dtpDatosPresentacion;
-	@FXML private DatePicker dtpDatosAprobacion;
-	@FXML private DatePicker dtpDatosInicio;
-	@FXML private DatePicker dtpDatosFinalizacion;
-
+    @FXML private TextField txtDatosNombre;
+    @FXML private ComboBox<EstadoProyecto> cmbDatosEstado;
+    @FXML private TextField txtDatosDisp;
+    @FXML private DatePicker dtpDatosPresentacion;
+    @FXML private DatePicker dtpDatosAprobacion;
+    @FXML private DatePicker dtpDatosInicio;
+    @FXML private DatePicker dtpDatosFinalizacion;
 
 // -------------------------- Pestaña Integrantes --------------------------- //
 
-	private IIntegrante integranteSeleccionado = null;
-	private ObservableList<FilaIntegrante> filasIntegrante = FXCollections.observableArrayList();
+	private IIntegrante integranteSeleccion = null;
+	private ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
 
-	private void llenarTablaIntegrantes() {
-	    if (proyectoSeleccionado != null) {
-	        List<IIntegrante> integrantes = proyectoSeleccionado.getIntegrantes();
-	        filasIntegrante.clear();
-	        for (IIntegrante integrante : integrantes) {
-	            filasIntegrante.add(new FilaIntegrante(integrante));
-	        }
-	    }
-	}
+	class FilaIntegrante {
+        private IIntegrante integrante;
 
-	private void limpiarCamposIntegrantes() {
+        public FilaIntegrante(IIntegrante integrante) {
+            this.integrante = integrante;
+        }
+
+        public String getApellido() {
+            return this.integrante.getApellido();
+        }
+
+        public String getNombre() {
+            return this.integrante.getNombre();
+        }
+
+        public String getCargo() {
+            return this.integrante.getCargo();
+        }
+
+        public String getUnidad() {
+            return this.integrante.getInstitucion();
+        }
+
+        public int getHoras() {
+            return this.integrante.getHorasSemanales();
+        }
+
+        public IIntegrante getInstanciaIntegrante() {
+            return this.integrante;
+        }
+    }
+
+	/** Refresca la tabla de integrantes */
+    private void integrantesActualizarTabla() {
+        filasIntegrantes.clear();
+        if (proyectoSeleccion != null) {
+            for (IIntegrante integrante : proyectoSeleccion.getIntegrantes()) {
+                filasIntegrantes.add(new FilaIntegrante(integrante));
+            }
+        }
+    }
+
+    /** Muestra los datos del integrante seleccionado: */
+    private void integrantesMostrarIntegrante() {
+        if (integranteSeleccion != null) {
+            txtIntegrantesApellido.setText(integranteSeleccion.getApellido());
+            txtIntegrantesNombre.setText(integranteSeleccion.getNombre());
+            txtIntegrantesCargo.setText(integranteSeleccion.getCargo());
+            txtIntegrantesInstitucion.setText(integranteSeleccion.getInstitucion());
+            txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
+        }
+    }
+
+	/** Vacía los controles de datos del integrante */
+	private void integrantesVaciarControles() {
 	    txtIntegrantesApellido.clear();
 	    txtIntegrantesNombre.clear();
 	    txtIntegrantesCargo.clear();
@@ -187,89 +289,91 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    txtIntegrantesHoras.clear();
 	}
 
-	private void llenarCamposIntegrantes() {
-	    txtIntegrantesApellido.setText(integranteSeleccionado.getApellido());
-        txtIntegrantesNombre.setText(integranteSeleccionado.getNombre());
-        txtIntegrantesCargo.setText(integranteSeleccionado.getCargo());
-        txtIntegrantesInstitucion.setText(integranteSeleccionado.getInstitucion());
-        txtIntegrantesHoras.setText(String.valueOf(integranteSeleccionado.getHorasSemanales()));
-	}
-
-	class FilaIntegrante {
-	    private String apellido;
-	    private String nombre;
-	    private String cargo;
-	    private String unidad;
-	    private int horas;
-	    public FilaIntegrante(IIntegrante integrante) {
-	        this.apellido = integrante.getApellido();
-	        this.nombre = integrante.getNombre();
-	        this.cargo = integrante.getCargo();
-	        this.unidad = integrante.getInstitucion();
-	        this.horas = integrante.getHorasSemanales();
-	    }
-	    public String getApellido() {
-    	    return this.apellido;
-        }
-	    public String getNombre() {
-    	    return this.nombre;
-        }
-	    public String getCargo() {
-    	    return this.cargo;
-        }
-	    public String getUnidad() {
-    	    return this.unidad;
-        }
-	    public int getHoras() {
-    	    return this.horas;
-        }
-	}
-
 	@FXML void inicializarIntegrantes() {
-	    integranteSeleccionado = null;
-	    filasIntegrante.clear();
-	    limpiarCamposIntegrantes();
-
-	    if (proyectoSeleccionado != null) {
-	        for (IIntegrante integrante : proyectoSeleccionado.getIntegrantes()) {
-	            filasIntegrante.add(new FilaIntegrante(integrante));
+	    inicializarTabla("Integrantes");
+	    tblIntegrantes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+	        if (newSelection != null) {
+	            integranteSeleccion = newSelection.getInstanciaIntegrante();
+                integrantesMostrarIntegrante();
 	        }
-	    }
+	    });
+
+	    integrantesActualizarTabla();
 	}
 
 	@FXML private Button btnIntegrantesNuevo;
     @FXML void nuevoIntegrante(ActionEvent event) {
-        integranteSeleccionado = new Integrante(0, null, null, 0);
-        limpiarCamposIntegrantes();
+        if (proyectoSeleccion != null) {
+            integranteSeleccion = controlInvestigacion.getIIntegrante();
+            integrantesVaciarControles();
+        }
     }
 
     @FXML private Button btnIntegrantesGuardar;
 	@FXML void guardarIntegrante(ActionEvent event) {
-	    // TODO Guardar cambios
+	    if (proyectoSeleccion != null && integranteSeleccion != null) {
+	        integranteSeleccion.setApellido(txtIntegrantesApellido.getText());
+	        integranteSeleccion.setNombre(txtIntegrantesNombre.getText());
+	        integranteSeleccion.setCargo(txtIntegrantesCargo.getText());
+	        integranteSeleccion.setInstitucion(txtIntegrantesInstitucion.getText());
+	        integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
+
+	        EstadoOperacion resultado = controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion);
+            switch (resultado.getEstado()) {
+                case INSERT_ERROR:
+                case UPDATE_ERROR:
+                    alertaError(TITULO, "Guardar Integrante", resultado.getMensaje());
+                    break;
+                case INSERT_OK:
+                case UPDATE_OK:
+                    dialogoConfirmacion(TITULO, "Guardar Integrante", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+            integrantesActualizarTabla();
+	    }
 	}
 
 	@FXML private Button btnIntegrantesDescartar;
 	@FXML void descartarIntegrante(ActionEvent event) {
-	    llenarTablaIntegrantes();
+	    integranteSeleccion = null;
+	    integrantesVaciarControles();
 	}
 
 	@FXML private Button btnIntegrantesEliminar;
 	@FXML void eliminarIntegrante(ActionEvent event) {
-	    // TODO Eliminar integrante
-
+	    if (proyectoSeleccion != null && integranteSeleccion != null) {
+	        EstadoOperacion resultado = controlInvestigacion.quitarIntegrante(proyectoSeleccion, integranteSeleccion);
+	        switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Integrante", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    integranteSeleccion = null;
+                    integrantesVaciarControles();
+                    dialogoConfirmacion(TITULO, "Eliminar Integrante", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de eliminación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+	        }
+	        integrantesActualizarTabla();
+	    }
 	}
-
-	@FXML private TableView<FilaIntegrante> tblIntegrantes;
-	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesApellido;
-	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesNombre;
-	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesCargo;
-	@FXML private TableColumn<FilaIntegrante, String> colIntegrantesInstitucion;
-	@FXML private TableColumn<FilaIntegrante, Integer> colIntegrantesHoras;
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-	    // TODO Seleccionar docente
+	    // TODO Integrantes: Seleccionar cargoDocente
 	}
+
+	@FXML private TableView<FilaIntegrante> tblIntegrantes;
+    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesApellido;
+    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesNombre;
+    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesCargo;
+    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesInstitucion;
+    @FXML private TableColumn<FilaIntegrante, Integer> colIntegrantesHoras;
 
 	@FXML private TextField txtIntegrantesApellido;
 	@FXML private TextField txtIntegrantesNombre;
@@ -279,103 +383,133 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Subsidios ---------------------------- //
 
-	private ISubsidio subsidioSeleccionado;
-	private ObservableList<FilaSubsidio> filasSubsidios = FXCollections.observableArrayList();
+	private ISubsidio subsidioSeleccion = null;
+	protected ObservableList<FilaSubsidio> filasSubsidios = FXCollections.observableArrayList();
 
-	private void limpiarCamposSubsidios() {
+	public class FilaSubsidio {
+	    private ISubsidio subsidio;
+
+        public FilaSubsidio(ISubsidio subsidio) {
+            this.subsidio = subsidio;
+        }
+
+        public int getFecha() {
+            return this.subsidio.getFecha().getValue();
+        }
+
+        public float getMontoTotal() {
+            return this.subsidio.getMontoTotal();
+        }
+
+        public String getObservaciones() {
+            return this.subsidio.getObservaciones();
+        }
+
+        public ISubsidio getInstanciaSubsidio() {
+            return this.subsidio;
+        }
+    }
+
+	/** Refresca la tabla de subsidios */
+    private void subsidiosActualizarTabla() {
+        filasSubsidios.clear();
+        if (proyectoSeleccion != null) {
+            for (ISubsidio subsidio : proyectoSeleccion.getSubsidios()) {
+                filasSubsidios.add(new FilaSubsidio(subsidio));
+            }
+        }
+    }
+
+    /** Muestra los datos del subsidio seleccionado: */
+    private void subsidiosMostrarSubsidio() {
+        if (subsidioSeleccion != null) {
+            txtSubsidiosAnio.setText(subsidioSeleccion.getFecha().toString());
+            txtSubsidiosMonto.setText(String.valueOf(subsidioSeleccion.getMontoTotal()));
+            txtSubsidiosDisp.setText(subsidioSeleccion.getDisposicion());
+            txtaSubsidiosObservaciones.setText(subsidioSeleccion.getObservaciones());
+        }
+    }
+
+    /** Vacía los controles de datos del subsidio */
+	private void subsidiosVaciarControles() {
 	    txtSubsidiosAnio.clear();
         txtSubsidiosMonto.clear();
         txtSubsidiosDisp.clear();
         txtaSubsidiosObservaciones.clear();
 	}
 
-	private void llenarCamposSubsidios() {
-	    if (subsidioSeleccionado != null) {
-	        txtSubsidiosAnio.setText(String.valueOf(subsidioSeleccionado.getFecha()));
-	        txtSubsidiosMonto.setText(String.valueOf(subsidioSeleccionado.getMontoTotal()));
-	        txtSubsidiosDisp.setText(subsidioSeleccionado.getDisposicion());
-	        txtaSubsidiosObservaciones.setText(subsidioSeleccionado.getObservaciones());
-	    }
-	}
-
-	class FilaSubsidio {
-	    private int fecha;
-	    private float monto;
-	    private String observaciones;
-	    public FilaSubsidio(ISubsidio subsidio) {
-	        this.fecha = subsidio.getFecha().getValue();
-	        this.monto = subsidio.getMontoTotal();
-	        this.observaciones = subsidio.getObservaciones();
-	    }
-	    public int getFecha() {
-    	    return this.fecha;
-        }
-	    public float getMontoTotal() {
-    	    return this.monto;
-        }
-	    public String getObservaciones() {
-    	    return this.observaciones;
-        }
-	    public ISubsidio getSubsidio() {
-	        // TODO Subsidios: Regresar rendiciones
-	        return new Subsidio(Year.of(fecha), observaciones, monto, observaciones, null);
-	    }
-	}
-
 	@FXML void inicializarSubsidios() {
-	    subsidioSeleccionado = null;
-	    filasSubsidios.clear();
-	    limpiarCamposSubsidios();
+	    inicializarTabla("Subsidios");
+	    tblSubsidios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                subsidioSeleccion = newSelection.getInstanciaSubsidio();
+                subsidiosMostrarSubsidio();
+            }
+        });
 
-	    if (proyectoSeleccionado != null) {
-	        for (ISubsidio subsidio : proyectoSeleccionado.getSubsidios()) {
-	            filasSubsidios.add(new FilaSubsidio(subsidio));
-	        }
-	    }
+	    subsidiosActualizarTabla();
 	}
 
 	@FXML private Button btnSubsidiosNuevo;
 	@FXML void nuevoSubsidio(ActionEvent event) {
-	    subsidioSeleccionado = new Subsidio(null, null, 0, null, null);
-	    limpiarCamposSubsidios();
+	    if (proyectoSeleccion != null) {
+	        subsidioSeleccion = controlInvestigacion.getISubsidio();
+	        subsidiosVaciarControles();
+	    }
 	}
 
 	@FXML private Button btnSubsidiosGuardar;
 	@FXML void guardarSubsidio(ActionEvent event) {
-	    if (subsidioSeleccionado != null) {
-	        // Actualizo los valores de los subsidios:
-	        subsidioSeleccionado.setFecha(Year.of(Integer.parseInt(txtSubsidiosAnio.getText())));
-	        subsidioSeleccionado.setMontoTotal(Float.parseFloat(txtSubsidiosMonto.getText()));
-	        subsidioSeleccionado.setDisposicion(txtSubsidiosDisp.getText());
-	        subsidioSeleccionado.setObservaciones(txtaSubsidiosObservaciones.getText());
-	        // Agreo el subsidio al proyecto:
-	        proyectoSeleccionado.agregarSubsidio(subsidioSeleccionado);
-	        this.controlInvestigacion.agregarSubsidio(proyectoSeleccionado, subsidioSeleccionado);
-	        // Agrego el subsidio a la tabla:
-	        filasSubsidios.add(new FilaSubsidio(subsidioSeleccionado));
+	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
+	        subsidioSeleccion.setFecha(Year.of(Integer.parseInt(txtSubsidiosAnio.getText())));
+	        subsidioSeleccion.setMontoTotal(Float.parseFloat(txtSubsidiosMonto.getText()));
+	        subsidioSeleccion.setDisposicion(txtSubsidiosDisp.getText());
+	        subsidioSeleccion.setObservaciones(txtaSubsidiosObservaciones.getText());
+
+	        EstadoOperacion resultado = controlInvestigacion.guardarSubsidio(proyectoSeleccion, subsidioSeleccion);
+	        switch (resultado.getEstado()) {
+	            case INSERT_ERROR:
+                case UPDATE_ERROR:
+                    alertaError(TITULO, "Guardar Subsidio", resultado.getMensaje());
+                    break;
+                case INSERT_OK:
+                case UPDATE_OK:
+                    dialogoConfirmacion(TITULO, "Guardar Subsidio", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+	        }
+
+	        subsidiosActualizarTabla();
 	    }
     }
 
 	@FXML private Button btnSubsidiosDescartar;
 	@FXML void descartarSubsidio(ActionEvent event) {
-	    limpiarCamposSubsidios();
-	    tblSubsidios.getSelectionModel().clearSelection();
-	    subsidioSeleccionado = null;
+	    subsidioSeleccion = null;
+	    subsidiosVaciarControles();
     }
 
 	@FXML private Button btnSubsidiosEliminar;
 	@FXML void eliminarSubsidio(ActionEvent event) {
-	    FilaSubsidio fs = tblSubsidios.getSelectionModel().getSelectedItem();
-	    subsidioSeleccionado = fs.getSubsidio();
-	    proyectoSeleccionado.quitarSubsidio(subsidioSeleccionado);
-
-	    this.controlInvestigacion.quitarSubsidio(proyectoSeleccionado, subsidioSeleccionado);
-
-	    dialogoConfirmacion(TITULO, "Quita de subsidio", "El subsidio ha sido eliminado");
-
-	    limpiarCamposSubsidios();
-	    tblSubsidios.getSelectionModel().clearSelection();
-	    subsidioSeleccionado = null;
+	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
+            EstadoOperacion resultado = controlInvestigacion.quitarSubsidio(proyectoSeleccion, subsidioSeleccion);
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Subsidio", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    subsidioSeleccion = null;
+                    subsidiosVaciarControles();
+                    dialogoConfirmacion(TITULO, "Eliminar Subsidio", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de eliminación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+            subsidiosActualizarTabla();
+        }
     }
 
 	@FXML private TableView<FilaSubsidio> tblSubsidios;
@@ -389,101 +523,141 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TextArea txtaSubsidiosObservaciones;
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
+// TODO agregar Año de subsidio a los controles
+	@FXML private ComboBox cmbRendicionesAnio;  
+	
+	private IRendicion rendicionSeleccion = null;
+	protected ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
 
-	private IRendicion rendicionSeleccionada = null;
-	private ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
+	public class FilaRendicion {
+	    private IRendicion rendicion;
 
-	private void limpiarCamposRendiciones() {
+	    public FilaRendicion(IRendicion rendicion) {
+            this.rendicion = rendicion;
+        }
+
+        public LocalDate getFecha() {
+            return this.rendicion.getFecha();
+        }
+
+        public float getMonto() {
+            return this.rendicion.getMonto();
+        }
+
+        public String getObservaciones() {
+            return this.rendicion.getObservaciones();
+        }
+
+        public IRendicion getInstanciaRendicion() {
+            return this.rendicion;
+        }
+    }
+
+	/** Refresca la tabla de rendiciones */
+    private void rendicionesActualizarTabla() {
+        filasRendiciones.clear();
+        if (proyectoSeleccion != null && subsidioSeleccion != null) {
+            for (IRendicion rendicion : subsidioSeleccion.getRendiciones()) {
+                filasRendiciones.add(new FilaRendicion(rendicion));
+            }
+        }
+    }
+
+	/** Muestra los datos de la rendición seleccionada: */
+    private void rendicionesMostrarRendicion() {
+        if (rendicionSeleccion != null) {
+            dtpRendicionesFecha.setValue(rendicionSeleccion.getFecha());
+            txtRendicionesMonto.setText(String.valueOf(rendicionSeleccion.getMonto()));
+            txtaRendicionesObservaciones.setText(rendicionSeleccion.getObservaciones());
+        }
+    }
+
+	/** Vacía los controles de datos de la rendición */
+	private void rendicionesVaciarControles() {
 	    dtpRendicionesFecha.setValue(null);
 	    txtRendicionesMonto.clear();
 	    txtaRendicionesObservaciones.clear();
 	}
 
-	private void llenarCamposRendiciones() {
-	    if (rendicionSeleccionada != null) {
-	        dtpRendicionesFecha.setValue(rendicionSeleccionada.getFecha());
-	        txtRendicionesMonto.setText(String.valueOf(rendicionSeleccionada.getMonto()));
-	        txtaRendicionesObservaciones.setText(rendicionSeleccionada.getObservaciones());
-	    }
-	}
-
-	class FilaRendicion {
-	    private LocalDate fecha;
-	    public LocalDate getFecha() {
-            return this.fecha;
-        }
-
-        public float getMonto() {
-            return this.monto;
-        }
-
-        public String getObservaciones() {
-            return this.observaciones;
-        }
-
-        private float monto;
-	    private String observaciones;
-
-	    public FilaRendicion(IRendicion rendicion) {
-	        this.fecha = rendicion.getFecha();
-	        this.monto = rendicion.getMonto();
-	        this.observaciones = rendicion.getObservaciones();
-	    }
-
-	    public IRendicion getRendicion() {
-	        return new Rendicion(0, this.fecha, this.monto, this.observaciones);
-	    }
-
-	}
-
 	@FXML void inicializarRendiciones() {
-	    rendicionSeleccionada = null;
-	    filasRendiciones.clear();
-	    limpiarCamposRendiciones();
+	    inicializarTabla("Rendiciones");
+	    tblRendiciones.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                rendicionSeleccion = newSelection.getInstanciaRendicion();
+                rendicionesMostrarRendicion();
+            }
+        });
 
-	    if (subsidioSeleccionado != null) {
-    	    for (IRendicion rendicion : subsidioSeleccionado.getRendiciones()) {
-    	        filasRendiciones.add(new FilaRendicion(rendicion));
-    	    }
-	    }
+	    rendicionesActualizarTabla();
 	}
 
 	@FXML private Button btnRendicionesNueva;
 	@FXML void nuevaRendicion(ActionEvent event) {
-	    rendicionSeleccionada = new Rendicion(0, null, 0, null);
-	    limpiarCamposRendiciones();
+	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
+	        rendicionSeleccion = controlInvestigacion.getIRendicion();
+	        rendicionesVaciarControles();
+	    }
 	}
 
 	@FXML private Button btnRendicionesGuardar;
 	@FXML void guardarRendicion(ActionEvent event) {
-	    if (rendicionSeleccionada != null) {
+	    if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
 	        try {
-    	        rendicionSeleccionada.setFecha(dtpRendicionesFecha.getValue());
-    	        rendicionSeleccionada.setMonto(Float.parseFloat(txtRendicionesMonto.getText()));
-    	        rendicionSeleccionada.setObservaciones(txtaRendicionesObservaciones.getText());
+	            float monto = Float.parseFloat(txtRendicionesMonto.getText());
 
-    	        subsidioSeleccionado.agregarRendicion(rendicionSeleccionada);
-    	        // TODO Rendiciones: Agregar rendición a BD
-	        } catch (NumberFormatException nfe) {
-	            nfe.printStackTrace();
-	            alertaError(TITULO, "Guardar rendición", "Alguno de los datos ingresados no es válido");
+    	        rendicionSeleccion.setFecha(dtpRendicionesFecha.getValue());
+    	        rendicionSeleccion.setMonto(monto);
+    	        rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
+
+    	        EstadoOperacion resultado = controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion);
+    	        switch (resultado.getEstado()) {
+                    case INSERT_ERROR:
+                    case UPDATE_ERROR:
+                        alertaError(TITULO, "Guardar Rendición", resultado.getMensaje());
+                        break;
+                    case INSERT_OK:
+                    case UPDATE_OK:
+                        dialogoConfirmacion(TITULO, "Guardar Rendición", resultado.getMensaje());
+                        break;
+                    default:
+                        throw new RuntimeException("Estado de modificación no esperado: "
+                                + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+                }
+
+                rendicionesActualizarTabla();
+
+	        } catch (NumberFormatException e) {
+	            e.printStackTrace();
+	            alertaError(TITULO, "Guardar Rendición", "El monto ingresado no es numérico.");
 	        }
 	    }
 	}
 
 	@FXML private Button btnRendicionesDescartar;
 	@FXML void descartarRendicion(ActionEvent event) {
-	    limpiarCamposRendiciones();
-	    tblRendiciones.getSelectionModel().clearSelection();
-	    rendicionSeleccionada = null;
+	    rendicionSeleccion = null;
+	    rendicionesVaciarControles();
 	}
 
     @FXML private Button btnRendicionesEliminar;
     @FXML void eliminarRendicion(ActionEvent event) {
-        FilaRendicion fr = tblRendiciones.getSelectionModel().getSelectedItem();
-        filasRendiciones.remove(fr);
-        subsidioSeleccionado.quitarRendicion(rendicionSeleccionada);
-        // TODO Rendiciones: Quitar rendición en BD
+        if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
+            EstadoOperacion resultado = controlInvestigacion.quitarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion);
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Rendición", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    rendicionSeleccion = null;
+                    rendicionesVaciarControles();
+                    dialogoConfirmacion(TITULO, "Eliminar Rendición", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de eliminación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+            rendicionesActualizarTabla();
+        }
     }
 
 	@FXML private TableView<FilaRendicion> tblRendiciones;
@@ -497,125 +671,171 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // --------------------------- Pestaña Prórrogas ---------------------------- //
 
-	private IProrroga prorrogaSeleccionada = null;
-	private ObservableList<FilaProrroga> filasProrrogas = FXCollections.observableArrayList();
+	private IProrroga prorrogaSeleccion = null;
+	protected ObservableList<FilaProrroga> filasProrrogas = FXCollections.observableArrayList();
 
-    private void limpiarCamposProrrogas() {
-        dtpProrrogasInicio.setValue(null);
+	public class FilaProrroga {
+        private IProrroga prorroga;
+
+        public FilaProrroga(IProrroga prorroga) {
+            this.prorroga = prorroga;
+        }
+
+        public LocalDate getFechaInicio() {
+            // Prorrogas: Fila fecha inicio
+            return null;
+        }
+
+        public LocalDate getfechaFin() {
+            return this.prorroga.getFechaFin();
+        }
+
+        public IProrroga getInstanciaProrroga() {
+            return this.prorroga;
+        }
+    }
+
+	private void prorrogasActualizarTabla() {
+	    filasProrrogas.clear();
+        if (prorrogaSeleccion != null) {
+            for (IProrroga prorroga : proyectoSeleccion.getProrrogas()) {
+                filasProrrogas.add(new FilaProrroga(prorroga));
+            }
+        }
+	}
+
+	private void prorrogasMostrarProrroga() {
+        if (prorrogaSeleccion != null) {
+            dtpProrrogasFinalizacion.setValue(prorrogaSeleccion.getFechaFin());
+            txtProrrogasDisp.setText(prorrogaSeleccion.getDisposicion());
+        }
+    }
+
+    private void prorrogasVaciarControles() {
         dtpProrrogasFinalizacion.setValue(null);
         txtProrrogasDisp.clear();
     }
 
-    private void llenarCamposProrrogas() {
-        if (prorrogaSeleccionada != null) {
-            dtpProrrogasFinalizacion.setValue(prorrogaSeleccionada.getFechaFin());
-            txtProrrogasDisp.setText(prorrogaSeleccionada.getDisposicion());
-        }
-    }
-
-	class FilaProrroga {
-
-	    private LocalDate fechaFin;
-	    public FilaProrroga(IProrroga prorroga) {
-	        this.fechaFin = prorroga.getFechaFin();
-	    }
-        public LocalDate getfechaFin() {
-            return this.fechaFin;
-        }
-        
-        public IProrroga getProrroga() {
-        	return new Prorroga(null, this.fechaFin);
-        }
-	}
-
     @FXML void inicializarProrrogas() {
-        prorrogaSeleccionada = null;
-        filasProrrogas.clear();
-        limpiarCamposProrrogas();
-
-        if (proyectoSeleccionado != null) {
-            for (IProrroga prorroga : proyectoSeleccionado.getProrrogas()) {
-                filasProrrogas.add(new FilaProrroga(prorroga));
+        inicializarTabla("Prorrogas");
+        tblProrrogas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                prorrogaSeleccion = newSelection.getInstanciaProrroga();
+                prorrogasMostrarProrroga();
             }
-        }
+        });
+
+        prorrogasActualizarTabla();
     }
 
 	@FXML private Button btnProrrogasNueva;
     @FXML void nuevaProrroga(ActionEvent event) {
-        prorrogaSeleccionada = new Prorroga(null, null);
-        limpiarCamposProrrogas();
+        if (proyectoSeleccion != null) {
+            prorrogaSeleccion = controlInvestigacion.getIProrroga();
+            prorrogasVaciarControles();
+        }
     }
 
+    @FXML private Button btnProrrogasGuardar;
     @FXML void guardarProrroga(ActionEvent event) {
-        if (prorrogaSeleccionada != null) {
-            try {
-                prorrogaSeleccionada.setFechaFin(dtpProrrogasFinalizacion.getValue());
-                prorrogaSeleccionada.setDisposicion(txtProrrogasDisp.getText());
+        if (proyectoSeleccion != null && prorrogaSeleccion != null) {
+            // TODO Prorrogas: prorrogaSeleccion.setFechaInicio(dtpProrrogasInicio.getValue());
+            prorrogaSeleccion.setFechaFin(dtpProrrogasFinalizacion.getValue());
+            prorrogaSeleccion.setDisposicion(txtProrrogasDisp.getText());
 
-                proyectoSeleccionado.agregarProrroga(prorrogaSeleccionada);
-                this.controlInvestigacion.agregarProrroga(proyectoSeleccionado, prorrogaSeleccionada);
-            } catch (NumberFormatException nfe) {
-                nfe.printStackTrace();
-                alertaError(TITULO, "Guardar prórroga", "Alguno de los datos ingresados no es válido");
+            EstadoOperacion resultado = controlInvestigacion.guardarProrroga(proyectoSeleccion, prorrogaSeleccion);
+            switch (resultado.getEstado()) {
+                case INSERT_ERROR:
+                case UPDATE_ERROR:
+                    alertaError(TITULO, "Guardar Prórroga", resultado.getMensaje());
+                    break;
+                case INSERT_OK:
+                case UPDATE_OK:
+                    dialogoConfirmacion(TITULO, "Guardar Prórroga", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
             }
+
+            prorrogasActualizarTabla();
         }
     }
 
     @FXML private Button btnProrrogasDescartar;
     @FXML void descartarProrroga(ActionEvent event) {
-        limpiarCamposProrrogas();
-        tblProrrogas.getSelectionModel().clearSelection();
-        prorrogaSeleccionada = null;
+        prorrogaSeleccion = null;
+        prorrogasVaciarControles();
     }
 
     @FXML private Button btnProrrogasEliminar;
     @FXML void eliminarProrroga(ActionEvent event) {
-        FilaProrroga fila = tblProrrogas.getSelectionModel().getSelectedItem();
-        prorrogaSeleccionada = fila.getProrroga();
-        proyectoSeleccionado.quitarProrroga(prorrogaSeleccionada);
-
-        this.controlInvestigacion.quitarProrroga(proyectoSeleccionado, prorrogaSeleccionada);
-
-        dialogoConfirmacion(TITULO, "Quita de prórroga", "La prórroga ha sido quitada.");
-
-        limpiarCamposProrrogas();
-        tblProrrogas.getSelectionModel().clearSelection();
-        prorrogaSeleccionada = null;
+        if (proyectoSeleccion != null && prorrogaSeleccion != null) {
+            EstadoOperacion resultado = controlInvestigacion.quitarProrroga(proyectoSeleccion, prorrogaSeleccion);
+            switch (resultado.getEstado()) {
+                case DELETE_ERROR:
+                    alertaError(TITULO, "Eliminar Prórroga", resultado.getMensaje());
+                    break;
+                case DELETE_OK:
+                    prorrogaSeleccion = null;
+                    prorrogasVaciarControles();
+                    dialogoConfirmacion(TITULO, "Eliminar Prórroga", resultado.getMensaje());
+                    break;
+                default:
+                    throw new RuntimeException("Estado de eliminación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+            prorrogasActualizarTabla();
+        }
     }
 
 	@FXML private TableView<FilaProrroga> tblProrrogas;
 	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
 	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasFinalización;
 
-	@FXML private DatePicker dtpProrrogasInicio;
 	@FXML private DatePicker dtpProrrogasFinalizacion;
 	@FXML private TextField txtProrrogasDisp;
 
 // ---------------------------- Pestaña Resumen ----------------------------- //
 
 	@FXML private void inicializarResumen() {
-	    if (proyectoSeleccionado != null) {
-	        txtaResumen.setText(proyectoSeleccionado.getResumen());
+	    if (proyectoSeleccion != null) {
+	        txtaResumen.setText(proyectoSeleccion.getResumen());
 	    }
+	}
+
+	private void resumenVaciarControles() {
+	    txtaResumen.clear();
 	}
 
     @FXML private Button btnResumenGuardar;
     @FXML void guardarResumen(ActionEvent event) {
-        if (proyectoSeleccionado != null) {
-            proyectoSeleccionado.setResumen(txtaResumen.getText());
-            this.controlInvestigacion.modificarProyecto(proyectoSeleccionado, null);
+        if (proyectoSeleccion != null) {
+            proyectoSeleccion.setResumen(txtaResumen.getText());
+
+            EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoSeleccion, null);
+            switch (resultado.getEstado()) {
+                case INSERT_ERROR:
+                case UPDATE_ERROR:
+                    alertaError(TITULO, "Guardar Resumen", resultado.getMensaje());
+                case INSERT_OK:
+                case UPDATE_OK:
+                    dialogoConfirmacion(TITULO, "Guardar Resumen", resultado.getMensaje());
+                default:
+                    throw new RuntimeException("Estado de modificación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
         }
     }
 
     @FXML private Button btnResumenDescartar;
     @FXML void descartarResumen(ActionEvent event) {
-        if (proyectoSeleccionado != null) {
-            txtaResumen.setText(proyectoSeleccionado.getResumen());
+        if (proyectoSeleccion != null) {
+            txtaResumen.setText(proyectoSeleccion.getResumen());
         } else {
-            txtaResumen.clear();
+            resumenVaciarControles();
         }
     }
 
     @FXML private TextArea txtaResumen;
-
 }

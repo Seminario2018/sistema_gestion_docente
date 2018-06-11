@@ -14,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import modelo.auxiliares.EstadoOperacion;
 import vista.GestorPantalla;
 
 /**
@@ -168,5 +169,51 @@ public abstract class ControladorVista {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
 	    return fileChooser.showOpenDialog(new Stage());
+	}
+
+	/**
+	 * Analiza el resultado de una operación de eliminación, y lanza una ventana
+     * de aviso.
+	 * @param resultado Resultado de la operación.
+	 * @param titulo Título de la ventana.
+	 * @param comando Descripción de la operación.
+	 * @return Si la operación fue exitosa.
+	 */
+	protected boolean exitoEliminar(EstadoOperacion resultado, String titulo, String comando) {
+	    switch (resultado.getEstado()) {
+	        case DELETE_ERROR:
+                alertaError(titulo, comando, resultado.getMensaje());
+                return false;
+            case DELETE_OK:
+                dialogoConfirmacion(titulo, comando, resultado.getMensaje());
+                return true;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: "
+                    + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+	    }
+	}
+
+	/**
+	 * Analiza el resultado de una operación de guardado, y lanza una ventana
+	 * de aviso.
+     * @param resultado Resultado de la operación.
+     * @param titulo Título de la ventana.
+     * @param comando Descripción de la operación.
+     * @return Si la operación fue exitosa.
+	 */
+	protected boolean exitoGuardado(EstadoOperacion resultado, String titulo, String comando) {
+	    switch (resultado.getEstado()) {
+            case INSERT_ERROR:
+            case UPDATE_ERROR:
+                alertaError(titulo, comando, resultado.getMensaje());
+                return false;
+            case INSERT_OK:
+            case UPDATE_OK:
+                dialogoConfirmacion(titulo, comando, resultado.getMensaje());
+                return true;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: "
+                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+        }
 	}
 }
