@@ -628,23 +628,23 @@ public class GestorPersona {
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `titulo`='"+titulo.getId()+"'";
+			String condicion =	"`TipoDocumento` = '" + persona.getTipoDocumento() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `id` = " + titulo.getId();
 
 			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
-							+esMayor;
+							+ "`EsMayor` = " + esMayor;
 
 
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
 			    persona.setTitulos(new ArrayList<ITitulo>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El domicilio se modifico correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
 		}
     }
 

@@ -461,10 +461,27 @@ public class Personas extends ControladorVista implements Initializable {
 	        titulosActualizarTabla();
 	    }
 	}
-	
+
 	@FXML private Button btnTitulosMayor;
 	@FXML public void mayorTitulo(ActionEvent event) {
-		// TODO Marcar como título mayor al título seleccionado, sobreescribiendo el anterior
+		// DONE Marcar como título mayor al título seleccionado, sobreescribiendo el anterior
+	    if (personaSeleccion != null && tituloSeleccion != null) {
+	        if (!tituloSeleccion.isEsMayor()) {
+	            /* Si el título seleccionado no es el mayor entonces desmarco
+	               todos los títulos. */
+	            for (ITitulo titulo : personaSeleccion.getTitulos()) {
+	                titulo.setEsMayor(false);
+	            }
+
+	            // Y marco el título actual como el mayor:
+	            tituloSeleccion.setEsMayor(true);
+
+	            // Y persisto:
+	            exitoGuardado(controlPersona.guardarTitulo(personaSeleccion, tituloSeleccion), TITULO, "Seleccionar título de mayor grado");
+
+	            titulosActualizarTabla();
+	        }
+	    }
 	}
 
 	@FXML protected TableView<FilaTitulo> tblTitulos;
