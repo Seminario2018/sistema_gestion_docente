@@ -8,4 +8,6 @@ public interface IProrroga {
     public void setDisposicion(String disposicion);
     public LocalDate getFechaFin();
     public void setFechaFin(LocalDate fechaFin);
+	void setFechaInicio(LocalDate fechaInicio);
+	LocalDate getFechaInicio();
 }
