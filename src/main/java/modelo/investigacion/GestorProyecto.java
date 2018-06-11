@@ -569,6 +569,14 @@ public class GestorProyecto {
         return new Rendicion();
     }
 
+        
+    /**yearSubsidio lo puse con ''*/
+     public EstadoOperacion quitarRendicion(IProyecto proyecto,ISubsidio subsidio, IRendicion rendicion ) {
+        ManejoDatos md = new ManejoDatos();
+        md.delete("`Rendiciones`", "Proyecto = " + proyecto.getId() + ", id = '" + rendicion.getId() + ", YearSubsidio= '"+subsidio.getFecha()+"'");
+        return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitÃ³ correctamente");
+    }
+
     
     public EstadoOperacion eliminarRendicion(IRendicion rendicion) {
         ManejoDatos md = new ManejoDatos();
