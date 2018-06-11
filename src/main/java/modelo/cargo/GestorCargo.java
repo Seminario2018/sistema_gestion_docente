@@ -30,28 +30,28 @@ public class GestorCargo {
 
     public EstadoOperacion modificarCargo(ICargo cargo) {
         try {
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String tabla = "cargo";
             String campos = "`Descripcion` = '" + cargo.getDescripcion() + "', " + "`CargaHoraria`= '" + cargo.getCargaHoraria() + "'";
             String condicion = "`Codigo` = " + cargo.getCodigo();
-            e.update(tabla, campos, condicion);
-            return e.isEstado()
+            md.update(tabla, campos, condicion);
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El cargo se modificó correctamente")
                 : new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el cargo");
-        } catch (Exception var6) {
-            var6.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el cargo");
         }
     }
 
     public EstadoOperacion eliminarCargo(ICargo cargo) {
         try {
-            ManejoDatos e = new ManejoDatos();
-            e.delete("`cargo`", "Codigo = " + cargo.getCodigo());
-            return e.isEstado()
+            ManejoDatos md = new ManejoDatos();
+            md.delete("`cargo`", "Codigo = " + cargo.getCodigo());
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se eliminó correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el cargo");
-        } catch (Exception var3) {
+        } catch (Exception e) {
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el cargo");
         }
     }

@@ -1,9 +1,8 @@
 package modelo.usuario;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Hashtable;
-
+import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoDocumento;
 import modelo.auxiliares.hash.HashSalt;
@@ -14,7 +13,7 @@ import persistencia.ManejoDatos;
 public class GestorUsuario {
 
     public EstadoOperacion nuevoUsuario(IUsuario usuario) {
-        
+
     	try {
     		ManejoDatos md = new ManejoDatos();
         	String table = "Usuario";
@@ -25,28 +24,26 @@ public class GestorUsuario {
         			usuario.getPersona().getTipoDocumento().getId() + ", '" +
         			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
         			usuario.getDescripcion() + "'";
-        	
+
 
         	md.insertar(table, campos, valores);
-        	
+
         	table = "RolesXUsuario";
         	campos = "`Usuario`, `Rol`";
         	for(IRol r : usuario.getGrupos()) {
         		valores = "'" + usuario.getUser() + "', '" + r.getNombre() + "'";
             	md.insertar(table, campos, valores);
         	}
-        	
-            if (md.isEstado()) {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-						"El usuario se creó correctamente");
-			}else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el usuario");
-			}
-    	}catch (Exception e) {
+
+        	return md.isEstado() ?
+        	    new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El usuario se creó correctamente") :
+    	        new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el usuario");
+
+    	} catch (Exception e) {
+    	    e.printStackTrace();
     		return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el usuario");
-    		
     	}
-    	
+
     }
 
     public EstadoOperacion modificarUsuario(IUsuario usuario) {
@@ -58,47 +55,50 @@ public class GestorUsuario {
         			"', `TipoDocumentoPersona`= '"+ usuario.getPersona().getTipoDocumento() +
         			"', `NroDocumentoPerson` = '"+ usuario.getPersona().getTipoDocumento() +"'";
         	String condicion = "`Usuario` = '" + usuario.getUser() + "'";
-        	
+
         	md.update(tabla, campos, condicion);
-        	
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK,
-                    "El usuario se modificó correctamente");
-        }catch(Exception e) {
-        	return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-                    "No se pudo modificar el usuario");
+
+        	return md.isEstado() ?
+        	    new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El usuario se modificó correctamente") :
+    	        new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el usuario");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        	return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el usuario");
         }
-    	
+
     }
 
     public EstadoOperacion eliminarUsuario(IUsuario usuario) {
     	try {
         	ManejoDatos md = new ManejoDatos();
-        	
+
         	md.delete("`RolesXUsuario`", "Usuario = " + usuario.getUser());
         	md.delete("`Usuario`", "Usuario = " + usuario.getUser());
-        	
-        	
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                    "El usuario se eliminó correctamente");
-        }catch(Exception e) {
-        	return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                    "No se pudo eliminar el usuario");
+
+        	return md.isEstado() ?
+        	    new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El usuario se eliminó correctamente") :
+        	    new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el usuario");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        	return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el usuario");
         }
     }
 
     public List<IUsuario> listarUsuario(IUsuario usuario) {
     	ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
         ArrayList<IUsuario> usuarios = new ArrayList<IUsuario>();
-    	
+
         String tabla = "Usuario INNER JOIN Persona ON Usuario.TipoDocumentoPersona = Persona.TipoDocumento"
         		+ " AND Usuario.NroDocumentoPerson = Persona.NroDocumento";
         String campos = "*";
         String condicion = this.armarCondicion(usuario);
-    	
-    	
-    	
+
+
+
     	try {
-        	ManejoDatos md = new ManejoDatos();	
+        	ManejoDatos md = new ManejoDatos();
         	res = md.select(tabla, campos, condicion);
         	for (Hashtable<String, String> reg : res) {
 				Usuario user = new Usuario(
@@ -107,7 +107,7 @@ public class GestorUsuario {
 							reg.get("Descripcion").toString(),
 							new ArrayList<IRol>()
 						);
-				
+
 				GestorPersona gp = new GestorPersona();
 				Persona p = new Persona();
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
@@ -115,49 +115,61 @@ public class GestorUsuario {
 				p = (Persona) gp.listarPersonas(p).get(0);
 				user.setPersona(p);
 				this.setRoles(user);
-				
-				usuarios.add(user);				
-				
+
+				usuarios.add(user);
+
 			}
         	return usuarios;
         }catch(Exception e) {
         	return usuarios;
         }
-        
-        
+
+
     }
 
     public EstadoOperacion agregarRol(IUsuario usuario, IRol rol) {
-    	ManejoDatos md = new ManejoDatos();	
+    	ManejoDatos md = new ManejoDatos();
     	GestorRol gr = new GestorRol();
-    	ArrayList<IRol> roles = (ArrayList<IRol>) gr.listarGrupo(rol);
-    	
+    	List<IRol> roles = gr.listarGrupo(rol);
+
     	if (roles.isEmpty()) {
     		gr.nuevoGrupo(rol);
     	}
 
     	String tabla = "RolesXUsuario";
     	String campos = "Usuario, Rol";
-    	String valores = "'" + usuario.getUser() + "', '" + rol.getNombre() + "'";  
-    	
+    	String valores = "'" + usuario.getUser() + "', '" + rol.getNombre() + "'";
+
     	md.insertar(tabla, campos, valores);
-    	
-        return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-                "El grupo se agregó correctamente");
+
+    	if (md.isEstado()) {
+    	    usuario.setGrupos(new ArrayList<IRol>());
+    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El grupo se agregó correctamente");
+    	} else {
+    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El grupo no se pudo agregar.");
+    	}
+
+
     }
 
     public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
-    	
+
     	ManejoDatos md = new ManejoDatos();
     	String tabla = "RolesXUsuario";
-    	String condicion = " Usuario = '" + usuario.getUser() + "', '" + grupo.getNombre() + "'"; 
-    	
+    	String condicion = " Usuario = '" + usuario.getUser() + "', '" + grupo.getNombre() + "'";
+
     	md.delete(tabla, condicion);
-    	
-        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                "El grupo se quitó correctamente");
+
+    	if (md.isEstado()) {
+    	    usuario.setGrupos(new ArrayList<IRol>());
+    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se quitó correctamente");
+    	} else {
+    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El grupo no se pudo quitar");
+    	}
+
+
     }
-    
+
     private String armarCondicion(IUsuario usuario) {
     	String condicion = "TRUE";
     	if (usuario != null) {
@@ -180,19 +192,19 @@ public class GestorUsuario {
 					condicion += " AND ";
 				}
     			condicion += "Usuario = '" + usuario.getUser() + "'";
-    		}           
-            
+    		}
+
         }
-    	return condicion; 
+    	return condicion;
     }
-    
-    
+
+
     private void  setRoles(IUsuario usuario) {
     	try {
     		String tabla = "RolesXUsuario";
-        	
-        	
-        	ManejoDatos md = new ManejoDatos();	
+
+
+        	ManejoDatos md = new ManejoDatos();
     		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
     		for (Hashtable<String, String> reg : res) {
 				Rol r = new Rol(reg.get("Rol"));
@@ -203,10 +215,10 @@ public class GestorUsuario {
     	}catch (Exception e) {
     		e.printStackTrace();
     	}
-    	
-		
-    	
-    	
+
+
+
+
     }
-    
+
 }

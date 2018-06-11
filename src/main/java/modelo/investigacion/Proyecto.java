@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.Docente;
 import modelo.docente.GestorDocente;
@@ -219,7 +218,7 @@ public class Proyecto implements IProyecto, IProyectog {
 				this.agregarIntegrante(integrante);
 			}
 		}
-		
+
 		return this.integrantes;
 	}
 
@@ -286,4 +285,19 @@ public class Proyecto implements IProyecto, IProyectog {
 	public EstadoProyecto getEstado2() {
 		return this.estado;
 	}
+
+	@Override
+    public void setIntegrantes(List<IIntegrante> integrantes) {
+        this.integrantes = integrantes;
+    }
+
+    @Override
+    public void setSubsidios(List<ISubsidio> subsidios) {
+        this.subsidios = subsidios;
+    }
+
+    @Override
+    public void setProrrogas(List<IProrroga> prorrogas) {
+        this.prorrogas = prorrogas;
+    }
 }

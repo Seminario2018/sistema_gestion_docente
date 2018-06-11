@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import persistencia.ManejoDatos;
 
@@ -47,15 +46,13 @@ public class GestorPrograma {
 			md.insertar(table, campos, valores);
 
 			if (md.isEstado()) {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, 
-						"El programa se guardo correctamente");
-			}else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, 
-						"No se pudo guardar el programa");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El programa se guardo correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo guardar el programa");
 			}
-		}catch (Exception e) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, 
-					"No se pudo guardar el programa");
+		} catch (Exception e) {
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo guardar el programa");
 		}
 	}
 
@@ -91,15 +88,13 @@ public class GestorPrograma {
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, 
-						"El programa se guardo correctamente");
-			}else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, 
-						"No se pudo guardar el programa");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El programa se guardo correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo guardar el programa");
 			}
-		}catch (Exception e) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, 
-					"No se pudo guardar el programa");
+		} catch (Exception e) {
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo guardar el programa");
 		}
 	}
 
@@ -123,13 +118,13 @@ public class GestorPrograma {
 				}
 				if (!reg.get("Desde").equals("")) {
 					String[] fecha = reg.get("Desde").split("-");
-					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]), 
+					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]),
 							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 					p.setFechaInicio(fld);
 				}
 				if (!reg.get("Hasta").equals("")) {
 					String[] fecha = reg.get("Hasta").split("-");
-					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]), 
+					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]),
 							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
 					p.setFechaFin(fld);
 				}
@@ -150,7 +145,7 @@ public class GestorPrograma {
 
 		IProgramag programa = (IProgramag) p;
 
-		String condicion = "TRUE";		
+		String condicion = "TRUE";
 		if (programa != null) {
 			if (programa.getId() != -1) {
 				condicion += " AND " + "id = " + programa.getId();

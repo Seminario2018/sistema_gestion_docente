@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import persistencia.ManejoDatos;
@@ -15,7 +14,7 @@ public class GestorArea {
     private String armarCondicion(IArea a) {
 
     	IAreag area = (IAreag) a;
-    	
+
         String condicion = "TRUE";
         if (area != null) {
             if (!area.getCodigo().equals("")) {
@@ -73,8 +72,8 @@ public class GestorArea {
 
         try {
         	IAreag area = (IAreag) a;
-        	
-            ManejoDatos e = new ManejoDatos();
+
+            ManejoDatos md = new ManejoDatos();
             String table = "Areas";
             String campos = "`Codigo`, `Division`";
             String valores = "'" + area.getCodigo() + "', '" + area.getDivision2().getCodigo() + "'";
@@ -102,18 +101,19 @@ public class GestorArea {
                 campos += ", `SubAreaDe`";
                 valores += ", '" + area.getAreaDe2().getCodigo() + "'";
             }
-            e.insertar(table, campos, valores);
-            return e.isEstado()
+            md.insertar(table, campos, valores);
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El Area se creó correctamente")
                 : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Area");
-        } catch (Exception var6) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Area");
         }
     }
 
     public EstadoOperacion modificarArea(IArea area) {
         try {
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
 
             String tabla = "Areas";
             String campos = "`Division`= '" + area.getDivision().getCodigo() + "'";
@@ -134,23 +134,25 @@ public class GestorArea {
             }
 
             String condicion = "`Codigo` = '" + area.getCodigo() + "'";
-            e.update(tabla, campos, condicion);
-            return e.isEstado()
-                ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El Area se modificó correctamente")
-                : new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Area");
-        } catch (Exception var6) {
-            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Area");
+            md.update(tabla, campos, condicion);
+            return md.isEstado()
+                ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El Área se modificó correctamente")
+                : new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Área");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Área");
         }
     }
 
     public EstadoOperacion eliminarArea(IArea area) {
         try {
-            ManejoDatos e = new ManejoDatos();
-            e.delete("`Areas`", "Codigo = '" + area.getCodigo() + "'");
-            return e.isEstado()
+            ManejoDatos md = new ManejoDatos();
+            md.delete("`Areas`", "Codigo = '" + area.getCodigo() + "'");
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "El area se eliminó correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el area");
-        } catch (Exception var3) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el area");
         }
 
@@ -171,7 +173,7 @@ public class GestorArea {
                 Area a = new Area();
                 a.setCodigo(reg.get("Codigo"));
                 a.setDescripcion(reg.get("Descripcion"));
-                
+
                 a.setDisposicion(reg.get("Disposicion"));
 
                 // Fecha desde

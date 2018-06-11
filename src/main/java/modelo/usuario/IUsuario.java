@@ -1,7 +1,6 @@
 package modelo.usuario;
 
 import java.util.List;
-
 import modelo.auxiliares.hash.HashSalt;
 import modelo.persona.Persona;
 
@@ -16,7 +15,8 @@ public interface IUsuario {
 	public Persona getPersona();
 	public void setPersona(Persona persona);
 
-    public List<IRol> getGrupos();
+	public List<IRol> getGrupos();
+    public void setGrupos(List<IRol> grupos);
     public void agregarGrupo(IRol grupo);
     public void quitarGrupo(IRol grupo);
 }

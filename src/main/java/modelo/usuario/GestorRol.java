@@ -3,7 +3,6 @@ package modelo.usuario;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import persistencia.ManejoDatos;
 
@@ -23,23 +22,22 @@ public class GestorRol {
 					md.insertar("modulo", "idmodulo, Descripcion",
 							p.getModulo().ordinal() + ", '" + p.getModulo().name() + "'");
 				}
-				
+
 				String valores = crear + ", " + eliminar + ", "
 						+  modificar + ", " + listar + ", '"
 						+ grupo.getNombre() + "', " + p.getModulo().ordinal();
-				
+
 				md.insertar(tabla, campos, valores);
 			}
-			
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-			        "El rol se creó correctamente");
+
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El rol se creó correctamente");
 		} catch (Exception e) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,
-			        "No se pudo crear el rol");
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el rol");
 		}
     }
 
-    public EstadoOperacion modificarGrupo(IRol grupo) {    	
+    public EstadoOperacion modificarGrupo(IRol grupo) {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "permisos";
@@ -53,11 +51,10 @@ public class GestorRol {
 				String valores = crear + ", " + eliminar + ", " + modificar + ", " + listar + ", '" + grupo.getNombre() + "'";
 				md.insertar(tabla, campos, valores);
 			}
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK,
-			        "El grupo se modificó correctamente");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El grupo se modificó correctamente");
 		} catch (Exception e) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-			        "No se pudo modificar el grupo");
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el grupo");
 		}
     }
 
@@ -68,11 +65,10 @@ public class GestorRol {
 			md.delete(tabla, "rol = '" + grupo.getNombre() + "'");
 			tabla = "roles";
 			md.delete(tabla, "nombre = '" + grupo.getNombre() + "'");
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-			        "El grupo se eliminó correctamente");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se eliminó correctamente");
 		} catch (Exception e) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-			        "No se pudo eliminar el grupo");
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el grupo");
 		}
     }
 
@@ -80,18 +76,18 @@ public class GestorRol {
     	try {
     		ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
     		ArrayList<IRol> roles = new ArrayList<IRol>();
-    		
+
     		String tabla = "roles";
             String campos = "*";
             String condicion = "TRUE";
-    		
+
 			if (grupo != null) {
 				condicion = "nombre = '" + grupo.getNombre() + "'";
 			}
 			ManejoDatos md = new ManejoDatos();
 			res = md.select(tabla, "*", condicion);
-			
-			
+
+
 			for (Hashtable<String, String> reg : res) {
 				Rol rol = new Rol(reg.get("nombre").toString());
 				tabla = "permisos";

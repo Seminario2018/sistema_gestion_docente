@@ -2,7 +2,6 @@ package modelo.investigacion;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 
@@ -32,14 +31,17 @@ public interface IProyecto {
     public void setEstado(EstadoProyecto estado);
 
     public List<IIntegrante> getIntegrantes();
+    public void setIntegrantes(List<IIntegrante> integrantes);
     public void agregarIntegrante(IIntegrante integrante);
     public void quitarIntegrante(IIntegrante integrante);
 
     public List<ISubsidio> getSubsidios();
+    public void setSubsidios(List<ISubsidio> subsidios);
     public void agregarSubsidio(ISubsidio subsidio);
     public void quitarSubsidio(ISubsidio subsidio);
 
     public List<IProrroga> getProrrogas();
+    public void setProrrogas(List<IProrroga> prorrogas);
     public void agregarProrroga(IProrroga prorroga);
     public void quitarProrroga(IProrroga prorroga);
 }

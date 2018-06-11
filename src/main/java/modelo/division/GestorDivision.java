@@ -64,8 +64,8 @@ public class GestorDivision {
     public EstadoOperacion nuevaDivision(IDivision div) {
         try {
         	IDivisiong division = (IDivisiong) div;
-        	
-            ManejoDatos e = new ManejoDatos();
+
+            ManejoDatos md = new ManejoDatos();
             String table = "Divisiones";
             String campos = "`Codigo`, `Descripcion`";
             String valores = "'" + division.getCodigo() + "', '" + division.getDescripcion() + "'";
@@ -86,11 +86,12 @@ public class GestorDivision {
             	campos += ", Hasta";
             	valores += ", '" + Date.valueOf(division.getDispHasta()) + "'";
             }
-            e.insertar(table, campos, valores);
-            return e.isEstado()
+            md.insertar(table, campos, valores);
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "La division se creó correctamente")
                 : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la division");
-        } catch (Exception var6) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la division");
         }
     }
@@ -98,7 +99,7 @@ public class GestorDivision {
     public EstadoOperacion modificarDivision(IDivision division) {
         try {
 
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String tabla = "Divisiones";
             String campos = "`Descripcion` = '" + division.getDescripcion() + "'";
             if (division.getJefe() != null) {
@@ -114,23 +115,25 @@ public class GestorDivision {
             	campos += ", Hasta= '" + Date.valueOf(division.getDispHasta()) +  "'";
             }
             String condicion = "Codigo = " + division.getCodigo() + "'";
-            e.update(tabla, campos, condicion);
-            return e.isEstado()
+            md.update(tabla, campos, condicion);
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "La division se modificó correctamente")
                 : new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el proyecto");
-        } catch (Exception var6) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el proyecto");
         }
     }
 
     public EstadoOperacion eliminarDivision(IDivision division) {
         try {
-            ManejoDatos e = new ManejoDatos();
-            e.delete("`Divisiones`", "Codigo = '" + division.getCodigo() + "'");
-            return e.isEstado()
+            ManejoDatos md = new ManejoDatos();
+            md.delete("`Divisiones`", "Codigo = '" + division.getCodigo() + "'");
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.DELETE_OK, "La division se eliminó correctamente")
                 : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la division");
-        } catch (Exception var3) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la division");
         }
     }

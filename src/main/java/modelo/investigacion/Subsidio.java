@@ -95,4 +95,10 @@ public class Subsidio implements ISubsidio {
         this.rendiciones.remove(rendicion);
     }
 
+
+    @Override
+    public void setRendiciones(List<IRendicion> rendiciones) {
+        this.rendiciones = rendiciones;
+    }
+
 }

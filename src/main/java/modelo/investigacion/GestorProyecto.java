@@ -24,7 +24,7 @@ public class GestorProyecto {
 
             proyecto.getEstado().guardar();
 
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String table = "Proyectos";
             String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
             String valores = proyecto.getId() + ", '" + proyecto.getNombre() + "', "
@@ -71,11 +71,12 @@ public class GestorProyecto {
                 this.agregarProrroga(proyecto, p);
             }
 
-            e.insertar(table, campos, valores);
-            return e.isEstado()
+            md.insertar(table, campos, valores);
+            return md.isEstado()
                 ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente")
                 : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
-        } catch (Exception var6) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
         }
     }
@@ -87,7 +88,7 @@ public class GestorProyecto {
 
             proyecto.getEstado().guardar();
 
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String tabla = "Proyectos";
             String campos = "`Nombre` = '" + proyecto.getNombre() + "', `Director`= " + proyecto.getDirector().getLegajo() + ", "
                     + "`Fecha_Presentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
@@ -117,22 +118,24 @@ public class GestorProyecto {
             }
 
             String condicion = "`Id` = " + proyecto.getId() + "'";
-            e.update(tabla, campos, condicion);
+            md.update(tabla, campos, condicion);
             return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente");
-        } catch (Exception var6) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el proyecto");
         }
     }
 
     public EstadoOperacion eliminarProyecto(IProyecto proyecto) {
         try {
-            ManejoDatos e = new ManejoDatos();
-            e.delete("`Integrantes`", "Proyecto = " + proyecto.getId());
-            e.delete("`Prorrogas", "Proyecto = " + proyecto.getId());
-            e.delete("`Subcidios`", "Proyecto = " + proyecto.getId());
-            e.delete("`Proyectos`", "id = " + proyecto.getId());
+            ManejoDatos md = new ManejoDatos();
+            md.delete("`Integrantes`", "Proyecto = " + proyecto.getId());
+            md.delete("`Prorrogas", "Proyecto = " + proyecto.getId());
+            md.delete("`Subcidios`", "Proyecto = " + proyecto.getId());
+            md.delete("`Proyectos`", "id = " + proyecto.getId());
             return new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminó correctamente");
-        } catch (Exception var3) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Proyecto");
         }
     }
@@ -168,7 +171,7 @@ public class GestorProyecto {
                 if (!reg.get("Descripcion").equals("")) {
                     p.setDescripcion(reg.get("Descripcion"));
                 }
-                
+
                 if (!reg.get("FechaInicio").equals("")) {
                     String[] fechaInicio = reg.get("FechaAprobacion").split("-");
                     LocalDate fechaIni = LocalDate.of(Integer.parseInt(fechaInicio[0]),
@@ -198,7 +201,7 @@ public class GestorProyecto {
             if (integrante.getId() == -1) {
                 integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
             }
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String table = "Integrantes";
             String campos = "`id`, `Proyecto`";
             String valores = integrante.getId() + ", " + proyecto.getId();
@@ -227,22 +230,32 @@ public class GestorProyecto {
                 campos += ", HorasSemanales";
                 valores += ", " + integrante.getHorasSemanales();
             }
-            e.insertar(table, campos, valores);
-            return e.isEstado()
-                ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El integrante se agregó correctamente")
-                : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el integrante");
-        } catch (Exception var7) {
+            md.insertar(table, campos, valores);
+
+            if (md.isEstado()) {
+                proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+                return new EstadoOperacion(CodigoEstado.INSERT_OK, "El integrante se agregó correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el integrante");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
         }
     }
 
     public EstadoOperacion quitarIntegrante(IProyecto proyecto, IIntegrante integrante) {
         try {
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String tabla = "Integrante";
-            e.delete(tabla, "id = " + integrante.getId() + "");
-            return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminÃ³ correctamente");
-        } catch (Exception var5) {
+            md.delete(tabla, "id = " + integrante.getId() + "");
+
+            proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+            return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminó correctamente");
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar el integrante");
         }
     }
@@ -257,7 +270,7 @@ public class GestorProyecto {
             for (Hashtable<String, String> reg : res) {
                 Integrante i = new Integrante();
                 i.setId(Integer.parseInt(reg.get("id")));
-                
+
                 if (!reg.get("Apellido").equals("")) {
                     i.setApellido(reg.get("Apellido"));
                 }
@@ -318,10 +331,10 @@ public class GestorProyecto {
         return new Subsidio();
     }
 
-    
+
     public EstadoOperacion agregarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
         try {
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             String table = "Subsidios";
             String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
             String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
@@ -336,11 +349,17 @@ public class GestorProyecto {
                 this.agregarRendicion(rendicion, proyecto, subsidio);
             }
 
-            e.insertar(table, campos, valores);
-            return e.isEstado()
-                ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agregó correctamente")
-                : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el subsidio");
-        } catch (Exception var7) {
+            md.insertar(table, campos, valores);
+
+            if (md.isEstado()) {
+                proyecto.setSubsidios(new ArrayList<ISubsidio>());
+                return new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agregó correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el subsidio");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el subsidio");
         }
     }
@@ -348,6 +367,8 @@ public class GestorProyecto {
     public EstadoOperacion quitarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
         ManejoDatos md = new ManejoDatos();
         md.delete("`Subsidios`", "Proyecto = " + proyecto.getId() + ", Disposicion= '" + subsidio.getDisposicion() +  "'");
+
+        proyecto.setSubsidios(new ArrayList<ISubsidio>());
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
     }
 
@@ -399,7 +420,7 @@ public class GestorProyecto {
 
     public EstadoOperacion agregarProrroga(IProyecto proyecto, IProrroga prorroga) {
         try {
-            ManejoDatos e = new ManejoDatos();
+            ManejoDatos md = new ManejoDatos();
             //`Fecha_inicio`, `Fecha_fin`
             String table = "Prorrogas";
             String campos = "`Proyecto`, `Disposicion`";
@@ -409,30 +430,38 @@ public class GestorProyecto {
                 campos += ", Fecha_fin";
                 valores += ", '" + Date.valueOf(prorroga.getFechaFin()) + "'";
             }
-            
+
             if (prorroga.getFechaInicio() != null) {
                 campos += ", Fecha_Inicio";
                 valores += ", '" + Date.valueOf(prorroga.getFechaInicio()) + "'";
             }
-            
 
-            e.insertar(table, campos, valores);
-            return e.isEstado()
-                ? new EstadoOperacion(CodigoEstado.INSERT_OK, "El prorroga se agregó correctamente")
-                : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el prorroga");
-        } catch (Exception var7) {
-            return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el prorroga");
+
+            md.insertar(table, campos, valores);
+
+            if (md.isEstado()) {
+                proyecto.setProrrogas(new ArrayList<IProrroga>());
+                return new EstadoOperacion(CodigoEstado.INSERT_OK, "La prorroga se agregó correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la prorroga");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la prorroga");
         }
     }
 
-     public IProrroga getIProrroga() {
-            return new Prorroga();
-        }
+    public IProrroga getIProrroga() {
+        return new Prorroga();
+    }
 
-    
+
     public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {
         ManejoDatos md = new ManejoDatos();
         md.delete("`Prorrogas`", "`Proyecto` = " + proyecto.getId() + ", Disposicion = '" + prorroga.getDisposicion() + "'");
+
+        proyecto.setProrrogas(new ArrayList<IProrroga>());
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
     }
 
@@ -454,7 +483,7 @@ public class GestorProyecto {
                             Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
                     p.setFechaFin(f);
                 }
-                
+
                 prorrogas.add(p);
             }
         } catch (Exception e) {
@@ -485,7 +514,7 @@ public class GestorProyecto {
     private String armarCondicion(IProyecto p, IPrograma programa) {
 
         IProyectog proyecto = (IProyectog) p;
-        
+
         String condicion = "TRUE";
         if (proyecto != null) {
             if (proyecto.getId() != 0) {
@@ -556,10 +585,16 @@ public class GestorProyecto {
             }
 
             md.insertar(tabla, campos, valores);
-            return md.isEstado()
-                    ? new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente")
-                    : new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
+
+            if (md.isEstado()) {
+                subsidio.setRendiciones(new ArrayList<IRendicion>());
+                return new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
+            }
+
         } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
         }
     }
@@ -569,33 +604,18 @@ public class GestorProyecto {
         return new Rendicion();
     }
 
-        
+
     /**yearSubsidio lo puse con ''*/
      public EstadoOperacion quitarRendicion(IProyecto proyecto,ISubsidio subsidio, IRendicion rendicion ) {
         ManejoDatos md = new ManejoDatos();
         md.delete("`Rendiciones`", "Proyecto = " + proyecto.getId() + ", id = '" + rendicion.getId() + ", YearSubsidio= '"+subsidio.getFecha()+"'");
+
+        subsidio.setRendiciones(new ArrayList<IRendicion>());
         return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitÃ³ correctamente");
     }
 
-    
-    public EstadoOperacion eliminarRendicion(IRendicion rendicion) {
-        ManejoDatos md = new ManejoDatos();
 
-        md.delete("Rendiciones", "id = " + rendicion.getId());
 
-        return md.isEstado()
-                ? new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendicion se elimino correctamente")
-                : new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo eliminar la rendicion");
-    }
-
-    public EstadoOperacion quitarRendicion(IProyecto proyecto, IRendicion rendicion) {
-        ManejoDatos md = new ManejoDatos();
-        md.delete("`Rendiciones`", "`Proyecto` = " + proyecto.getId() + ", fecha = '" + rendicion.getFecha() + "'");
-        return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
-    }
-    
-   
-    
 
     public List<IRendicion> listarRendiciones(IRendicion rendicion){
         List<IRendicion> rendiciones = new ArrayList<IRendicion>();

@@ -1,9 +1,9 @@
 package modelo.usuario;
 
 import java.util.List;
-
+import modelo.auxiliares.hash.HashSalt;
+import modelo.auxiliares.hash.PasswordUtil;
 import modelo.persona.Persona;
-import modelo.auxiliares.hash.*;
 
 public class Usuario implements IUsuario{
 	private Persona persona;
@@ -12,7 +12,7 @@ public class Usuario implements IUsuario{
 	private String descripcion;
 
 	private List<IRol> roles;
-	
+
 	public Usuario(String user, HashSalt hash, String descripcion,
 	        List<IRol> roles) {
 
@@ -90,12 +90,20 @@ public class Usuario implements IUsuario{
         this.roles.remove(grupo);
     }
 
-	public Persona getPersona() {
+	@Override
+    public Persona getPersona() {
 		return persona;
 	}
 
-	public void setPersona(Persona persona) {
+	@Override
+    public void setPersona(Persona persona) {
 		this.persona = persona;
 	}
+
+
+	@Override
+    public void setGrupos(List<IRol> grupos) {
+        this.roles = grupos;
+    }
 
 }

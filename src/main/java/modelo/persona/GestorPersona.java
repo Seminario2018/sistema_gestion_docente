@@ -67,7 +67,7 @@ public class GestorPersona {
 			}
 
 			if (md.isEstado()) {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "La persona se creo correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "La persona se creó correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear la persona");
 			}
@@ -179,13 +179,13 @@ public class GestorPersona {
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "La persona se eliminó correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "La persona se modificó correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar la persona");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo modificar la persona");
 		}
 	}
 
@@ -429,7 +429,7 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setContactos(new ArrayList<IContacto>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El contacto se creo correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El contacto se creó correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el contacto");
 			}
@@ -437,7 +437,6 @@ public class GestorPersona {
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el contacto");
-
 		}
     }
 
@@ -459,13 +458,13 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setContactos(new ArrayList<IContacto>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El contacto se modifico correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El contacto se modificó correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el contacto");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el contacto");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el contacto");
 		}
     }
 
@@ -550,13 +549,13 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setDomicilios(new ArrayList<IDomicilio>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El comicilio se modifico correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El domicilio se modificó correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el domicilio");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
 		}
     }
 
@@ -609,14 +608,14 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setTitulos(new ArrayList<ITitulo>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El titulo se creo correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El título se creo correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el titulo");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el título");
 			}
 
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el titulo");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el título");
 
 		}
     }
@@ -638,13 +637,13 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setTitulos(new ArrayList<ITitulo>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El domicilio se modifico correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El título se modifico correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el título");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el título");
 		}
     }
 
@@ -658,13 +657,13 @@ public class GestorPersona {
 
 			if (md.isEstado()) {
 			    persona.setTitulos(new ArrayList<ITitulo>());
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El titulo se eliminó correctamente");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El título se eliminó correctamente");
 			} else {
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo titulo el Domicilio");
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo título el Domicilio");
 			}
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo titulo el Domicilio");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo título el Domicilio");
 		}
     }
 

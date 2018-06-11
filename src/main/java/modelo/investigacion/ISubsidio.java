@@ -15,6 +15,7 @@ public interface ISubsidio {
     public void setObservaciones(String observaciones);
 
     public List<IRendicion> getRendiciones();
+    public void setRendiciones(List<IRendicion> rendiciones);
     public void agregarRendicion(IRendicion rendicion);
     public void quitarRendicion(IRendicion rendicion);
 }

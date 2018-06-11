@@ -78,12 +78,10 @@ public class GestorDocente {
 
             md.update(tabla, campos, condicion);
 
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK,
-                "El Docente se modificó correctamente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El Docente se modificó correctamente");
         } catch (Exception e) {
             e.printStackTrace();
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-                "No se pudo modificar el Docente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Docente");
         }
     }
 
@@ -93,17 +91,14 @@ public class GestorDocente {
             md.delete("Docentes", "Legajo = " + docente.getLegajo());
 
             if (md.isEstado()) {
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                    "El docente se eliminó correctamente");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,"El docente se eliminó correctamente");
             } else {
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                    "No se elimino el docente");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se elimino el docente");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                "No se elimino el docente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se elimino el docente");
         }
 
     }
@@ -191,11 +186,9 @@ public class GestorDocente {
         md.insertar(tabla, campos, valores);
         if (md.isEstado()) {
             ((IDocente) docente).setIncentivos(new ArrayList<IIncentivo>());
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-                "El incentivo se creó correctamente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El incentivo se creó correctamente");
         } else {
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,
-                "El incentivo no se creo");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El incentivo no se creo");
         }
     }
 
@@ -207,11 +200,9 @@ public class GestorDocente {
         md.delete(tabla, condicion);
         if (md.isEstado()) {
             docente.setIncentivos(new ArrayList<IIncentivo>());
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                "El incentivo se quitó correctamente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El incentivo se quitó correctamente");
         } else {
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                "El incentivo no se quitó");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El incentivo no se quitó");
         }
     }
 
@@ -309,16 +300,13 @@ public class GestorDocente {
             md.insertar("CargosDocentes", campos, valores);
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK,
-                    "El Cargo Docente se agregó correctamente");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El Cargo Docente se agregó correctamente");
             } else {
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,
-                    "El Cargo Docente no se agregó");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El Cargo Docente no se agregó");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR,
-                "Error al agregar el Cargo Docente");
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "Error al agregar el Cargo Docente");
         }
     }
 
@@ -361,15 +349,13 @@ public class GestorDocente {
             md.update("CargosDocentes", campos, condicion);
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK,
-                    "El CargoDocente se modificó correctamente");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El CargoDocente se modificó correctamente");
             } else {
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-                    "El CargoDocente no se modificó");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "El CargoDocente no se modificó");
             }
         } catch (Exception e) {
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-                "Error al modificar el CargoDocente");
+            e.printStackTrace();
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "Error al modificar el CargoDocente");
         }
     }
 
@@ -381,15 +367,13 @@ public class GestorDocente {
 
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,
-                    "El CargoDocente se quitó correctamente");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El CargoDocente se quitó correctamente");
             } else {
-                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                    "El CargoDocente no se quitó");
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El CargoDocente no se quitó");
             }
         } catch (Exception e) {
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR,
-                "Error al quitar el CargoDocente");
+            e.printStackTrace();
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "Error al quitar el CargoDocente");
         }
     }
 
