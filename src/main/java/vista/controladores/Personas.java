@@ -461,6 +461,11 @@ public class Personas extends ControladorVista implements Initializable {
 	        titulosActualizarTabla();
 	    }
 	}
+	
+	@FXML private Button btnTitulosMayor;
+	@FXML public void mayorTitulo(ActionEvent event) {
+		// TODO Marcar como título mayor al título seleccionado, sobreescribiendo el anterior
+	}
 
 	@FXML protected TableView<FilaTitulo> tblTitulos;
 	@FXML protected TableColumn<FilaTitulo, String> colTitulosTitulo;

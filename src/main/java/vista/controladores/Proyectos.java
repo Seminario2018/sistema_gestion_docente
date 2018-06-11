@@ -523,7 +523,9 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TextArea txtaSubsidiosObservaciones;
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
-
+// TODO agregar Año de subsidio a los controles
+	@FXML private ComboBox cmbRendicionesAnio;  
+	
 	private IRendicion rendicionSeleccion = null;
 	protected ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
 
@@ -704,14 +706,12 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	private void prorrogasMostrarProrroga() {
         if (prorrogaSeleccion != null) {
-            // TODO Prorrogas: Mostrar fecha inicio
             dtpProrrogasFinalizacion.setValue(prorrogaSeleccion.getFechaFin());
             txtProrrogasDisp.setText(prorrogaSeleccion.getDisposicion());
         }
     }
 
     private void prorrogasVaciarControles() {
-        dtpProrrogasInicio.setValue(null);
         dtpProrrogasFinalizacion.setValue(null);
         txtProrrogasDisp.clear();
     }
@@ -793,7 +793,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
 	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasFinalización;
 
-	@FXML private DatePicker dtpProrrogasInicio;
 	@FXML private DatePicker dtpProrrogasFinalizacion;
 	@FXML private TextField txtProrrogasDisp;
 
