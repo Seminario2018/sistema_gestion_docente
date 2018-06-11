@@ -346,21 +346,22 @@
                            <children>
                                                       <GridPane hgap="10.0">
                                                         <columnConstraints>
-                                                            <ColumnConstraints hgrow="NEVER" />
-                                                          <ColumnConstraints hgrow="SOMETIMES" />
-                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="50.0" prefWidth="100.0" />
-                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="50.0" prefWidth="100.0" />
+                                                            <ColumnConstraints />
+                                                          <ColumnConstraints />
+                                                            <ColumnConstraints />
+                                                          <ColumnConstraints />
+                                    <ColumnConstraints />
                                                         </columnConstraints>
                                                         <rowConstraints>
                                                           <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                                                         </rowConstraints>
                                                          <children>
-                                                            <Label text="Título">
+                                                            <Label text="Título" GridPane.hgrow="NEVER">
                                                                <GridPane.margin>
                                                                   <Insets />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <TextField fx:id="txtTitulosTitulo" minWidth="300.0" promptText="Ingrese el nombre del título que desea agregar" GridPane.columnIndex="1" />
+                                                            <TextField fx:id="txtTitulosTitulo" minWidth="200.0" promptText="Ingrese el nombre del título que desea agregar" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" />
                                                             <Button fx:id="btnTitulosAgregar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarTitulo" text="Agregar título" GridPane.columnIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets />
@@ -371,6 +372,7 @@
                                                                   <Insets />
                                                                </GridPane.margin>
                                                             </Button>
+                                    <Button fx:id="btnTitulosMayor" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mayorTitulo" text="Seleccionar mayor grado" GridPane.columnIndex="4" />
                                                          </children>
                                                       </GridPane>
                                                       <TableView fx:id="tblTitulos" maxHeight="200.0" GridPane.rowIndex="1">
