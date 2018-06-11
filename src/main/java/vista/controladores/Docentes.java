@@ -30,7 +30,6 @@ import javafx.scene.control.TextField;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoDocente;
-import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
@@ -52,14 +51,14 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	public void setDocenteSeleccion(Object docenteSeleccion) {
 		if (docenteSeleccion instanceof IDocente) {
-			this.docenteSeleccion = (IDocente) docenteSeleccion;
+			docenteSeleccion = (IDocente) docenteSeleccion;
 	        generalMostrarDocente();
 		}
 	}
 
 	public void setPersonaSeleccion(Object personaSeleccion) {
 		if (personaSeleccion instanceof IPersona) {
-			this.docenteSeleccion.setPersona((IPersona) personaSeleccion);
+			docenteSeleccion.setPersona((IPersona) personaSeleccion);
 			txtDatosDocumento.setText(
                     String.valueOf(((IPersona) personaSeleccion).getNroDocumento()));
             txtDatosNombre.setText(
@@ -97,6 +96,32 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public TextField txtDocentesLegajo;
 	@FXML public TextField txtDocentesNombre;
 
+	private void generalMostrarDocente() {
+        generalVaciarControles();
+        if (docenteSeleccion != null) {
+            txtDocentesLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
+            txtDocentesNombre.setText(docenteSeleccion.getPersona().getNombreCompleto());
+
+            datosMostrarDocente();
+            cargosActualizarTabla();
+            investigacionActualizarTabla();
+            incentivosActualizarTabla();
+            mostrarObservaciones();
+        }
+    }
+
+	/** Vacía los controles generales y los de todas las pestañas */
+    private void generalVaciarControles() {
+        this.txtDocentesLegajo.clear();
+        this.txtDocentesNombre.clear();
+
+        // Vaciar controles de las pestañas:
+        vaciarTablas();
+        datosVaciarControles();
+        cargosVaciarControles();
+        observacionesVaciarControles();
+    }
+
 	@FXML private void buscarDocente() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put(Busqueda.KEY_NUEVO, false);
@@ -107,16 +132,16 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	@FXML private void nuevoDocente() {
-		this.docenteSeleccion = this.controlDocente.getIDocente();
+		docenteSeleccion = controlDocente.getIDocente();
 		generalVaciarControles();
     }
 
 	@FXML private void eliminarDocente() {
 	    if (docenteSeleccion != null) {
-	        this.controlDocente.eliminarDocente(docenteSeleccion);
-	        docenteSeleccion = null;
-	        generalVaciarControles();
-	        dialogoConfirmacion(TITULO, "Eliminar docente", "El docente fue eliminado con éxito.");
+	        if (exitoEliminar(controlDocente.eliminarDocente(docenteSeleccion), TITULO, "Eliminar Docente")) {
+	            docenteSeleccion = null;
+	            generalVaciarControles();
+	        }
 	    }
     }
 
@@ -139,32 +164,6 @@ public class Docentes extends ControladorVista implements Initializable {
                 "Error de apertura de archivo: " + e.getMessage());
         }
     }
-
-	private void generalMostrarDocente() {
-		generalVaciarControles();
-		if (docenteSeleccion != null) {
-			txtDocentesLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
-			txtDocentesNombre.setText(docenteSeleccion.getPersona().getNombreCompleto());
-
-			datosMostrarDocente();
-	        cargosActualizarTabla();
-	        investigacionActualizarTabla();
-	        incentivosActualizarTabla();
-	        mostrarObservaciones();
-		}
-	}
-
-	/** Vacía los controles generales y los de todas las pestañas */
-	private void generalVaciarControles() {
-		this.txtDocentesLegajo.clear();
-		this.txtDocentesNombre.clear();
-
-		// Vaciar controles de las pestañas:
-		vaciarTablas();
-		datosVaciarControles();
-		cargosVaciarControles();
-		observacionesVaciarControles();
-	}
 
 	/**
 	 * Recibir parámetros de la pantalla de búsqueda
@@ -195,16 +194,11 @@ public class Docentes extends ControladorVista implements Initializable {
 	private void datosMostrarDocente() {
 	    if (docenteSeleccion != null) {
             IPersona persona = docenteSeleccion.getPersona();
-            txtDatosDocumento.setText(
-                    String.valueOf(persona.getNroDocumento()));
-            txtDatosNombre.setText(
-                    persona.getApellido() + " " + persona.getNombre());
-            txtDatosLegajo.setText(
-                    String.valueOf(docenteSeleccion.getLegajo()));
-            cmbDatosEstado.getSelectionModel().select(
-                    docenteSeleccion.getEstado());
-            cmbDatosCategoria.getSelectionModel().select(
-                    docenteSeleccion.getCategoriaInvestigacion());
+            txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
+            txtDatosNombre.setText(persona.getApellido() + " " + persona.getNombre());
+            txtDatosLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
+            cmbDatosEstado.getSelectionModel().select(docenteSeleccion.getEstado());
+            cmbDatosCategoria.getSelectionModel().select(docenteSeleccion.getCategoriaInvestigacion());
         }
 	}
 
@@ -232,17 +226,19 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	@FXML private void guardarDatos() {
-	    // TODO Botón "Guardar Cambios"
 	    if (docenteSeleccion != null) {
-	        // TODO docenteSeleccionado.getPersona()
-	        docenteSeleccion.setLegajo(
-	                Integer.parseInt(txtDatosLegajo.getText()));
-	        docenteSeleccion.setEstado(
-	                cmbDatosEstado.getSelectionModel().getSelectedItem());
-	        docenteSeleccion.setCategoriaInvestigacion(
-	                cmbDatosCategoria.getSelectionModel().getSelectedItem());
+	        try {
+	            int legajo = Integer.parseInt(txtDatosLegajo.getText());
 
-	        this.controlDocente.guardarDocente(docenteSeleccion);
+    	        docenteSeleccion.setLegajo(legajo);
+    	        docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+    	        docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
+
+    	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
+
+	        } catch (NumberFormatException e) {
+	            alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
+	        }
 	    }
 	}
 
@@ -382,7 +378,8 @@ public class Docentes extends ControladorVista implements Initializable {
     			cargoDocenteSeleccion.setUltimoCosto(ultimoCosto);
     			cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
 
-    			controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
+    			exitoGuardado(controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Guardar Cargo");
+
     		} catch (IllegalArgumentException e) {
     			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
     		}
@@ -399,27 +396,10 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML public Button btnCargosEliminar;
 	@FXML public void eliminarCargo() {
 	    if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
-	        EstadoOperacion resultado = controlDocente
-	            .quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion);
-
-	        switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO,
-                        "Eliminar Cargo",
-                        resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    dialogoConfirmacion(TITULO,
-                        "Eliminar Cargo",
-                        resultado.getMensaje());
-                    cargoDocenteSeleccion = null;
-                    cargosVaciarControles();
-                    break;
-                default:
-                    throw new RuntimeException(
-                        "Estado de eliminación no esperado: "
-                        + resultado.getMensaje());
-            }
+	        if (exitoEliminar(controlDocente.quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Eliminar Cargo")) {
+	            cargoDocenteSeleccion = null;
+                cargosVaciarControles();
+	        }
             cargosActualizarTabla();
 	    }
 	}
@@ -471,13 +451,10 @@ public class Docentes extends ControladorVista implements Initializable {
 	protected ObservableList<FilaInvestigacion> filasInvestigacion = FXCollections.observableArrayList();
 
 	public class FilaInvestigacion {
-	    @SuppressWarnings("unused")
-        private ICargoDocente cargoDocente;
 	    private IIntegrante integrante;
 	    private IProyecto proyecto;
 
-	    public FilaInvestigacion(IProyecto proyecto, ICargoDocente cargoDocente, IIntegrante integrante) {
-	        this.cargoDocente = cargoDocente;
+	    public FilaInvestigacion(IProyecto proyecto, IIntegrante integrante) {
 	        this.integrante = integrante;
 	        this.proyecto = proyecto;
 	    }
@@ -504,12 +481,11 @@ public class Docentes extends ControladorVista implements Initializable {
 	    filasInvestigacion.clear();
 	    if (docenteSeleccion != null) {
 	        // Lista con todos los proyectos (?):
-	        List<IProyecto> listaProyectos = this.controlInvestigacion.listarProyecto(null);
+	        List<IProyecto> listaProyectos = controlInvestigacion.listarProyecto(null);
 	        for (IProyecto proyecto : listaProyectos) {
 	            for (IIntegrante integrante : proyecto.getIntegrantes()) {
-	                if (integrante.getLegajo() == docenteSeleccion.getLegajo()) {
-	                    // TODO Investigación: Falta especificar cargoDocente
-	                    filasInvestigacion.add(new FilaInvestigacion(proyecto, null, integrante));
+	                if (integrante.getCargoDocente().getDocente().getLegajo() == docenteSeleccion.getLegajo()) {
+	                    filasInvestigacion.add(new FilaInvestigacion(proyecto, integrante));
 	                    break;
 	                }
 	            }
@@ -596,19 +572,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	        try {
 	            incentivoSeleccion.setFecha(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
 
-	            EstadoOperacion resultado = controlDocente.agregarIncentivo(docenteSeleccion, incentivoSeleccion);
-	            switch (resultado.getEstado()) {
-	                case INSERT_ERROR:
-	                case UPDATE_ERROR:
-	                    alertaError(TITULO, "Guardar Incentivo", resultado.getMensaje());
-	                    break;
-	                case INSERT_OK:
-	                case UPDATE_OK:
-	                    dialogoConfirmacion(TITULO, "Guardar Incentivo", resultado.getMensaje());
-	                    break;
-	                default:
-	                    throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
-	            }
+	            exitoGuardado(controlDocente.agregarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Guardar Incentivo");
+
 	            incentivosActualizarTabla();
 
 	        } catch (DateTimeException e) {
@@ -626,23 +591,11 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private void eliminarIncentivo() {
 	    if (docenteSeleccion != null && incentivoSeleccion != null) {
-	        EstadoOperacion resultado = controlDocente
-                .quitarIncentivo(docenteSeleccion, incentivoSeleccion);
 
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Incentivo", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    dialogoConfirmacion(TITULO, "Eliminar Incentivo", resultado.getMensaje());
-                    cargoDocenteSeleccion = null;
-                    incentivosVaciarControles();
-                    break;
-                default:
-                    throw new RuntimeException(
-                        "Estado de eliminación no esperado: "
-                        + resultado.getMensaje());
-            }
+	        if (exitoEliminar(controlDocente.quitarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Eliminar Incentivo")) {
+	            cargoDocenteSeleccion = null;
+                incentivosVaciarControles();
+	        }
             incentivosActualizarTabla();
 	    }
 	}
@@ -663,7 +616,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML private void guardarObservaciones() {
 	    if (docenteSeleccion != null) {
             docenteSeleccion.setObservaciones(txtaObservaciones.getText());
-            this.controlDocente.modificarDocente(docenteSeleccion);
+            controlDocente.modificarDocente(docenteSeleccion);
         }
 	}
 
