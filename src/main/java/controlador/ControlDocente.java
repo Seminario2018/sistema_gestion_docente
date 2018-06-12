@@ -19,7 +19,6 @@ public class ControlDocente {
 	private ControladorVista vista;
 
 	private GestorCargo gestorCargo = new GestorCargo();
-	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
 	private GestorDocente gestorDocente = new GestorDocente();
 
 
@@ -121,23 +120,6 @@ public class ControlDocente {
 
     public List<ICargo> listarCargos(ICargo cargo) {
         return this.gestorCargo.listarCargos(cargo);
-    }
-
-//  Cargos faltantes
-    public ICargoFaltante getICargoFaltante() {
-        return this.gestorCargosFaltantes.getICargoFaltante();
-    }
-
-    public EstadoOperacion guardarCargoFaltante(ICargoFaltante cargo) {
-        return this.gestorCargosFaltantes.agregarCargoFaltante(cargo);
-    }
-
-    public EstadoOperacion eliminarCargoFaltante(ICargoFaltante cargo) {
-        return this.gestorCargosFaltantes.eliminarCargoFaltante(cargo);
-    }
-
-    public List<ICargoFaltante> listarCargosFaltantes() {
-        return this.gestorCargosFaltantes.listarCargosFaltantes();
     }
 
 //  Incentivos

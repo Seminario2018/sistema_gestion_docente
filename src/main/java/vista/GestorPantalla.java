@@ -88,9 +88,9 @@ public class GestorPantalla {
 
 			} else {
 				FXMLLoader loader;
-				// Si se trata de la pantalla genérica de búsquedas
-				if (nombre.contains("Busqueda") && !nombre.equals("BusquedaCargoDocente")) {
-					loader = getLoader("Busqueda");
+				// Si se trata de una pantalla modal
+				if (nombre.contains(" ")) {
+					loader = getLoader(nombre.substring(0, nombre.indexOf(" ")));
 				} else {
 					loader = getLoader(nombre);
 				}
