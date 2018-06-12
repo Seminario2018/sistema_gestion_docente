@@ -1,6 +1,8 @@
 package modelo.costeo;
 
+import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.docente.ICargoDocente;
 
 /**
  * @author Martín Tomás Juran
@@ -20,6 +22,16 @@ public class GestorImportarCosto {
 	 * Descarta los cambios realizados, volviendo al estado anterior a importar.
 	 */
 	public void descartar() {
+		
+	}
+
+
+	/**
+	 * Modifica el Estado del CargoDocente en memoria
+	 * @param cargo El CargoDocente a modificar
+	 * @param estado El nuevo Estado del CargoDocente 
+	 */
+	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
 		
 	}
 

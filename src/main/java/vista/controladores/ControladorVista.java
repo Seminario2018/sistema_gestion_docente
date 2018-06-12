@@ -21,6 +21,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import jfxtras.scene.control.window.Window;
 import modelo.auxiliares.EstadoOperacion;
+import utilidades.Utilidades;
 import vista.GestorPantalla;
 
 /**
@@ -195,8 +196,9 @@ public abstract class ControladorVista implements Initializable {
 	public File elegirArchivo(String titulo, String descripcion, List<String> extensiones) {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
+	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
 	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
-	    fileChooser.setSelectedExtensionFilter(extensionFilter);
+	    fileChooser.getExtensionFilters().add(extensionFilter);
 	    return fileChooser.showOpenDialog(new Stage());
 	}
 

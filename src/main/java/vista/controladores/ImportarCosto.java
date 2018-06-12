@@ -1,13 +1,6 @@
 package vista.controladores;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
 import controlador.ControlImportarCosto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import modelo.auxiliares.EstadoCargo;
-import modelo.costeo.Costeo;
 import modelo.docente.ICargoDocente;
 
 public class ImportarCosto extends ControladorVista {
@@ -34,6 +26,7 @@ public class ImportarCosto extends ControladorVista {
 		this.cmbEstado.setItems(
 				FXCollections.observableArrayList(EstadoCargo.getLista()));
 		this.window.setTitle("Importar último costo");
+		resetGeneral();
 	}
 	
 	private void inicializarTablas() {
@@ -56,27 +49,7 @@ public class ImportarCosto extends ControladorVista {
     }
     @FXML protected Button btnImportar;
     @FXML public void importar(ActionEvent event) {
-    	String titulo = "Elegir la planilla a importar";
-    	String error = "Error al importar el archivo";
-	    try {
-	    	List<String> extensiones = new ArrayList<String>();
-	    	extensiones.add("xls");
-	    	extensiones.add("xlsx");
-	        File archivo = elegirArchivo(titulo, "Hojas de cálculo", extensiones);
-	        if (archivo != null) {
-	        	Costeo.importar(archivo);
-                // TODO llevar a la capa de abajo
-	        }
-        } catch (EncryptedDocumentException e) {
-            alertaError(TITULO, error,
-                "El archivo está protegido por contraseña");
-        } catch (InvalidFormatException e) {
-            alertaError(TITULO, error,
-                "El archivo no tiene el formato correcto.");
-        } catch (IOException e) {
-            alertaError(TITULO, error,
-                "Error de apertura de archivo: " + e.getMessage());
-        }
+    	this.control.importar();
     }
 	@FXML protected Button btnGuardar;
 	@FXML public void guardar(ActionEvent event) {
@@ -130,7 +103,10 @@ public class ImportarCosto extends ControladorVista {
     @FXML public void modificarEstado(ActionEvent event) {
     	FilaCosteo fc = this.tblFaltantesCosteo.getSelectionModel().getSelectedItem();
     	if (fc != null) {
-    		
+    		EstadoCargo ec = this.cmbEstado.getValue();
+    		if (ec != null) {
+    			this.control.modificarEstado(fc.getCargo(), ec);
+    		}
     	}
     }
     
