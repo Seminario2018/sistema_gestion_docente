@@ -3,8 +3,8 @@ package controlador;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
-import modelo.docente.GestorCargosFaltantes;
-import modelo.docente.ICargoFaltante;
+import modelo.costeo.GestorImportarCosto;
+import vista.controladores.ControladorVista;
 
 /**
  * @author Martín Tomás Juran
@@ -12,22 +12,28 @@ import modelo.docente.ICargoFaltante;
  */
 public class ControlImportarCosto {
 
-	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
+	private GestorImportarCosto gestorImportarCosto = new GestorImportarCosto();
+	private ControladorVista vista;
+	
+	private static final String tituloDialogo = "Importar último costo";
 
-//  Cargos faltantes
-    public ICargoFaltante getICargoFaltante() {
-        return this.gestorCargosFaltantes.getICargoFaltante();
-    }
+	public ControlImportarCosto(ControladorVista vista) {
+		super();
+		this.vista = vista;
+	}
 
-    public EstadoOperacion guardarCargoFaltante(ICargoFaltante cargo) {
-        return this.gestorCargosFaltantes.agregarCargoFaltante(cargo);
-    }
-
-    public EstadoOperacion eliminarCargoFaltante(ICargoFaltante cargo) {
-        return this.gestorCargosFaltantes.eliminarCargoFaltante(cargo);
-    }
-
-    public List<ICargoFaltante> listarCargosFaltantes() {
-        return this.gestorCargosFaltantes.listarCargosFaltantes();
-    }
+	public void guardar() {
+		EstadoOperacion eo = this.gestorImportarCosto.guardar();
+		switch (eo.getEstado()) {
+		case UPDATE_OK:
+			this.vista.dialogoConfirmacion(tituloDialogo, "Éxito al importar datos", eo.getMensaje());
+			break;
+		default:
+			this.vista.alertaError(tituloDialogo, "No se pudieron importar los datos", eo.getMensaje());
+		}
+	}
+	
+	public void descartar() {
+		this.gestorImportarCosto.descartar();
+	}
 }

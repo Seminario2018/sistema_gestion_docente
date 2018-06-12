@@ -8,6 +8,8 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import modelo.costeo.Costeo;
+
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 29 de abr. de 2018

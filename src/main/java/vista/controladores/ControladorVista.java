@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import jfxtras.scene.control.window.Window;
 import modelo.auxiliares.EstadoOperacion;
 import vista.GestorPantalla;
 
@@ -29,6 +30,7 @@ import vista.GestorPantalla;
 public abstract class ControladorVista implements Initializable {
 
 	protected GestorPantalla gestorPantalla;
+	protected Window window;
 
 	public GestorPantalla getGestorPantalla() {
 		return gestorPantalla;
@@ -38,9 +40,24 @@ public abstract class ControladorVista implements Initializable {
 		this.gestorPantalla = gestor;
 	}
 	
+	public Window getWindow() {
+		return window;
+	}
+
+	public void setWindow(Window window) {
+		this.window = window;
+	}
+	
 	@Override
     public void initialize(URL arg0, ResourceBundle arg1) {
 
+	}
+	
+	/**
+	 * Método que se llama cuando la vista ya está en pantalla
+	 */
+	public void inicializar() {
+		
 	}
 
 	/**

@@ -7,6 +7,8 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.Before;
 import org.junit.Test;
 
+import modelo.costeo.Costeo;
+
 
 public class CosteoTest {
 

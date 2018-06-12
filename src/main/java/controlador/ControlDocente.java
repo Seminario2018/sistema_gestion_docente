@@ -5,13 +5,13 @@ import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
+import modelo.costeo.GestorCargosFaltantes;
+import modelo.costeo.ICargoFaltante;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
-import modelo.docente.ICargoFaltante;
 import modelo.docente.IDocente;
 import modelo.docente.IDocenteg;
 import modelo.docente.IIncentivo;
-import modelo.docente.GestorCargosFaltantes;
 import vista.controladores.ControladorVista;
 
 public class ControlDocente {

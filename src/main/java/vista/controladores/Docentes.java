@@ -139,7 +139,7 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 	@FXML private void importarUltimoCosto() {
-		// TODO lanzar pantalla ImportarUltimoCosto
+		this.gestorPantalla.lanzarPantalla(ImportarCosto.TITULO, null);
     }
 
 	/**

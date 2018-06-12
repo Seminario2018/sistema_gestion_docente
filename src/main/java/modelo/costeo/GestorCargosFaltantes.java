@@ -1,4 +1,4 @@
-package modelo.docente;
+package modelo.costeo;
 
 import java.util.List;
 

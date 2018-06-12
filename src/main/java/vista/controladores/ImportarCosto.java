@@ -2,16 +2,15 @@ package vista.controladores;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import excel.Costeo;
+import controlador.ControlImportarCosto;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,30 +19,40 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import modelo.auxiliares.EstadoCargo;
+import modelo.costeo.Costeo;
 import modelo.docente.ICargoDocente;
 
 public class ImportarCosto extends ControladorVista {
 	
 	public static final String TITULO = "ImportarCosto"; 
 	
+	private ControlImportarCosto control = new ControlImportarCosto(this);
+	
 	@Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
+    public void inicializar() {
 		inicializarTablas();
 		this.cmbEstado.setItems(
 				FXCollections.observableArrayList(EstadoCargo.getLista()));
-		String fecha = "Nunca";
-		// TODO obtener la fecha de última actualización
-		this.lblUltima.setText("Última actualización: " + fecha);
+		this.window.setTitle("Importar último costo");
 	}
 	
 	private void inicializarTablas() {
 		inicializarTabla("FaltantesCosteo");
 		inicializarTabla("FaltantesSistema");
-	}	
+	}
+	
+	@FXML protected Label lblUltima;
+	
+	private void resetGeneral() {
+		String fecha = "Nunca";
+		// TODO obtener la fecha de última actualización
+		this.lblUltima.setText("Última actualización: " + fecha);
+		// TODO cargar las tablas con datos
+	}
 
     @FXML protected Button btnListar;
     @FXML public void listarCostos(ActionEvent event) {
-    	
+//    	this.gestorPantalla.lanzarPantalla(ListaCosto.TITULO, null);
     }
     @FXML protected Button btnImportar;
     @FXML public void importar(ActionEvent event) {
@@ -71,14 +80,12 @@ public class ImportarCosto extends ControladorVista {
     }
 	@FXML protected Button btnGuardar;
 	@FXML public void guardar(ActionEvent event) {
-		
+		this.control.guardar();
 	}
 	@FXML protected Button btnDescartar;
 	@FXML public void descartar(ActionEvent event) {
-
+		this.control.descartar();
 	}
-	
-	@FXML protected Label lblUltima;
 
 	class FilaCosteo {
 		private ICargoDocente cargo;
@@ -111,15 +118,20 @@ public class ImportarCosto extends ControladorVista {
 		}
 	}
 	
-    @FXML protected TableView<FilaSistema> tblFaltantesCosteo;
-    @FXML protected TableColumn<FilaSistema, Integer> colFaltantesCosteoLegajo;
-    @FXML protected TableColumn<FilaSistema, Integer> colFaltantesCosteoCodigo;
-    @FXML protected TableColumn<FilaSistema, String> colFaltantesCosteoEstado;
+	protected ObservableList<FilaCosteo> filasFaltantesCosteo;
+	
+    @FXML protected TableView<FilaCosteo> tblFaltantesCosteo;
+    @FXML protected TableColumn<FilaCosteo, Integer> colFaltantesCosteoLegajo;
+    @FXML protected TableColumn<FilaCosteo, Integer> colFaltantesCosteoCodigo;
+    @FXML protected TableColumn<FilaCosteo, String> colFaltantesCosteoEstado;
     
     @FXML protected ComboBox<EstadoCargo> cmbEstado;
     @FXML protected Button btnModificarEstado;
     @FXML public void modificarEstado(ActionEvent event) {
-    	
+    	FilaCosteo fc = this.tblFaltantesCosteo.getSelectionModel().getSelectedItem();
+    	if (fc != null) {
+    		
+    	}
     }
     
     
@@ -159,6 +171,8 @@ public class ImportarCosto extends ControladorVista {
 			this.cargo.setEstado(estado);
 		}
     }
+    
+    protected ObservableList<FilaCosteo> filasFaltantesSistema;
     
     @FXML protected TableView<FilaSistema> tblFaltantesSistema;
     @FXML protected TableColumn<FilaSistema, Integer> colFaltantesSistemaLegajo;

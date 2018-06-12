@@ -124,6 +124,8 @@ public class GestorPantalla {
 				
 				Object controlador = loader.getController();
 				((ControladorVista) controlador).setGestorPantalla(this); 
+				((ControladorVista) controlador).setWindow(window);
+				((ControladorVista) controlador).inicializar();
 				
 				this.controladoresActivos.put(nombre, (ControladorVista) controlador);
 				this.pantallasAbiertas.put(nombre, window);
@@ -144,8 +146,8 @@ public class GestorPantalla {
 						((ControladorVista) controlador).recibirParametros(args);
 				}
 					
+				
 				this.internalPane.getChildren().add(window);
-
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
