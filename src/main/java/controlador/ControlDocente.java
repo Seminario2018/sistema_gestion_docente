@@ -5,8 +5,6 @@ import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
-import modelo.costeo.GestorCargosFaltantes;
-import modelo.costeo.ICargoFaltante;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -39,14 +37,6 @@ public class ControlDocente {
 	    } else {
 	        return this.gestorDocente.modificarDocente(docente);
 	    }
-	}
-
-	public EstadoOperacion nuevoDocente(IDocente docente) {
-	    return this.gestorDocente.nuevoDocente(docente);
-	}
-
-	public EstadoOperacion modificarDocente(IDocente docente) {
-	    return this.gestorDocente.modificarDocente(docente);
 	}
 
 	public EstadoOperacion eliminarDocente(IDocente docente) {
