@@ -51,7 +51,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	public void setDocenteSeleccion(Object docenteSeleccion) {
 		if (docenteSeleccion instanceof IDocente) {
-			docenteSeleccion = (IDocente) docenteSeleccion;
+			this.docenteSeleccion = (IDocente) docenteSeleccion;
 	        generalMostrarDocente();
 		}
 	}
@@ -59,7 +59,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	public void setPersonaSeleccion(Object personaSeleccion) {
 		if (personaSeleccion instanceof IPersona) {
 		    IPersona persona = (IPersona) personaSeleccion;
-			docenteSeleccion.setPersona(persona);
+			this.docenteSeleccion.setPersona(persona);
 			txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
             txtDatosNombre.setText(persona.getNombreCompleto());
 		}
