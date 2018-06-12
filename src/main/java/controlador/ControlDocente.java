@@ -5,13 +5,13 @@ import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
+import modelo.docente.GestorCargosFaltantes;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.ICargoFaltante;
 import modelo.docente.IDocente;
 import modelo.docente.IDocenteg;
 import modelo.docente.IIncentivo;
-import modelo.docente.GestorCargosFaltantes;
 import vista.controladores.ControladorVista;
 
 public class ControlDocente {
@@ -40,14 +40,6 @@ public class ControlDocente {
 	    } else {
 	        return this.gestorDocente.modificarDocente(docente);
 	    }
-	}
-
-	public EstadoOperacion nuevoDocente(IDocente docente) {
-	    return this.gestorDocente.nuevoDocente(docente);
-	}
-
-	public EstadoOperacion modificarDocente(IDocente docente) {
-	    return this.gestorDocente.modificarDocente(docente);
 	}
 
 	public EstadoOperacion eliminarDocente(IDocente docente) {

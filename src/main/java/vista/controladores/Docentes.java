@@ -46,7 +46,6 @@ import vista.GestorPantalla;
  * @author Martín Tomás Juran
  * @version 1.0, 1 de may. de 2018
  */
-@SuppressWarnings("rawtypes")
 public class Docentes extends ControladorVista implements Initializable {
 
 	public void setDocenteSeleccion(Object docenteSeleccion) {
@@ -425,10 +424,10 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 	@FXML public TableView<FilaCargo> tblCargos;
-    @FXML public TableColumn colCargosId;
-    @FXML public TableColumn colCargosArea;
-    @FXML public TableColumn colCargosCargo;
-    @FXML public TableColumn colCargosEstado;
+    @FXML public TableColumn<FilaCargo, Integer> colCargosId;
+    @FXML public TableColumn<FilaCargo, String> colCargosArea;
+    @FXML public TableColumn<FilaCargo, String> colCargosCargo;
+    @FXML public TableColumn<FilaCargo, String> colCargosEstado;
 
 	@FXML public ComboBox<EstadoCargo> cmbCargosEstado;
 
@@ -613,7 +612,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML private void guardarObservaciones() {
 	    if (docenteSeleccion != null) {
             docenteSeleccion.setObservaciones(txtaObservaciones.getText());
-            controlDocente.modificarDocente(docenteSeleccion);
+            exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Observaciones");
         }
 	}
 

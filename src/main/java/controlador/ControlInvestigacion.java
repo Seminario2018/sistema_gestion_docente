@@ -1,5 +1,7 @@
 package controlador;
 
+import java.time.Year;
+import java.util.ArrayList;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.investigacion.GestorProyecto;
@@ -63,6 +65,14 @@ public class ControlInvestigacion {
 
     public ISubsidio getISubsidio() {
         return gestorProyecto.getISubsidio();
+    }
+
+    public List<Year> fechasSubsidios(IProyecto proyecto) {
+        List<Year> fechasSubsidios = new ArrayList<Year>();
+        for (ISubsidio subsidio : gestorProyecto.listarSubsidios(proyecto, null)) {
+            fechasSubsidios.add(subsidio.getFecha());
+        }
+        return fechasSubsidios;
     }
 
     // Rendiciones

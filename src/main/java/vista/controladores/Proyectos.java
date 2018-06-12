@@ -21,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
@@ -125,19 +124,9 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnProyectosEliminar;
     @FXML void eliminarProyecto(ActionEvent event) {
         if (proyectoSeleccion != null) {
-            EstadoOperacion resultado = controlInvestigacion.eliminarProyecto(proyectoSeleccion);
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Proyecto", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    proyectoSeleccion = null;
-                    generalVaciarControles();
-                    dialogoConfirmacion(TITULO, "Eliminar Proyecto", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            if (exitoEliminar(controlInvestigacion.eliminarProyecto(proyectoSeleccion), TITULO, "Eliminar Proyecto")) {
+                proyectoSeleccion = null;
+                generalVaciarControles();
             }
         }
     }
@@ -210,18 +199,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
 	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
 
-	        EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoSeleccion, null);
-	        switch (resultado.getEstado()) {
-	            case INSERT_ERROR:
-	            case UPDATE_ERROR:
-	                alertaError(TITULO, "Guardar Proyecto", resultado.getMensaje());
-	            case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Proyecto", resultado.getMensaje());
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-	        }
+	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Proyecto");
 	    }
 	}
 
@@ -358,20 +336,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        integranteSeleccion.setInstitucion(txtIntegrantesInstitucion.getText());
 	        integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
 
-	        EstadoOperacion resultado = controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion);
-            switch (resultado.getEstado()) {
-                case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Integrante", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Integrante", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-            }
+	        exitoGuardado(controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Guardar Integrante");
             integrantesActualizarTabla();
 	    }
 	}
@@ -385,19 +350,9 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnIntegrantesEliminar;
 	@FXML void eliminarIntegrante(ActionEvent event) {
 	    if (proyectoSeleccion != null && integranteSeleccion != null) {
-	        EstadoOperacion resultado = controlInvestigacion.quitarIntegrante(proyectoSeleccion, integranteSeleccion);
-	        switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Integrante", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    integranteSeleccion = null;
-                    integrantesVaciarControles();
-                    dialogoConfirmacion(TITULO, "Eliminar Integrante", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+	        if (exitoEliminar(controlInvestigacion.quitarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Eliminar Integrante")) {
+	            integranteSeleccion = null;
+                integrantesVaciarControles();
 	        }
 	        integrantesActualizarTabla();
 	    }
@@ -506,21 +461,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        subsidioSeleccion.setDisposicion(txtSubsidiosDisp.getText());
 	        subsidioSeleccion.setObservaciones(txtaSubsidiosObservaciones.getText());
 
-	        EstadoOperacion resultado = controlInvestigacion.guardarSubsidio(proyectoSeleccion, subsidioSeleccion);
-	        switch (resultado.getEstado()) {
-	            case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Subsidio", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Subsidio", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-	        }
-
+	        exitoGuardado(controlInvestigacion.guardarSubsidio(proyectoSeleccion, subsidioSeleccion), TITULO, "Guardar Subsidio");
 	        subsidiosActualizarTabla();
 	    }
     }
@@ -534,20 +475,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnSubsidiosEliminar;
 	@FXML void eliminarSubsidio(ActionEvent event) {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
-            EstadoOperacion resultado = controlInvestigacion.quitarSubsidio(proyectoSeleccion, subsidioSeleccion);
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Subsidio", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    subsidioSeleccion = null;
-                    subsidiosVaciarControles();
-                    dialogoConfirmacion(TITULO, "Eliminar Subsidio", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-            }
+	        if (exitoEliminar(controlInvestigacion.quitarSubsidio(proyectoSeleccion, subsidioSeleccion), TITULO, "Eliminar Subsidio")) {
+	            subsidioSeleccion = null;
+                subsidiosVaciarControles();
+	        }
             subsidiosActualizarTabla();
         }
     }
@@ -606,6 +537,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	/** Muestra los datos de la rendición seleccionada: */
     private void rendicionesMostrarRendicion() {
         if (rendicionSeleccion != null) {
+            cmbRendicionesAnio.getSelectionModel().select(subsidioSeleccion.getFecha());
             dtpRendicionesFecha.setValue(rendicionSeleccion.getFecha());
             txtRendicionesMonto.setText(String.valueOf(rendicionSeleccion.getMonto()));
             txtaRendicionesObservaciones.setText(rendicionSeleccion.getObservaciones());
@@ -614,6 +546,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	/** Vacía los controles de datos de la rendición */
 	private void rendicionesVaciarControles() {
+	    cmbRendicionesAnio.getSelectionModel().clearSelection();
 	    dtpRendicionesFecha.setValue(null);
 	    txtRendicionesMonto.clear();
 	    txtaRendicionesObservaciones.clear();
@@ -628,7 +561,11 @@ public class Proyectos extends ControladorVista implements Initializable {
             }
         });
 
-
+	    if (proyectoSeleccion != null) {
+	        cmbRendicionesAnio.setItems(
+	            FXCollections.observableArrayList(
+	                controlInvestigacion.fechasSubsidios(proyectoSeleccion)));
+	    }
 
 	    rendicionesActualizarTabla();
 	}
@@ -651,21 +588,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     	        rendicionSeleccion.setMonto(monto);
     	        rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
 
-    	        EstadoOperacion resultado = controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion);
-    	        switch (resultado.getEstado()) {
-                    case INSERT_ERROR:
-                    case UPDATE_ERROR:
-                        alertaError(TITULO, "Guardar Rendición", resultado.getMensaje());
-                        break;
-                    case INSERT_OK:
-                    case UPDATE_OK:
-                        dialogoConfirmacion(TITULO, "Guardar Rendición", resultado.getMensaje());
-                        break;
-                    default:
-                        throw new RuntimeException("Estado de modificación no esperado: "
-                                + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-                }
-
+    	        exitoGuardado(controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Guardar Rendición");
                 rendicionesActualizarTabla();
 
 	        } catch (NumberFormatException e) {
@@ -684,19 +607,9 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML private Button btnRendicionesEliminar;
     @FXML void eliminarRendicion(ActionEvent event) {
         if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
-            EstadoOperacion resultado = controlInvestigacion.quitarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion);
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Rendición", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    rendicionSeleccion = null;
-                    rendicionesVaciarControles();
-                    dialogoConfirmacion(TITULO, "Eliminar Rendición", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            if (exitoEliminar(controlInvestigacion.quitarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Eliminar Rendición")) {
+                rendicionSeleccion = null;
+                rendicionesVaciarControles();
             }
             rendicionesActualizarTabla();
         }
@@ -785,21 +698,7 @@ public class Proyectos extends ControladorVista implements Initializable {
             prorrogaSeleccion.setFechaFin(dtpProrrogasFinalizacion.getValue());
             prorrogaSeleccion.setDisposicion(txtProrrogasDisp.getText());
 
-            EstadoOperacion resultado = controlInvestigacion.guardarProrroga(proyectoSeleccion, prorrogaSeleccion);
-            switch (resultado.getEstado()) {
-                case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Prórroga", resultado.getMensaje());
-                    break;
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Prórroga", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-            }
-
+            exitoGuardado(controlInvestigacion.guardarProrroga(proyectoSeleccion, prorrogaSeleccion), TITULO, "Guardar Prórroga");
             prorrogasActualizarTabla();
         }
     }
@@ -813,19 +712,9 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML private Button btnProrrogasEliminar;
     @FXML void eliminarProrroga(ActionEvent event) {
         if (proyectoSeleccion != null && prorrogaSeleccion != null) {
-            EstadoOperacion resultado = controlInvestigacion.quitarProrroga(proyectoSeleccion, prorrogaSeleccion);
-            switch (resultado.getEstado()) {
-                case DELETE_ERROR:
-                    alertaError(TITULO, "Eliminar Prórroga", resultado.getMensaje());
-                    break;
-                case DELETE_OK:
-                    prorrogaSeleccion = null;
-                    prorrogasVaciarControles();
-                    dialogoConfirmacion(TITULO, "Eliminar Prórroga", resultado.getMensaje());
-                    break;
-                default:
-                    throw new RuntimeException("Estado de eliminación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            if (exitoEliminar(controlInvestigacion.quitarProrroga(proyectoSeleccion, prorrogaSeleccion), TITULO, "Eliminar Prórroga")) {
+                prorrogaSeleccion = null;
+                prorrogasVaciarControles();
             }
             prorrogasActualizarTabla();
         }
@@ -859,18 +748,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
             proyectoSeleccion.setResumen(txtaResumen.getText());
 
-            EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoSeleccion, null);
-            switch (resultado.getEstado()) {
-                case INSERT_ERROR:
-                case UPDATE_ERROR:
-                    alertaError(TITULO, "Guardar Resumen", resultado.getMensaje());
-                case INSERT_OK:
-                case UPDATE_OK:
-                    dialogoConfirmacion(TITULO, "Guardar Resumen", resultado.getMensaje());
-                default:
-                    throw new RuntimeException("Estado de modificación no esperado: "
-                        + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-            }
+            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Resumen");
         }
     }
 
