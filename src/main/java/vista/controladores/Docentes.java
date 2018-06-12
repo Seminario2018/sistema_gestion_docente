@@ -58,12 +58,10 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	public void setPersonaSeleccion(Object personaSeleccion) {
 		if (personaSeleccion instanceof IPersona) {
-			docenteSeleccion.setPersona((IPersona) personaSeleccion);
-			txtDatosDocumento.setText(
-                    String.valueOf(((IPersona) personaSeleccion).getNroDocumento()));
-            txtDatosNombre.setText(
-            		((IPersona) personaSeleccion).getApellido() + ", "
-            		+ ((IPersona) personaSeleccion).getNombre());
+		    IPersona persona = (IPersona) personaSeleccion;
+			docenteSeleccion.setPersona(persona);
+			txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
+            txtDatosNombre.setText(persona.getNombreCompleto());
 		}
 	}
 
@@ -458,21 +456,21 @@ public class Docentes extends ControladorVista implements Initializable {
 	        this.integrante = integrante;
 	        this.proyecto = proyecto;
 	    }
+
 	    public int getId() {
 	        return this.proyecto.getId();
 	    }
+
 	    public String getNombre() {
 	        return this.proyecto.getNombre();
 	    }
+
 		public String getArea() {
-		    // TODO Investigación: Obtener área
-//			return this.cargoDocente.getArea().getDescripcion();
-			return "";
+			return this.integrante.getCargoDocente().getArea().getDescripcion();
 		}
+
 		public String getCargo() {
-		    // TODO Investigación: Obtener cargo
-//			return this.cargoDocente.getCargo().getDescripcion();
-		    return integrante.getCargo();
+		    return integrante.getCargoDocente().getCargo().getDescripcion();
 		}
 	}
 
@@ -605,7 +603,6 @@ public class Docentes extends ControladorVista implements Initializable {
     @FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
 
 // ----------------------------- Pestaña Observaciones ---------------------- //
-	// DONE Pestaña "Observaciones"
 	@FXML private TextArea txtaObservaciones;
 
 	/** Vacía los controles de observaciones */

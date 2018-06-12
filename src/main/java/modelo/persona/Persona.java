@@ -75,7 +75,7 @@ public class Persona implements IPersona, IPersonag {
 
 	@Override
     public String getNombreCompleto() {
-	    return this.apellido + " " + this.nombre;
+	    return this.apellido + ", " + this.nombre;
 	}
 
 	@Override

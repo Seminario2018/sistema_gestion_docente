@@ -2,7 +2,8 @@ package vista.controladores;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Year;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
@@ -27,12 +28,33 @@ import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
-import modelo.investigacion.Proyecto;
+import vista.GestorPantalla;
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
 public class Proyectos extends ControladorVista implements Initializable {
+
+    public void setProyectoSeleccion(Object proyecto) {
+        if (proyecto instanceof IProyecto) {
+            proyectoSeleccion = (IProyecto) proyecto;
+            generalMostrarProyecto();
+        }
+    }
+
+    public void setCodirectorSeleccion(Object docenteSeleccion) {
+        if (docenteSeleccion instanceof IDocente) {
+            codirectorSeleccion = (IDocente) docenteSeleccion;
+            txtDatosCodirector.setText(String.valueOf(codirectorSeleccion.getLegajo()));
+        }
+    }
+
+    public void setDirectorSeleccion(Object docenteSeleccion) {
+        if (docenteSeleccion instanceof IDocente) {
+            directorSeleccion = (IDocente) docenteSeleccion;
+            txtDatosDirector.setText(String.valueOf(directorSeleccion.getLegajo()));
+        }
+    }
 
 	@FXML private ScrollPane mainPane;
 
@@ -59,6 +81,13 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
 //            txtProyectosId.setText(String.valueOf(proyectoSeleccion.getId()));
             txtProyectosNombre.setText(proyectoSeleccion.getNombre());
+
+            datosMostrarProyecto();
+            integrantesActualizarTabla();
+            subsidiosActualizarTabla();
+            rendicionesActualizarTabla();
+            prorrogasActualizarTabla();
+            resumenMostrarResumen();
         }
     }
 
@@ -78,32 +107,12 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnProyectosBuscar;
 	@FXML void buscarProyecto(ActionEvent event) {
-		// TODO esto no funciona así
-		/*
-	    try {
-        int idProyecto = Integer.parseInt(txtProyectosId.getText());
-	        IProyecto proyectoBusqueda = new Proyecto(idProyecto, null, null, null, null, null, null, null, null, null, null, null, null, null);
-	        List<IProyecto> proyectos = this.controlInvestigacion.listarProyecto(proyectoBusqueda);
-
-	        switch (proyectos.size()) {
-	            case 0:  // No se encontraron proyectos para tal id:
-	                alertaError(TITULO, "Búsqueda de Proyectos", "No se encontró el proyecto para el id indicado.");
-	                break;
-	            case 1:  // Se encontró el proyecto:
-	                proyectoSeleccion = proyectos.get(0);
-	                // Cambiar a pestaña datos:
-	                tabpaneProyectos.getSelectionModel().select(0);
-	                datosMostrarProyecto();
-	                break;
-	            default: // Se encontró más de un proyecto (Error):
-	                throw new RuntimeException("Se encontró más de un proyecto para un id");
-	        }
-
-	    } catch (NumberFormatException nfe) {
-	        nfe.printStackTrace();
-	        alertaError("Proyectos", "Error Id de proyecto", "El id ingresado no es válido");
-	    }
-	    */
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, Proyectos.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Proyectos.TITULO, args);
 	}
 
 	@FXML private Button btnProyectosNuevo;
@@ -209,12 +218,24 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML private Button btnDatosDirector;
 	@FXML void buscarDirector(ActionEvent event) {
 	    // TODO directorSeleccion = ???
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, true);
+        args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
 	@FXML private TextField txtDatosCodirector;
 	@FXML private Button btnDatosCodirector;
 	@FXML void buscarCodirector(ActionEvent event) {
 	    // TODO codirectorSeleccionado = ???
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, true);
+        args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
     @FXML private TextField txtDatosNombre;
@@ -527,8 +548,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
 // TODO agregar Año de subsidio a los controles
-	@FXML private ComboBox cmbRendicionesAnio;  
-	
+	@FXML private ComboBox<Year> cmbRendicionesAnio;
+
 	private IRendicion rendicionSeleccion = null;
 	protected ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
 
@@ -590,6 +611,8 @@ public class Proyectos extends ControladorVista implements Initializable {
                 rendicionesMostrarRendicion();
             }
         });
+
+
 
 	    rendicionesActualizarTabla();
 	}
@@ -802,9 +825,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 // ---------------------------- Pestaña Resumen ----------------------------- //
 
 	@FXML private void inicializarResumen() {
+	    resumenMostrarResumen();
+	}
+
+	private void resumenMostrarResumen() {
 	    if (proyectoSeleccion != null) {
-	        txtaResumen.setText(proyectoSeleccion.getResumen());
-	    }
+            txtaResumen.setText(proyectoSeleccion.getResumen());
+        }
 	}
 
 	private void resumenVaciarControles() {

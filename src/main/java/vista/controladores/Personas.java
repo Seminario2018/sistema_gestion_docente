@@ -1,7 +1,8 @@
 package vista.controladores;
 
 import java.net.URL;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import controlador.ControlPersona;
 import javafx.collections.FXCollections;
@@ -23,12 +24,20 @@ import modelo.persona.IContacto;
 import modelo.persona.IDomicilio;
 import modelo.persona.IPersona;
 import modelo.persona.ITitulo;
+import vista.GestorPantalla;
 
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
 public class Personas extends ControladorVista implements Initializable {
+
+    public void setPersonaSeleccion(Object persona) {
+        if (persona instanceof IPersona) {
+            personaSeleccion = (IPersona) persona;
+            generalMostrarPersona();
+        }
+    }
 
     public static final String TITULO = "Personas";
 
@@ -49,6 +58,10 @@ public class Personas extends ControladorVista implements Initializable {
 	    if (personaSeleccion != null) {
 	        txtPersonasDocumento.setText(String.valueOf(personaSeleccion.getNroDocumento()));
 	        txtPersonasNombre.setText(personaSeleccion.getNombreCompleto());
+
+	        contactosActualizarTabla();
+	        domiciliosActualizarTabla();
+	        titulosActualizarTabla();
 	    }
 	}
 
@@ -70,16 +83,23 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnPersonasBuscar;
 	@FXML public void buscarPersona(ActionEvent event) {
-	    /* TEST General: Selección de persona */
+	    /* TEST General: Selección de persona *
         // Recuperar la persona con DNI = 17200893
         IPersona personaBusqueda = controlPersona.getIPersona();
         personaBusqueda.setNroDocumento(17200893);
         List<IPersona> listaPersonas = controlPersona.listarPersonas(personaBusqueda);
         personaSeleccion = listaPersonas.get(0);
-        //*/
 
         generalMostrarPersona();
         datosMostrarPersona();
+        //*/
+
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, Personas.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(GestorPantalla.KEY_PADRE, Personas.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
 
 	@FXML private Button btnPersonasNueva;
