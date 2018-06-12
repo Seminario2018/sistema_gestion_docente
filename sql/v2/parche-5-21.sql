@@ -132,7 +132,7 @@ ADD CONSTRAINT `programainves`
   ON UPDATE NO ACTION;
 
 
-ALTER TABLE `Eendisiones` 
+ALTER TABLE `Rendisiones` 
 RENAME TO  `Rendiciones` ;
 
 

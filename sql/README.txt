@@ -1,8 +1,6 @@
 *** Importar la BD plumasdocentes ***
 
-Para importar en la BD "plumasdocentes vX.sql" es necesario realizar drop de las tablas que se tengan en el schema plumasdocentes.
-
-Se recomienda realizar drop del schema y crear uno nuevo con el mismo nombre.
+Para importar la BD "plumasdocentes vX.sql", ir a la opción "import from self-contained file" y seleccionar o crear un nuevo schema. Asegurarse de importar tanto datos como esctructura.
 
 *** Aplicar parches ***
 

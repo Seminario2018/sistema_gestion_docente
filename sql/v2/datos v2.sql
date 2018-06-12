@@ -39,7 +39,11 @@ insert into EstadosPersonas values
 insert into EstadosDocentes values 
 (0, 'Activo'),
 (1, 'Inactivo'),
-(2, 'Jubilado');
+(2, 'Jubilado'),
+(3, 'Retiro'),
+(4, 'Renuncia'),
+(5, 'Fallecido'),
+(6, 'Licencia');
     
 
 insert into EstadosCargos values 
