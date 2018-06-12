@@ -153,11 +153,6 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </TextField>
-                                          <Button fx:id="btnDatosPersonas" maxWidth="200.0" mnemonicParsing="false" onAction="#seleccionarPersona" text="Seleccionar persona" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </Button>
                                           <Label text="Legajo" GridPane.rowIndex="3" />
                                           <TextField fx:id="txtDatosLegajo" promptText="Ingrese el legajo" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                              <GridPane.margin>

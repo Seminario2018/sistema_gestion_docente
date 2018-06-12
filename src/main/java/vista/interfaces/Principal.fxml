@@ -30,21 +30,13 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
-            <Menu mnemonicParsing="false" text="Archivo">
+            <Menu mnemonicParsing="false" text="Usuarios">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Configuración general" />
-                  <MenuItem mnemonicParsing="false" text="Configurar estación de trabajo" />
-                  <Menu mnemonicParsing="false" text="Opciones de Administración">
-                     <items>
-                        <MenuItem fx:id="mnuRoles" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
-                        <MenuItem fx:id="mnuUsuarios" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
-                     </items>
-                  </Menu>
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Salir" />
+                  <MenuItem fx:id="mnuUsuarios" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
+                  <MenuItem fx:id="mnuRoles" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Auxiliares">
+            <Menu mnemonicParsing="false" text="RR HH">
                <items>
                   <MenuItem fx:id="mnuPersonas" mnemonicParsing="false" onAction="#pantallaPersonas" text="Personas" />
                </items>
