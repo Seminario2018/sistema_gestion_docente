@@ -51,20 +51,20 @@ public class Proyectos extends ControladorVista implements Initializable {
 	private IProyecto proyectoSeleccion = null;
 
 	@FXML private TabPane tabpaneProyectos;
-	@FXML private TextField txtProyectosId;
+//	@FXML private TextField txtProyectosId;
 	@FXML private TextField txtProyectosNombre;
 
 	/** Muestra los datos del proyecto seleccionado en los controles generales */
     private void generalMostrarProyecto() {
         if (proyectoSeleccion != null) {
-            txtProyectosId.setText(String.valueOf(proyectoSeleccion.getId()));
+//            txtProyectosId.setText(String.valueOf(proyectoSeleccion.getId()));
             txtProyectosNombre.setText(proyectoSeleccion.getNombre());
         }
     }
 
 	/** Vacía los controles generales y los de todas las pestañas */
     private void generalVaciarControles() {
-        txtProyectosId.clear();
+//        txtProyectosId.clear();
         txtProyectosNombre.clear();
 
         // Vaciar controles de las pestañas:
@@ -78,8 +78,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnProyectosBuscar;
 	@FXML void buscarProyecto(ActionEvent event) {
+		// TODO esto no funciona así
+		/*
 	    try {
-	        int idProyecto = Integer.parseInt(txtProyectosId.getText());
+        int idProyecto = Integer.parseInt(txtProyectosId.getText());
 	        IProyecto proyectoBusqueda = new Proyecto(idProyecto, null, null, null, null, null, null, null, null, null, null, null, null, null);
 	        List<IProyecto> proyectos = this.controlInvestigacion.listarProyecto(proyectoBusqueda);
 
@@ -101,6 +103,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        nfe.printStackTrace();
 	        alertaError("Proyectos", "Error Id de proyecto", "El id ingresado no es válido");
 	    }
+	    */
 	}
 
 	@FXML private Button btnProyectosNuevo;
@@ -790,7 +793,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     }
 
 	@FXML private TableView<FilaProrroga> tblProrrogas;
-	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
+//	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
 	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasFinalización;
 
 	@FXML private DatePicker dtpProrrogasFinalizacion;
