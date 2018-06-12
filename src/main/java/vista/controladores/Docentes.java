@@ -1,7 +1,5 @@
 package vista.controladores;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.time.DateTimeException;
@@ -10,12 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import controlador.ControlAuxiliar;
 import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
-import excel.Costeo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -144,23 +139,7 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 	@FXML private void importarUltimoCosto() {
-	    try {
-	        File archivo = elegirArchivo(TITULO);
-	        if (archivo != null) {
-                Costeo.importar(elegirArchivo(TITULO));
-                dialogoConfirmacion(TITULO, "Importar Último Costo",
-                    "Los costos fueron actualizados.");
-	        }
-        } catch (EncryptedDocumentException e) {
-            alertaError(TITULO, "Importar Último Costo",
-                "El archivo está protegido por contraseña");
-        } catch (InvalidFormatException e) {
-            alertaError(TITULO, "Importar Último Costo",
-                "El archivo no tiene el formato correcto.");
-        } catch (IOException e) {
-            alertaError(TITULO, "Importar Último Costo",
-                "Error de apertura de archivo: " + e.getMessage());
-        }
+		// TODO lanzar pantalla ImportarUltimoCosto
     }
 
 	/**

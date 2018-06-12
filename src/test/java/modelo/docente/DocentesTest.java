@@ -80,7 +80,7 @@ public class DocentesTest {
         Docentes docentes = new Docentes();
         // Lista de filas:
         List<FilaInvestigacion> filasInvestigacion = new ArrayList<FilaInvestigacion>();
-
+/*
         for (IProyecto proyecto : listaProyectos) {
             for (IIntegrante integrante : proyecto.getIntegrantes()) {
                 if (integrante.getLegajo() == docenteSeleccionado.getLegajo()) {
@@ -91,7 +91,7 @@ public class DocentesTest {
                 }
             }
         }
-
+*/
         // "Mostrar en la tabla"
         for (FilaInvestigacion fila : filasInvestigacion) {
             System.out.printf("%5d\t%10s\t%10s\t%10s\n", fila.getId(), fila.getNombre(), fila.getArea(), fila.getCargo());

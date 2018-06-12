@@ -69,9 +69,10 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
                <columns>
-                  <TableColumn fx:id="colFaltantesSistemaLegajo" maxWidth="1000.0" minWidth="75.0" prefWidth="-1.0" text="Legajo" />
-                  <TableColumn fx:id="colFaltantesSistemaNombre" minWidth="75.0" prefWidth="-1.0" text="Apellido y nombre" />
-                  <TableColumn fx:id="colFaltantesSistemaCodigo" maxWidth="1000.0" minWidth="75.0" prefWidth="-1.0" text="Código de cargo" />
+                  <TableColumn fx:id="colFaltantesSistemaLegajo" maxWidth="500.0" minWidth="75.0" prefWidth="-1.0" text="Legajo" />
+                  <TableColumn fx:id="colFaltantesSistemaApellido" minWidth="75.0" prefWidth="-1.0" text="Apellido" />
+                  <TableColumn fx:id="colFaltantesSistemaNombre" minWidth="75.0" prefWidth="-1.0" text="Nombre" />
+                  <TableColumn fx:id="colFaltantesSistemaCodigo" maxWidth="500.0" minWidth="75.0" prefWidth="-1.0" text="Código de cargo" />
                </columns>
             </TableView>
             <Button fx:id="btnAltaCargo" maxWidth="200.0" minWidth="50.0" mnemonicParsing="false" onAction="#altaCargo" text="Dar de alta cargo" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" />

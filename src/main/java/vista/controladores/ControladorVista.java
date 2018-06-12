@@ -2,17 +2,22 @@ package vista.controladores;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import modelo.auxiliares.EstadoOperacion;
 import vista.GestorPantalla;
@@ -21,7 +26,7 @@ import vista.GestorPantalla;
  * @author Martín Tomás Juran
  * @version 1.0, 10 de may. de 2018
  */
-public abstract class ControladorVista {
+public abstract class ControladorVista implements Initializable {
 
 	protected GestorPantalla gestorPantalla;
 
@@ -31,6 +36,11 @@ public abstract class ControladorVista {
 
 	public void setGestorPantalla(GestorPantalla gestor) {
 		this.gestorPantalla = gestor;
+	}
+	
+	@Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+
 	}
 
 	/**
@@ -165,9 +175,11 @@ public abstract class ControladorVista {
 	 * @param titulo Título de la ventana
 	 * @return Archivo seleccionado
 	 */
-	public File elegirArchivo(String titulo) {
+	public File elegirArchivo(String titulo, String descripcion, List<String> extensiones) {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
+	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
+	    fileChooser.setSelectedExtensionFilter(extensionFilter);
 	    return fileChooser.showOpenDialog(new Stage());
 	}
 

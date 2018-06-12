@@ -3,7 +3,6 @@ package excel;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Ignore;
@@ -20,15 +19,17 @@ public class ExcelTest {
 
 		File costeoFebrero = new File("src/test/resources/costeo_febrero.xls");
 
-		String path = costeoFebrero.getAbsolutePath();
+		try {
+			List<List<String>> grilla = Excel.importar(costeoFebrero);
 
-		List<List<String>> grilla = Excel.importar(path);
-
-		for (List<String> row : grilla) {
-			for (String cell : row) {
-				System.out.print(cell + "\t|\t");
+			for (List<String> row : grilla) {
+				for (String cell : row) {
+					System.out.print(cell + "\t|\t");
+				}
+				System.out.println();
 			}
-			System.out.println();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -65,8 +66,8 @@ public class ExcelTest {
 	    String archivo = "src/test/resources/costeo_febrero.xls";
 	    assert(Files.exists(Paths.get(archivo))) : "El archivo no existe";
 	    try {
-            Costeo.importar(archivo);
-        } catch (UnsupportedOperationException e) {
+            Costeo.importar(new File(archivo));
+        } catch (Exception e) {
             e.printStackTrace();
         }
 	}
