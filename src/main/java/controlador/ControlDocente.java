@@ -11,7 +11,7 @@ import modelo.docente.ICargoFaltante;
 import modelo.docente.IDocente;
 import modelo.docente.IDocenteg;
 import modelo.docente.IIncentivo;
-import modelo.docente.gestorCargosFaltantes;
+import modelo.docente.GestorCargosFaltantes;
 import vista.controladores.ControladorVista;
 
 public class ControlDocente {
@@ -19,7 +19,7 @@ public class ControlDocente {
 	private ControladorVista vista;
 
 	private GestorCargo gestorCargo = new GestorCargo();
-	private gestorCargosFaltantes gestorCargosFaltantes = new gestorCargosFaltantes();
+	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
 	private GestorDocente gestorDocente = new GestorDocente();
 
 

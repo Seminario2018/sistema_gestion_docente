@@ -1,5 +1,24 @@
-Sistema de Gestión Docente - Departamento de Básicas UNLu
+Sistema de Gestión Docente - Plumas 2
+Departamento de Ciencias Básicas
+Universidad Nacional de Luján
 
+*******************************************************************************
+**************************** Para desarrolladores *****************************
+*******************************************************************************
+
+Utilizando IDE Eclipse:
+Al descargar o clonar el proyecto, ir a "Import" e importar un proyecto Maven,
+seleccionando el directorio raíz del proyecto.
+
+Importar la base de datos siguiendo las instrucciones que se encuentran
+en la carpeta "sql", en el directorio raíz del proyecto.
+
+Crear el archivo "Base.xml" utilizando como ejemplo el archivo "Base.xml.sample",
+con las credenciales de la BD, la dirección y el nombre del schema.
+
+
+*******************************************************************************
+****************************** Imports de Maven *******************************
 *******************************************************************************
 
 Librerías utilizadas:
