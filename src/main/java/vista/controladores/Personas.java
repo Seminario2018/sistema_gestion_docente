@@ -1,5 +1,6 @@
 package vista.controladores;
 
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class Personas extends ControladorVista implements Initializable {
 	        txtPersonasDocumento.setText(String.valueOf(personaSeleccion.getNroDocumento()));
 	        txtPersonasNombre.setText(personaSeleccion.getNombreCompleto());
 
+	        datosMostrarPersona();
 	        contactosActualizarTabla();
 	        domiciliosActualizarTabla();
 	        titulosActualizarTabla();
@@ -114,6 +116,21 @@ public class Personas extends ControladorVista implements Initializable {
             if (exitoEliminar(controlPersona.eliminarPersona(personaSeleccion), TITULO, "Eliminar Persona")) {
                 personaSeleccion = null;
                 generalVaciarControles();
+            }
+        }
+	}
+
+	@Override
+	public void recibirParametros(Map<String, Object> args) {
+	    Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
+        if (oSeleccion != null) {
+            String seleccion = (String) oSeleccion;
+            Object valor = args.get(Busqueda.KEY_VALOR);
+            try {
+                Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
+                m.invoke(this, valor);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 	}

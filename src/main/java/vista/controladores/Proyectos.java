@@ -1,4 +1,5 @@
 package vista.controladores;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Year;
@@ -137,6 +138,21 @@ public class Proyectos extends ControladorVista implements Initializable {
                 default:
                     throw new RuntimeException("Estado de modificación no esperado: "
                         + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+            }
+        }
+    }
+
+    @Override
+    public void recibirParametros(Map<String, Object> args) {
+        Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
+        if (oSeleccion != null) {
+            String seleccion = (String) oSeleccion;
+            Object valor = args.get(Busqueda.KEY_VALOR);
+            try {
+                Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
+                m.invoke(this, valor);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
