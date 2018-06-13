@@ -106,15 +106,15 @@ public class ControlDocente {
                 // Encontré más de un o ningún cargoDocente ???
                 throw new RuntimeException("Más de un cargoDocente no esperados");
             }
-            ICargoDocente cargoDocenteReferencia = listaCargosDocentes.get(0);
+            EstadoCargo estadoCargoReferencia = listaCargosDocentes.get(0).getEstado();
 
             EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
+            System.out.printf("Resultado: [%s]: %s\n", resultado.getEstado().toString(), resultado.getMensaje());
             if (resultado.getEstado() == CodigoEstado.UPDATE_OK) {
                 /* Notifico por mail cuando se modifique exitosamente el estado
                  * de un cargoDocente:
                  */
                 EstadoCargo estadoCargoNuevo = cargoDocente.getEstado();
-                EstadoCargo estadoCargoReferencia = cargoDocenteReferencia.getEstado();
                 if (!estadoCargoNuevo.equals(estadoCargoReferencia)) {
                     NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                 }

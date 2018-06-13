@@ -449,7 +449,7 @@ public class GestorPersona {
 			String table = "Contactos";
 			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `idcontacto`="+contacto.getId();
 
-			String campos =	"`Tipo` = '" + contacto.getTipo() + "', "
+			String campos =	"`Tipo` = " + contacto.getTipo().getId() + ", "
 							+ "`Valor` = '" + contacto.getDato() + "'";
 
 
