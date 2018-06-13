@@ -109,7 +109,6 @@ public class ControlDocente {
             EstadoCargo estadoCargoReferencia = listaCargosDocentes.get(0).getEstado();
 
             EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
-            System.out.printf("Resultado: [%s]: %s\n", resultado.getEstado().toString(), resultado.getMensaje());
             if (resultado.getEstado() == CodigoEstado.UPDATE_OK) {
                 /* Notifico por mail cuando se modifique exitosamente el estado
                  * de un cargoDocente:
