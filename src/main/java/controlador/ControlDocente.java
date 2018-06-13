@@ -99,9 +99,11 @@ public class ControlDocente {
             return resultado;
         } else {
             // Obtengo una referencia al cargoDocente antes de ser modificado:
-            List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocente);
+            ICargoDocente cargoDocenteBusqueda = gestorDocente.getICargoDocente();
+            cargoDocenteBusqueda.setId(cargoDocente.getId());
+            List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocenteBusqueda);
             if (listaCargosDocentes.size() != 1) {
-                // Encontré más de un cargoDocente ???
+                // Encontré más de un o ningún cargoDocente ???
                 throw new RuntimeException("Más de un cargoDocente no esperados");
             }
             ICargoDocente cargoDocenteReferencia = listaCargosDocentes.get(0);

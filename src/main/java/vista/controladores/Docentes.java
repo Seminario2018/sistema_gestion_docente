@@ -282,7 +282,7 @@ public class Docentes extends ControladorVista implements Initializable {
             txtCargosDisp.setText(cargoDocenteSeleccion.getDisposicion());
             dtpCargosDispDesde.setValue(cargoDocenteSeleccion.getDispDesde());
             dtpCargosDispHasta.setValue(cargoDocenteSeleccion.getDispHasta());
-            txtCargosRes.clear();
+            txtCargosRes.setText(cargoDocenteSeleccion.getResolucion());
             dtpCargosResDesde.setValue(cargoDocenteSeleccion.getResDesde());
             dtpCargosResHasta.setValue(cargoDocenteSeleccion.getResHasta());
             txtCargosCosto.setText(String.valueOf(cargoDocenteSeleccion.getUltimoCosto()));

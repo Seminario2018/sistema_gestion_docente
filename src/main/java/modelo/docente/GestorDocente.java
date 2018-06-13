@@ -478,7 +478,7 @@ public class GestorDocente {
                 if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-                condicion += "`CostoActual` = " + cargo.getUltimoCosto();
+                condicion += "`UltimoCosto` = " + cargo.getUltimoCosto();
             }
         }
         if (docente != null) {
@@ -496,8 +496,9 @@ public class GestorDocente {
             ManejoDatos md = new ManejoDatos();
             List<Hashtable<String, String>> res = md.select("CargosDocentes", "MAX(Codigo)");
             for (Hashtable<String, String> reg : res) {
-            	if (!reg.get("MAX(Codigo)").equals(""))
-            		cod = Integer.parseInt(reg.get("MAX(Codigo)")); 
+            	if (!reg.get("MAX(Codigo)").equals("")) {
+                    cod = Integer.parseInt(reg.get("MAX(Codigo)"));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
