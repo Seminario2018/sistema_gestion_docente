@@ -55,7 +55,7 @@ public class EstadoCargo {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "EstadosCargos";
-			String campos = "idestadocargo, Descripcion";			
+			String campos = "idestadocargo, Descripcion";
 			String valores = this.getId() + ", '" + this.getDescripcion() + "'";
 
 			md.insertar(tabla, campos, valores);
@@ -156,4 +156,21 @@ public class EstadoCargo {
 	@Override public String toString() {
 		return this.descripcion;
 	}
+
+	@Override
+    public boolean equals(Object objeto) {
+	    if (objeto == null) {
+            return false;
+        }
+	    if (objeto == this) {
+            return true;
+        }
+	    if (!(objeto instanceof EstadoCargo)) {
+            return false;
+        }
+
+	    EstadoCargo estadoCargo = (EstadoCargo) objeto;
+	    return estadoCargo.id == this.id;
+	}
+
 }

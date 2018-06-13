@@ -2,7 +2,9 @@ package controlador;
 
 import java.util.List;
 import mail.NotificacionCargo2;
+import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
 import modelo.docente.GestorDocente;
@@ -55,13 +57,14 @@ public class ControlDocente {
 	}
 
     public EstadoOperacion guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
-//        NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
+        /* DONE *
+        // NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
         if (cargoDocente.getId() == -1) {
             // Se agrega un nuevo Cargo Docente
             EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
             switch (resultado.getEstado()) {
                 case INSERT_OK:
-//                	notificacion.notificar(resultado);
+                	// notificacion.notificar(resultado);
                     NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                     break;
                 default:
@@ -74,7 +77,7 @@ public class ControlDocente {
             EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
             switch (resultado.getEstado()) {
                 case UPDATE_OK:
-//                    notificacion.notificar(resultado);
+                    // notificacion.notificar(resultado);
                 	NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                     break;
                 default:
@@ -83,20 +86,56 @@ public class ControlDocente {
             }
             return resultado;
         }
+        //*/
+
+        if (cargoDocente.getId() == -1) {
+            EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
+            if (resultado.getEstado() == CodigoEstado.INSERT_OK) {
+                /* Notifico por mail cuando hay un nuevo cargo (si se insertó
+                 * exitosamente):
+                 */
+                NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
+            }
+            return resultado;
+        } else {
+            // Obtengo una referencia al cargoDocente antes de ser modificado:
+            List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocente);
+            if (listaCargosDocentes.size() != 1) {
+                // Encontré más de un cargoDocente ???
+                throw new RuntimeException("Más de un cargoDocente no esperados");
+            }
+            ICargoDocente cargoDocenteReferencia = listaCargosDocentes.get(0);
+
+            EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
+            if (resultado.getEstado() == CodigoEstado.UPDATE_OK) {
+                /* Notifico por mail cuando se modifique exitosamente el estado
+                 * de un cargoDocente:
+                 */
+                EstadoCargo estadoCargoNuevo = cargoDocente.getEstado();
+                EstadoCargo estadoCargoReferencia = cargoDocenteReferencia.getEstado();
+                if (!estadoCargoNuevo.equals(estadoCargoReferencia)) {
+                    NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
+                }
+            }
+            return resultado;
+        }
     }
 
     public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
-//        NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
+        /* DONE Saqué la notificación por mail cuando se borra un cargodocente de la BD: *
+        // NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
         EstadoOperacion resultado = gestorDocente.quitarCargoDocente(docente, cargoDocente);
         switch (resultado.getEstado()) {
             case DELETE_OK:
-//                notificacion.notificar(resultado);
+                // notificacion.notificar(resultado);
             	NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
                 break;
             default:
                 throw new RuntimeException("Estado de eliminación de cargoDocente no esperado: " + resultado.getMensaje());
         }
         return resultado;
+        //*/
+        return gestorDocente.quitarCargoDocente(docente, cargoDocente);
     }
 
     public List<ICargoDocente> listarCargosDocente(IDocente docente, ICargoDocente cargoDocente) {
