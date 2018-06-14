@@ -63,4 +63,8 @@ public class ControlUsuario {
     public List<IRol> listarGrupo(IRol rol) {
         return gestorRol.listarGrupo(rol);
     }
+
+    public IRol getIRol() {
+        return gestorRol.getIRol();
+    }
 }

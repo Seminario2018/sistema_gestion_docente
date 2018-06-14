@@ -126,5 +126,7 @@ public class GestorRol {
 		}
     }
 
-
+    public IRol getIRol() {
+        return new Rol();
+    }
 }
