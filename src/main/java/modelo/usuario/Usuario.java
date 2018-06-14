@@ -3,10 +3,10 @@ package modelo.usuario;
 import java.util.List;
 import modelo.auxiliares.hash.HashSalt;
 import modelo.auxiliares.hash.PasswordUtil;
-import modelo.persona.Persona;
+import modelo.persona.IPersona;
 
 public class Usuario implements IUsuario{
-	private Persona persona;
+	private IPersona persona;
 	private String user;
 	private HashSalt hash;
 	private String descripcion;
@@ -95,12 +95,12 @@ public class Usuario implements IUsuario{
     }
 
 	@Override
-    public Persona getPersona() {
+    public IPersona getPersona() {
 		return persona;
 	}
 
 	@Override
-    public void setPersona(Persona persona) {
+    public void setPersona(IPersona persona) {
 		this.persona = persona;
 	}
 
