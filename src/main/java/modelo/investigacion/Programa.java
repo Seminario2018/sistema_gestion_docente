@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoPrograma;
 import modelo.docente.Docente;
 import modelo.docente.GestorDocente;
@@ -32,7 +31,7 @@ public class Programa implements IPrograma, IProgramag {
 	    this.fechaInicio = null;
 	    this.fechaFin = null;
 	    this.estado = null;
-	    this.proyectos = new ArrayList<IProyecto>(proyectos);
+	    this.proyectos = new ArrayList<IProyecto>();
     }
 
 	public Programa(int id, String nombre, String disposicion,
@@ -99,14 +98,14 @@ public class Programa implements IPrograma, IProgramag {
     public IDocente getDirector() {
     	if (this.director  == null) {
     		ManejoDatos md = new ManejoDatos();
-    		ArrayList<Hashtable<String, String>> res = 
+    		ArrayList<Hashtable<String, String>> res =
     				md.select("ProgramasInvestigacion", "Director", "id = " + this.getId());
     		Hashtable<String, String> reg = res.get(0);
     		Docente doc = new Docente();
 			doc.setLegajo(Integer.parseInt(reg.get("Director")));
 			GestorDocente gd = new GestorDocente();
 			doc = (Docente) gd.listarDocentes(doc).get(0);
-					
+
 			this.setDirector(doc);
     	}
         return this.director;
@@ -121,7 +120,7 @@ public class Programa implements IPrograma, IProgramag {
     public IDocente getCodirector() {
     	if (this.codirector == null) {
     		ManejoDatos md = new ManejoDatos();
-    		ArrayList<Hashtable<String, String>> res = 
+    		ArrayList<Hashtable<String, String>> res =
     				md.select("ProgramasInvestigacion", "Codirector", "id = " + this.getId());
     		Hashtable<String, String> reg = res.get(0);
     		if (!reg.get("Codirector").equals("")) {
@@ -164,7 +163,7 @@ public class Programa implements IPrograma, IProgramag {
     public EstadoPrograma getEstado() {
     	if (this.estado == null) {
     		ManejoDatos md = new ManejoDatos();
-    		ArrayList<Hashtable<String, String>> res = 
+    		ArrayList<Hashtable<String, String>> res =
     				md.select("ProgramasInvestigacion", "Estado", "id = " + this.getId());
     		Hashtable<String, String> reg = res.get(0);
     		EstadoPrograma estado = new EstadoPrograma();
@@ -187,7 +186,7 @@ public class Programa implements IPrograma, IProgramag {
 			List<IProyecto> proyectos = gp.listarProyecto(null, this);
 			for (IProyecto proyecto : proyectos) {
 				this.agregarProyecto(proyecto);
-			} 
+			}
 		}
 		return this.proyectos;
     }

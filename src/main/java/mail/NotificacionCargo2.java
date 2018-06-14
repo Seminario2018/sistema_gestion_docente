@@ -45,7 +45,7 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails cada {@code ThreadMail.MILISEGUNDOS}. */
     class TimerTaskMail extends TimerTask {
-    	private static final int MILISEGUNDOS = 5000;
+    	private static final int MILISEGUNDOS = 60000;
     	private NotificacionCargo2 noti;
 
     	public TimerTaskMail(NotificacionCargo2 noti) {
@@ -54,7 +54,7 @@ public class NotificacionCargo2 {
 
 		@Override
 		public void run() {
-			 System.out.println("Recolectando mails...");
+		    System.out.println("Recolectando mails...");
 			List<Map<String, String>> mails = this.noti.getMails();
 			if (mails != null && !mails.isEmpty()) {
 				IMail mailSend = new Mail();

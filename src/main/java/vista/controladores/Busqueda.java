@@ -8,13 +8,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import controlador.ControlBusqueda;
-import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -29,20 +28,23 @@ import utilidades.Utilidades;
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Busqueda extends ControladorVista implements Initializable {
-	
+
 	public static final String KEY_NUEVO = "nuevo";
 	public static final String KEY_TIPO = "tipo";
 	public static final String KEY_CONTROLADOR = "controlador";
 	// Devuelve el tipo de dato seleccionado, por ejemplo "Area"
 	public static final String KEY_SELECCION = "seleccion";
+	public static final String KEY_TIPO_RESPUESTA = "tipo_respuesta";
 	// Devuelve el dato seleccionado
 	public static final String KEY_VALOR = "valor";
 	public static final String TITULO = "Busqueda";
-	
+
 	private String tipo;
 	private ControlBusqueda control = new ControlBusqueda(this);
 	// Recibe la respuesta (selección)
 	private ControladorVista controladorRespuesta;
+
+	private String tipo_respuesta;
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -50,20 +52,20 @@ public class Busqueda extends ControladorVista implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
-	
+
 // -------------------------------- General --------------------------------- //
-	
+
 	@FXML private TableView tblBusqueda;
 	@FXML private List<TableColumn> colsBusqueda = new ArrayList<TableColumn>();
 	private ObservableList<Object> filasBusqueda = FXCollections.observableArrayList();
-	
+
 	@FXML private TextField txtBusquedaCriterio;
-	
+
 	@FXML private Button btnBusquedaNuevo;
 	@FXML public void nuevo(ActionEvent event) {
 		this.gestorPantalla.lanzarPantalla(this.tipo, null);
 	}
-	
+
 	@FXML private Button btnBusquedaSeleccionar;
 	@FXML public void seleccionar(ActionEvent event) {
 		// Borrar la "s" del final (DocenteS, PersonaS)
@@ -76,6 +78,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 					Map<String, Object> args = new HashMap<String, Object>();
 					args.put(Busqueda.KEY_SELECCION, varName);
 					args.put(Busqueda.KEY_VALOR, valor);
+					args.put(Busqueda.KEY_TIPO_RESPUESTA, this.tipo_respuesta);
 					this.controladorRespuesta.recibirParametros(args);
 					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
 				}
@@ -86,7 +89,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 //			TODO this.gestorPantalla.mensajeEstado("Debe seleccionar una fila de la grilla");
 		}
 	}
-	
+
 	class EditThread implements Runnable {
 		private Busqueda b;
 		public EditThread(Busqueda b) {
@@ -99,14 +102,15 @@ public class Busqueda extends ControladorVista implements Initializable {
 		public void run() {
 			try {
 				Thread.sleep(300);
-				if (!Thread.interrupted())
-					b.actualizarLista();
+				if (!Thread.interrupted()) {
+                    b.actualizarLista();
+                }
 			} catch (InterruptedException e) {
 				// Nada
 			}
 		}
 	}
-	
+
 //	private Thread editThread;
 	/**
 	 * Método que se llama con cada tecleo
@@ -122,7 +126,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 		*/
 		actualizarLista();
 	}
-	
+
 	// Verificar si apretó Enter
 	@FXML public void keyPressed(KeyEvent event) {
 		switch (event.getCode()) {
@@ -133,25 +137,29 @@ public class Busqueda extends ControladorVista implements Initializable {
 		default:
 		}
 	}
-	
+
 	@Override
 	public void recibirParametros(Map<String, Object> args) {
 		this.tipo = (String) args.get(KEY_TIPO);
 		this.controladorRespuesta = (ControladorVista) args.get(KEY_CONTROLADOR);
 		this.btnBusquedaNuevo.setVisible((boolean) args.get(KEY_NUEVO));
+		this.tipo_respuesta = (args.containsKey(KEY_TIPO_RESPUESTA)) ?
+		    (String) args.get(KEY_TIPO_RESPUESTA) :
+	        "";
+
 		try {
 			inicializar(Class.forName("modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1)));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void inicializar(Class c) {
 		inicializarTabla(c);
 		actualizarLista();
 		this.txtBusquedaCriterio.requestFocus();
 	}
-	
+
 	public void inicializarTabla(Class fila) {
 		this.tblBusqueda.getColumns().clear();
 		Field[] campos = fila.getDeclaredFields();

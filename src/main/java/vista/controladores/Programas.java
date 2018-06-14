@@ -29,6 +29,9 @@ import vista.GestorPantalla;
 public class Programas extends ControladorVista implements Initializable {
 
     public static final String TITULO = "Programas";
+    private static final String TIPO_DIRECTOR = "director";
+    private static final String TIPO_CODIRECTOR = "codirector";
+    private static final String TIPO_PROGRAMA = "programa";
 
     private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
     private IPrograma programaSeleccion = null;
@@ -78,6 +81,7 @@ public class Programas extends ControladorVista implements Initializable {
         args.put(Busqueda.KEY_NUEVO, false);
         args.put(Busqueda.KEY_TIPO, Programas.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PROGRAMA);
         args.put(GestorPantalla.KEY_PADRE, Programas.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Programas.TITULO, args);
 	}
@@ -115,8 +119,9 @@ public class Programas extends ControladorVista implements Initializable {
 	@FXML private void seleccionarDirector() {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
-        args.put(Busqueda.KEY_TIPO, "Director");
+        args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DIRECTOR);
         args.put(GestorPantalla.KEY_PADRE, Programas.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Director", args);
 	}
@@ -124,13 +129,14 @@ public class Programas extends ControladorVista implements Initializable {
 	@FXML private void seleccionarCodirector() {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
-        args.put(Busqueda.KEY_TIPO, "Codirector");
+        args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CODIRECTOR);
         args.put(GestorPantalla.KEY_PADRE, Programas.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Codirector", args);
     }
 
-	@FXML private void agregarproyecto() {
+	@FXML private void agregarProyecto() {
 	    if (proyectoSeleccion != null) {
 	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, programaSeleccion), TITULO, "Agregar Proyecto");
 	    }
@@ -165,30 +171,40 @@ public class Programas extends ControladorVista implements Initializable {
         if (oSeleccion != null) {
             String seleccion = (String) oSeleccion;
             Object valor = args.get(Busqueda.KEY_VALOR);
+            String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
-                Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
-                m.invoke(this, valor);
+                String metodo = "set" + seleccion + "Seleccion";
+                System.out.println("Método: \"" + metodo + "\"");
+                Method m = this.getClass().getDeclaredMethod(metodo, Object.class);
+                m.invoke(this, valor, tipo_respuesta);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void setCodirectorSeleccion(Object codirector) {
-        if (codirector instanceof IDocente) {
-            codirectorSeleccion = (IDocente) codirector;
-            txtProgramasCodirector.setText(codirectorSeleccion.getPersona().getNombreCompleto());
+    public void setDocenteSeleccion(Object docente, String tipo) {
+        if (docente instanceof IDocente) {
+            switch (tipo) {
+                case TIPO_DIRECTOR:
+                    setDirectorSeleccion((IDocente) docente);
+                case TIPO_CODIRECTOR:
+                    setCodirectorSeleccion((IDocente) docente);
+            }
         }
     }
 
-    private void setDirectorSeleccion(Object director) {
-        if (director instanceof IDocente) {
-            directorSeleccion = (IDocente) director;
-            txtProgramasDirector.setText(directorSeleccion.getPersona().getNombreCompleto());
-        }
+    private void setCodirectorSeleccion(IDocente codirector) {
+        codirectorSeleccion = codirector;
+        txtProgramasCodirector.setText(codirectorSeleccion.getPersona().getNombreCompleto());
     }
 
-    private void setProgramaSeleccion(Object programa) {
+    private void setDirectorSeleccion(IDocente director) {
+        directorSeleccion = director;
+        txtProgramasDirector.setText(directorSeleccion.getPersona().getNombreCompleto());
+    }
+
+    public void setProgramaSeleccion(Object programa, String tipo) {
         if (programa instanceof IPrograma) {
             programaSeleccion = (IPrograma) programa;
             mostrarPrograma();
