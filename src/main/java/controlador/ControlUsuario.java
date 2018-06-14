@@ -19,28 +19,28 @@ public class ControlUsuario {
     }
 
 //  Usuarios
-    public EstadoOperacion nuevoUsuario(IUsuario usuario) {
-        return this.gestorUsuario.nuevoUsuario(usuario);
-    }
-
-    public EstadoOperacion modificarUsuario(IUsuario usuario) {
-        return this.gestorUsuario.modificarUsuario(usuario);
+    public EstadoOperacion guardarUsuario(IUsuario usuario) {
+        if (usuario.getUser() == "") {
+            return gestorUsuario.nuevoUsuario(usuario);
+        } else {
+            return gestorUsuario.modificarUsuario(usuario);
+        }
     }
 
     public EstadoOperacion eliminarUsuario(IUsuario usuario) {
-        return this.gestorUsuario.eliminarUsuario(usuario);
+        return gestorUsuario.eliminarUsuario(usuario);
     }
 
     public List<IUsuario> listarUsuario(IUsuario usuario) {
-        return this.gestorUsuario.listarUsuario(usuario);
+        return gestorUsuario.listarUsuario(usuario);
     }
 
     public EstadoOperacion agregarRol(IUsuario usuario, IRol rol) {
-        return this.gestorUsuario.agregarRol(usuario, rol);
+        return gestorUsuario.agregarRol(usuario, rol);
     }
 
     public EstadoOperacion quitarRol(IUsuario usuario, IRol rol) {
-        return this.gestorUsuario.quitarGrupo(usuario, rol);
+        return gestorUsuario.quitarGrupo(usuario, rol);
     }
 
     public IUsuario getIUsuario() {
@@ -48,19 +48,19 @@ public class ControlUsuario {
     }
 
 //  Roles
-    public EstadoOperacion nuevoGrupo(IRol rol) {
-        return this.gestorRol.nuevoGrupo(rol);
-    }
-
-    public EstadoOperacion modificarGrupo(IRol rol) {
-        return this.gestorRol.modificarGrupo(rol);
+    public EstadoOperacion guardarGrupo(IRol rol) {
+        if (rol.getId() == -1) {
+            return gestorRol.nuevoGrupo(rol);
+        } else {
+            return gestorRol.modificarGrupo(rol);
+        }
     }
 
     public EstadoOperacion eliminarGrupo(IRol rol) {
-        return this.gestorRol.eliminarGrupo(rol);
+        return gestorRol.eliminarGrupo(rol);
     }
 
     public List<IRol> listarGrupo(IRol rol) {
-        return this.gestorRol.listarGrupo(rol);
+        return gestorRol.listarGrupo(rol);
     }
 }

@@ -4,36 +4,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rol implements IRol {
-	
+
 	private int id;
 	private String nombre;
 	private String descripcion;
 
 	private List<IPermiso> permisos;
 
-	public Rol(String nombre) {
+	public Rol() {
+	    this.id = -1;
+	    this.nombre = "";
+	    this.descripcion = "";
+	    this.permisos = new ArrayList<IPermiso>();
+	}
+
+	public Rol(int id, String nombre) {
+	    this.id = id;
 		this.nombre = nombre;
 		this.permisos = new ArrayList<IPermiso>();
 		for (Modulo m: Modulo.values()) {
-			Permiso p = new Permiso(m);
+			IPermiso p = new Permiso(m);
 			permisos.add(p);
 		}
 	}
 
-	public Rol(String nombre, List<IPermiso> permisos) {
+	public Rol(int id, String nombre, List<IPermiso> permisos) {
+	    this.id = id;
         this.nombre = nombre;
         this.permisos = new ArrayList<IPermiso>(permisos);
 	}
 
     @Override
     public IRol clone() {
-        return (IRol) new Rol(
+        return new Rol(
+            this.id,
             this.nombre,
             this.permisos
-            );
+        );
     }
 
+    @Override
+    public int getId() {
+        return this.id;
+    }
 
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public String getNombre() {
@@ -43,6 +61,16 @@ public class Rol implements IRol {
     @Override
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    @Override
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    @Override
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override

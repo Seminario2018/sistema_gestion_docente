@@ -7,14 +7,17 @@ import modelo.persona.IPersona;
 
 public class Usuario implements IUsuario{
 	private IPersona persona;
-	private String user;
+	private String user = "";
 	private HashSalt hash;
 	private String descripcion;
 
 	private List<IRol> roles;
 
 	public Usuario() {
-
+	    this.persona = null;
+	    this.user = "";
+	    this.hash = null;
+	    this.descripcion = "";
 	}
 
 	public Usuario(String user, HashSalt hash, String descripcion,
