@@ -119,7 +119,47 @@ public class GestorBusqueda {
 	}
 
 	public List<BusquedaPrograma> listarProgramas(String criterio) {
-	    return new ArrayList<BusquedaPrograma>();
+	    String tabla = "ViewPrograma";
+        String campos = "id, nombre";
+        String condicion = "TRUE";
+        List<BusquedaPrograma> programas = new ArrayList<BusquedaPrograma>();
+
+        if (criterio != null && !criterio.equals("")) {
+            condicion = armarCondicion(campos.split(", "), criterio);
+        }
+
+        ManejoDatos md = new ManejoDatos();
+        ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+        for (Hashtable<String, String> reg : res) {
+            BusquedaPrograma pro = new BusquedaPrograma(
+                    Integer.parseInt(reg.get("id")),
+                    reg.get("nombre"));
+            programas.add(pro);
+        }
+
+        return programas;
+	}
+
+	public List<BusquedaProyecto> listarProyectos(String criterio) {
+	    String tabla = "ViewProyecto";
+	    String campos = "id, nombre";
+	    String condicion = "TRUE";
+	    List<BusquedaProyecto> proyectos = new ArrayList<BusquedaProyecto>();
+
+	    if (criterio != null && !criterio.equals("")) {
+            condicion = armarCondicion(campos.split(", "), criterio);
+        }
+
+        ManejoDatos md = new ManejoDatos();
+        ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+        for (Hashtable<String, String> reg : res) {
+            BusquedaProyecto pro = new BusquedaProyecto(
+                    Integer.parseInt(reg.get("id")),
+                    reg.get("nombre"));
+            proyectos.add(pro);
+        }
+
+        return proyectos;
 	}
 
 	private String armarCondicion(String[] campos, String criterio) {

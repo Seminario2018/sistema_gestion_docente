@@ -6,6 +6,7 @@ import modelo.busqueda.BusquedaCargo;
 import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.BusquedaPrograma;
+import modelo.busqueda.BusquedaProyecto;
 import modelo.busqueda.GestorBusqueda;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
@@ -55,6 +56,10 @@ public class ControlBusqueda {
 
 	public List<BusquedaPrograma> listarProgramas(String criterio) {
 	    return this.gestorBusqueda.listarProgramas(criterio);
+	}
+
+	public List<BusquedaProyecto> listarProyectos(String criterio) {
+	    return this.gestorBusqueda.listarProyectos(criterio);
 	}
 
 	public Object seleccionar(Object fila) {
