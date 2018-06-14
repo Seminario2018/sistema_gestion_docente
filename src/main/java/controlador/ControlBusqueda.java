@@ -7,6 +7,7 @@ import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.BusquedaPrograma;
 import modelo.busqueda.BusquedaProyecto;
+import modelo.busqueda.BusquedaRol;
 import modelo.busqueda.GestorBusqueda;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
@@ -39,27 +40,31 @@ public class ControlBusqueda {
 	}
 
 	public List<BusquedaDocente> listarDocentes(String criterio) {
-		return this.gestorBusqueda.listarDocentes(criterio);
+		return gestorBusqueda.listarDocentes(criterio);
 	}
 
 	public List<BusquedaPersona> listarPersonas(String criterio) {
-		return this.gestorBusqueda.listarPersonas(criterio);
+		return gestorBusqueda.listarPersonas(criterio);
 	}
 
 	public List<BusquedaArea> listarAreas(String criterio) {
-		return this.gestorBusqueda.listarAreas(criterio);
+		return gestorBusqueda.listarAreas(criterio);
 	}
 
 	public List<BusquedaCargo> listarCargos(String criterio) {
-		return this.gestorBusqueda.listarCargos(criterio);
+		return gestorBusqueda.listarCargos(criterio);
 	}
 
 	public List<BusquedaPrograma> listarProgramas(String criterio) {
-	    return this.gestorBusqueda.listarProgramas(criterio);
+	    return gestorBusqueda.listarProgramas(criterio);
 	}
 
 	public List<BusquedaProyecto> listarProyectos(String criterio) {
-	    return this.gestorBusqueda.listarProyectos(criterio);
+	    return gestorBusqueda.listarProyectos(criterio);
+	}
+
+	public List<BusquedaRol> listarRoles(String criterio) {
+	    return gestorBusqueda.listarRoles(criterio);
 	}
 
 	public Object seleccionar(Object fila) {

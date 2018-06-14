@@ -7,5 +7,18 @@ public enum Modulo {
 	USUARIOS,
 	DOCENTES,
 	INVESTIGACION,
-	INFORMES,
+	INFORMES;
+
+	@Override
+	public String toString() {
+	    switch (this) {
+	        case GENERAL: return "General";
+	        case ROLES: return "Roles";
+	        case USUARIOS: return "Usuarios";
+	        case DOCENTES: return "Docentes";
+	        case INVESTIGACION: return "Investigación";
+	        case INFORMES: return "Informes";
+	    }
+	    return "";
+	}
 }

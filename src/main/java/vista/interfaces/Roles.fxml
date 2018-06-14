@@ -68,27 +68,27 @@
                 <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnRolesNuevo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Nuevo rol" GridPane.columnIndex="1">
+                  <Button fx:id="btnRolesNuevo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoRol" text="Nuevo rol" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnRolesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar cambios" GridPane.columnIndex="2">
+                  <Button fx:id="btnRolesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarRol" text="Guardar cambios" GridPane.columnIndex="2">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnRolesDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Descartar cambios" GridPane.columnIndex="3">
+                  <Button fx:id="btnRolesDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarRol" text="Descartar cambios" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnRolesEliminar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar rol" GridPane.columnIndex="4">
+                  <Button fx:id="btnRolesEliminar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarRol" text="Eliminar rol" GridPane.columnIndex="4">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnRolesBuscar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Buscar rol">
+                  <Button fx:id="btnRolesBuscar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buscarRol" text="Buscar rol">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>

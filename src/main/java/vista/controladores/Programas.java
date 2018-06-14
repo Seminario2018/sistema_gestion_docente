@@ -235,6 +235,8 @@ public class Programas extends ControladorVista implements Initializable {
             txtProgramasCodirector.setText(programaSeleccion.getCodirector().getPersona().getNombreCompleto());
             cmbProgramasEstado.getSelectionModel().select(programaSeleccion.getEstado());
             txtProgramasDisp.setText(programaSeleccion.getDisposicion());
+
+            actualizarTabla();
         }
     }
 
