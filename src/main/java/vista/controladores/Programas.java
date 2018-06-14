@@ -29,9 +29,9 @@ import vista.GestorPantalla;
 public class Programas extends ControladorVista implements Initializable {
 
     public static final String TITULO = "Programas";
-    private static final String TIPO_DIRECTOR = "director";
-    private static final String TIPO_CODIRECTOR = "codirector";
-    private static final String TIPO_PROGRAMA = "programa";
+    private static final String TIPO_DIRECTOR = "Director";
+    private static final String TIPO_CODIRECTOR = "Codirector";
+    private static final String TIPO_PROGRAMA = "Programa";
 
     private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
     private IPrograma programaSeleccion = null;
@@ -175,7 +175,7 @@ public class Programas extends ControladorVista implements Initializable {
             try {
                 String metodo = "set" + seleccion + "Seleccion";
                 System.out.println("Método: \"" + metodo + "\"");
-                Method m = this.getClass().getDeclaredMethod(metodo, Object.class);
+                Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -188,8 +188,10 @@ public class Programas extends ControladorVista implements Initializable {
             switch (tipo) {
                 case TIPO_DIRECTOR:
                     setDirectorSeleccion((IDocente) docente);
+                    break;
                 case TIPO_CODIRECTOR:
                     setCodirectorSeleccion((IDocente) docente);
+                    break;
             }
         }
     }
