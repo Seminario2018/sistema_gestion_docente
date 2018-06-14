@@ -3,7 +3,6 @@ package modelo.busqueda;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import persistencia.ManejoDatos;
 import utilidades.Utilidades;
 
@@ -18,11 +17,11 @@ public class GestorBusqueda {
 		String campos = "Legajo, Apellido, Nombre";
 		String condicion = "TRUE";
 		List<BusquedaDocente> docentes = new ArrayList<BusquedaDocente>();
-		
+
 		if (criterio != null && !criterio.equals("")) {
 			condicion = armarCondicion(campos.split(", "), criterio);
 		}
-		
+
 		try {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
@@ -32,26 +31,24 @@ public class GestorBusqueda {
 						reg.get("Apellido"),
 						reg.get("Nombre"));
 				docentes.add(doc);
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return docentes;
 	}
-	
-	
-	
+
 	public List<BusquedaPersona> listarPersonas(String criterio) {
 		String tabla = "ViewPersona";
 		String campos = "NroDocumento, Apellido, Nombre";
 		String condicion = "TRUE";
 		List<BusquedaPersona> personas = new ArrayList<BusquedaPersona>();
-		
+
 		if (criterio != null && !criterio.equals("")) {
 			condicion = armarCondicion(campos.split(", "), criterio);
 		}
-		
+
 		try {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
@@ -61,26 +58,24 @@ public class GestorBusqueda {
 						reg.get("Apellido"),
 						reg.get("Nombre"));
 				personas.add(per);
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return personas;
 	}
-	
-	
-	
+
 	public List<BusquedaArea> listarAreas(String criterio) {
 		String tabla = "ViewArea";
 		String campos = "Codigo, Descripcion";
 		String condicion = "TRUE";
 		List<BusquedaArea> areas = new ArrayList<BusquedaArea>();
-		
+
 		if (criterio != null && !criterio.equals("")) {
 			condicion = armarCondicion(campos.split(", "), criterio);
 		}
-		
+
 		try {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
@@ -89,26 +84,24 @@ public class GestorBusqueda {
 						reg.get("Codigo"),
 						reg.get("Descripcion"));
 				areas.add(area);
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return areas;
 	}
-	
-	
-	
+
 	public List<BusquedaCargo> listarCargos(String criterio) {
 		String tabla = "ViewCargo";
 		String campos = "Codigo, Descripcion";
 		String condicion = "TRUE";
 		List<BusquedaCargo> cargos = new ArrayList<BusquedaCargo>();
-		
+
 		if (criterio != null && !criterio.equals("")) {
 			condicion = armarCondicion(campos.split(", "), criterio);
 		}
-		
+
 		try {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
@@ -117,16 +110,18 @@ public class GestorBusqueda {
 						Integer.parseInt(reg.get("Codigo")),
 						reg.get("Descripcion"));
 				cargos.add(cargo);
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return cargos;
 	}
 
-	
-	
+	public List<BusquedaPrograma> listarProgramas(String criterio) {
+	    return new ArrayList<BusquedaPrograma>();
+	}
+
 	private String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {

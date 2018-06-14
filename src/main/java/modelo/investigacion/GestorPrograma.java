@@ -16,7 +16,7 @@ public class GestorPrograma {
 				programa.setId(this.getMaxID() + 1);
 			}
 
-			programa.getEstado().guardar();
+			// programa.getEstado().guardar();
 
 			ManejoDatos md = new ManejoDatos();
 			String table = "ProgramasInvestigacion";
@@ -58,7 +58,7 @@ public class GestorPrograma {
 
 	public EstadoOperacion modificarPrograma(IPrograma programa) {
 		try {
-			programa.getEstado().guardar();
+			// programa.getEstado().guardar();
 
 			ManejoDatos md = new ManejoDatos();
 			String table = "ProgramasInvestigacion";

@@ -148,6 +148,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	        "";
 
 		try {
+		    System.out.printf("Clase: `%s`\n", "modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1));
 			inicializar(Class.forName("modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1)));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

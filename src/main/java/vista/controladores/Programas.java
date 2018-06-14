@@ -174,9 +174,10 @@ public class Programas extends ControladorVista implements Initializable {
             String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
                 String metodo = "set" + seleccion + "Seleccion";
-                System.out.println("Método: \"" + metodo + "\"");
+                // System.out.printf("Método: \"%s\""
                 Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

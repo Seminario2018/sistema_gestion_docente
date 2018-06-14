@@ -22,8 +22,6 @@ public class GestorProyecto {
                 proyecto.setId(GestorProyecto.getMaxID("Proyectos", "id") + 1);
             }
 
-            proyecto.getEstado().guardar();
-
             ManejoDatos md = new ManejoDatos();
             String table = "Proyectos";
             String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
@@ -120,6 +118,7 @@ public class GestorProyecto {
             String condicion = "`Id` = " + proyecto.getId() + "'";
             md.update(tabla, campos, condicion);
             return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente");
+
         } catch (Exception e) {
             e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el proyecto");

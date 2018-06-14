@@ -1,11 +1,11 @@
 package controlador;
 
 import java.util.List;
-
 import modelo.busqueda.BusquedaArea;
 import modelo.busqueda.BusquedaCargo;
 import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
+import modelo.busqueda.BusquedaPrograma;
 import modelo.busqueda.GestorBusqueda;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
@@ -22,7 +22,7 @@ import vista.controladores.ControladorVista;
  * @version 1.0, 31 de may. de 2018
  */
 public class ControlBusqueda {
-	
+
 	private ControladorVista vista;
 
 	private GestorBusqueda gestorBusqueda = new GestorBusqueda();
@@ -31,28 +31,32 @@ public class ControlBusqueda {
 	private GestorArea gestorArea;
 	private GestorCargo gestorCargo;
 
-	
+
 	public ControlBusqueda(ControladorVista vista) {
 		super();
 		this.vista = vista;
 	}
-	
+
 	public List<BusquedaDocente> listarDocentes(String criterio) {
 		return this.gestorBusqueda.listarDocentes(criterio);
 	}
-	
+
 	public List<BusquedaPersona> listarPersonas(String criterio) {
 		return this.gestorBusqueda.listarPersonas(criterio);
 	}
-	
+
 	public List<BusquedaArea> listarAreas(String criterio) {
 		return this.gestorBusqueda.listarAreas(criterio);
 	}
-	
+
 	public List<BusquedaCargo> listarCargos(String criterio) {
 		return this.gestorBusqueda.listarCargos(criterio);
 	}
-	
+
+	public List<BusquedaPrograma> listarProgramas(String criterio) {
+	    return this.gestorBusqueda.listarProgramas(criterio);
+	}
+
 	public Object seleccionar(Object fila) {
 		if (fila instanceof BusquedaDocente) {
 			BusquedaDocente bd = (BusquedaDocente) fila;
@@ -61,7 +65,7 @@ public class ControlBusqueda {
 			doc.setLegajo(bd.getLegajo());
 			return this.gestorDocente.listarDocentes(doc).get(0);
 		}
-		
+
 		if (fila instanceof BusquedaPersona) {
 			BusquedaPersona bp = (BusquedaPersona) fila;
 			this.gestorPersona = new GestorPersona();
@@ -69,7 +73,7 @@ public class ControlBusqueda {
 			per.setNroDocumento(bp.getDocumento());
 			return this.gestorPersona.listarPersonas(per).get(0);
 		}
-		
+
 		if (fila instanceof BusquedaArea) {
 			BusquedaArea ba = (BusquedaArea) fila;
 			this.gestorArea = new GestorArea();
@@ -77,7 +81,7 @@ public class ControlBusqueda {
 			area.setCodigo(ba.getCodigo());
 			return this.gestorArea.listarAreas(area).get(0);
 		}
-		
+
 		if (fila instanceof BusquedaCargo) {
 			BusquedaCargo bc = (BusquedaCargo) fila;
 			this.gestorCargo = new GestorCargo();
@@ -85,7 +89,7 @@ public class ControlBusqueda {
 			Cargo.setCodigo(bc.getCodigo());
 			return this.gestorCargo.listarCargos(Cargo).get(0);
 		}
-		
+
 		return null;
 	}
 }
