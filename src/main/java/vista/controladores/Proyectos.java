@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoProyecto;
+import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProrroga;
@@ -35,24 +36,43 @@ import vista.GestorPantalla;
  */
 public class Proyectos extends ControladorVista implements Initializable {
 
-    public void setProyectoSeleccion(Object proyecto) {
+    public void setProyectoSeleccion(Object proyecto, String tipo) {
         if (proyecto instanceof IProyecto) {
             proyectoSeleccion = (IProyecto) proyecto;
             generalMostrarProyecto();
         }
     }
 
-    public void setCodirectorSeleccion(Object docenteSeleccion) {
+    public void setDocenteSeleccion(Object docente, String tipo) {
+        if (docente instanceof IDocente) {
+            switch (tipo) {
+                case TIPO_DIRECTOR:
+                    setDirectorSeleccion((IDocente) docente);
+                    break;
+                case TIPO_CODIRECTOR:
+                    setCodirectorSeleccion((IDocente) docente);
+                    break;
+            }
+        }
+    }
+
+    private void setCodirectorSeleccion(Object docenteSeleccion) {
         if (docenteSeleccion instanceof IDocente) {
             codirectorSeleccion = (IDocente) docenteSeleccion;
             txtDatosCodirector.setText(String.valueOf(codirectorSeleccion.getLegajo()));
         }
     }
 
-    public void setDirectorSeleccion(Object docenteSeleccion) {
+    private void setDirectorSeleccion(Object docenteSeleccion) {
         if (docenteSeleccion instanceof IDocente) {
             directorSeleccion = (IDocente) docenteSeleccion;
             txtDatosDirector.setText(String.valueOf(directorSeleccion.getLegajo()));
+        }
+    }
+
+    public void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
+        if (cargoDocente instanceof ICargoDocente) {
+            cargoDocenteSeleccion = (ICargoDocente) cargoDocente;
         }
     }
 
@@ -60,6 +80,12 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	private static final String TITULO = "Proyectos";
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
+
+	// Tipos respuesta:
+	private static final String TIPO_CARGODOCENTE = "CargoDocente";
+	private static final String TIPO_CODIRECTOR = "Codirector";
+	private static final String TIPO_DIRECTOR = "Director";
+	private static final String TIPO_PROYECTO = "Proyecto";
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -137,9 +163,11 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (oSeleccion != null) {
             String seleccion = (String) oSeleccion;
             Object valor = args.get(Busqueda.KEY_VALOR);
+            String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
-                Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
-                m.invoke(this, valor);
+                String metodo = "set" + seleccion + "Seleccion";
+                Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
+                m.invoke(this, valor, tipo_respuesta);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -243,6 +271,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 // -------------------------- Pestaña Integrantes --------------------------- //
 
 	private IIntegrante integranteSeleccion = null;
+	private ICargoDocente cargoDocenteSeleccion = null;
 	private ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
 
 	class FilaIntegrante {
@@ -360,7 +389,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-	    // TODO Integrantes: Seleccionar cargoDocente
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, true);
+        args.put(Busqueda.KEY_TIPO, "CargoDocentes");
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGODOCENTE);
+        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Cargos Docentes", args);
 	}
 
 	@FXML private TableView<FilaIntegrante> tblIntegrantes;

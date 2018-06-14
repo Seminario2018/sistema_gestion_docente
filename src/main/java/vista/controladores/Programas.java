@@ -29,6 +29,8 @@ import vista.GestorPantalla;
 public class Programas extends ControladorVista implements Initializable {
 
     public static final String TITULO = "Programas";
+
+    // Tipos respuesta:
     private static final String TIPO_DIRECTOR = "Director";
     private static final String TIPO_CODIRECTOR = "Codirector";
     private static final String TIPO_PROGRAMA = "Programa";

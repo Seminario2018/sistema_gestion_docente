@@ -43,14 +43,14 @@ import vista.GestorPantalla;
  */
 public class Docentes extends ControladorVista implements Initializable {
 
-	public void setDocenteSeleccion(Object docenteSeleccion) {
+	public void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
 		if (docenteSeleccion instanceof IDocente) {
 			this.docenteSeleccion = (IDocente) docenteSeleccion;
 	        generalMostrarDocente();
 		}
 	}
 
-	public void setPersonaSeleccion(Object personaSeleccion) {
+	public void setPersonaSeleccion(Object personaSeleccion, String tipo) {
 		if (personaSeleccion instanceof IPersona) {
 		    IPersona persona = (IPersona) personaSeleccion;
 			this.docenteSeleccion.setPersona(persona);
@@ -59,14 +59,14 @@ public class Docentes extends ControladorVista implements Initializable {
 		}
 	}
 
-	public void setAreaSeleccion(Object areaSeleccion) {
+	public void setAreaSeleccion(Object areaSeleccion, String tipo) {
 		if (areaSeleccion instanceof IArea) {
 			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
 			this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
 		}
 	}
 
-	public void setCargoSeleccion(Object cargoSeleccion) {
+	public void setCargoSeleccion(Object cargoSeleccion, String tipo) {
 		if (cargoSeleccion instanceof ICargo) {
 			this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
 			this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
@@ -83,6 +83,12 @@ public class Docentes extends ControladorVista implements Initializable {
 	public IDocente docenteSeleccion;
 
 	public static final String TITULO = "Docentes";
+
+	// Tipos respuesta:
+	private static final String TIPO_AREA = "area";
+	private static final String TIPO_CARGO = "cargo";
+	private static final String TIPO_DOCENTE = "docente";
+	private static final String TIPO_PERSONA = "persona";
 
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
@@ -119,6 +125,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_NUEVO, false);
 		args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DOCENTE);
 		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
@@ -150,9 +157,11 @@ public class Docentes extends ControladorVista implements Initializable {
 		if (oSeleccion != null) {
 			String seleccion = (String) oSeleccion;
 			Object valor = args.get(Busqueda.KEY_VALOR);
+			String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
 			try {
-				Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
-				m.invoke(this, valor);
+			    String metodo = "set" + seleccion + "Seleccion";
+				Method m = this.getClass().getDeclaredMethod(metodo, Object.class);
+				m.invoke(this, valor, tipo_respuesta);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -227,6 +236,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_NUEVO, true);
 		args.put(Busqueda.KEY_TIPO, Personas.TITULO);
 		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PERSONA);
 		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
@@ -387,6 +397,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_NUEVO, false);
 		args.put(Busqueda.KEY_TIPO, "Areas");
 		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_AREA);
 		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
@@ -398,6 +409,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		args.put(Busqueda.KEY_NUEVO, false);
 		args.put(Busqueda.KEY_TIPO, "Cargos");
 		args.put(Busqueda.KEY_CONTROLADOR, this);
+		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGO);
 		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Cargos", args);
     }

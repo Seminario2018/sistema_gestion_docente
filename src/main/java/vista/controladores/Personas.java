@@ -33,7 +33,7 @@ import vista.GestorPantalla;
  */
 public class Personas extends ControladorVista implements Initializable {
 
-    public void setPersonaSeleccion(Object persona) {
+    public void setPersonaSeleccion(Object persona, String tipo) {
         if (persona instanceof IPersona) {
             personaSeleccion = (IPersona) persona;
             generalMostrarPersona();
@@ -41,6 +41,9 @@ public class Personas extends ControladorVista implements Initializable {
     }
 
     public static final String TITULO = "Personas";
+
+    // Tipos respuesta:
+    private static final String TIPO_PERSONA = "Persona";
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -85,22 +88,12 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnPersonasBuscar;
 	@FXML public void buscarPersona(ActionEvent event) {
-	    /* TEST General: Selección de persona *
-        // Recuperar la persona con DNI = 17200893
-        IPersona personaBusqueda = controlPersona.getIPersona();
-        personaBusqueda.setNroDocumento(17200893);
-        List<IPersona> listaPersonas = controlPersona.listarPersonas(personaBusqueda);
-        personaSeleccion = listaPersonas.get(0);
-
-        generalMostrarPersona();
-        datosMostrarPersona();
-        //*/
-
         Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, false);
         args.put(Busqueda.KEY_TIPO, Personas.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
         args.put(GestorPantalla.KEY_PADRE, Personas.TITULO);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PERSONA);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
 	}
 
@@ -126,9 +119,11 @@ public class Personas extends ControladorVista implements Initializable {
         if (oSeleccion != null) {
             String seleccion = (String) oSeleccion;
             Object valor = args.get(Busqueda.KEY_VALOR);
+            String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
-                Method m = this.getClass().getDeclaredMethod("set" + seleccion + "Seleccion", Object.class);
-                m.invoke(this, valor);
+                String metodo = "set" + seleccion + "Seleccion";
+                Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
+                m.invoke(this, valor, tipo_respuesta);
             } catch (Exception e) {
                 e.printStackTrace();
             }
