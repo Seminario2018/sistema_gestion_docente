@@ -13,6 +13,10 @@ public class Usuario implements IUsuario{
 
 	private List<IRol> roles;
 
+	public Usuario() {
+
+	}
+
 	public Usuario(String user, HashSalt hash, String descripcion,
 	        List<IRol> roles) {
 

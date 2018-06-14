@@ -127,6 +127,10 @@ public class GestorUsuario {
 
     }
 
+    public IUsuario getIUsuario() {
+        return new Usuario();
+    }
+
     public EstadoOperacion agregarRol(IUsuario usuario, IRol rol) {
     	ManejoDatos md = new ManejoDatos();
     	GestorRol gr = new GestorRol();

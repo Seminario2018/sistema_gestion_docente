@@ -1,7 +1,6 @@
 package controlador;
 
 import java.util.List;
-
 import modelo.auxiliares.EstadoOperacion;
 import modelo.usuario.GestorRol;
 import modelo.usuario.GestorUsuario;
@@ -42,6 +41,10 @@ public class ControlUsuario {
 
     public EstadoOperacion quitarRol(IUsuario usuario, IRol rol) {
         return this.gestorUsuario.quitarGrupo(usuario, rol);
+    }
+
+    public IUsuario getIUsuario() {
+        return gestorUsuario.getIUsuario();
     }
 
 //  Roles
