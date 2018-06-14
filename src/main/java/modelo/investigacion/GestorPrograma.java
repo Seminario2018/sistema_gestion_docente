@@ -92,10 +92,28 @@ public class GestorPrograma {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo guardar el programa");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo guardar el programa");
 		}
+	}
+
+	public EstadoOperacion eliminarPrograma(IPrograma programa) {
+	    try {
+	        ManejoDatos md = new ManejoDatos();
+            md.delete("programasinvestigacion", "id = " + programa.getId());
+
+            if (md.isEstado()) {
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK,"El programa se eliminó correctamente");
+            } else {
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el programa");
+            }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el programa");
+	    }
 	}
 
 	public List<IPrograma> listarProgramas(IPrograma programa){

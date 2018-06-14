@@ -39,6 +39,19 @@ public class ControlInvestigacion {
         return gestorProyecto.getIProyecto();
     }
 
+    //    Programas
+    public EstadoOperacion guardarPrograma(IPrograma programa) {
+        if (programa.getId() == -1) {
+            return gestorPrograma.nuevoPrograma(programa);
+        } else {
+            return gestorPrograma.modificarPrograma(programa);
+        }
+    }
+
+    public EstadoOperacion eliminarPrograma(IPrograma programa) {
+        return gestorPrograma.eliminarPrograma(programa);
+    }
+
     public IPrograma getIPrograma() {
         return gestorPrograma.getIPrograma();
     }
