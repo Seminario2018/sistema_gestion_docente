@@ -192,4 +192,9 @@ public class GestorPrograma {
 		}
 	}
 
+
+	public IPrograma getIPrograma() {
+        return new Programa();
+    }
+
 }

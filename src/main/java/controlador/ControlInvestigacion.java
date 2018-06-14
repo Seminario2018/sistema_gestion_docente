@@ -4,6 +4,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.investigacion.GestorPrograma;
 import modelo.investigacion.GestorProyecto;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IPrograma;
@@ -14,6 +15,7 @@ import modelo.investigacion.ISubsidio;
 
 public class ControlInvestigacion {
 
+    private GestorPrograma gestorPrograma = new GestorPrograma();
     private GestorProyecto gestorProyecto = new GestorProyecto();
 
     //    Proyectos
@@ -35,6 +37,10 @@ public class ControlInvestigacion {
 
     public IProyecto getIProyecto() {
         return gestorProyecto.getIProyecto();
+    }
+
+    public IPrograma getIPrograma() {
+        return gestorPrograma.getIPrograma();
     }
 
     //    Integrantes
@@ -100,5 +106,6 @@ public class ControlInvestigacion {
     public IProrroga getIProrroga() {
         return gestorProyecto.getIProrroga();
     }
+
 
 }
