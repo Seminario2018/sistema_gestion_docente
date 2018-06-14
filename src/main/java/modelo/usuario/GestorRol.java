@@ -82,14 +82,23 @@ public class GestorRol {
             String condicion = "TRUE";
 
 			if (grupo != null) {
-				condicion = "nombre = '" + grupo.getNombre() + "'";
+//			    condicion = "nombre = '" + grupo.getNombre() + "'";
+			    int id = grupo.getId();
+			    if (id != -1) {
+			        condicion += "and id = " + grupo.getId();
+			    }
+
+			    String nombre = grupo.getNombre();
+			    if (nombre != null && !nombre.equals("")) {
+			        condicion += "nombre = '" + grupo.getNombre() + "'";
+			    }
 			}
 			ManejoDatos md = new ManejoDatos();
 			res = md.select(tabla, "*", condicion);
 
 
 			for (Hashtable<String, String> reg : res) {
-				Rol rol = new Rol(reg.get("nombre").toString());
+				Rol rol = new Rol(Integer.parseInt(reg.get("id")), reg.get("nombre").toString());
 				tabla = "permisos";
 	            campos = "*";
 	            condicion = "rol = '" + rol.getNombre() + "'";

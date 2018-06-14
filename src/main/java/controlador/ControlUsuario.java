@@ -20,7 +20,7 @@ public class ControlUsuario {
 
 //  Usuarios
     public EstadoOperacion guardarUsuario(IUsuario usuario) {
-        if (usuario.getUser() == "") {
+        if (!GestorUsuario.existeUsuario(usuario)) {
             return gestorUsuario.nuevoUsuario(usuario);
         } else {
             return gestorUsuario.modificarUsuario(usuario);

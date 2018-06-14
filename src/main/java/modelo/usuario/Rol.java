@@ -18,6 +18,16 @@ public class Rol implements IRol {
 	    this.permisos = new ArrayList<IPermiso>();
 	}
 
+	public Rol(int id) {
+	    this.id = id;
+        this.nombre = "";
+        this.permisos = new ArrayList<IPermiso>();
+        for (Modulo m: Modulo.values()) {
+            IPermiso p = new Permiso(m);
+            permisos.add(p);
+        }
+	}
+
 	public Rol(int id, String nombre) {
 	    this.id = id;
 		this.nombre = nombre;

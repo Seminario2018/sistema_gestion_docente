@@ -1,5 +1,6 @@
 package modelo.usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 import modelo.auxiliares.hash.HashSalt;
 import modelo.auxiliares.hash.PasswordUtil;
@@ -18,6 +19,7 @@ public class Usuario implements IUsuario{
 	    this.user = "";
 	    this.hash = null;
 	    this.descripcion = "";
+	    this.roles = new ArrayList<IRol>();
 	}
 
 	public Usuario(String user, HashSalt hash, String descripcion,

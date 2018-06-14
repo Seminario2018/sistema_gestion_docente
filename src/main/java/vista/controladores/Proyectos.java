@@ -398,12 +398,12 @@ public class Proyectos extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Cargos Docentes", args);
 	}
 
-	@FXML private TableView<FilaIntegrante> tblIntegrantes;
-    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesApellido;
-    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesNombre;
-    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesCargo;
-    @FXML private TableColumn<FilaIntegrante, String> colIntegrantesInstitucion;
-    @FXML private TableColumn<FilaIntegrante, Integer> colIntegrantesHoras;
+	@FXML protected TableView<FilaIntegrante> tblIntegrantes;
+    @FXML protected TableColumn<FilaIntegrante, String> colIntegrantesApellido;
+    @FXML protected TableColumn<FilaIntegrante, String> colIntegrantesNombre;
+    @FXML protected TableColumn<FilaIntegrante, String> colIntegrantesCargo;
+    @FXML protected TableColumn<FilaIntegrante, String> colIntegrantesInstitucion;
+    @FXML protected TableColumn<FilaIntegrante, Integer> colIntegrantesHoras;
 
 	@FXML private TextField txtIntegrantesApellido;
 	@FXML private TextField txtIntegrantesNombre;

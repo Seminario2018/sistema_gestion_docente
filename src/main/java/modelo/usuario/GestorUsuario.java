@@ -16,7 +16,7 @@ public class GestorUsuario {
 
     	try {
     		ManejoDatos md = new ManejoDatos();
-        	String table = "Usuario";
+        	String table = "Usuarios";
         	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
         	String valores = "'" + usuario.getUser() + "', '" +
         			usuario.getHash().getHash() + "', '" +
@@ -49,7 +49,7 @@ public class GestorUsuario {
     public EstadoOperacion modificarUsuario(IUsuario usuario) {
         try {
         	ManejoDatos md = new ManejoDatos();
-        	String tabla = "Usuario";
+        	String tabla = "Usuarios";
         	String campos = "`Usuario` = '"+ usuario.getUser() +
         			"', `Hash` = '"+ usuario.getHash().getHash() +"', `Salt`= '"+ usuario.getHash().getSalt() +
         			"', `TipoDocumentoPersona`= '"+ usuario.getPersona().getTipoDocumento() +
@@ -73,8 +73,8 @@ public class GestorUsuario {
     	try {
         	ManejoDatos md = new ManejoDatos();
 
-        	md.delete("`RolesXUsuario`", "Usuario = " + usuario.getUser());
-        	md.delete("`Usuario`", "Usuario = " + usuario.getUser());
+        	md.delete("`RolesXUsuario`", "Usuario = '" + usuario.getUser() + "'");
+        	md.delete("`Usuario`", "Usuario = '" + usuario.getUser() + "'");
 
         	return md.isEstado() ?
         	    new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El usuario se eliminó correctamente") :
@@ -123,8 +123,23 @@ public class GestorUsuario {
         }catch(Exception e) {
         	return usuarios;
         }
+    }
 
+    public static boolean existeUsuario(IUsuario usuario) {
+        String tabla = "usuarios";
+        if (usuario == null || usuario.getUser().equals("")) {
+            return false;
+        }
+        String condicion = "Usuario = '" + usuario.getUser() + "'";
+        try {
+            ManejoDatos md = new ManejoDatos();
+            List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+            return !(res.isEmpty());
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public IUsuario getIUsuario() {
@@ -211,7 +226,7 @@ public class GestorUsuario {
         	ManejoDatos md = new ManejoDatos();
     		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
     		for (Hashtable<String, String> reg : res) {
-				Rol r = new Rol(reg.get("Rol"));
+				Rol r = new Rol(Integer.parseInt(reg.get("Rol")));
 				GestorRol gr = new GestorRol();
 				r = (Rol) gr.listarGrupo(r).get(0);
 				usuario.agregarGrupo(r);
@@ -219,10 +234,8 @@ public class GestorUsuario {
     	}catch (Exception e) {
     		e.printStackTrace();
     	}
-
-
-
-
     }
+
+
 
 }
