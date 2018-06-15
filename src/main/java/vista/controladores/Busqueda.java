@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import controlador.ControlBusqueda;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,6 +52,12 @@ public class Busqueda extends ControladorVista implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	            txtBusquedaCriterio.requestFocus();
+	        }
+	    });
 	}
 
 // -------------------------------- General --------------------------------- //

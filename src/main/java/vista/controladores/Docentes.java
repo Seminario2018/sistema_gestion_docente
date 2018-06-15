@@ -160,7 +160,7 @@ public class Docentes extends ControladorVista implements Initializable {
 			String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
 			try {
 			    String metodo = "set" + seleccion + "Seleccion";
-				Method m = this.getClass().getDeclaredMethod(metodo, Object.class);
+				Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
 				m.invoke(this, valor, tipo_respuesta);
 			} catch (Exception e) {
 				e.printStackTrace();

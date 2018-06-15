@@ -26,7 +26,7 @@
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </TextField>
-      <TableView fx:id="tblBusqueda" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
+      <TableView fx:id="tblBusqueda" onKeyPressed="#keyPressed" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1">
         <columns>
           <TableColumn prefWidth="75.0" text="Columna 1" />
           <TableColumn prefWidth="75.0" text="Columna 2" />
@@ -46,7 +46,7 @@
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnBusquedaSeleccionar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#seleccionar" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <Button fx:id="btnBusquedaSeleccionar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#seleccionar" onKeyPressed="#keyPressed" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="10.0" right="10.0" />
          </GridPane.margin>
