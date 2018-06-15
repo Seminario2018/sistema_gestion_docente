@@ -40,21 +40,18 @@ public class ControlImportarCosto {
 	    	extensiones.add("*.xlsx");
 	        File archivo = this.vista.elegirArchivo(titulo, "Hojas de cálculo", extensiones);
 	        if (archivo != null) {
-	        	Costeo.importar(archivo);
-                // TODO llevar a la capa de abajo
+	        	EstadoOperacion eo = this.gestorImportarCosto.importar(archivo);
+	        	switch (eo.getEstado()) {
+	        	case OP_ERROR:
+	        		this.vista.alertaError(tituloDialogo, error, eo.getMensaje());
+	        		break;
+	        	default:
+	        		this.vista.getGestorPantalla().mensajeEstado(eo.getMensaje());
+	        	}
 	        }
         } catch (EncryptedDocumentException e) {
             this.vista.alertaError(tituloDialogo, error,
                 "El archivo está protegido por contraseña.");
-        } catch (InvalidFormatException e) {
-        	this.vista.alertaError(tituloDialogo, error,
-                "El archivo no tiene el formato correcto. Asegúrese de que"
-                + " se trata de la planilla con el costeo del mes.");
-        } catch (IOException e) {
-        	this.vista.alertaError(tituloDialogo, error,
-                "Error al abrir el archivo. Asegúrese de que el archivo"
-                + " es del formato correcto (.xls o .xlsx)"
-                + " y que no está siendo usado por otro programa.");
         }
 	}
 
