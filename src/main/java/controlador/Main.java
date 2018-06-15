@@ -1,8 +1,10 @@
 package controlador;
 
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import modelo.usuario.Usuario;
+import modelo.usuario.IRol;
+import modelo.usuario.IUsuario;
 import vista.GestorPantalla;
 
 /**
@@ -19,10 +21,17 @@ public class Main extends Application {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 
 		GestorPantalla gp = new GestorPantalla();
-		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));
+		ControlUsuario controlUsuario = new ControlUsuario(null);
+		IUsuario usuario = controlUsuario.getIUsuario();
+		usuario.setUser("pepe");
+		usuario.setPass("123456");
+		usuario.setGrupos(new ArrayList<IRol>());
+
+//		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));
+		gp.lanzarPantallaPrincipal(usuario);
 	}
 
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

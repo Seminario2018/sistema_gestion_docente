@@ -382,6 +382,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
 	    // TODO Integrantes: buscarCargoDocente
+
 	}
 
 	@FXML protected TableView<FilaIntegrante> tblIntegrantes;

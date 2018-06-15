@@ -19,6 +19,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.persona.IPersona;
+import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
 import vista.GestorPantalla;
@@ -68,8 +69,6 @@ public class Usuarios extends ControladorVista implements Initializable {
 	    if (usuario instanceof IUsuario) {
             usuarioSeleccion = (IUsuario) usuario;
             mostrarUsuario();
-        } else {
-            System.out.println("usuario no es IUsuario");
         }
 	}
 
@@ -85,7 +84,6 @@ public class Usuarios extends ControladorVista implements Initializable {
             String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
                 String metodo = "set" + seleccion + "Seleccion";
-                System.out.printf("Método: \"%s\"\n", metodo);
                 Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
 
@@ -93,6 +91,46 @@ public class Usuarios extends ControladorVista implements Initializable {
                 e.printStackTrace();
             }
         }
+
+        this.usuario = (IUsuario) args.get(GestorPantalla.KEY_USUARIO);
+        /* Ocultar controles según roles del usuario: */
+        boolean crear = false;
+        boolean modificar = false;
+        boolean eliminar = false;
+        boolean listar = false;
+
+        if (this.usuario == null) {
+            throw new RuntimeException("Usuario es null");
+        }
+        for (IRol rol : this.usuario.getGrupos()) {
+            for (IPermiso permiso : rol.getPermisos()) {
+                crear |= permiso.getCrear();
+                modificar |= permiso.getModificar();
+                eliminar |= permiso.getEliminar();
+                listar |= permiso.getListar();
+            }
+        }
+
+        if (!crear) {
+            btnAgregar.setVisible(false);
+            btnGuardar.setVisible(false);
+            btnNuevo.setVisible(false);
+        }
+
+        if (!modificar) {
+            btnGuardar.setVisible(false);
+        }
+
+        if (!eliminar) {
+            btnEliminar.setVisible(false);
+            btnQuitar.setVisible(false);
+        }
+
+        if (!listar) {
+            btnBuscar.setVisible(false);
+            btnSeleccionarPersona.setVisible(false);
+        }
+        //*/
     }
 
 // -------------------------------- General --------------------------------- //

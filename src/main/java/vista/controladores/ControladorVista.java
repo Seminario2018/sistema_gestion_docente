@@ -20,6 +20,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import jfxtras.scene.control.window.Window;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.usuario.IUsuario;
 import utilidades.Utilidades;
 import vista.GestorPantalla;
 
@@ -31,6 +32,7 @@ public abstract class ControladorVista implements Initializable {
 
 	protected GestorPantalla gestorPantalla;
 	protected Window window;
+	protected IUsuario usuario;
 
 	public GestorPantalla getGestorPantalla() {
 		return gestorPantalla;
