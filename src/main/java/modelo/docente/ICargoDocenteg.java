@@ -1,6 +1,7 @@
 package modelo.docente;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
@@ -8,7 +9,7 @@ import modelo.cargo.ICargo;
 import modelo.division.IArea;
 
 public interface ICargoDocenteg {
-	
+
 	public int getId();
 	public IArea getArea2();
 	public ICargo getCargo2();
@@ -22,7 +23,11 @@ public interface ICargoDocenteg {
 	public LocalDate getResDesde();
 	public LocalDate getResHasta();
 	public EstadoCargo getEstado2();
-	
-	
-	
+
+	public List<Costo> getCostos();
+
+	public void setId(int id);
+
+
+
 }

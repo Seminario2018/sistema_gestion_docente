@@ -119,7 +119,7 @@ public class GestorBusqueda {
 	}
 
 	public List<BusquedaPrograma> listarProgramas(String criterio) {
-	    String tabla = "ViewPrograma";
+	    String tabla = "viewprogramas";
         String campos = "id, Nombre";
         String condicion = "TRUE";
         List<BusquedaPrograma> programas = new ArrayList<BusquedaPrograma>();

@@ -89,7 +89,7 @@ public class GestorProyecto {
             ManejoDatos md = new ManejoDatos();
             String tabla = "Proyectos";
             String campos = "`Nombre` = '" + proyecto.getNombre() + "', `Director`= " + proyecto.getDirector().getLegajo() + ", "
-                    + "`Fecha_Presentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
+                    + "`FechaPresentacion` = '" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
                     + "`Estado` = " + proyecto.getEstado().getId();
 
 
@@ -115,7 +115,7 @@ public class GestorProyecto {
                 campos += ", `Programa` = " + programa.getId();
             }
 
-            String condicion = "`Id` = " + proyecto.getId() + "'";
+            String condicion = "`Id` = " + proyecto.getId();
             md.update(tabla, campos, condicion);
             return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente");
 
@@ -129,8 +129,8 @@ public class GestorProyecto {
         try {
             ManejoDatos md = new ManejoDatos();
             md.delete("`Integrantes`", "Proyecto = " + proyecto.getId());
-            md.delete("`Prorrogas", "Proyecto = " + proyecto.getId());
-            md.delete("`Subcidios`", "Proyecto = " + proyecto.getId());
+            md.delete("`Prorrogas`", "Proyecto = " + proyecto.getId());
+            md.delete("`Subsidios`", "Proyecto = " + proyecto.getId());
             md.delete("`Proyectos`", "id = " + proyecto.getId());
             return new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminó correctamente");
         } catch (Exception e) {
@@ -146,10 +146,10 @@ public class GestorProyecto {
         try {
             ManejoDatos md = new ManejoDatos();
             String tabla = "Proyectos";
-            ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+            List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
             for (Hashtable<String, String> reg : res) {
-                Proyecto p = new Proyecto();
-                p.setId(Integer.parseInt(reg.get("Id")));
+                IProyecto p = new Proyecto();
+                p.setId(Integer.parseInt(reg.get("id")));
                 p.setNombre(reg.get("Nombre"));
 
                 String[] fechaPresentacion = reg.get("FechaPresentacion").split("-");
@@ -188,6 +188,7 @@ public class GestorProyecto {
                 proyectos.add(p);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             proyectos = new ArrayList<IProyecto>();
         }
 

@@ -88,7 +88,10 @@ public class Busqueda extends ControladorVista implements Initializable {
 					args.put(Busqueda.KEY_TIPO_RESPUESTA, this.tipo_respuesta);
 					this.controladorRespuesta.recibirParametros(args);
 					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
+				} else {
+				    System.out.printf("valor es null\n");
 				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -155,7 +158,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 	        "";
 
 		try {
-		    System.out.printf("Clase: `%s`\n", "modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1));
 			inicializar(Class.forName("modelo.busqueda.Busqueda" + this.tipo.substring(0, this.tipo.length()-1)));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

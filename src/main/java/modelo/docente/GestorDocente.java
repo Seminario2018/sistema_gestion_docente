@@ -245,10 +245,11 @@ public class GestorDocente {
 
     }
 
-    public EstadoOperacion agregarCargoDocente(IDocenteg docente, ICargoDocente cargoDocente) {
+    public EstadoOperacion agregarCargoDocente(IDocenteg docente, ICargoDocente cd) {
         try {
-            cargoDocente.getEstado().guardar();
-            cargoDocente.getTipoCargo().guardar();
+        	ICargoDocenteg cargoDocente = (ICargoDocenteg) cd;
+            cargoDocente.getEstado2().guardar();
+            cargoDocente.getTipoCargo2().guardar();
 
             if (cargoDocente.getId() == -1) {
                 cargoDocente.setId(this.getCodigoMax() + 1);
@@ -260,10 +261,10 @@ public class GestorDocente {
             //`UltimoCosto`, `FechaUltimoCosto`
             String valores = cargoDocente.getId()
                 + ", " + docente.getLegajo()
-                + ", '" + cargoDocente.getArea().getCodigo()
-                + "', " + cargoDocente.getCargo().getCodigo()
-                + ", " + cargoDocente.getTipoCargo().getId()
-                + ", " + cargoDocente.getEstado().getId();
+                + ", '" + cargoDocente.getArea2().getCodigo()
+                + "', " + cargoDocente.getCargo2().getCodigo()
+                + ", " + cargoDocente.getTipoCargo2().getId()
+                + ", " + cargoDocente.getEstado2().getId();
 
             if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
                 campos += ", Disposicion";
@@ -289,15 +290,10 @@ public class GestorDocente {
                 campos += ", ResHasta";
                 valores += ", '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
-            if (cargoDocente.getUltimoCosto() != -1) {
-                campos += ", UltimoCosto";
-                valores += ", " + cargoDocente.getUltimoCosto();
-            }
-            if (cargoDocente.getFechaUltCost() != null) {
-                campos += ", FechaUltimoCosto";
-                valores += ", '" + Date.valueOf(cargoDocente.getFechaUltCost()) + "'";
-            }
             md.insertar("CargosDocentes", campos, valores);
+            
+            this.guardarCostos(cargoDocente);
+            
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El Cargo Docente se agregó correctamente");
@@ -310,13 +306,25 @@ public class GestorDocente {
         }
     }
 
-    public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
+   
+
+	private void guardarCostos(ICargoDocenteg cargoDocente) {
+		for(Costo c : cargoDocente.getCostos()) {
+			c.guardar(cargoDocente);
+		}
+		
+	}
+
+	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cd) {
         try {
+        	
+        	ICargoDocenteg cargoDocente = (ICargoDocenteg) cd;
+        	
             String campos = "`Legajo` = " + docente.getLegajo()
-                + ", `Area` = '" + cargoDocente.getArea().getCodigo() + "', "
-                + "`Cargo` = " + cargoDocente.getCargo().getCodigo() + ", "
-                + "`TipoCargo` = " + cargoDocente.getTipoCargo().getId() + ", "
-                + "`EstadoCargo` = " + cargoDocente.getEstado().getId();
+                + ", `Area` = '" + cargoDocente.getArea2().getCodigo() + "', "
+                + "`Cargo` = " + cargoDocente.getCargo2().getCodigo() + ", "
+                + "`TipoCargo` = " + cargoDocente.getTipoCargo2().getId() + ", "
+                + "`EstadoCargo` = " + cargoDocente.getEstado2().getId();
 
             if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
                 campos += ", Disposicion = '" + cargoDocente.getDisposicion() + "'";
@@ -336,17 +344,14 @@ public class GestorDocente {
             if (cargoDocente.getResHasta() != null) {
                 campos += ", ResHasta = '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
-            if (cargoDocente.getUltimoCosto() != -1) {
-                campos += ", UltimoCosto = " + cargoDocente.getUltimoCosto();
-            }
-            if (cargoDocente.getFechaUltCost() != null) {
-                campos += ", FechaUltimoCosto = '" + Date.valueOf(cargoDocente.getFechaUltCost()) + "'";
-            }
 
             String condicion = String.format("Codigo='%d'", cargoDocente.getId());
 
             ManejoDatos md = new ManejoDatos();
             md.update("CargosDocentes", campos, condicion);
+            
+            this.guardarCostos(cargoDocente);
+            
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El CargoDocente se modificó correctamente");
@@ -473,12 +478,6 @@ public class GestorDocente {
                     condicion += " AND ";
                 }
                 condicion += "`Resolucion` = '" + cargo.getResolucion() + "'";
-            }
-            if (cargo.getUltimoCosto() > 0) {
-                if (!condicion.equals("")) {
-                    condicion += " AND ";
-                }
-                condicion += "`UltimoCosto` = " + cargo.getUltimoCosto();
             }
         }
         if (docente != null) {

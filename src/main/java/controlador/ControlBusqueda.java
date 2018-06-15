@@ -15,6 +15,10 @@ import modelo.division.GestorArea;
 import modelo.division.IArea;
 import modelo.docente.GestorDocente;
 import modelo.docente.IDocente;
+import modelo.investigacion.GestorPrograma;
+import modelo.investigacion.GestorProyecto;
+import modelo.investigacion.IPrograma;
+import modelo.investigacion.IProyecto;
 import modelo.persona.GestorPersona;
 import modelo.persona.IPersona;
 import vista.controladores.ControladorVista;
@@ -32,7 +36,6 @@ public class ControlBusqueda {
 	private GestorPersona gestorPersona;
 	private GestorArea gestorArea;
 	private GestorCargo gestorCargo;
-
 
 	public ControlBusqueda(ControladorVista vista) {
 		super();
@@ -98,6 +101,22 @@ public class ControlBusqueda {
 			ICargo Cargo = this.gestorCargo.getICargo();
 			Cargo.setCodigo(bc.getCodigo());
 			return this.gestorCargo.listarCargos(Cargo).get(0);
+		}
+
+		if (fila instanceof BusquedaProyecto) {
+		    BusquedaProyecto bp = (BusquedaProyecto) fila;
+		    GestorProyecto gestorProyecto = new GestorProyecto();
+		    IProyecto proyecto = gestorProyecto.getIProyecto();
+		    proyecto.setId(bp.getId());
+		    return gestorProyecto.listarProyecto(proyecto, null).get(0);
+		}
+
+		if (fila instanceof BusquedaPrograma) {
+		    BusquedaPrograma bp = (BusquedaPrograma) fila;
+		    GestorPrograma gestorPrograma = new GestorPrograma();
+		    IPrograma programa = gestorPrograma.getIPrograma();
+		    programa.setId(bp.getId());
+		    return gestorPrograma.listarProgramas(programa).get(0);
 		}
 
 		return null;
