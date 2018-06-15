@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -40,7 +39,7 @@ public abstract class ControladorVista implements Initializable {
 	public void setGestorPantalla(GestorPantalla gestor) {
 		this.gestorPantalla = gestor;
 	}
-	
+
 	public Window getWindow() {
 		return window;
 	}
@@ -48,17 +47,17 @@ public abstract class ControladorVista implements Initializable {
 	public void setWindow(Window window) {
 		this.window = window;
 	}
-	
+
 	@Override
     public void initialize(URL arg0, ResourceBundle arg1) {
 
 	}
-	
+
 	/**
 	 * Método que se llama cuando la vista ya está en pantalla
 	 */
 	public void inicializar() {
-		
+
 	}
 
 	/**
@@ -216,7 +215,7 @@ public abstract class ControladorVista implements Initializable {
                 alertaError(titulo, comando, resultado.getMensaje());
                 return false;
             case DELETE_OK:
-                dialogoConfirmacion(titulo, comando, resultado.getMensaje());
+                gestorPantalla.mensajeEstado(resultado.getMensaje());
                 return true;
             default:
                 throw new RuntimeException("Estado de modificación no esperado: "
@@ -240,11 +239,15 @@ public abstract class ControladorVista implements Initializable {
                 return false;
             case INSERT_OK:
             case UPDATE_OK:
-                dialogoConfirmacion(titulo, comando, resultado.getMensaje());
+                gestorPantalla.mensajeEstado(resultado.getMensaje());
                 return true;
             default:
                 throw new RuntimeException("Estado de modificación no esperado: "
                         + resultado.getEstado().toString() + ": " + resultado.getMensaje());
         }
+	}
+
+	public void mensajeEstado(String mensaje) {
+	    gestorPantalla.mensajeEstado(mensaje);
 	}
 }
