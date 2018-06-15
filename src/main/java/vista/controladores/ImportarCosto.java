@@ -58,6 +58,7 @@ public class ImportarCosto extends ControladorVista {
 	@FXML protected Button btnDescartar;
 	@FXML public void descartar(ActionEvent event) {
 		this.control.descartar();
+		resetGeneral();
 	}
 
 	class FilaCosteo {
