@@ -56,7 +56,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             }
         });
 	}
-	
+
 	@Override
 	public void inicializar() {
         /* Ocultar controles según roles del usuario: */
@@ -102,7 +102,7 @@ public class Usuarios extends ControladorVista implements Initializable {
         if (!listar) {
             btnBuscar.setVisible(false);
         }
-        
+
         modoVer();
 	}
 
@@ -118,6 +118,7 @@ public class Usuarios extends ControladorVista implements Initializable {
     private void setUsuarioSeleccion(Object usuario, String tipo) {
 	    if (usuario instanceof IUsuario) {
             usuarioSeleccion = (IUsuario) usuario;
+            modoModificar();
             mostrarUsuario();
         }
 	}
@@ -141,14 +142,14 @@ public class Usuarios extends ControladorVista implements Initializable {
             }
         }
     }
-    
+
     @Override
     protected void modoModificar() {
     	if (this.permiso.getModificar() || this.permiso.getCrear()) {
     		btnGuardar.setVisible(true);
     		btnDescartar.setVisible(true);
     		btnAgregar.setVisible(true);
-    		btnQuitar.setVisible(true);    		
+    		btnQuitar.setVisible(true);
         	txtUsuario.setEditable(true);
         	txtContrasena.setEditable(true);
         	txtConfirmar.setEditable(true);
@@ -157,12 +158,13 @@ public class Usuarios extends ControladorVista implements Initializable {
     	if (this.permiso.getEliminar()) {
     		btnEliminar.setVisible(true);
     	}
-    	
-    	this.window.setTitle(this.TITULO + " - Modificar Usuario");
-    	if (this.usuarioSeleccion != null)
-    		this.gestorPantalla.mensajeEstado("Modificar al Usuario " + this.usuarioSeleccion.getUser());
+
+    	this.window.setTitle(TITULO + " - Modificar Usuario");
+    	if (this.usuarioSeleccion != null) {
+            this.gestorPantalla.mensajeEstado("Modificar al Usuario " + this.usuarioSeleccion.getUser());
+        }
     }
-    
+
     @Override
     protected void modoVer() {
     	btnGuardar.setVisible(false);
@@ -174,12 +176,13 @@ public class Usuarios extends ControladorVista implements Initializable {
     	txtContrasena.setEditable(false);
     	txtConfirmar.setEditable(false);
     	txtDescripcion.setEditable(false);
+
+    	this.window.setTitle(TITULO);
     }
 
 // -------------------------------- General --------------------------------- //
 
 	private IUsuario usuarioSeleccion = null;
-//	private IPersona personaSeleccion = null;
     private ControlUsuario controlUsuario = new ControlUsuario(this);
 
     private void mostrarUsuario() {
@@ -205,6 +208,8 @@ public class Usuarios extends ControladorVista implements Initializable {
         txtDescripcion.clear();
 
         vaciarTablas();
+
+        this.gestorPantalla.mensajeEstado("");
     }
 
 	@FXML private TextField txtDocumento;
@@ -241,14 +246,13 @@ public class Usuarios extends ControladorVista implements Initializable {
 	    usuarioSeleccion = controlUsuario.getIUsuario();
         vaciarControles();
         modoModificar();
-        this.window.setTitle(this.TITULO + " - Nuevo Usuario");
+        this.window.setTitle(TITULO + " - Nuevo Usuario");
         this.gestorPantalla.mensajeEstado("Nuevo Usuario");
 	}
 
 	@FXML private Button btnGuardar;
 	@FXML public void guardarUsuario(ActionEvent event) {
 	    if (usuarioSeleccion != null) {
-//	        if (personaSeleccion != null) {
 	        if (usuarioSeleccion.getPersona() != null) {
 	            String contrasena = txtContrasena.getText();
 	            String confirmar = txtConfirmar.getText();
@@ -256,7 +260,6 @@ public class Usuarios extends ControladorVista implements Initializable {
 	                usuarioSeleccion.setUser(txtUsuario.getText());
 	                usuarioSeleccion.setPass(txtContrasena.getText());
 	                usuarioSeleccion.setDescripcion(txtDescripcion.getText());
-//	                usuarioSeleccion.setPersona(personaSeleccion);
 
 	                EstadoOperacion resultado = controlUsuario.guardarUsuario(usuarioSeleccion);
 	                exitoGuardado(resultado, TITULO, "Guardar Usuario");
@@ -268,7 +271,9 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDescartar;
 	@FXML public void descartarUsuario(ActionEvent event) {
-	    mostrarUsuario();
+	    usuarioSeleccion = null;
+        vaciarControles();
+        modoVer();
 	}
 
 	@FXML private Button btnEliminar;
@@ -278,6 +283,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 	        if (exitoEliminar(resultado, TITULO, "Eliminar Usuario")) {
 	            usuarioSeleccion = null;
 	            vaciarControles();
+	            modoVer();
 	        }
 	    }
 	}

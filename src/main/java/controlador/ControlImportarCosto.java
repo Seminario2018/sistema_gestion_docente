@@ -1,15 +1,13 @@
 package controlador;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
-import modelo.costeo.Costeo;
 import modelo.costeo.GestorImportarCosto;
+import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
 import vista.controladores.ControladorVista;
 
@@ -28,8 +26,15 @@ public class ControlImportarCosto {
 		super();
 		this.vista = vista;
 	}
+	
+	public List<ICargoFaltante> getFaltantesSistema() {
+		return this.gestorImportarCosto.getFaltantesSistema();
+	}
+	public List<ICargoDocente> getFaltantesCosteo() {
+		return this.gestorImportarCosto.getFaltantesCosteo();
+	}
 
-	public void importar() {
+	public boolean importar() {
 		String titulo = "Elegir la hoja de cálculo a importar";
     	String error = "Error al importar los datos";
 	    try {
@@ -40,17 +45,20 @@ public class ControlImportarCosto {
 	        if (archivo != null) {
 	        	EstadoOperacion eo = this.gestorImportarCosto.importar(archivo);
 	        	switch (eo.getEstado()) {
-	        	case OP_ERROR:
-	        		this.vista.alertaError(tituloDialogo, error, eo.getMensaje());
-	        		break;
-	        	default:
+	        	case OP_OK:
 	        		this.vista.getGestorPantalla().mensajeEstado(eo.getMensaje());
+	        		return true;
+	        	default:
+	        		this.vista.alertaError(tituloDialogo, error, eo.getMensaje());
+	        		return false;
 	        	}
 	        }
         } catch (EncryptedDocumentException e) {
             this.vista.alertaError(tituloDialogo, error,
                 "El archivo está protegido por contraseña.");
+            return false;
         }
+		return false;
 	}
 
 	public void guardar() {

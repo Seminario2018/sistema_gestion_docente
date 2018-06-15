@@ -44,6 +44,18 @@ public class GestorImportarCosto {
 	private GestorDocente gestorDocente = new GestorDocente();
 	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
 	
+	public List<ICargoFaltante> getFaltantesSistema() {
+		actualizarListas();
+		return faltantesSistema;
+	}
+	public List<ICargoDocente> getFaltantesCosteo() {
+		actualizarListas();
+		return faltantesCosteo;
+	}
+	public List<ICargoFaltante> getCargosImportados() {
+		return cargosImportados;
+	}
+	
 	/**
 	 * Importa los datos de la planilla de costeos, permitiendo al usuario
 	 * analizar diferencias entre los datos importados y los del sistema.
@@ -212,6 +224,17 @@ public class GestorImportarCosto {
 			for (ICargoFaltante faltanteSistema : this.faltantesSistema) {
 				this.gestorCargosFaltantes.agregarCargoFaltante(faltanteSistema);
 			}
+			for (ICargoDocente faltanteCosteo : this.faltantesCosteo) {
+				ICargoFaltante faltante = this.gestorCargosFaltantes.getICargoFaltante();
+				faltante.setLegajo(faltanteCosteo.getDocente().getLegajo());
+				faltante.setApellido(faltanteCosteo.getDocente().getPersona().getApellido());
+				faltante.setNombre(faltanteCosteo.getDocente().getPersona().getNombre());
+				faltante.setCodigoCargo(faltanteCosteo.getId());
+				faltante.setUltimoCosto(faltanteCosteo.getUltimoCosto());
+				faltante.setFechaUltimoCosto(faltanteCosteo.getFechaUltCost());
+				faltante.setTipo(CargoFaltante.FALTA_COSTEO);
+				this.gestorCargosFaltantes.agregarCargoFaltante(faltante);
+			}
 				
 			// Todo salió bien
 			eo.setEstado(EstadoOperacion.CodigoEstado.UPDATE_OK);
@@ -244,7 +267,8 @@ public class GestorImportarCosto {
 			List<ICargoDocente> cargosSistema = this.gestorDocente.listarCargo(null, null);
 			
 			for (ICargoFaltante cargoImportado : this.cargosImportados) {
-				ICargoDocente cargoActual = buscarCargo(cargoImportado, cargosSistema);
+				ICargoDocente cargoActual = buscarCargo(
+						cargoImportado.getCodigoCargo(), cargosSistema);
 				
 				// El cargo no está en el sistema, o está pero no activo
 				if (cargoActual == null || cargoActual.getEstado().getId() != 0) {
@@ -274,11 +298,11 @@ public class GestorImportarCosto {
 	 * Método auxiliar que busca un CargoDocente en una lista de CargosFaltantes
 	 * @return 
 	 */
-	private ICargoDocente buscarCargo(ICargoFaltante elemento, List<ICargoDocente> lista) {
+	private ICargoDocente buscarCargo(int codigoCargo, List<ICargoDocente> lista) {
 		ICargoDocente encontrado = null;
 		int i = 0;
 		while (encontrado == null && i < lista.size()) {
-			if (lista.get(i).getId() == elemento.getCodigoCargo())
+			if (lista.get(i).getId() == codigoCargo)
 				encontrado = lista.get(i);
 			i++;
 		}
@@ -291,7 +315,8 @@ public class GestorImportarCosto {
 	 * @param estado El nuevo Estado del CargoDocente 
 	 */
 	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
-		
+		ICargoDocente cargoActualizar = buscarCargo(cargo.getId(), this.faltantesCosteo);
+		cargoActualizar.setEstado(estado);
 	}
 	
 	/**
