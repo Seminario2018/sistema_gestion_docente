@@ -29,19 +29,19 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	public Proyecto(){
 		this.id = -1;
-		this.nombre = null;
-		this.resumen = null;
+		this.nombre = "";
+		this.resumen = "";
 		this.fechaPresentacion = null;
 		this.fechaAprobacion = null;
-		this.descripcion = null;
+		this.descripcion = "";
 		this.director = null;
 		this.codirector = null;
 		this.fechaInicio = null;
 		this.fechaFin = null;
 		this.estado = null;
-		this.integrantes = new ArrayList<IIntegrante>(integrantes);
-		this.subsidios = new ArrayList<ISubsidio>(subsidios);
-		this.prorrogas = new ArrayList<IProrroga>(prorrogas);
+		this.integrantes = new ArrayList<IIntegrante>();
+		this.subsidios = new ArrayList<ISubsidio>();
+		this.prorrogas = new ArrayList<IProrroga>();
 	}
 	public Proyecto(int id, String nombre, String resumen, LocalDate fechaPresentacion, LocalDate fechaAprobacion,
 			String descripcion, IDocente director, IDocente codirector,

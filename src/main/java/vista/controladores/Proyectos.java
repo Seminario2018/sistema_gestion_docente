@@ -52,33 +52,29 @@ public class Proyectos extends ControladorVista implements Initializable {
                 case TIPO_CODIRECTOR:
                     setCodirectorSeleccion((IDocente) docente);
                     break;
+                default:
+                    throw new RuntimeException("Tipo de docente no esperado.");
             }
         }
     }
 
-    private void setCodirectorSeleccion(Object docenteSeleccion) {
-        if (docenteSeleccion instanceof IDocente) {
-            codirectorSeleccion = (IDocente) docenteSeleccion;
-            txtDatosCodirector.setText(String.valueOf(codirectorSeleccion.getLegajo()));
+    private void setCodirectorSeleccion(IDocente codirector) {
+        if (proyectoSeleccion != null) {
+            proyectoSeleccion.setCodirector(codirector);
+            txtDatosCodirector.setText(proyectoSeleccion.getCodirector().getPersona().getNombreCompleto());
         }
     }
 
-    private void setDirectorSeleccion(Object docenteSeleccion) {
-        if (docenteSeleccion instanceof IDocente) {
-            directorSeleccion = (IDocente) docenteSeleccion;
-            txtDatosDirector.setText(String.valueOf(directorSeleccion.getLegajo()));
-        }
-    }
-
-    public void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
-        if (cargoDocente instanceof ICargoDocente) {
-            cargoDocenteSeleccion = (ICargoDocente) cargoDocente;
+    private void setDirectorSeleccion(IDocente director) {
+        if (proyectoSeleccion != null) {
+            proyectoSeleccion.setDirector(director);
+            txtDatosDirector.setText(proyectoSeleccion.getDirector().getPersona().getNombreCompleto());
         }
     }
 
 	@FXML private ScrollPane mainPane;
 
-	private static final String TITULO = "Proyectos";
+	public static final String TITULO = "Proyectos";
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
 
 	// Tipos respuesta:
@@ -176,8 +172,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 
-    private IDocente directorSeleccion = null;
-    private IDocente codirectorSeleccion = null;
+//    private IDocente directorSeleccion = null;
+//    private IDocente codirectorSeleccion = null;
 
     /** Muestra los datos del proyecto seleccionado */
     private void datosMostrarProyecto() {
@@ -197,9 +193,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     private void datosVaciarControles() {
         txtDatosNombre.clear();
         txtDatosDirector.clear();
-        directorSeleccion = null;
         txtDatosCodirector.clear();
-        codirectorSeleccion = null;
         cmbDatosEstado.getSelectionModel().clearSelection();
         dtpDatosPresentacion.setValue(null);
         dtpDatosAprobacion.setValue(null);
@@ -219,8 +213,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void guardarProyecto(ActionEvent event) {
 	    if (proyectoSeleccion != null) {
 	        proyectoSeleccion.setNombre(txtDatosNombre.getText());
-	        proyectoSeleccion.setDirector(directorSeleccion);
-	        proyectoSeleccion.setCodirector(codirectorSeleccion);
 	        proyectoSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
 	        proyectoSeleccion.setFechaPresentacion(dtpDatosPresentacion.getValue());
 	        proyectoSeleccion.setFechaAprobacion(dtpDatosAprobacion.getValue());
@@ -239,11 +231,11 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML private TextField txtDatosDirector;
     @FXML private Button btnDatosDirector;
 	@FXML void buscarDirector(ActionEvent event) {
-	    // TODO directorSeleccion = ???
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
         args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DIRECTOR);
         args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
@@ -251,11 +243,11 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TextField txtDatosCodirector;
 	@FXML private Button btnDatosCodirector;
 	@FXML void buscarCodirector(ActionEvent event) {
-	    // TODO codirectorSeleccionado = ???
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
         args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CODIRECTOR);
         args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
@@ -272,7 +264,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	private IIntegrante integranteSeleccion = null;
 	private ICargoDocente cargoDocenteSeleccion = null;
-	private ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
+	protected ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
 
 	class FilaIntegrante {
         private IIntegrante integrante;
@@ -389,13 +381,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-	    Map<String, Object> args = new HashMap<String, Object>();
-        args.put(Busqueda.KEY_NUEVO, true);
-        args.put(Busqueda.KEY_TIPO, "CargoDocentes");
-        args.put(Busqueda.KEY_CONTROLADOR, this);
-        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGODOCENTE);
-        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
-        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Cargos Docentes", args);
+	    // TODO Integrantes: buscarCargoDocente
 	}
 
 	@FXML protected TableView<FilaIntegrante> tblIntegrantes;

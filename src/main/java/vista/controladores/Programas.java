@@ -16,6 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoPrograma;
 import modelo.docente.IDocente;
 import modelo.investigacion.IPrograma;
@@ -34,6 +35,7 @@ public class Programas extends ControladorVista implements Initializable {
     private static final String TIPO_DIRECTOR = "Director";
     private static final String TIPO_CODIRECTOR = "Codirector";
     private static final String TIPO_PROGRAMA = "Programa";
+    private static final String TIPO_PROYECTO = "Proyecto";
 
     private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
     private IPrograma programaSeleccion = null;
@@ -109,6 +111,8 @@ public class Programas extends ControladorVista implements Initializable {
 	        programaSeleccion.setCodirector(codirectorSeleccion);
 	        programaSeleccion.setEstado(cmbProgramasEstado.getValue());
 	        programaSeleccion.setDisposicion(txtProgramasDisp.getText());
+	        programaSeleccion.setFechaInicio(dtpProgramasInicio.getValue());
+	        programaSeleccion.setFechaFin(dtpProgramasFinalizacion.getValue());
 
 	        exitoGuardado(controlInvestigacion.guardarPrograma(programaSeleccion), TITULO, "Guardar Programa");
 	    }
@@ -139,13 +143,21 @@ public class Programas extends ControladorVista implements Initializable {
     }
 
 	@FXML private void agregarProyecto() {
-	    if (proyectoSeleccion != null) {
-	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, programaSeleccion), TITULO, "Agregar Proyecto");
+	    if (programaSeleccion != null) {
+	        Map<String, Object> args = new HashMap<String, Object>();
+	        args.put(Busqueda.KEY_NUEVO, true);
+	        args.put(Busqueda.KEY_TIPO, Proyectos.TITULO);
+	        args.put(Busqueda.KEY_CONTROLADOR, this);
+	        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PROYECTO);
+	        args.put(GestorPantalla.KEY_PADRE, Programas.TITULO);
+	        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Proyectos.TITULO, args);
+	    } else {
+	        System.out.println("agregarProyecto(): proyecto es null");
 	    }
 	}
 
 	@FXML private void quitarProyecto() {
-	    if (proyectoSeleccion != null) {
+	    if (programaSeleccion != null && proyectoSeleccion != null) {
 	        exitoEliminar(controlInvestigacion.eliminarProyecto(proyectoSeleccion), TITULO, "Quitar Proyecto");
 	    }
 	}
@@ -156,8 +168,6 @@ public class Programas extends ControladorVista implements Initializable {
 	@FXML private TextField txtProgramasCodirector;
 	@FXML private ComboBox<EstadoPrograma> cmbProgramasEstado;
 	@FXML private TextField txtProgramasDisp;
-	@FXML private DatePicker dtpProgramasPresentacion;
-	@FXML private DatePicker dtpProgramasAprobacion;
 	@FXML private DatePicker dtpProgramasInicio;
 	@FXML private DatePicker dtpProgramasFinalizacion;
 
@@ -176,7 +186,6 @@ public class Programas extends ControladorVista implements Initializable {
             String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
                 String metodo = "set" + seleccion + "Seleccion";
-                // System.out.printf("Método: \"%s\""
                 Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
 
@@ -216,6 +225,16 @@ public class Programas extends ControladorVista implements Initializable {
         }
     }
 
+    public void setProyectoSeleccion(Object proyecto, String tipo) {
+        if (proyecto instanceof IProyecto) {
+            // Recibo un objeto proyecto para agregarlo al programa
+            IProyecto proyectoAgregar = (IProyecto) proyecto;
+            EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoAgregar, programaSeleccion);
+            exitoGuardado(resultado, TITULO, "Agregar Proyecto");
+            actualizarTabla();
+        }
+    }
+
     private void actualizarTabla() {
         if (programaSeleccion != null) {
             filasProyectos.clear();
@@ -235,6 +254,8 @@ public class Programas extends ControladorVista implements Initializable {
             txtProgramasCodirector.setText(programaSeleccion.getCodirector().getPersona().getNombreCompleto());
             cmbProgramasEstado.getSelectionModel().select(programaSeleccion.getEstado());
             txtProgramasDisp.setText(programaSeleccion.getDisposicion());
+            dtpProgramasInicio.setValue(programaSeleccion.getFechaInicio());
+            dtpProgramasFinalizacion.setValue(programaSeleccion.getFechaFin());
 
             actualizarTabla();
         }
@@ -246,6 +267,8 @@ public class Programas extends ControladorVista implements Initializable {
         txtProgramasCodirector.clear();
         cmbProgramasEstado.getSelectionModel().clearSelection();
         txtProgramasDisp.clear();
+        dtpProgramasInicio.setValue(null);
+        dtpProgramasFinalizacion.setValue(null);
 
         vaciarTablas();
     }
