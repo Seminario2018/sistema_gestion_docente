@@ -37,5 +37,7 @@ public interface ICargoDocente {
     public EstadoCargo getEstado();
     public void setEstado(EstadoCargo estado);
     public IDocente getDocente();
+    public void setDocente(IDocente docente);
     public List<Costo> getCostos();
+    public void setCostos(List<Costo> costos);
 }
