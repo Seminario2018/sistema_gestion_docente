@@ -14,7 +14,8 @@ public class CargoFaltante {
 	//True si esta en sistema - false si esta en costeo
 	private boolean tipo;
 	
-	
+	public static final boolean FALTA_SISTEMA = false;
+	public static final boolean FALTA_COSTEO = true;
 	
 	public int getLegajo() {
 		return legajo;

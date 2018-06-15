@@ -6,6 +6,8 @@ package modelo.auxiliares;
  */
 public class EstadoOperacion {
 	public enum CodigoEstado {
+		OP_OK, OP_ERROR,
+		CONNECT_OK, CONNECT_ERROR,
 		INSERT_OK, INSERT_ERROR,
 		UPDATE_OK, UPDATE_ERROR,
 		DELETE_OK, DELETE_ERROR,
