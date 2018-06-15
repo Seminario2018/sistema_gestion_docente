@@ -44,7 +44,7 @@ public class UsuarioTest {
 		GestorUsuario gu = new GestorUsuario();
 		System.out.println(gu.nuevoUsuario(u).getMensaje());
 		
-		Rol r = new Rol("su");
+		Rol r = new Rol(0, "su");
 		Permiso per  = new Permiso(Modulo.DOCENTES);
 		per.setCrear(true);
 		per.setEliminar(true);

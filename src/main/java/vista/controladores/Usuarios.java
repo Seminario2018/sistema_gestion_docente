@@ -22,6 +22,7 @@ import modelo.persona.IPersona;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
+import modelo.usuario.Modulo;
 import vista.GestorPantalla;
 
 /**
@@ -55,6 +56,55 @@ public class Usuarios extends ControladorVista implements Initializable {
             }
         });
 	}
+	
+	@Override
+	public void inicializar() {
+        /* Ocultar controles según roles del usuario: */
+        boolean crear = false;
+        boolean modificar = false;
+        boolean eliminar = false;
+        boolean listar = false;
+
+        if (this.usuario == null) {
+            throw new RuntimeException("Usuario es null");
+        }
+        for (IRol rol : this.usuario.getGrupos()) {
+            for (IPermiso permiso : rol.getPermisos()) {
+            	if (permiso.getModulo() == Modulo.USUARIOS) {
+            		this.permiso = permiso;
+            		crear |= permiso.getCrear();
+            		modificar |= permiso.getModificar();
+            		eliminar |= permiso.getEliminar();
+            		listar |= permiso.getListar();
+            	}
+            }
+        }
+
+        if (!crear) {
+            btnNuevo.setVisible(false);
+        }
+
+        if (!modificar) {
+        	btnGuardar.setVisible(false);
+        	btnDescartar.setVisible(false);
+        	btnAgregar.setVisible(false);
+        	btnQuitar.setVisible(false);
+        	txtUsuario.setEditable(false);
+        	txtContrasena.setEditable(false);
+        	txtConfirmar.setEditable(false);
+        	txtDescripcion.setEditable(false);
+        }
+
+        if (!eliminar) {
+            btnEliminar.setVisible(false);
+        }
+
+        if (!listar) {
+            btnBuscar.setVisible(false);
+        }
+        
+        modoVer();
+	}
 
 	@SuppressWarnings("unused")
     private void setPersonaSeleccion(Object persona, String tipo) {
@@ -86,51 +136,44 @@ public class Usuarios extends ControladorVista implements Initializable {
                 String metodo = "set" + seleccion + "Seleccion";
                 Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        this.usuario = (IUsuario) args.get(GestorPantalla.KEY_USUARIO);
-        /* Ocultar controles según roles del usuario: */
-        boolean crear = false;
-        boolean modificar = false;
-        boolean eliminar = false;
-        boolean listar = false;
-
-        if (this.usuario == null) {
-            throw new RuntimeException("Usuario es null");
-        }
-        for (IRol rol : this.usuario.getGrupos()) {
-            for (IPermiso permiso : rol.getPermisos()) {
-                crear |= permiso.getCrear();
-                modificar |= permiso.getModificar();
-                eliminar |= permiso.getEliminar();
-                listar |= permiso.getListar();
-            }
-        }
-
-        if (!crear) {
-            btnAgregar.setVisible(false);
-            btnGuardar.setVisible(false);
-            btnNuevo.setVisible(false);
-        }
-
-        if (!modificar) {
-            btnGuardar.setVisible(false);
-        }
-
-        if (!eliminar) {
-            btnEliminar.setVisible(false);
-            btnQuitar.setVisible(false);
-        }
-
-        if (!listar) {
-            btnBuscar.setVisible(false);
-            btnSeleccionarPersona.setVisible(false);
-        }
-        //*/
+    }
+    
+    @Override
+    protected void modoModificar() {
+    	if (this.permiso.getModificar() || this.permiso.getCrear()) {
+    		btnGuardar.setVisible(true);
+    		btnDescartar.setVisible(true);
+    		btnAgregar.setVisible(true);
+    		btnQuitar.setVisible(true);    		
+        	txtUsuario.setEditable(true);
+        	txtContrasena.setEditable(true);
+        	txtConfirmar.setEditable(true);
+        	txtDescripcion.setEditable(true);
+    	}
+    	if (this.permiso.getEliminar()) {
+    		btnEliminar.setVisible(true);
+    	}
+    	
+    	this.window.setTitle(this.TITULO + " - Modificar Usuario");
+    	if (this.usuarioSeleccion != null)
+    		this.gestorPantalla.mensajeEstado("Modificar al Usuario " + this.usuarioSeleccion.getUser());
+    }
+    
+    @Override
+    protected void modoVer() {
+    	btnGuardar.setVisible(false);
+        btnDescartar.setVisible(false);
+        btnAgregar.setVisible(false);
+        btnQuitar.setVisible(false);
+        btnEliminar.setVisible(false);
+        txtUsuario.setEditable(false);
+    	txtContrasena.setEditable(false);
+    	txtConfirmar.setEditable(false);
+    	txtDescripcion.setEditable(false);
     }
 
 // -------------------------------- General --------------------------------- //
@@ -167,7 +210,6 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML private TextField txtDocumento;
 	@FXML private TextField txtNombre;
 
-	@FXML private Button btnSeleccionarPersona;
 	@FXML public void seleccionarPersona(ActionEvent event) {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
@@ -198,6 +240,9 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML public void nuevoUsuario(ActionEvent event) {
 	    usuarioSeleccion = controlUsuario.getIUsuario();
         vaciarControles();
+        modoModificar();
+        this.window.setTitle(this.TITULO + " - Nuevo Usuario");
+        this.gestorPantalla.mensajeEstado("Nuevo Usuario");
 	}
 
 	@FXML private Button btnGuardar;

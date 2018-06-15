@@ -38,8 +38,6 @@ public class GestorImportarCosto {
 	private List<ICargoFaltante> faltantesSistema = new ArrayList<ICargoFaltante>();
 	// Cargos que faltan en el costeo pero aparecen en el sistema como "activos"
 	private List<ICargoDocente> faltantesCosteo = new ArrayList<ICargoDocente>();
-	// Backup si descarta los cambios
-	private List<ICargoDocente> faltantesCosteoAnt = new ArrayList<ICargoDocente>();
 	// Cargos importados de la planilla
 	private List<ICargoFaltante> cargosImportados = new ArrayList<ICargoFaltante>();
 	
@@ -120,7 +118,13 @@ public class GestorImportarCosto {
 		switch (eo.getEstado()) {
 		case UPDATE_OK:
 			EstadoOperacion eo2 = guardarCostos();
-			return eo2;
+			switch (eo2.getEstado()) {
+			case UPDATE_OK:
+				EstadoOperacion eo3 = guardarFaltantes();
+				return eo3;
+			default:
+				return eo2;
+			}
 		default:
 			return eo;
 		}
@@ -199,6 +203,26 @@ public class GestorImportarCosto {
 	}
 	
 	/**
+	 * Actualiza los CargosFaltantes en la Base de Datos
+	 */
+	private EstadoOperacion guardarFaltantes() {
+		EstadoOperacion eo = new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
+				"Ha ocurrido un error al intentar guardar los cargos faltantes.");
+		try {
+			for (ICargoFaltante faltanteSistema : this.faltantesSistema) {
+				this.gestorCargosFaltantes.agregarCargoFaltante(faltanteSistema);
+			}
+				
+			// Todo salió bien
+			eo.setEstado(EstadoOperacion.CodigoEstado.UPDATE_OK);
+			eo.setMensaje("La actualización se realizó con éxito");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return eo;
+	}
+	
+	/**
 	 * Descarta los cambios realizados, volviendo al estado anterior a importar.
 	 */
 	public void descartar() {
@@ -214,24 +238,34 @@ public class GestorImportarCosto {
 		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
 			this.faltantesSistema = new ArrayList<ICargoFaltante>();
 			this.faltantesCosteo = new ArrayList<ICargoDocente>();
-			this.faltantesCosteoAnt = new ArrayList<ICargoDocente>();
 		} else {
-			// Recuperar todos los cargos del sistema
-			this.faltantesCosteoAnt = this.gestorDocente.listarCargo(null, null);
+			// Recuperar todos los cargos del sistema, para luego agregarlos
+			// a los faltantes del costeo
+			List<ICargoDocente> cargosSistema = this.gestorDocente.listarCargo(null, null);
+			
 			for (ICargoFaltante cargoImportado : this.cargosImportados) {
-				ICargoDocente cargoActual = buscarCargo(cargoImportado, this.faltantesCosteoAnt);
-				// El cargo existe
-				if (cargoActual != null) {
-					// Pero está Inactivo
-					if (cargoActual.getEstado().getId() != 0) {
-						this.faltantesSistema.add(cargoImportado);
-					}
+				ICargoDocente cargoActual = buscarCargo(cargoImportado, cargosSistema);
+				
+				// El cargo no está en el sistema, o está pero no activo
+				if (cargoActual == null || cargoActual.getEstado().getId() != 0) {
+					this.faltantesSistema.add(cargoImportado);
+					
+					// Sacarlo de los faltantes en el Costeo si está pero no activo
+					if (cargoActual != null) 
+						cargosSistema.remove(cargoActual);
+					
+				// El cargo está activo en el sistema y en el costeo,
+				// por lo que no hará falta agregarlo a los faltantes del costeo 
+				} else {
+					cargosSistema.remove(cargoActual);
 				}
-			}
-			// Clonar en el otro array (hecho con la BD por no hacer bien los clone)
-			for (ICargoDocente faltante : this.faltantesCosteo) {
-				ICargoDocente copia = getCargo(faltante.getId());
-				this.faltantesCosteo.add(copia);
+			}	
+			// Agregar a los faltantes del costeo los que están activos 
+			// en el sistema y no aparecen en el costeo
+			for (ICargoDocente cargo : cargosSistema) { 
+				if (cargo.getEstado().getId() == 0) {
+					this.faltantesCosteo.add(cargo);
+				}
 			}
 		}
 	}

@@ -126,6 +126,7 @@ public class GestorPantalla {
 				Object controlador = loader.getController();
 				((ControladorVista) controlador).setGestorPantalla(this);
 				((ControladorVista) controlador).setWindow(window);
+				((ControladorVista) controlador).setUsuario(this.usuario);
 				((ControladorVista) controlador).inicializar();
 
 				this.controladoresActivos.put(nombre, (ControladorVista) controlador);
@@ -144,7 +145,6 @@ public class GestorPantalla {
 					}
 
 					if (controlador instanceof ControladorVista) {
-					    args.put(KEY_USUARIO, usuario);
                         ((ControladorVista) controlador).recibirParametros(args);
                     }
 				} else {
