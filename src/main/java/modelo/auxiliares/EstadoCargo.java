@@ -25,6 +25,11 @@ public class EstadoCargo {
 		this.id = -1;
 		this.descripcion = null;
 	}
+	
+	@Override
+	public EstadoCargo clone() {
+		return new EstadoCargo(this.id, this.descripcion);
+	}
 
 	public int getId() {
 		return this.id;

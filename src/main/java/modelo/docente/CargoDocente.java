@@ -77,8 +77,8 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 	public ICargoDocente clone() {
 		return (ICargoDocente) new CargoDocente(
 				this.id,
-				this.area,
-				this.cargo,
+				this.area.clone(),
+				this.cargo.clone(),
 				this.tipoCargo,
 				this.disposicion,
 				this.dispDesde,
@@ -88,7 +88,7 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 				this.resolucion,
 				this.resDesde,
 				this.resHasta,
-				this.estado
+				this.estado.clone()
 				);
 	}
 

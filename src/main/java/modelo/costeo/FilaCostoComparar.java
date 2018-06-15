@@ -18,7 +18,7 @@ public class FilaCostoComparar {
 	private float costoAct;
 	private LocalDate fechaCostoAct;
 	
-	public FilaCostoComparar(ICargoDocente cargoAnterior, ICargoDocente cargoActual) {
+	public FilaCostoComparar(ICargoDocente cargoAnterior, ICargoFaltante cargoActual) {
 		this.legajo = cargoAnterior.getDocente().getLegajo();
 		this.apellido = cargoAnterior.getDocente().getPersona().getApellido();
 		this.nombre = cargoAnterior.getDocente().getPersona().getNombre();
@@ -26,7 +26,7 @@ public class FilaCostoComparar {
 		this.costoAnt = cargoAnterior.getUltimoCosto();
 		this.fechaCostoAnt = cargoAnterior.getFechaUltCost();
 		this.costoAct = cargoActual.getUltimoCosto();
-		this.fechaCostoAct = cargoActual.getFechaUltCost();
+		this.fechaCostoAct = cargoActual.getFechaUltimoCosto();
 	}
 
 	public int getLegajo() {
