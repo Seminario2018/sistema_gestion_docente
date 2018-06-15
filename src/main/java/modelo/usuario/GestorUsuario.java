@@ -7,6 +7,7 @@ import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.TipoDocumento;
 import modelo.auxiliares.hash.HashSalt;
 import modelo.persona.GestorPersona;
+import modelo.persona.IPersona;
 import modelo.persona.Persona;
 import persistencia.ManejoDatos;
 
@@ -19,11 +20,11 @@ public class GestorUsuario {
         	String table = "Usuarios";
         	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
         	String valores = "'" + usuario.getUser() + "', '" +
-        			usuario.getHash().getHash() + "', '" +
-        			usuario.getHash().getSalt() + "', " +
-        			usuario.getPersona().getTipoDocumento().getId() + ", '" +
-        			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
-        			usuario.getDescripcion() + "'";
+    			usuario.getHash().getHash() + "', '" +
+    			usuario.getHash().getSalt() + "', " +
+    			usuario.getPersona().getTipoDocumento().getId() + ", '" +
+    			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
+    			usuario.getDescripcion() + "'";
 
 
         	md.insertar(table, campos, valores);
@@ -52,8 +53,8 @@ public class GestorUsuario {
         	String tabla = "Usuarios";
         	String campos = "`Usuario` = '"+ usuario.getUser() +
         			"', `Hash` = '"+ usuario.getHash().getHash() +"', `Salt`= '"+ usuario.getHash().getSalt() +
-        			"', `TipoDocumentoPersona`= '"+ usuario.getPersona().getTipoDocumento() +
-        			"', `NroDocumentoPerson` = '"+ usuario.getPersona().getTipoDocumento() +"'";
+        			"', `TipoDocumentoPersona`= "+ usuario.getPersona().getTipoDocumento().getId() +
+        			", `NroDocumentoPerson` = '"+ usuario.getPersona().getNroDocumento() +"'";
         	String condicion = "`Usuario` = '" + usuario.getUser() + "'";
 
         	md.update(tabla, campos, condicion);
@@ -74,7 +75,7 @@ public class GestorUsuario {
         	ManejoDatos md = new ManejoDatos();
 
         	md.delete("`RolesXUsuario`", "Usuario = '" + usuario.getUser() + "'");
-        	md.delete("`Usuario`", "Usuario = '" + usuario.getUser() + "'");
+        	md.delete("`Usuarios`", "Usuario = '" + usuario.getUser() + "'");
 
         	return md.isEstado() ?
         	    new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El usuario se eliminó correctamente") :
@@ -87,29 +88,27 @@ public class GestorUsuario {
     }
 
     public List<IUsuario> listarUsuario(IUsuario usuario) {
-    	ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
-        ArrayList<IUsuario> usuarios = new ArrayList<IUsuario>();
+    	List<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
+        List<IUsuario> usuarios = new ArrayList<IUsuario>();
 
-        String tabla = "Usuario INNER JOIN Persona ON Usuario.TipoDocumentoPersona = Persona.TipoDocumento"
-        		+ " AND Usuario.NroDocumentoPerson = Persona.NroDocumento";
+        String tabla = "Usuarios INNER JOIN Personas ON Usuarios.TipoDocumentoPersona = Personas.TipoDocumento"
+        		+ " AND Usuarios.NroDocumentoPerson = Personas.NroDocumento";
         String campos = "*";
         String condicion = this.armarCondicion(usuario);
-
-
 
     	try {
         	ManejoDatos md = new ManejoDatos();
         	res = md.select(tabla, campos, condicion);
         	for (Hashtable<String, String> reg : res) {
-				Usuario user = new Usuario(
-							reg.get("Usuario").toString(),
-							new HashSalt(reg.get("Hash").toString(), reg.get("Salt").toString()),
-							reg.get("Descripcion").toString(),
-							new ArrayList<IRol>()
-						);
+				IUsuario user = new Usuario(
+					reg.get("Usuario").toString(),
+					new HashSalt(reg.get("Hash").toString(), reg.get("Salt").toString()),
+					reg.get("Descripcion").toString(),
+					new ArrayList<IRol>()
+				);
 
 				GestorPersona gp = new GestorPersona();
-				Persona p = new Persona();
+				IPersona p = new Persona();
 				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
 				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
 				p = (Persona) gp.listarPersonas(p).get(0);
@@ -120,7 +119,9 @@ public class GestorUsuario {
 
 			}
         	return usuarios;
-        }catch(Exception e) {
+
+        } catch(Exception e) {
+            e.printStackTrace();
         	return usuarios;
         }
     }
@@ -167,12 +168,9 @@ public class GestorUsuario {
     	} else {
     	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El grupo no se pudo agregar.");
     	}
-
-
     }
 
     public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
-
     	ManejoDatos md = new ManejoDatos();
     	String tabla = "RolesXUsuario";
     	String condicion = " Usuario = '" + usuario.getUser() + "', '" + grupo.getNombre() + "'";
@@ -185,8 +183,6 @@ public class GestorUsuario {
     	} else {
     	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El grupo no se pudo quitar");
     	}
-
-
     }
 
     private String armarCondicion(IUsuario usuario) {
@@ -196,7 +192,7 @@ public class GestorUsuario {
     		//usuario
     		if (usuario.getPersona() != null) {
     			if (usuario.getPersona().getTipoDocumento() != null) {
-    				condicion += "TipoDocumentoPersona = '" + usuario.getPersona().getTipoDocumento() + "'";
+    				condicion += "TipoDocumentoPersona = " + usuario.getPersona().getTipoDocumento().getId();
     			}
     			if (usuario.getPersona().getNroDocumento() != 0) {
     				if (!condicion.equals("")) {
@@ -217,25 +213,21 @@ public class GestorUsuario {
     	return condicion;
     }
 
-
     private void  setRoles(IUsuario usuario) {
     	try {
     		String tabla = "RolesXUsuario";
 
-
         	ManejoDatos md = new ManejoDatos();
-    		ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
+    		List<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
     		for (Hashtable<String, String> reg : res) {
 				Rol r = new Rol(Integer.parseInt(reg.get("Rol")));
 				GestorRol gr = new GestorRol();
 				r = (Rol) gr.listarGrupo(r).get(0);
 				usuario.agregarGrupo(r);
 			}
-    	}catch (Exception e) {
+
+    	} catch (Exception e) {
     		e.printStackTrace();
     	}
     }
-
-
-
 }

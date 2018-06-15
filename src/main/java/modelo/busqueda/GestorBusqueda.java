@@ -189,6 +189,32 @@ public class GestorBusqueda {
         return roles;
 	}
 
+	public List<BusquedaUsuario> listarUsuarios(String criterio) {
+	    String tabla = "ViewUsuario";
+        String campos = "Usuario";
+        String condicion = "TRUE";
+        List<BusquedaUsuario> usuarios = new ArrayList<BusquedaUsuario>();
+
+        if (criterio != null && !criterio.equals("")) {
+            condicion = armarCondicion(campos.split(", "), criterio);
+        }
+
+        try {
+            ManejoDatos md = new ManejoDatos();
+            ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+            for (Hashtable<String, String> reg : res) {
+                BusquedaUsuario bUs = new BusquedaUsuario(
+                    reg.get("Usuario"));
+                usuarios.add(bUs);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return usuarios;
+	}
+
 	private String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {

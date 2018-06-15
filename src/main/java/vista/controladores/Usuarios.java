@@ -29,7 +29,7 @@ import vista.GestorPantalla;
  */
 public class Usuarios extends ControladorVista implements Initializable {
 
-    private static final String TITULO = "Personas";
+    private static final String TITULO = "Usuarios";
 
     // Tipos Respuesta:
     private static final String TIPO_PERSONA = "Persona";
@@ -55,18 +55,21 @@ public class Usuarios extends ControladorVista implements Initializable {
         });
 	}
 
-	private void setPersonaSeleccion(Object persona, String tipo) {
+	@SuppressWarnings("unused")
+    private void setPersonaSeleccion(Object persona, String tipo) {
 	    if (persona instanceof IPersona) {
-//            personaSeleccion = (IPersona) persona;
 	        usuarioSeleccion.setPersona((IPersona) persona);
             mostrarUsuario();
         }
 	}
 
-	private void setUsuarioSeleccion(Object usuario, String tipo) {
+	@SuppressWarnings("unused")
+    private void setUsuarioSeleccion(Object usuario, String tipo) {
 	    if (usuario instanceof IUsuario) {
             usuarioSeleccion = (IUsuario) usuario;
             mostrarUsuario();
+        } else {
+            System.out.println("usuario no es IUsuario");
         }
 	}
 
@@ -82,7 +85,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
             try {
                 String metodo = "set" + seleccion + "Seleccion";
-                // System.out.printf("Método: \"%s\""
+                System.out.printf("Método: \"%s\"\n", metodo);
                 Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
                 m.invoke(this, valor, tipo_respuesta);
 

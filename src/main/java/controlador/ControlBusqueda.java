@@ -8,6 +8,7 @@ import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.BusquedaPrograma;
 import modelo.busqueda.BusquedaProyecto;
 import modelo.busqueda.BusquedaRol;
+import modelo.busqueda.BusquedaUsuario;
 import modelo.busqueda.GestorBusqueda;
 import modelo.cargo.GestorCargo;
 import modelo.cargo.ICargo;
@@ -21,6 +22,8 @@ import modelo.investigacion.IPrograma;
 import modelo.investigacion.IProyecto;
 import modelo.persona.GestorPersona;
 import modelo.persona.IPersona;
+import modelo.usuario.GestorUsuario;
+import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
 
 /**
@@ -70,6 +73,10 @@ public class ControlBusqueda {
 	    return gestorBusqueda.listarRoles(criterio);
 	}
 
+	public List<BusquedaUsuario> listarUsuarios(String criterio) {
+	    return gestorBusqueda.listarUsuarios(criterio);
+	}
+
 	public Object seleccionar(Object fila) {
 		if (fila instanceof BusquedaDocente) {
 			BusquedaDocente bd = (BusquedaDocente) fila;
@@ -117,6 +124,14 @@ public class ControlBusqueda {
 		    IPrograma programa = gestorPrograma.getIPrograma();
 		    programa.setId(bp.getId());
 		    return gestorPrograma.listarProgramas(programa).get(0);
+		}
+
+		if (fila instanceof BusquedaUsuario) {
+		    BusquedaUsuario bu = (BusquedaUsuario) fila;
+		    GestorUsuario gestorUsuario = new GestorUsuario();
+		    IUsuario usuario = gestorUsuario.getIUsuario();
+		    usuario.setUser(bu.getUsuario());
+		    return gestorUsuario.listarUsuario(usuario).get(0);
 		}
 
 		return null;
