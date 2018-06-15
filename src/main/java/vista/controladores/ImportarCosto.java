@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import modelo.auxiliares.EstadoCargo;
+import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
 
 public class ImportarCosto extends ControladorVista {
@@ -42,15 +43,40 @@ public class ImportarCosto extends ControladorVista {
 		this.lblUltima.setText("Última actualización: " + fecha);
 		// TODO cargar las tablas con datos
 	}
+	
+	private void actualizarTablas() {
+		actualizarTablaCosteo();
+		actualizarTablaSistema();
+	}
+	
+	private void actualizarTablaCosteo() {
+		List<ICargoDocente> faltantesCosteo = this.control.getFaltantesCosteo();
+		for (ICargoDocente cargo : faltantesCosteo) {
+			FilaCosteo fc = new FilaCosteo(cargo);
+			this.filasFaltantesCosteo.add(fc);
+		}
+	}
+	
+	private void actualizarTablaSistema() {
+		List<ICargoFaltante> faltantesSistema = this.control.getFaltantesSistema();
+		for (ICargoFaltante cargo : faltantesSistema) {
+			FilaSistema fs = new FilaSistema(cargo);
+			this.filasFaltantesSistema.add(fs);
+		}
+	}
 
     @FXML protected Button btnListar;
     @FXML public void listarCostos(ActionEvent event) {
 //    	this.gestorPantalla.lanzarPantalla(ListaCosto.TITULO, null);
     }
+    
     @FXML protected Button btnImportar;
     @FXML public void importar(ActionEvent event) {
-    	this.control.importar();
+    	if (this.control.importar()) {
+    		actualizarTablas();
+    	}
     }
+    
 	@FXML protected Button btnGuardar;
 	@FXML public void guardar(ActionEvent event) {
 		this.control.guardar();
@@ -61,7 +87,7 @@ public class ImportarCosto extends ControladorVista {
 		resetGeneral();
 	}
 
-	class FilaCosteo {
+	public class FilaCosteo {
 		private ICargoDocente cargo;
 		public FilaCosteo(ICargoDocente cargo) {
 			this.cargo = cargo;
@@ -111,45 +137,44 @@ public class ImportarCosto extends ControladorVista {
     	}
     }
     
-    
-    class FilaSistema {
-		private ICargoDocente cargo;
-		public FilaSistema(ICargoDocente cargo) {
+    public class FilaSistema {
+		private ICargoFaltante cargo;
+		public FilaSistema(ICargoFaltante cargo) {
 			this.cargo = cargo;
 		}
-		public ICargoDocente getCargo() {
+		public ICargoFaltante getCargo() {
 			return cargo;
 		}
-		public void setCargo(ICargoDocente cargo) {
+		public void setCargo(ICargoFaltante cargo) {
 			this.cargo = cargo;
 		}
 		public int getLegajo() {
-			return cargo.getDocente().getLegajo();
+			return cargo.getLegajo();
 		}
 		public void setLegajo(int legajo) {
-			this.cargo.getDocente().setLegajo(legajo);
+			this.cargo.setLegajo(legajo);
 		}
 		public String getApellido() {
-			return cargo.getDocente().getPersona().getApellido();
+			return cargo.getApellido();
 		}
 		public void setApellido(String apellido) {
-			this.cargo.getDocente().getPersona().setApellido(apellido);
+			this.cargo.setApellido(apellido);
 		} 
 		public String getNombre() {
-			return cargo.getDocente().getPersona().getNombre();
+			return cargo.getNombre();
 		}
 		public void setNombre(String nombre) {
-			this.cargo.getDocente().getPersona().setNombre(nombre);
+			this.cargo.setNombre(nombre);
 		}
-		public String getEstado() {
-			return cargo.getEstado().getDescripcion();
+		public int getCodigo() {
+			return cargo.getCodigoCargo();
 		}
-		public void setEstado(EstadoCargo estado) {
-			this.cargo.setEstado(estado);
+		public void setCodigo(int codigo) {
+			this.cargo.setCodigoCargo(codigo);
 		}
     }
     
-    protected ObservableList<FilaCosteo> filasFaltantesSistema;
+    protected ObservableList<FilaSistema> filasFaltantesSistema;
     
     @FXML protected TableView<FilaSistema> tblFaltantesSistema;
     @FXML protected TableColumn<FilaSistema, Integer> colFaltantesSistemaLegajo;

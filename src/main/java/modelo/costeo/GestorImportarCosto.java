@@ -45,9 +45,11 @@ public class GestorImportarCosto {
 	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
 	
 	public List<ICargoFaltante> getFaltantesSistema() {
+		actualizarListas();
 		return faltantesSistema;
 	}
 	public List<ICargoDocente> getFaltantesCosteo() {
+		actualizarListas();
 		return faltantesCosteo;
 	}
 	public List<ICargoFaltante> getCargosImportados() {
