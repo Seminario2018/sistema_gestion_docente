@@ -133,7 +133,7 @@ public class GestorBusqueda {
         for (Hashtable<String, String> reg : res) {
             BusquedaPrograma pro = new BusquedaPrograma(
                     Integer.parseInt(reg.get("id")),
-                    reg.get("nombre"));
+                    reg.get("Nombre"));
             programas.add(pro);
         }
 
@@ -142,7 +142,7 @@ public class GestorBusqueda {
 
 	public List<BusquedaProyecto> listarProyectos(String criterio) {
 	    String tabla = "ViewProyecto";
-	    String campos = "id, nombre";
+	    String campos = "id, Nombre";
 	    String condicion = "TRUE";
 	    List<BusquedaProyecto> proyectos = new ArrayList<BusquedaProyecto>();
 
@@ -155,7 +155,7 @@ public class GestorBusqueda {
         for (Hashtable<String, String> reg : res) {
             BusquedaProyecto pro = new BusquedaProyecto(
                     Integer.parseInt(reg.get("id")),
-                    reg.get("nombre"));
+                    reg.get("Nombre"));
             proyectos.add(pro);
         }
 

@@ -516,7 +516,7 @@ public class Personas extends ControladorVista implements Initializable {
 	            }
 
 	            if (exito) {
-	                dialogoConfirmacion(TITULO, "Seleccionar mayor título", "El título fue seleccionado como mayor.");
+	                gestorPantalla.mensajeEstado("El título fue seleccionado como el mayor.");
 	            } else {
 	                alertaError(TITULO, "Seleccionar mayor título", "El título no pudo modificarse.");
 	            }
