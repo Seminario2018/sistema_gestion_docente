@@ -24,6 +24,12 @@ public class Principal extends ControladorVista implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
 
+	public void setMensajeEstado(String mensaje) {
+		if (mensaje != null && !mensaje.equals("")) {
+			this.lblMensajes.setText(mensaje);
+		}
+	}
+	
 	@FXML
     private MenuItem mnuUsuarios;
 

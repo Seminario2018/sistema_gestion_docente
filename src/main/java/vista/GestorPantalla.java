@@ -24,6 +24,7 @@ import jfxtras.scene.control.window.CloseIcon;
 import jfxtras.scene.control.window.Window;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
+import vista.controladores.Principal;
 
 /**
  * @author Martín Tomás Juran
@@ -46,7 +47,7 @@ public class GestorPantalla {
 	Stage primaryStage;
 	
 	IUsuario usuario;
-	ControladorVista pantallaPrincipal;
+	Principal pantallaPrincipal;
 	Pane internalPane;
 	Map<String, ControladorVista> controladoresActivos = new HashMap<String, ControladorVista>();
 	Map<String, Window> pantallasAbiertas = new HashMap<String, Window>();
@@ -198,6 +199,13 @@ public class GestorPantalla {
 				hija.close();
 			}
 		}
+	}
+	
+	/**
+	 * Escribir un mensaje en la parte inferior de la pantalla
+	 */
+	public void mensajeEstado(String mensaje) {
+		this.pantallaPrincipal.setMensajeEstado(mensaje);
 	}
 	
 
