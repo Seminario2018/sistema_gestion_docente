@@ -3,11 +3,13 @@ package modelo.costeo;
 import java.util.List;
 
 import modelo.auxiliares.EstadoOperacion;
+import persistencia.ManejoDatos;
 
 public class GestorCargosFaltantes {
 
 	public EstadoOperacion agregarCargoFaltante(ICargoFaltante cargo) {
-		//TODO insertar el cargo enviado
+		ManejoDatos md = new ManejoDatos();
+		
 		return null;
 	}
 	
