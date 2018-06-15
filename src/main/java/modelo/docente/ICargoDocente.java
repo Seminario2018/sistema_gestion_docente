@@ -1,6 +1,7 @@
 package modelo.docente;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
@@ -36,4 +37,5 @@ public interface ICargoDocente {
     public EstadoCargo getEstado();
     public void setEstado(EstadoCargo estado);
     public IDocente getDocente();
+    public List<Costo> getCostos();
 }

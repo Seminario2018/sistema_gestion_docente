@@ -87,6 +87,7 @@ public class TipoCargo {
     private void insertar() {
         try {
             ManejoDatos md = new ManejoDatos();
+            this.id = this.getMaxID() + 1;
             String tabla = "TiposCargos";
             String campos = "id, Descripcion";
             String valores = this.getId() + ", '" + this.getDescripcion() + "'";
@@ -98,7 +99,19 @@ public class TipoCargo {
         }
     }
 
-    /**
+    private int getMaxID() {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("TiposCargos", "MAX(id)");
+			Hashtable<String, String> reg = res.get(0);
+			return Integer.parseInt(reg.get("MAX(id)"));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	/**
      * @return la lista de tipos de cargo de la BD
      */
     public static List<TipoCargo> getLista() {
