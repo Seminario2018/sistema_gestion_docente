@@ -31,6 +31,7 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 	private LocalDate resHasta;
 	private EstadoCargo estado;
 
+	private IDocente docente;
 	private List<Costo> costos;
 
 
@@ -329,6 +330,10 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		return docente;
 	}
 	
+	public void setDocente(IDocente docente) {
+		this.docente = docente;
+	}
+	
 	public List<Costo> getCostos(){
 		if (costos == null || costos.isEmpty()) {
 			this.obtenerCostos();
@@ -336,4 +341,7 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		return costos;
 	}
 
+	public void setCostos(List<Costo> costos) {
+		this.costos = costos;
+	}
 }
