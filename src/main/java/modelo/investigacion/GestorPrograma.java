@@ -62,27 +62,55 @@ public class GestorPrograma {
 
 			ManejoDatos md = new ManejoDatos();
 			String table = "ProgramasInvestigacion";
-			String campos = "`Nombre` = '"+ programa.getNombre() +"', "
+			String campos = "";/*, "
 					+ "`Director` = " + programa.getDirector().getLegajo() + ", "
-					+ "`Estado` = " + programa.getEstado().getId();
+					+ "`Estado` = " + programa.getEstado().getId();*/
 
 			String condicion = "id = " + programa.getId();
 
+			
+			if (programa.getNombre() != null && !programa.getNombre().equals("")) {
+				campos += "`Nombre` = '"+ programa.getNombre() +"'";
+			}
+			if (programa.getDirector() != null) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Director` = " + programa.getDirector().getLegajo();
+			}
+			if (programa.getEstado() != null) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Estado` = " + programa.getEstado().getId();
+			}
 
 			if (programa.getCodirector() != null) {
-				campos += ", `Codirector` = " + programa.getCodirector().getLegajo();
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Codirector` = " + programa.getCodirector().getLegajo();
 			}
 
 			if (programa.getDisposicion() != null && !programa.getDisposicion().equals("")) {
-				campos += ", `Disposicion` = '" + programa.getDisposicion() + "'";
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Disposicion` = '" + programa.getDisposicion() + "'";
 			}
 
 			if (programa.getFechaInicio() != null) {
-				campos += ", `Desde` = '" + Date.valueOf(programa.getFechaInicio()) + "'";
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Desde` = '" + Date.valueOf(programa.getFechaInicio()) + "'";
 			}
 
 			if (programa.getFechaFin() != null) {
-				campos += ", `Hasta` = '" + Date.valueOf(programa.getFechaFin()) + "'";
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Hasta` = '" + Date.valueOf(programa.getFechaFin()) + "'";
 			}
 
 			md.update(table, campos, condicion);
