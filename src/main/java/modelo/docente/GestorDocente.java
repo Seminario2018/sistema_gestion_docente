@@ -88,14 +88,14 @@ public class GestorDocente {
             	if (!campos.equals("")) {
         			campos += ", ";
         		}
-                campos += ", `Observaciones`= '" + docente.getObservaciones() + "'";
+                campos += "`Observaciones`= '" + docente.getObservaciones() + "'";
             }
 
             if (docente.getCategoriaInvestigacion() != null) {
             	if (!campos.equals("")) {
         			campos += ", ";
         		}
-                campos += ", `CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion().getId();
+                campos += "`CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion().getId();
             }
 
             String condicion = "`Legajo` = " + docente.getLegajo();
@@ -378,37 +378,37 @@ public class GestorDocente {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", Disposicion = '" + cargoDocente.getDisposicion() + "'";
+                campos += "Disposicion = '" + cargoDocente.getDisposicion() + "'";
             }
             if (cargoDocente.getDispDesde() != null) {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", DispDesde = '" + Date.valueOf(cargoDocente.getDispDesde()) + "'";
+                campos += "DispDesde = '" + Date.valueOf(cargoDocente.getDispDesde()) + "'";
             }
             if (cargoDocente.getDispHasta() != null) {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", DispHasta = '" + Date.valueOf(cargoDocente.getDispHasta()) + "'";
+                campos += "DispHasta = '" + Date.valueOf(cargoDocente.getDispHasta()) + "'";
             }
             if (cargoDocente.getResolucion() != null && !cargoDocente.getResolucion().equals("")) {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", Resolucion = '" + cargoDocente.getResolucion() + "'";
+                campos += "Resolucion = '" + cargoDocente.getResolucion() + "'";
             }
             if (cargoDocente.getResDesde() != null) {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", ResDesde = '" + Date.valueOf(cargoDocente.getResDesde()) + "'";
+                campos += "ResDesde = '" + Date.valueOf(cargoDocente.getResDesde()) + "'";
             }
             if (cargoDocente.getResHasta() != null) {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-                campos += ", ResHasta = '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
+                campos += "ResHasta = '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
 
             String condicion = String.format("Codigo='%d'", cargoDocente.getId());

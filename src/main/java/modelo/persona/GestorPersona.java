@@ -165,16 +165,31 @@ public class GestorPersona {
 			String table = "Personas";
 			String condicion =	" TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
 
-			String campos =	"`Apellido` = '" + persona.getApellido() + "', "
-							+ "`Nombre` = '" + persona.getNombre() + "'";
-
-
+			String campos =	"";
+			
+			
+			if (persona.getApellido() != null && !persona.getApellido().equals("")) {
+				campos += "`Apellido` = '" + persona.getApellido() + "'";
+			}
+			if (persona.getNombre() != null && !persona.getNombre().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Nombre` = '" + persona.getNombre() + "'";
+				
+			}
 			if (persona.getFechaNacimiento() != null) {
-				campos += ", `FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'";
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`FechaNacimiento` = '" + Date.valueOf(persona.getFechaNacimiento()).toString() + "'";
 			}
 			if (persona.getEstado() != null) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
 				persona.getEstado().guardar();
-				campos += ", `Estado` = " + persona.getEstado().getId();
+				campos += "`Estado` = " + persona.getEstado().getId();
 			}
 			md.update(table, campos, condicion);
 
@@ -539,12 +554,24 @@ public class GestorPersona {
 			String table = "Domicilios";
 			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento().getId() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "', `iddomicilios`="+domicilio.getId();
 
-			String campos =	"`Provincia` = '" + domicilio.getProvincia() + "', "
-							+ "`Ciudad` = '" + domicilio.getCiudad() + "', "
-			                 + "`CodigoPostal` = '" + domicilio.getCodigoPostal() + "', "
-			                +"`Direccion` = '" + domicilio.getDireccion() + "'";
-
-
+			String campos =	"";
+			
+			
+			if (domicilio.getProvincia() != null && !domicilio.getProvincia().equals("")) {
+				campos += "`Provincia` = '" + domicilio.getProvincia() + "'";
+			}
+			if (domicilio.getCiudad() != null && !domicilio.getCiudad().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`Ciudad` = '" + domicilio.getCiudad() + "'";
+			}
+			if (domicilio.getCodigoPostal() != null && !domicilio.getCodigoPostal().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "`CodigoPostal` = '" + domicilio.getCodigoPostal() + "'";
+			}
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
