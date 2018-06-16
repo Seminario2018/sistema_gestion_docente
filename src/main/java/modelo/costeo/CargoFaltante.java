@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public class CargoFaltante implements ICargoFaltante {
 	
-	//legajo, apellido, nombre, codigo cargo, último costo, fecha ultimo costo, tipo
 	private int legajo;
 	private String apellido;
 	private String nombre;
