@@ -9,8 +9,7 @@ public enum Modulo {
 	CARGOS,
 	DOCENTES,
 	INVESTIGACION,
-	VER_INFORMES,
-	EDIT_INFORMES,
+	INFORMES,
 	PERSONAS,
 	PROYECTOS,
 	PROGRAMAS;
@@ -23,8 +22,7 @@ public enum Modulo {
 	        case USUARIOS: return "Usuarios";
 	        case DOCENTES: return "Docentes";
 	        case INVESTIGACION: return "Investigación";
-	        case VER_INFORMES: return "Ver Informes";
-	        case EDIT_INFORMES: return "Editar informes";
+	        case INFORMES: return "Informes";
 	    }
 	    return "";
 	}

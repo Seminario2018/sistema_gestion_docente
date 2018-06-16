@@ -85,7 +85,7 @@ public class Usuario implements IUsuario{
     }
 
     @Override
-    public List<IRol> getGrupos() {
+    public List<IRol> getRoles() {
         return this.roles;
     }
 

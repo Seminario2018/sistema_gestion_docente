@@ -68,7 +68,7 @@ public class Usuarios extends ControladorVista implements Initializable {
         if (this.usuario == null) {
             throw new RuntimeException("Usuario es null");
         }
-        for (IRol rol : this.usuario.getGrupos()) {
+        for (IRol rol : this.usuario.getRoles()) {
             for (IPermiso permiso : rol.getPermisos()) {
             	if (permiso.getModulo() == Modulo.USUARIOS) {
             		this.permiso = permiso;
@@ -301,7 +301,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             filasDisponibles.clear();
 
             List<IRol> rolesDisponibles = controlUsuario.listarGrupo(null);
-            List<IRol> rolesUsuario = usuarioSeleccion.getGrupos();
+            List<IRol> rolesUsuario = usuarioSeleccion.getRoles();
             rolesDisponibles.removeAll(rolesUsuario);
 
             for (IRol rol : rolesDisponibles) {
@@ -314,7 +314,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 	private void actualizarTablaUsuario() {
 	    if (usuarioSeleccion != null) {
 	        filasUsuario.clear();
-	        for (IRol rol : usuarioSeleccion.getGrupos()) {
+	        for (IRol rol : usuarioSeleccion.getRoles()) {
 	            filasUsuario.add(
 	                new FilaRol(rol));
 	        }

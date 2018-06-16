@@ -32,24 +32,24 @@
          <menus>
             <Menu mnemonicParsing="false" text="Usuarios">
                <items>
-                  <MenuItem fx:id="mnuUsuarios" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
-                  <MenuItem fx:id="mnuRoles" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
+                  <MenuItem fx:id="mnuUsuarios" disable="true" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
+                  <MenuItem fx:id="mnuRoles" disable="true" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="RR HH">
                <items>
-                  <MenuItem fx:id="mnuPersonas" mnemonicParsing="false" onAction="#pantallaPersonas" text="Personas" />
+                  <MenuItem fx:id="mnuPersonas" disable="true" mnemonicParsing="false" onAction="#pantallaPersonas" text="Personas" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Docencia">
                <items>
-                  <MenuItem fx:id="mnuDocentes" mnemonicParsing="false" onAction="#pantallaDocentes" text="Docentes" />
+                  <MenuItem fx:id="mnuDocentes" disable="true" mnemonicParsing="false" onAction="#pantallaDocentes" text="Docentes" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="mnuProgramas" mnemonicParsing="false" onAction="#pantallaProgramas" text="Programas de investigación" />
-                  <MenuItem fx:id="mnuProyectos" mnemonicParsing="false" onAction="#pantallaProyectos" text="Proyectos de investigación" />
+                  <MenuItem fx:id="mnuProgramas" disable="true" mnemonicParsing="false" onAction="#pantallaProgramas" text="Programas de investigación" />
+                  <MenuItem fx:id="mnuProyectos" disable="true" mnemonicParsing="false" onAction="#pantallaProyectos" text="Proyectos de investigación" />
                </items>
             </Menu>
-            <Menu fx:id="mnuInformes" mnemonicParsing="false" onAction="#pantallaListaInformes" text="Informes" />
+            <Menu fx:id="mnuInformes" disable="true" mnemonicParsing="false" onAction="#pantallaListaInformes" text="Informes" />
             <Menu mnemonicParsing="false" text="Ayuda">
               <items>
                 <MenuItem mnemonicParsing="false" text="Manual de usuario" />

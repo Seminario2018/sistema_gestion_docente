@@ -52,7 +52,7 @@ public class Roles extends ControladorVista implements Initializable {
 	    boolean eliminar = false;
 	    boolean listar = false;
 
-	    for (IRol rol : this.usuario.getGrupos()) {
+	    for (IRol rol : this.usuario.getRoles()) {
 	        for (IPermiso permiso : rol.getPermisos()) {
 	            if (permiso.getModulo() == Modulo.ROLES) {
 	                this.permiso = permiso;

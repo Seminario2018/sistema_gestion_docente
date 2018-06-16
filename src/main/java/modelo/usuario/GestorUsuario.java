@@ -34,7 +34,7 @@ public class GestorUsuario {
 
         	table = "RolesXUsuario";
         	campos = "`Usuario`, `Rol`";
-        	for(IRol r : usuario.getGrupos()) {
+        	for(IRol r : usuario.getRoles()) {
         		valores = "'" + usuario.getUser() + "', " + r.getId();
             	md.insertar(table, campos, valores);
         	}

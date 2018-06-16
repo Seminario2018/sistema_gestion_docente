@@ -15,7 +15,7 @@ public interface IUsuario {
 	public IPersona getPersona();
 	public void setPersona(IPersona persona);
 
-	public List<IRol> getGrupos();
+	public List<IRol> getRoles();
     public void setGrupos(List<IRol> grupos);
     public void agregarRol(IRol grupo);
     public void quitarGrupo(IRol grupo);

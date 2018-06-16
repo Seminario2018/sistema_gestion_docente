@@ -100,6 +100,7 @@ public class GestorPantalla {
 			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 			preferenciasVentana("Principal");
+			this.pantallaPrincipal.inicializar();
 			this.primaryStage.setMaximized(true);
 
 		} catch (IOException e) {

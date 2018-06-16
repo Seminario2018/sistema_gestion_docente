@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import controlador.ControlUsuario;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,12 @@ public class Login extends ControladorVista implements Initializable {
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	            txtLoginUsuario.requestFocus();
+	        }
+	    });
 	}
 	
 	private ControlUsuario control = new ControlUsuario(this);
