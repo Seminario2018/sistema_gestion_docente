@@ -9,6 +9,7 @@ import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
+import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
 public class GestorProyecto {

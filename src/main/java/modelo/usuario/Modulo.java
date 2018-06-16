@@ -7,6 +7,7 @@ public enum Modulo {
 	USUARIOS,
 	DOCENTES,
 	INVESTIGACION,
+	PERSONAS,
 	INFORMES;
 
 	@Override

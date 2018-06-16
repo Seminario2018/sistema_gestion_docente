@@ -522,6 +522,38 @@ public class GestorDocente {
             return false;
         }
     }
+    
+    
+    public List<ProyectoDocente> listarProyectosDocente(IDocente docente){
+    	List<ProyectoDocente> proyectos;
+		try {
+			proyectos = new ArrayList<ProyectoDocente>();
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "viewproyectosdocentes";
+			String condicion = "TRUE";
+			if (docente != null && docente.getLegajo() != -1) {
+				condicion = "Legajo = " + docente.getLegajo();
+			}
+			
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			for (Hashtable<String, String> reg : res) {
+				ProyectoDocente pd = new ProyectoDocente();
+				pd.setNombreProyecto(reg.get("Nombre"));
+				pd.setArea(reg.get("Area"));
+				pd.setCargo(reg.get("Cargo"));
+				pd.setCodigoCargo(Integer.parseInt(reg.get("CodigoCargo")));
+				pd.setHorasDedicadas(Integer.parseInt(reg.get("HorasSemanales")));
+				proyectos.add(pd);
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			proyectos = new ArrayList<ProyectoDocente>();
+		}
+    	
+    	return proyectos;
+    	
+    }
+
 
     // Plantillas vacías ======================================================
     /**
