@@ -132,8 +132,8 @@ public class Docentes extends ControladorVista implements Initializable {
             btnDatosDescartar.setVisible(false);
 
             txtDatosLegajo.setEditable(false);
-            cmbDatosEstado.setEditable(false);
-            cmbDatosCategoria.setEditable(false);
+            cmbDatosEstado.setDisable(false);
+            cmbDatosCategoria.setDisable(false);
 
             // Pestaña Cargos:
             btnCargosNuevo.setVisible(false);
@@ -143,8 +143,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
             btnCargosArea.setVisible(false);
             btnCargosCargo.setVisible(false);
-            cmbCargosEstado.setEditable(false);
-            cmbCargosTipo.setEditable(false);
+            cmbCargosEstado.setDisable(false);
+            cmbCargosTipo.setDisable(false);
             txtCargosDisp.setEditable(false);
             dtpCargosDispDesde.setEditable(false);
             dtpCargosDispHasta.setEditable(false);
@@ -234,8 +234,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	    btnDatosGuardar.setVisible(false);
 	    btnDatosDescartar.setVisible(false);
 	    txtDatosLegajo.setEditable(false);
-	    cmbDatosEstado.setEditable(false);
-	    cmbDatosCategoria.setEditable(false);
+	    cmbDatosEstado.setDisable(false);
+	    cmbDatosCategoria.setDisable(false);
 
 	    // Pestaña Cargos:
 	    btnCargosNuevo.setVisible(false);
@@ -244,8 +244,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	    btnCargosArea.setVisible(false);
 	    btnCargosCargo.setVisible(false);
-	    cmbCargosEstado.setEditable(false);
-	    cmbCargosTipo.setEditable(false);
+	    cmbCargosEstado.setDisable(false);
+	    cmbCargosTipo.setDisable(false);
 	    txtCargosDisp.setEditable(false);
 	    dtpCargosDispDesde.setEditable(false);
 	    dtpCargosDispHasta.setEditable(false);
