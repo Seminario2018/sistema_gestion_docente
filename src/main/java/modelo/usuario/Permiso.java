@@ -20,7 +20,13 @@ public class Permiso implements IPermiso {
 		this.listar = INACTIVO;
 	}
 
-    @Override
+    /**
+	 * 
+	 */
+	public Permiso() {
+	}
+
+	@Override
     public IPermiso clone() {
         return (IPermiso) new Permiso(this.modulo);
     }

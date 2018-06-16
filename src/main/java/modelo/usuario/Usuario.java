@@ -90,7 +90,7 @@ public class Usuario implements IUsuario{
     }
 
     @Override
-    public void agregarGrupo(IRol grupo) {
+    public void agregarRol(IRol grupo) {
         this.roles.add(grupo);
     }
 

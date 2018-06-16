@@ -145,4 +145,11 @@ public class GestorRol {
     public IRol getIRol() {
         return new Rol();
     }
+
+	/**
+	 * @return
+	 */
+	public IPermiso getIPermiso() {
+		return (IPermiso) new Permiso();
+	}
 }

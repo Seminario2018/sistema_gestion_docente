@@ -18,11 +18,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import jfxtras.scene.control.window.CloseIcon;
 import jfxtras.scene.control.window.Window;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
+import vista.controladores.Login;
 import vista.controladores.Principal;
 
 /**
@@ -43,6 +45,7 @@ public class GestorPantalla {
 
 	private static final String ID_MAIN_PANE = "mainPane";
 
+	Stage loginStage;
 	Stage primaryStage;
 
 	IUsuario usuario;
@@ -53,7 +56,31 @@ public class GestorPantalla {
 	Map<String, List<Window>> pantallasHijas = new HashMap<String, List<Window>>();
 
 	public static final String KEY_PADRE = "padre";
-	public static final String KEY_USUARIO = "usuario";
+	
+	public void lanzarPantallaLogin() {
+		this.loginStage = new Stage();
+		try {
+			FXMLLoader loader = getLoader(Login.TITULO);
+			Parent root = loader.load();
+
+			Login controlador = (Login) loader.getController();
+			controlador.setGestorPantalla(this);
+		
+			this.loginStage.initStyle(StageStyle.UNDECORATED);
+			permitirArrastrar(this.loginStage, loader);
+			
+			Scene scene = new Scene(root);
+			this.loginStage.setScene(scene);
+			this.loginStage.show();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void cerrarPantallaLogin() {
+		this.loginStage.close();
+	}
 
 	public void lanzarPantallaPrincipal(IUsuario usuario) {
 
@@ -147,12 +174,6 @@ public class GestorPantalla {
 					if (controlador instanceof ControladorVista) {
                         ((ControladorVista) controlador).recibirParametros(args);
                     }
-				} else {
-				    if (args == null) {
-				        args = new HashMap<String, Object>();
-				    }
-				    args.put(KEY_USUARIO, usuario);
-				    ((ControladorVista) controlador).recibirParametros(args);
 				}
 
 

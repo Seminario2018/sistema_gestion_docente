@@ -249,7 +249,7 @@ public class GestorUsuario {
 				Rol r = new Rol(Integer.parseInt(reg.get("Rol")));
 				GestorRol gr = new GestorRol();
 				r = (Rol) gr.listarGrupo(r).get(0);
-				usuario.agregarGrupo(r);
+				usuario.agregarRol(r);
 			}
 
     	} catch (Exception e) {

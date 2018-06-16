@@ -17,6 +17,6 @@ public interface IUsuario {
 
 	public List<IRol> getGrupos();
     public void setGrupos(List<IRol> grupos);
-    public void agregarGrupo(IRol grupo);
+    public void agregarRol(IRol grupo);
     public void quitarGrupo(IRol grupo);
 }

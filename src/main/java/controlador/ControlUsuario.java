@@ -4,6 +4,7 @@ import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.usuario.GestorRol;
 import modelo.usuario.GestorUsuario;
+import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
@@ -66,5 +67,9 @@ public class ControlUsuario {
 
     public IRol getIRol() {
         return gestorRol.getIRol();
+    }
+    
+    public IPermiso getIPermiso() {
+    	return gestorRol.getIPermiso();
     }
 }

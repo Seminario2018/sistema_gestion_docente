@@ -10,6 +10,7 @@ import modelo.usuario.Modulo;
 import modelo.usuario.Permiso;
 import modelo.usuario.Rol;
 import vista.GestorPantalla;
+import vista.controladores.Login;
 
 /**
  * @author Martín Tomás Juran
@@ -23,8 +24,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
-
 		GestorPantalla gp = new GestorPantalla();
+
+		/*
 		ControlUsuario controlUsuario = new ControlUsuario(null);
 		IUsuario usuario = controlUsuario.getIUsuario();
 		usuario.setUser("pepe");
@@ -40,9 +42,12 @@ public class Main extends Application {
 	        permiso.setListar(true);
 	        r.agregarPermiso(permiso);
 		}
-		usuario.agregarGrupo(r);
-
-		gp.lanzarPantallaPrincipal(usuario);
+		usuario.agregarRol(r); 
+		*/
+		
+//		gp.lanzarPantallaPrincipal(usuario);
+		
+		gp.lanzarPantallaLogin();
 	}
 
 	public static void main(String[] args) {

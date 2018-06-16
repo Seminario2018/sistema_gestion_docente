@@ -22,20 +22,12 @@ public class Rol implements IRol {
 	    this.id = id;
         this.nombre = "";
         this.permisos = new ArrayList<IPermiso>();
-        for (Modulo m: Modulo.values()) {
-            IPermiso p = new Permiso(m);
-            permisos.add(p);
-        }
 	}
 
 	public Rol(int id, String nombre) {
 	    this.id = id;
 		this.nombre = nombre;
 		this.permisos = new ArrayList<IPermiso>();
-		for (Modulo m: Modulo.values()) {
-			IPermiso p = new Permiso(m);
-			permisos.add(p);
-		}
 	}
 
 	public Rol(int id, String nombre, List<IPermiso> permisos) {
@@ -90,6 +82,16 @@ public class Rol implements IRol {
 
     @Override
     public void agregarPermiso(IPermiso permiso) {
+    	boolean existe = false;
+    	int i = 0;
+    	while (i < this.permisos.size() && !existe) {
+    		IPermiso p = this.permisos.get(i);
+    		if (p != null && permiso.getModulo() == p.getModulo()) {
+    			existe = true;
+    			this.permisos.remove(i);
+    		}
+    		i++;
+    	}	
         this.permisos.add(permiso);
     }
 
