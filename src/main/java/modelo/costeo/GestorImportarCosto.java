@@ -126,10 +126,15 @@ public class GestorImportarCosto {
 	 */
 	public EstadoOperacion guardar() {
 		// No hay datos para importar
-		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
-					"No se han importado datos o no hay datos para actualizar.");
-		}
+		if (this.cargosImportados == null || this.cargosImportados.isEmpty())
+			// No hay datos para actualizar
+			if (this.faltantesCosteoModificados == null || this.faltantesCosteoModificados.isEmpty())
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
+						"No se han importado datos y no hay datos para actualizar."
+						+ " Intente importar una planilla o modificar el Estado de un Cargo.");
+			else
+				return guardarEstado();
+			
 		EstadoOperacion eo = guardarEstado();
 		switch (eo.getEstado()) {
 		case UPDATE_OK:
@@ -314,12 +319,12 @@ public class GestorImportarCosto {
 					this.faltantesCosteo.add(cargo);
 				}
 			}
-			// Actualizar los cargos que fueron modificados por el usuario
-			for (ICargoDocente modificado : this.faltantesCosteoModificados) {
-				ICargoDocente anterior = buscarCargo(modificado.getId(), this.faltantesCosteo);
-				if (anterior != null)
-					anterior.setEstado(modificado.getEstado());
-			}
+		}
+		// Actualizar los cargos que fueron modificados por el usuario
+		for (ICargoDocente modificado : this.faltantesCosteoModificados) {
+			ICargoDocente anterior = buscarCargo(modificado.getId(), this.faltantesCosteo);
+			if (anterior != null)
+				anterior.setEstado(modificado.getEstado());
 		}
 	}
 	

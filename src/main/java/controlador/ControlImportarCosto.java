@@ -69,7 +69,7 @@ public class ControlImportarCosto {
     		    vista.mensajeEstado(resultado.getMensaje());
     			break;
     		default:
-    			this.vista.alertaError(tituloDialogo, "No se pudieron actualizar los datos", resultado.getMensaje());
+    			this.vista.alertaError(tituloDialogo, "No se actualizaron datos", resultado.getMensaje());
 		}
 	}
 
