@@ -63,14 +63,38 @@ public class GestorDocente {
         try {
             ManejoDatos md = new ManejoDatos();
             String tabla = "Docentes";
-            String campos = "`TipoDocumento` = '" + docente.getPersona().getTipoDocumento().getId()
-                    + "', `NroDocumento`= '" + docente.getPersona().getNroDocumento() + "', Estado = " + docente.getEstado().getId();
+            String campos = "";
+            		
+            if (docente.getPersona() != null) {
+            	if (docente.getPersona().getTipoDocumento() != null) {
+            		campos += "`TipoDocumento` = '" + docente.getPersona().getTipoDocumento().getId();
+            	}
+            	if (docente.getPersona().getNroDocumento() != -1) {
+            		if (!campos.equals("")) {
+            			campos += ", ";
+            		}
+            		campos += "`NroDocumento`= '" + docente.getPersona().getNroDocumento() + "'";
+            	}
+            }
+            if (docente.getEstado() != null) {
+            	if (!campos.equals("")) {
+        			campos += ", ";
+        		}
+        		campos += "Estado = " + docente.getEstado().getId();
+            }
+
 
             if (docente.getObservaciones() != null && !docente.getObservaciones().equals("")) {
+            	if (!campos.equals("")) {
+        			campos += ", ";
+        		}
                 campos += ", `Observaciones`= '" + docente.getObservaciones() + "'";
             }
 
             if (docente.getCategoriaInvestigacion() != null) {
+            	if (!campos.equals("")) {
+        			campos += ", ";
+        		}
                 campos += ", `CategoriaInvestigacion` = " + docente.getCategoriaInvestigacion().getId();
             }
 
