@@ -125,6 +125,7 @@ public class Docentes extends ControladorVista implements Initializable {
             // Pestaña Datos:
             btnDatosGuardar.setVisible(false);
             btnDatosDescartar.setVisible(false);
+
             txtDatosLegajo.setEditable(false);
             cmbDatosEstado.setEditable(false);
             cmbDatosCategoria.setEditable(false);
@@ -133,6 +134,8 @@ public class Docentes extends ControladorVista implements Initializable {
             btnCargosNuevo.setVisible(false);
             btnCargosGuardar.setVisible(false);
             btnCargosDescartar.setVisible(false);
+            btnCargosEliminar.setVisible(false);
+
             btnCargosArea.setVisible(false);
             btnCargosCargo.setVisible(false);
             cmbCargosEstado.setEditable(false);
@@ -167,50 +170,7 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 	@Override
-    public void modoVer() {
-	    // General:
-	    btnDocentesEliminar.setVisible(false);
-        btnDocentesCosto.setVisible(true);
-
-        // Pestaña Datos:
-        btnDatosGuardar.setVisible(false);
-        btnDatosDescartar.setVisible(false);
-        txtDatosLegajo.setEditable(false);
-        cmbDatosEstado.setEditable(false);
-        cmbDatosCategoria.setEditable(false);
-
-        // Pestaña Cargos:
-        btnCargosNuevo.setVisible(false);
-        btnCargosGuardar.setVisible(false);
-        btnCargosDescartar.setVisible(false);
-        btnCargosArea.setVisible(false);
-        btnCargosCargo.setVisible(false);
-        cmbCargosEstado.setEditable(false);
-        cmbCargosTipo.setEditable(false);
-        txtCargosDisp.setEditable(false);
-        dtpCargosDispDesde.setEditable(false);
-        dtpCargosDispHasta.setEditable(false);
-        txtCargosRes.setEditable(false);
-        dtpCargosResDesde.setEditable(false);
-        dtpCargosResHasta.setEditable(false);
-
-        // Pestaña Incentivos:
-        btnIncentivosNuevo.setVisible(false);
-        btnIncentivosGuardar.setVisible(false);
-        btnIncentivosDescartar.setVisible(false);
-        txtIncentivosAnio.setEditable(false);
-
-        // Pestaña Observaciones:
-        btnObservacionesGuardar.setVisible(false);
-        btnObservacionesDescartar.setVisible(false);
-        txtaObservaciones.setEditable(false);
-
-	    this.window.setTitle(TITULO);
-	    this.gestorPantalla.mensajeEstado("");
-	}
-
-	@Override
-    public void modoModificar() {
+	public void modoModificar() {
 	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
 	        // General:
 	        btnDocentesCosto.setVisible(true);
@@ -254,9 +214,52 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Docente");
-        if (this.docenteSeleccion != null) {
-            this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
-        }
+	    if (this.docenteSeleccion != null) {
+	        this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
+	    }
+	}
+
+	@Override
+	public void modoVer() {
+	    // General:
+	    btnDocentesEliminar.setVisible(false);
+	    btnDocentesCosto.setVisible(true);
+
+	    // Pestaña Datos:
+	    btnDatosGuardar.setVisible(false);
+	    btnDatosDescartar.setVisible(false);
+	    txtDatosLegajo.setEditable(false);
+	    cmbDatosEstado.setEditable(false);
+	    cmbDatosCategoria.setEditable(false);
+
+	    // Pestaña Cargos:
+	    btnCargosNuevo.setVisible(false);
+	    btnCargosGuardar.setVisible(false);
+	    btnCargosDescartar.setVisible(false);
+	    btnCargosArea.setVisible(false);
+	    btnCargosCargo.setVisible(false);
+	    cmbCargosEstado.setEditable(false);
+	    cmbCargosTipo.setEditable(false);
+	    txtCargosDisp.setEditable(false);
+	    dtpCargosDispDesde.setEditable(false);
+	    dtpCargosDispHasta.setEditable(false);
+	    txtCargosRes.setEditable(false);
+	    dtpCargosResDesde.setEditable(false);
+	    dtpCargosResHasta.setEditable(false);
+
+	    // Pestaña Incentivos:
+	    btnIncentivosNuevo.setVisible(false);
+	    btnIncentivosGuardar.setVisible(false);
+	    btnIncentivosDescartar.setVisible(false);
+	    txtIncentivosAnio.setEditable(false);
+
+	    // Pestaña Observaciones:
+	    btnObservacionesGuardar.setVisible(false);
+	    btnObservacionesDescartar.setVisible(false);
+	    txtaObservaciones.setEditable(false);
+
+	    this.window.setTitle(TITULO);
+	    this.gestorPantalla.mensajeEstado("");
 	}
 
 // -------------------------------- General --------------------------------- //

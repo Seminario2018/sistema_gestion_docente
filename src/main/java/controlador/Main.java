@@ -29,15 +29,15 @@ public class Main extends Application {
 		usuario.setUser("pepe");
 		usuario.setPass("123456");
 		usuario.setGrupos(new ArrayList<IRol>());
-		
+
 		Rol r = new Rol(0, "su");
 		Permiso per  = new Permiso(Modulo.USUARIOS);
 		per.setCrear(true);
 		per.setEliminar(true);
-//		per.setModificar(true);
+		per.setModificar(true);
 		per.setListar(true);
 		r.agregarPermiso(per);
-		
+
 		usuario.agregarGrupo(r);
 
 //		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));
