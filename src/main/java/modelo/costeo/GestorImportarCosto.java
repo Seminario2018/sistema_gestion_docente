@@ -258,10 +258,9 @@ public class GestorImportarCosto {
 	 * como en la planilla importada
 	 */
 	private void actualizarListas() {
-		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
-			this.faltantesSistema = new ArrayList<ICargoFaltante>();
-			this.faltantesCosteo = new ArrayList<ICargoDocente>();
-		} else {
+		this.faltantesSistema = new ArrayList<ICargoFaltante>();
+		this.faltantesCosteo = new ArrayList<ICargoDocente>();
+		if (this.cargosImportados != null && !this.cargosImportados.isEmpty()) {
 			// Recuperar todos los cargos del sistema, para luego agregarlos
 			// a los faltantes del costeo
 			List<ICargoDocente> cargosSistema = this.gestorDocente.listarCargo(null, null);

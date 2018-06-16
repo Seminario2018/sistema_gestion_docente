@@ -34,6 +34,9 @@ import modelo.docente.IIncentivo;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import modelo.persona.IPersona;
+import modelo.usuario.IPermiso;
+import modelo.usuario.IRol;
+import modelo.usuario.Modulo;
 import utilidades.Utilidades;
 import vista.GestorPantalla;
 
@@ -46,6 +49,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	public void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
 		if (docenteSeleccion instanceof IDocente) {
 			this.docenteSeleccion = (IDocente) docenteSeleccion;
+			modoModificar();
 	        generalMostrarDocente();
 		}
 	}
@@ -90,6 +94,171 @@ public class Docentes extends ControladorVista implements Initializable {
 	private static final String TIPO_DOCENTE = "docente";
 	private static final String TIPO_PERSONA = "persona";
 
+	@Override
+    public void inicializar() {
+        /* Ocultar controles según roles del usuario: */
+        boolean crear = false;
+        boolean modificar = false;
+        boolean eliminar = false;
+        boolean listar = false;
+
+        for (IRol rol : this.usuario.getGrupos()) {
+            for (IPermiso permiso : rol.getPermisos()) {
+                if (permiso.getModulo() == Modulo.DOCENTES) {
+                    this.permiso = permiso;
+                    crear |= permiso.getCrear();
+                    modificar |= permiso.getModificar();
+                    eliminar |= permiso.getEliminar();
+                    listar |= permiso.getListar();
+                }
+            }
+        }
+
+        if (!crear) {
+            btnDocentesNuevo.setVisible(false);
+        }
+
+        if (!modificar) {
+            // General:
+            btnDocentesCosto.setVisible(false);
+
+            // Pestaña Datos:
+            btnDatosGuardar.setVisible(false);
+            btnDatosDescartar.setVisible(false);
+            txtDatosLegajo.setEditable(false);
+            cmbDatosEstado.setEditable(false);
+            cmbDatosCategoria.setEditable(false);
+
+            // Pestaña Cargos:
+            btnCargosNuevo.setVisible(false);
+            btnCargosGuardar.setVisible(false);
+            btnCargosDescartar.setVisible(false);
+            btnCargosArea.setVisible(false);
+            btnCargosCargo.setVisible(false);
+            cmbCargosEstado.setEditable(false);
+            cmbCargosTipo.setEditable(false);
+            txtCargosDisp.setEditable(false);
+            dtpCargosDispDesde.setEditable(false);
+            dtpCargosDispHasta.setEditable(false);
+            txtCargosRes.setEditable(false);
+            dtpCargosResDesde.setEditable(false);
+            dtpCargosResHasta.setEditable(false);
+
+            // Pestaña Incentivos:
+            btnIncentivosNuevo.setVisible(false);
+            btnIncentivosGuardar.setVisible(false);
+            btnIncentivosDescartar.setVisible(false);
+            txtIncentivosAnio.setEditable(false);
+
+            // Pestaña Observaciones:
+            btnObservacionesGuardar.setVisible(false);
+            btnObservacionesDescartar.setVisible(false);
+            txtaObservaciones.setEditable(false);
+        }
+
+        if (!eliminar) {
+            btnDocentesEliminar.setVisible(false);
+        }
+
+        if (!listar) {
+        }
+
+        modoVer();
+    }
+
+	@Override
+    public void modoVer() {
+	    // General:
+	    btnDocentesEliminar.setVisible(false);
+        btnDocentesCosto.setVisible(true);
+
+        // Pestaña Datos:
+        btnDatosGuardar.setVisible(false);
+        btnDatosDescartar.setVisible(false);
+        txtDatosLegajo.setEditable(false);
+        cmbDatosEstado.setEditable(false);
+        cmbDatosCategoria.setEditable(false);
+
+        // Pestaña Cargos:
+        btnCargosNuevo.setVisible(false);
+        btnCargosGuardar.setVisible(false);
+        btnCargosDescartar.setVisible(false);
+        btnCargosArea.setVisible(false);
+        btnCargosCargo.setVisible(false);
+        cmbCargosEstado.setEditable(false);
+        cmbCargosTipo.setEditable(false);
+        txtCargosDisp.setEditable(false);
+        dtpCargosDispDesde.setEditable(false);
+        dtpCargosDispHasta.setEditable(false);
+        txtCargosRes.setEditable(false);
+        dtpCargosResDesde.setEditable(false);
+        dtpCargosResHasta.setEditable(false);
+
+        // Pestaña Incentivos:
+        btnIncentivosNuevo.setVisible(false);
+        btnIncentivosGuardar.setVisible(false);
+        btnIncentivosDescartar.setVisible(false);
+        txtIncentivosAnio.setEditable(false);
+
+        // Pestaña Observaciones:
+        btnObservacionesGuardar.setVisible(false);
+        btnObservacionesDescartar.setVisible(false);
+        txtaObservaciones.setEditable(false);
+
+	    this.window.setTitle(TITULO);
+	    this.gestorPantalla.mensajeEstado("");
+	}
+
+	@Override
+    public void modoModificar() {
+	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	        // General:
+	        btnDocentesCosto.setVisible(true);
+
+	        // Pestaña Datos:
+	        btnDatosGuardar.setVisible(true);
+	        btnDatosDescartar.setVisible(true);
+	        txtDatosLegajo.setEditable(true);
+	        cmbDatosEstado.setEditable(true);
+	        cmbDatosCategoria.setEditable(true);
+
+	        // Pestaña Cargos:
+	        btnCargosNuevo.setVisible(true);
+	        btnCargosGuardar.setVisible(true);
+	        btnCargosDescartar.setVisible(true);
+	        btnCargosArea.setVisible(true);
+	        btnCargosCargo.setVisible(true);
+	        cmbCargosEstado.setEditable(true);
+	        cmbCargosTipo.setEditable(true);
+	        txtCargosDisp.setEditable(true);
+	        dtpCargosDispDesde.setEditable(true);
+	        dtpCargosDispHasta.setEditable(true);
+	        txtCargosRes.setEditable(true);
+	        dtpCargosResDesde.setEditable(true);
+	        dtpCargosResHasta.setEditable(true);
+
+	        // Pestaña Incentivos:
+	        btnIncentivosNuevo.setVisible(true);
+	        btnIncentivosGuardar.setVisible(true);
+	        btnIncentivosDescartar.setVisible(true);
+	        txtIncentivosAnio.setEditable(true);
+
+	        // Pestaña Observaciones:
+	        btnObservacionesGuardar.setVisible(true);
+	        btnObservacionesDescartar.setVisible(true);
+	        txtaObservaciones.setEditable(true);
+	    }
+
+	    if (this.permiso.getEliminar()) {
+	        btnDocentesEliminar.setVisible(false);
+	    }
+
+	    this.window.setTitle(TITULO + " - Modificar Docente");
+        if (this.docenteSeleccion != null) {
+            this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
+        }
+	}
+
 // -------------------------------- General --------------------------------- //
 	@FXML public TextField txtDocentesLegajo;
 	@FXML public TextField txtDocentesNombre;
@@ -118,8 +287,11 @@ public class Docentes extends ControladorVista implements Initializable {
         datosVaciarControles();
         cargosVaciarControles();
         observacionesVaciarControles();
+
+        this.gestorPantalla.mensajeEstado("");
     }
 
+    @FXML Button btnDocentesBuscar;
 	@FXML private void buscarDocente() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put(Busqueda.KEY_NUEVO, false);
@@ -130,20 +302,27 @@ public class Docentes extends ControladorVista implements Initializable {
 		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
 	}
 
+	@FXML Button btnDocentesNuevo;
 	@FXML private void nuevoDocente() {
 		docenteSeleccion = controlDocente.getIDocente();
 		generalVaciarControles();
+		modoModificar();
+		this.window.setTitle(TITULO + " - Nuevo Docente");
+		this.gestorPantalla.mensajeEstado("Nuevo Docente");
     }
 
+	@FXML Button btnDocentesEliminar;
 	@FXML private void eliminarDocente() {
 	    if (docenteSeleccion != null) {
 	        if (exitoEliminar(controlDocente.eliminarDocente(docenteSeleccion), TITULO, "Eliminar Docente")) {
 	            docenteSeleccion = null;
+	            modoVer();
 	            generalVaciarControles();
 	        }
 	    }
     }
 
+	@FXML Button btnDocentesCosto;
 	@FXML private void importarUltimoCosto() {
 		this.gestorPantalla.lanzarPantalla(ImportarCosto.TITULO, null);
     }
@@ -206,10 +385,12 @@ public class Docentes extends ControladorVista implements Initializable {
                 ControlAuxiliar.listarCategoriasInvestigacion()));
 	}
 
+	@FXML private Button btnDatosDatos;
 	@FXML private void mostrarDatos() {
 	    datosMostrarDocente();
 	}
 
+	@FXML private Button btnDatosGuardar;
 	@FXML private void guardarDatos() {
 	    if (docenteSeleccion != null) {
 	        try {
@@ -227,8 +408,11 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnDatosDescartar;
 	@FXML private void descartarDatos() {
-	    datosMostrarDocente();
+	    docenteSeleccion = null;
+	    modoVer();
+	    generalVaciarControles();
 	}
 
 	@FXML private void seleccionarPersona() {
@@ -548,6 +732,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		incentivosActualizarTabla();
 	}
 
+	@FXML private Button btnIncentivosNuevo;
 	@FXML private void nuevoIncentivo() {
 	    if (docenteSeleccion != null) {
     	    incentivoSeleccion = controlDocente.getIIncentivo();
@@ -555,6 +740,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnIncentivosGuardar;
 	@FXML private void guardarIncentivo() {
 	    if (docenteSeleccion != null && incentivoSeleccion != null) {
 	        try {
@@ -572,11 +758,13 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnIncentivosDescartar;
 	@FXML private void descartarIncentivo() {
 	    incentivoSeleccion = null;
 	    incentivosVaciarControles();
 	}
 
+	@FXML private Button btnIncentivosEliminar;
 	@FXML private void eliminarIncentivo() {
 	    if (docenteSeleccion != null && incentivoSeleccion != null) {
 
@@ -600,6 +788,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    txtaObservaciones.clear();
 	}
 
+	@FXML private Button btnObservacionesGuardar;
 	@FXML private void guardarObservaciones() {
 	    if (docenteSeleccion != null) {
             docenteSeleccion.setObservaciones(txtaObservaciones.getText());
@@ -607,13 +796,19 @@ public class Docentes extends ControladorVista implements Initializable {
         }
 	}
 
+	@FXML private Button btnObservacionesMostrar;
 	@FXML private void mostrarObservaciones() {
 	    if (docenteSeleccion != null) {
 	        txtaObservaciones.setText(docenteSeleccion.getObservaciones());
 	    }
 	}
 
+	@FXML private Button btnObservacionesDescartar;
 	@FXML private void descartarObservaciones() {
-	    mostrarObservaciones();
+	    if (docenteSeleccion != null) {
+            txtaObservaciones.setText(docenteSeleccion.getObservaciones());
+        } else {
+            txtaObservaciones.clear();
+        }
 	}
 }

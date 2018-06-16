@@ -178,6 +178,7 @@ public class Usuarios extends ControladorVista implements Initializable {
     	txtDescripcion.setEditable(false);
 
     	this.window.setTitle(TITULO);
+    	this.gestorPantalla.mensajeEstado("");
     }
 
 // -------------------------------- General --------------------------------- //
