@@ -3,6 +3,7 @@ package controlador;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
 import modelo.usuario.Modulo;
@@ -30,20 +31,19 @@ public class Main extends Application {
 		usuario.setPass("123456");
 		usuario.setGrupos(new ArrayList<IRol>());
 
-		Rol r = new Rol(0, "su");
-		Permiso per  = new Permiso(Modulo.USUARIOS);
-		per.setCrear(true);
-		per.setEliminar(true);
-		per.setModificar(true);
-		per.setListar(true);
-		r.agregarPermiso(per);
-
+		IRol r = new Rol(0, "su");
+		for (Modulo modulo : Modulo.values()) {
+		    IPermiso permiso = new Permiso(modulo);
+		    permiso.setCrear(true);
+	        permiso.setEliminar(true);
+	        permiso.setModificar(true);
+	        permiso.setListar(true);
+	        r.agregarPermiso(permiso);
+		}
 		usuario.agregarGrupo(r);
 
-//		gp.lanzarPantallaPrincipal(new Usuario("pepe", "pepe", null, null));
 		gp.lanzarPantallaPrincipal(usuario);
 	}
-
 
 	public static void main(String[] args) {
 		launch(args);
