@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.EncryptedDocumentException;
@@ -82,5 +83,12 @@ public class ControlImportarCosto {
 	 */
 	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
 		this.gestorImportarCosto.modificarEstado(cargo, estado);
+	}
+
+	/**
+	 * @return
+	 */
+	public LocalDate getUltimaFecha() {
+		return this.gestorImportarCosto.getUltimaFecha();
 	}
 }

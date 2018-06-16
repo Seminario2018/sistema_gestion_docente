@@ -2,8 +2,10 @@ package modelo.costeo;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -15,6 +17,7 @@ import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
+import persistencia.ManejoDatos;
 import utilidades.Utilidades;
 
 /**
@@ -64,12 +67,11 @@ public class GestorImportarCosto {
 	public EstadoOperacion importar(File archivo) {
 		try {
 	        List<List<String>> grilla = Excel.importar(archivo);
-	        // Sacar los encabezados y las últimas filas con las fórmulas:
+	        // Sacar los encabezados y la última fila con las fórmulas:
 	        grilla.remove(0);
 	        grilla.remove(0);
 	        grilla.remove(grilla.size() - 1);
-	        grilla.remove(grilla.size() - 1);
-
+	        
 	        this.cargosImportados = new ArrayList<ICargoFaltante>();
 	        
 	        for (List<String> fila : grilla) {
@@ -352,6 +354,24 @@ public class GestorImportarCosto {
 			cargo = listSelect.get(0);
 		
 		return cargo;
+	}
+	/**
+	 * @return última actualización del costo
+	 */
+	public LocalDate getUltimaFecha() {
+		LocalDate ultima = null;
+		try {
+			ManejoDatos md = new ManejoDatos();
+			List<Hashtable<String, String>> res = md.select("cargosdocentes", "MAX(FechaUltimoCosto)");
+			if (res != null && !res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				if (!reg.isEmpty() && !reg.get("MAX(FechaUltimoCosto)").equals(""))
+					ultima = Date.valueOf(reg.get("MAX(FechaUltimoCosto)")).toLocalDate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ultima;
 	}
 
 

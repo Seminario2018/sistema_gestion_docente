@@ -77,7 +77,10 @@ public class Costo {
 			String condicion = "CodigoCargo = " + cd.getId();
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			Hashtable<String, String> reg = res.get(0);
-			return Integer.parseInt(reg.get("MAX(id)"));
+			if (reg.get("MAX(id)").equals(""))
+				return 0;
+			else
+				return Integer.parseInt(reg.get("MAX(id)"));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
