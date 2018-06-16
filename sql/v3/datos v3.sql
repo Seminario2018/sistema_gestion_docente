@@ -371,47 +371,47 @@ INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoC
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143112', 'Marazzo', 'Leonardo', '93', '12813.94', '2018-09-15', '0');
 
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
-	values (1, "Alimentos", 143112, 0);
+	values (1, 'Estudios de los alimentos', 143112, 0);
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
-	values (2, "Las TIC", 57, 0);
+	values (2, 'Las Tecnologías de la información y la comunicación', 57, 0);
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
-	values (3, "Estudios de fisica", 325, 0);
+	values (3, 'Estudios de fisica', 325, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (1, "Estudio de las calorias en grasas", '2018-06-01', 143112, 1, 0);
+	values (1, 'Estudio de las calorias en grasas', '2018-06-01', 143112, 1, 0);
     
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (2, "Estudio del consumo de carne porcina", '2018-06-01', 81, 1, 0);
+	values (2, 'Estudio del consumo de carne porcina', '2018-06-01', 81, 1, 0);
 
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (3, "Estudio sobre las aguas", '2018-06-01', 104, 1, 0);
+	values (3, 'Estudio sobre las aguas', '2018-06-01', 104, 1, 0);
 
 
 
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (4, "Las tic y la educacio", '2018-06-01', 218, 2, 0);
+	values (4, 'Las tic y la educacio', '2018-06-01', 218, 2, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (5, "El uso de las tic en carreras no afines", '2018-06-01', 257, 2, 0);
+	values (5, 'El uso de las tic en carreras no afines', '2018-06-01', 257, 2, 0);
 
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (6, "WEB 2.0", '2018-06-01', 318, 2, 0);
+	values (6, 'WEB 2.0', '2018-06-01', 318, 2, 0);
     
 
 
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (7, "Los agujeros negros", '2018-06-01', 1153, 3, 0);
+	values (7, 'Los agujeros negros', '2018-06-01', 1153, 3, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (8, "La aerodinamia de los automoviles", '2018-06-01', 1193, 3, 0);
+	values (8, 'La aerodinamia de los automoviles', '2018-06-01', 1193, 3, 0);
 
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (9, "MRU", '2018-06-01', 1221, 3, 1);
+	values (9, 'MRU', '2018-06-01', 1221, 3, 1);
 
 
 
