@@ -320,28 +320,70 @@ public class GestorDocente {
         	
         	ICargoDocenteg cargoDocente = (ICargoDocenteg) cd;
         	
-            String campos = "`Legajo` = " + docente.getLegajo()
-                + ", `Area` = '" + cargoDocente.getArea2().getCodigo() + "', "
-                + "`Cargo` = " + cargoDocente.getCargo2().getCodigo() + ", "
-                + "`TipoCargo` = " + cargoDocente.getTipoCargo2().getId() + ", "
-                + "`EstadoCargo` = " + cargoDocente.getEstado2().getId();
-
+            String campos = "";
+            
+            
+            if (docente != null && docente.getLegajo() != -1) {
+            	campos += "`Legajo` = " + docente.getLegajo();
+            }
+            if (cd.getArea() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "`Area` = '" + cargoDocente.getArea2().getCodigo() + "',";
+            }
+            if (cd.getCargo() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "`Cargo` = " + cargoDocente.getCargo2().getCodigo();
+            }
+            if (cd.getTipoCargo() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "`TipoCargo` = " + cargoDocente.getTipoCargo2().getId();
+            }
+            if (cd.getEstado() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "`EstadoCargo` = " + cargoDocente.getEstado2().getId();
+            }
             if (cargoDocente.getDisposicion() != null && !cargoDocente.getDisposicion().equals("")) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", Disposicion = '" + cargoDocente.getDisposicion() + "'";
             }
             if (cargoDocente.getDispDesde() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", DispDesde = '" + Date.valueOf(cargoDocente.getDispDesde()) + "'";
             }
             if (cargoDocente.getDispHasta() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", DispHasta = '" + Date.valueOf(cargoDocente.getDispHasta()) + "'";
             }
             if (cargoDocente.getResolucion() != null && !cargoDocente.getResolucion().equals("")) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", Resolucion = '" + cargoDocente.getResolucion() + "'";
             }
             if (cargoDocente.getResDesde() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", ResDesde = '" + Date.valueOf(cargoDocente.getResDesde()) + "'";
             }
             if (cargoDocente.getResHasta() != null) {
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
                 campos += ", ResHasta = '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
 
