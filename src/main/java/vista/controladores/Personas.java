@@ -170,7 +170,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	    this.window.setTitle(TITULO + " - Modificar Persona");
 	    if (this.personaSeleccion != null) {
-	        this.gestorPantalla.mensajeEstado("Modificar a la Docente " + this.personaSeleccion.getNombreCompleto());
+	        this.gestorPantalla.mensajeEstado("Modificar a la Persona " + this.personaSeleccion.getNombreCompleto());
 	    }
 	}
 

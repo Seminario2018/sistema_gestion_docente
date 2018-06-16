@@ -8,6 +8,8 @@ public enum Modulo {
 	DOCENTES,
 	INVESTIGACION,
 	PERSONAS,
+	PROYECTOS,
+	PROGRAMAS,
 	INFORMES;
 
 	@Override
