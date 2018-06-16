@@ -115,6 +115,9 @@ public class Docentes extends ControladorVista implements Initializable {
                 }
             }
         }
+        // TODO Botones feos
+        btnDocentesEliminar.setVisible(false);
+        btnCargosEliminar.setVisible(false);
 
         if (!crear) {
             btnDocentesNuevo.setVisible(false);
@@ -172,14 +175,14 @@ public class Docentes extends ControladorVista implements Initializable {
     public void modoVer() {
 	    // General:
 	    btnDocentesEliminar.setVisible(false);
-        btnDocentesCosto.setVisible(true);
 
-        // Pestaña Datos:
+        // Pestaña Datos:        
+        btnDatosDatos.setVisible(false);
         btnDatosGuardar.setVisible(false);
         btnDatosDescartar.setVisible(false);
         txtDatosLegajo.setEditable(false);
-        cmbDatosEstado.setEditable(false);
-        cmbDatosCategoria.setEditable(false);
+        cmbDatosEstado.setDisable(true);
+        cmbDatosCategoria.setDisable(true);
 
         // Pestaña Cargos:
         btnCargosNuevo.setVisible(false);
@@ -187,8 +190,8 @@ public class Docentes extends ControladorVista implements Initializable {
         btnCargosDescartar.setVisible(false);
         btnCargosArea.setVisible(false);
         btnCargosCargo.setVisible(false);
-        cmbCargosEstado.setEditable(false);
-        cmbCargosTipo.setEditable(false);
+        cmbCargosEstado.setDisable(true);
+        cmbCargosTipo.setDisable(true);
         txtCargosDisp.setEditable(false);
         dtpCargosDispDesde.setEditable(false);
         dtpCargosDispHasta.setEditable(false);
@@ -221,8 +224,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	        btnDatosGuardar.setVisible(true);
 	        btnDatosDescartar.setVisible(true);
 	        txtDatosLegajo.setEditable(true);
-	        cmbDatosEstado.setEditable(true);
-	        cmbDatosCategoria.setEditable(true);
+	        cmbDatosEstado.setDisable(false);
+	        cmbDatosCategoria.setDisable(false);
 
 	        // Pestaña Cargos:
 	        btnCargosNuevo.setVisible(true);
@@ -230,8 +233,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	        btnCargosDescartar.setVisible(true);
 	        btnCargosArea.setVisible(true);
 	        btnCargosCargo.setVisible(true);
-	        cmbCargosEstado.setEditable(true);
-	        cmbCargosTipo.setEditable(true);
+	        cmbCargosEstado.setDisable(false);
+	        cmbCargosTipo.setDisable(false);
 	        txtCargosDisp.setEditable(true);
 	        dtpCargosDispDesde.setEditable(true);
 	        dtpCargosDispHasta.setEditable(true);

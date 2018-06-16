@@ -255,4 +255,4 @@ insert into Areas values
 
 
 insert into CargosDocentes values
-(1, 143191, 'CO.01.00', 228, 0, '507/18', null, null, null, null, null, null, 4000.0, '2018-06-1');
+(1, 143191, 'CO.01.00', 228, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
