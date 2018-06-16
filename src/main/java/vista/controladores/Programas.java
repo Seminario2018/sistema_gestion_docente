@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -21,6 +22,9 @@ import modelo.auxiliares.EstadoPrograma;
 import modelo.docente.IDocente;
 import modelo.investigacion.IPrograma;
 import modelo.investigacion.IProyecto;
+import modelo.usuario.IPermiso;
+import modelo.usuario.IRol;
+import modelo.usuario.Modulo;
 import vista.GestorPantalla;
 
 /**
@@ -80,6 +84,7 @@ public class Programas extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnProgramasBuscar;
 	@FXML private void buscarPrograma() {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, false);
@@ -90,20 +95,27 @@ public class Programas extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Programas.TITULO, args);
 	}
 
+	@FXML private Button btnProgramasNuevo;
 	@FXML private void nuevoPrograma() {
 	    programaSeleccion = controlInvestigacion.getIPrograma();
 	    vaciarControles();
+	    modoModificar();
+	    this.window.setTitle(TITULO + " - Nuevo Programa");
+	    this.gestorPantalla.mensajeEstado("Nuevo Programa");
 	}
 
+	@FXML private Button btnProgramasEliminar;
 	@FXML private void eliminarPrograma() {
 	    if (programaSeleccion != null) {
             if (exitoEliminar(controlInvestigacion.eliminarPrograma(programaSeleccion), TITULO, "Eliminar Programa")) {
                 programaSeleccion = null;
                 vaciarControles();
+                modoVer();
             }
         }
 	}
 
+	@FXML private Button btnProgramasGuardar;
 	@FXML private void guardarCambios() {
 	    if (programaSeleccion != null) {
 	        programaSeleccion.setNombre(txtProgramasNombre.getText());
@@ -118,10 +130,14 @@ public class Programas extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnProgramasDescartar;
 	@FXML private void descartarCambios() {
-	    mostrarPrograma();
+	    programaSeleccion = null;
+	    vaciarControles();
+	    modoVer();
 	}
 
+	@FXML private Button btnProgramasDirector;
 	@FXML private void seleccionarDirector() {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
@@ -132,6 +148,7 @@ public class Programas extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Director", args);
 	}
 
+	@FXML private Button btnProgramasCodirector;
 	@FXML private void seleccionarCodirector() {
         Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
@@ -142,6 +159,7 @@ public class Programas extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + "Codirector", args);
     }
 
+	@FXML private Button btnProyectosAgregar;
 	@FXML private void agregarProyecto() {
 	    if (programaSeleccion != null) {
 	        Map<String, Object> args = new HashMap<String, Object>();
@@ -156,6 +174,7 @@ public class Programas extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnProyectosQuitar;
 	@FXML private void quitarProyecto() {
 	    if (programaSeleccion != null && proyectoSeleccion != null) {
 	        exitoEliminar(controlInvestigacion.eliminarProyecto(proyectoSeleccion), TITULO, "Quitar Proyecto");
@@ -221,6 +240,7 @@ public class Programas extends ControladorVista implements Initializable {
     public void setProgramaSeleccion(Object programa, String tipo) {
         if (programa instanceof IPrograma) {
             programaSeleccion = (IPrograma) programa;
+            modoModificar();
             mostrarPrograma();
         }
     }
@@ -271,5 +291,107 @@ public class Programas extends ControladorVista implements Initializable {
         dtpProgramasFinalizacion.setValue(null);
 
         vaciarTablas();
+
+        this.gestorPantalla.mensajeEstado("");
+    }
+
+    @Override
+    public void inicializar() {
+        /* Ocultar controles según roles del usuario: */
+        boolean crear = false;
+        boolean modificar = false;
+        boolean eliminar = false;
+        boolean listar = false;
+
+        for (IRol rol : this.usuario.getGrupos()) {
+            for (IPermiso permiso : rol.getPermisos()) {
+                if (permiso.getModulo() == Modulo.DOCENTES) {
+                    this.permiso = permiso;
+                    crear |= permiso.getCrear();
+                    modificar |= permiso.getModificar();
+                    eliminar |= permiso.getEliminar();
+                    listar |= permiso.getListar();
+                }
+            }
+        }
+
+        if (!crear) {
+            btnProgramasNuevo.setVisible(false);
+        }
+
+        if (!modificar) {
+            // Información del programa:
+            btnProgramasGuardar.setVisible(false);
+            btnProgramasDescartar.setVisible(false);
+
+            txtProgramasNombre.setEditable(false);
+            cmbProgramasEstado.setDisable(true);
+            txtProgramasDisp.setEditable(false);
+            dtpProgramasInicio.setEditable(false);
+            dtpProgramasFinalizacion.setEditable(false);
+
+            // Proyectos:
+            btnProyectosAgregar.setVisible(false);
+            btnProyectosQuitar.setVisible(false);
+        }
+
+        if (!eliminar) {
+            btnProgramasEliminar.setVisible(false);
+        }
+
+        if (!listar) {
+        }
+
+        modoVer();
+    }
+
+    @Override
+    public void modoModificar() {
+        if (this.permiso.getModificar() || this.permiso.getCrear()) {
+            // Información del programa:
+            btnProgramasGuardar.setVisible(true);
+            btnProgramasDescartar.setVisible(true);
+
+            txtProgramasNombre.setEditable(true);
+            cmbProgramasEstado.setDisable(false);
+            txtProgramasDisp.setEditable(true);
+            dtpProgramasInicio.setEditable(true);
+            dtpProgramasFinalizacion.setEditable(true);
+
+            // Proyectos:
+            btnProyectosAgregar.setVisible(true);
+            btnProyectosQuitar.setVisible(true);
+        }
+        if (this.permiso.getEliminar()) {
+            btnProgramasEliminar.setVisible(true);
+        }
+
+        this.window.setTitle(TITULO + " - Modificar Programa");
+        if (this.programaSeleccion != null) {
+            this.gestorPantalla.mensajeEstado("Modificar al Programa" + this.programaSeleccion.getNombre());
+        }
+    }
+
+    @Override
+    public void modoVer() {
+        // General:
+        btnProgramasEliminar.setVisible(false);
+
+        // Información del programa:
+        btnProgramasGuardar.setVisible(false);
+        btnProgramasDescartar.setVisible(false);
+
+        txtProgramasNombre.setEditable(false);
+        cmbProgramasEstado.setDisable(true);
+        txtProgramasDisp.setEditable(false);
+        dtpProgramasInicio.setEditable(false);
+        dtpProgramasFinalizacion.setEditable(false);
+
+        // Proyectos:
+        btnProyectosAgregar.setVisible(false);
+        btnProyectosQuitar.setVisible(false);
+
+        this.window.setTitle(TITULO);
+        this.gestorPantalla.mensajeEstado("");
     }
 }
