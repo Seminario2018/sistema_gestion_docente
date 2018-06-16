@@ -31,10 +31,11 @@ public class Main extends Application {
 		usuario.setGrupos(new ArrayList<IRol>());
 		
 		Rol r = new Rol(0, "su");
-		Permiso per  = new Permiso(Modulo.USUARIOS);
+		
+		Permiso per  = new Permiso(Modulo.DOCENTES);
 		per.setCrear(true);
 		per.setEliminar(true);
-//		per.setModificar(true);
+		per.setModificar(true);
 		per.setListar(true);
 		r.agregarPermiso(per);
 		
