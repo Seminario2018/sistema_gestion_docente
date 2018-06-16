@@ -7,7 +7,7 @@ import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.BusquedaPrograma;
 import modelo.busqueda.BusquedaProyecto;
-import modelo.busqueda.BusquedaRol;
+import modelo.busqueda.BusquedaRole;
 import modelo.busqueda.BusquedaUsuario;
 import modelo.busqueda.GestorBusqueda;
 import modelo.cargo.GestorCargo;
@@ -69,7 +69,7 @@ public class ControlBusqueda {
 	    return gestorBusqueda.listarProyectos(criterio);
 	}
 
-	public List<BusquedaRol> listarRoles(String criterio) {
+	public List<BusquedaRole> listarRoles(String criterio) {
 	    return gestorBusqueda.listarRoles(criterio);
 	}
 
