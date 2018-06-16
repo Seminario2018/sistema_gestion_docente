@@ -3,24 +3,28 @@ package modelo.usuario;
 
 public enum Modulo {
 	GENERAL,
-	ROLES,
+	ESTACION,
+	GRUPOS,
 	USUARIOS,
+	CARGOS,
 	DOCENTES,
 	INVESTIGACION,
+	VER_INFORMES,
+	EDIT_INFORMES,
 	PERSONAS,
 	PROYECTOS,
-	PROGRAMAS,
-	INFORMES;
+	PROGRAMAS;
 
 	@Override
 	public String toString() {
 	    switch (this) {
 	        case GENERAL: return "General";
-	        case ROLES: return "Roles";
+	        case GRUPOS: return "Roles";
 	        case USUARIOS: return "Usuarios";
 	        case DOCENTES: return "Docentes";
 	        case INVESTIGACION: return "Investigación";
-	        case INFORMES: return "Informes";
+	        case VER_INFORMES: return "Ver Informes";
+	        case EDIT_INFORMES: return "Editar informes";
 	    }
 	    return "";
 	}

@@ -16,6 +16,9 @@ public class GestorUsuario {
     public EstadoOperacion nuevoUsuario(IUsuario usuario) {
 
     	try {
+    		
+    		
+    		
     		ManejoDatos md = new ManejoDatos();
         	String table = "Usuarios";
         	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
@@ -32,7 +35,7 @@ public class GestorUsuario {
         	table = "RolesXUsuario";
         	campos = "`Usuario`, `Rol`";
         	for(IRol r : usuario.getGrupos()) {
-        		valores = "'" + usuario.getUser() + "', '" + r.getNombre() + "'";
+        		valores = "'" + usuario.getUser() + "', " + r.getId();
             	md.insertar(table, campos, valores);
         	}
 
@@ -181,7 +184,7 @@ public class GestorUsuario {
 
     	String tabla = "RolesXUsuario";
     	String campos = "Usuario, Rol";
-    	String valores = "'" + usuario.getUser() + "', '" + rol.getNombre() + "'";
+    	String valores = "'" + usuario.getUser() + "', " + rol.getId();
 
     	md.insertar(tabla, campos, valores);
 
@@ -196,7 +199,7 @@ public class GestorUsuario {
     public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
     	ManejoDatos md = new ManejoDatos();
     	String tabla = "RolesXUsuario";
-    	String condicion = " Usuario = '" + usuario.getUser() + "', '" + grupo.getNombre() + "'";
+    	String condicion = " Usuario = '" + usuario.getUser() + "', " + grupo.getId();
 
     	md.delete(tabla, condicion);
 

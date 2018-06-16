@@ -10,22 +10,26 @@ public class GestorRol {
     public EstadoOperacion nuevoGrupo(IRol grupo) {
         try {
 			ManejoDatos md = new ManejoDatos();
-			md.insertar("roles", "nombre", "'"+grupo.getNombre()+"'");
+			if (grupo.getId() == -1) {
+				grupo.setId(this.getMaxid() + 1);
+			}
+			
+			md.insertar("roles", "id, nombre", grupo.getId() + ", '"+grupo.getNombre()+"'");
 			String tabla = "permisos";
-			String campos = "`crear`, `eliminar`, `modificar`, `listar`, `rol`, `modulo`";
+			String campos = "`Crear`, `Eliminar`, `Modificar`, `Listar`, `Rol`, `Modulo`";
 			for (IPermiso p : grupo.getPermisos()) {
 				int crear = p.getCrear() ? 1 : 0;
 				int eliminar = p.getCrear() ? 1 : 0;
 				int modificar = p.getCrear() ? 1 : 0;
 				int listar = p.getListar() ? 1 : 0;
-				if (md.select("modulo", "*","Descripcion = '" + p.getModulo().name() + "'").isEmpty()) {
-					md.insertar("modulo", "idmodulo, Descripcion",
+				if (md.select("modulos", "*","Descripcion = '" + p.getModulo().name() + "'").isEmpty()) {
+					md.insertar("modulos", "idmodulo, Descripcion",
 							p.getModulo().ordinal() + ", '" + p.getModulo().name() + "'");
 				}
 
 				String valores = crear + ", " + eliminar + ", "
-						+  modificar + ", " + listar + ", '"
-						+ grupo.getNombre() + "', " + p.getModulo().ordinal();
+						+  modificar + ", " + listar + ", "
+						+ grupo.getId() + ", " + p.getModulo().ordinal();
 
 				md.insertar(tabla, campos, valores);
 			}
@@ -37,7 +41,19 @@ public class GestorRol {
 		}
     }
 
-    public EstadoOperacion modificarGrupo(IRol grupo) {
+    private int getMaxid() {
+    	try {
+			ManejoDatos md = new ManejoDatos();
+			ArrayList<Hashtable<String, String>> res = md.select("roles", "MAX(id)");
+			Hashtable<String, String> reg = res.get(0);
+			int id = Integer.parseInt(reg.get("MAX(id)"));
+			return id;
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+
+	public EstadoOperacion modificarGrupo(IRol grupo) {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "permisos";
@@ -104,7 +120,7 @@ public class GestorRol {
 	            condicion = "rol = '" + rol.getNombre() + "'";
 	            ArrayList<Hashtable<String, String>> per = md.select(tabla, campos, condicion);
 	            for (Hashtable<String, String> reg2 : per) {
-					Permiso p = new Permiso(Modulo.values()[Integer.parseInt(reg2.get("modulo").toString())]							);
+					Permiso p = new Permiso(Modulo.values()[Integer.parseInt(reg2.get("modulos").toString())]							);
 					if(reg2.get("crear").toString().equals("1")) {
 						p.setCrear(true);
 					}
