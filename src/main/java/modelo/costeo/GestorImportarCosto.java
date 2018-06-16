@@ -87,7 +87,7 @@ public class GestorImportarCosto {
 	        
 	        return new EstadoOperacion(EstadoOperacion.CodigoEstado.OP_OK,
 	        		"La importación del costeo se ha realizado con éxito.");
-		} catch (InvalidFormatException e) {
+		} catch (InvalidFormatException | NumberFormatException e) {
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.OP_ERROR,
 					"El archivo no tiene el formato correcto. Asegúrese de que"
 			        + " se trata de la planilla con el costeo del mes.");

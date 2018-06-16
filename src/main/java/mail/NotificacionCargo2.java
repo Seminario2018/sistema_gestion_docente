@@ -54,7 +54,6 @@ public class NotificacionCargo2 {
 
 		@Override
 		public void run() {
-		    System.out.println("Recolectando mails...");
 			List<Map<String, String>> mails = this.noti.getMails();
 			if (mails != null && !mails.isEmpty()) {
 				IMail mailSend = new Mail();
