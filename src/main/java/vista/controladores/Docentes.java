@@ -67,6 +67,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		if (areaSeleccion instanceof IArea) {
 			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
 			this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
+			this.btnCargosCargo.requestFocus();
 		}
 	}
 
@@ -74,6 +75,7 @@ public class Docentes extends ControladorVista implements Initializable {
 		if (cargoSeleccion instanceof ICargo) {
 			this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
 			this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
+			this.cmbCargosEstado.requestFocus();
 		}
 	}
 

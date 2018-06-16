@@ -1,5 +1,6 @@
 package vista.controladores;
 
+import java.time.LocalDate;
 import java.util.List;
 import controlador.ControlImportarCosto;
 import javafx.collections.FXCollections;
@@ -39,7 +40,9 @@ public class ImportarCosto extends ControladorVista {
 	
 	private void resetGeneral() {
 		String fecha = "Nunca";
-		// TODO obtener la fecha de última actualización
+		LocalDate ultima = this.control.getUltimaFecha();
+		if (ultima != null)
+			fecha = ultima.toString();
 		this.lblUltima.setText("Última actualización: " + fecha);
 		// TODO cargar las tablas con datos
 	}
