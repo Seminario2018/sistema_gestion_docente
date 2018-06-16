@@ -325,6 +325,8 @@ public class Programas extends ControladorVista implements Initializable {
             btnProgramasDescartar.setVisible(false);
 
             txtProgramasNombre.setEditable(false);
+            btnProgramasDirector.setVisible(false);
+            btnProgramasCodirector.setVisible(false);
             cmbProgramasEstado.setDisable(true);
             txtProgramasDisp.setEditable(false);
             dtpProgramasInicio.setEditable(false);
@@ -353,6 +355,8 @@ public class Programas extends ControladorVista implements Initializable {
             btnProgramasDescartar.setVisible(true);
 
             txtProgramasNombre.setEditable(true);
+            btnProgramasDirector.setVisible(true);
+            btnProgramasCodirector.setVisible(true);
             cmbProgramasEstado.setDisable(false);
             txtProgramasDisp.setEditable(true);
             dtpProgramasInicio.setEditable(true);
@@ -382,6 +386,8 @@ public class Programas extends ControladorVista implements Initializable {
         btnProgramasDescartar.setVisible(false);
 
         txtProgramasNombre.setEditable(false);
+        btnProgramasDirector.setVisible(false);
+        btnProgramasCodirector.setVisible(false);
         cmbProgramasEstado.setDisable(true);
         txtProgramasDisp.setEditable(false);
         dtpProgramasInicio.setEditable(false);
