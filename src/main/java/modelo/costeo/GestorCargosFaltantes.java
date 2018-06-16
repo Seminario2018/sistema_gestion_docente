@@ -1,6 +1,7 @@
 package modelo.costeo;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -104,7 +105,7 @@ public class GestorCargosFaltantes {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "cargosfaltantes";
-			String condicion = "Tipo = 0";
+			String condicion = "Tipo = 1";
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
@@ -139,7 +140,7 @@ public class GestorCargosFaltantes {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "cargosfaltantes";
-			String condicion = "Tipo = 1";
+			String condicion = "Tipo = 0";
 
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
@@ -168,6 +169,22 @@ public class GestorCargosFaltantes {
 		return cargos;
 
 
+	}
+	
+	public LocalDate getMaxFechaUltimoCosto() {
+		LocalDate max = null;
+		try {
+			ManejoDatos md = new ManejoDatos();
+			List<Hashtable<String, String>> res = md.select("cargosfaltantes", "MAX(FechaUltimoCosto)");
+			if (res != null && !res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				if (!reg.isEmpty() && !reg.get("MAX(FechaUltimoCosto)").equals(""))
+					max = Date.valueOf(reg.get("MAX(FechaUltimoCosto)")).toLocalDate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return max;
 	}
 
 	/**

@@ -215,7 +215,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 
 	    if (this.permiso.getEliminar()) {
-	        btnDocentesEliminar.setVisible(true);
+//	        btnDocentesEliminar.setVisible(true);
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Docente");

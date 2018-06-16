@@ -44,7 +44,7 @@ public class ImportarCosto extends ControladorVista {
 		if (ultima != null)
 			fecha = ultima.toString();
 		this.lblUltima.setText("Última actualización: " + fecha);
-		// TODO cargar las tablas con datos
+		actualizarTablas();
 	}
 	
 	private void actualizarTablas() {

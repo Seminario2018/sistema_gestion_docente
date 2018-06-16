@@ -354,7 +354,7 @@ public class GestorDocente {
             	if (!campos.equals("")) {
             		campos += ", ";
             	}
-            	campos += "`Area` = '" + cargoDocente.getArea2().getCodigo() + "',";
+            	campos += "`Area` = '" + cargoDocente.getArea2().getCodigo() + "'";
             }
             if (cd.getCargo() != null) {
             	if (!campos.equals("")) {
@@ -411,7 +411,7 @@ public class GestorDocente {
                 campos += "ResHasta = '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
 
-            String condicion = String.format("Codigo='%d'", cargoDocente.getId());
+            String condicion = String.format("Codigo = %d", cargoDocente.getId());
 
             ManejoDatos md = new ManejoDatos();
             md.update("CargosDocentes", campos, condicion);
@@ -419,7 +419,8 @@ public class GestorDocente {
             this.guardarCostos(cargoDocente);
             
             if (md.isEstado()) {
-                ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
+            	if (docente != null)
+            		((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El CargoDocente se modificó correctamente");
             } else {
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "El CargoDocente no se modificó");

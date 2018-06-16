@@ -155,6 +155,7 @@ public class GestorImportarCosto {
 				"Ha ocurrido un error al intentar actualizar los estados de los cargos.");
 		try {
 			// Actualizar los estados
+//			List<Integer> codigos = new ArrayList<Integer>();
 			for (ICargoDocente cargoFaltanteSistema : this.faltantesCosteo) {
 				// Recuperar el cargo actual y fijarse si cambió
 				ICargoDocente cargoActual = getCargo(cargoFaltanteSistema.getId());
@@ -165,8 +166,6 @@ public class GestorImportarCosto {
 						EstadoOperacion eo2 = this.gestorDocente.modificarCargoDocente(cargoActual.getDocente(), cargoActual);
 						switch (eo2.getEstado()) {
 						case UPDATE_OK:
-							this.faltantesCosteo.remove(cargoFaltanteSistema);
-							this.faltantesCosteo.add(cargoActual);
 							NotificacionCargo2.getInstance().notificar(
 									cargoActual.getDocente(), cargoActual, eo2);
 							break;
@@ -226,6 +225,7 @@ public class GestorImportarCosto {
 				"Ha ocurrido un error al intentar guardar los cargos faltantes.");
 		try {
 			for (ICargoFaltante faltanteSistema : this.faltantesSistema) {
+				faltanteSistema.setTipo(CargoFaltante.FALTA_SISTEMA);
 				this.gestorCargosFaltantes.agregarCargoFaltante(faltanteSistema);
 			}
 			for (ICargoDocente faltanteCosteo : this.faltantesCosteo) {
@@ -235,7 +235,7 @@ public class GestorImportarCosto {
 				faltante.setNombre(faltanteCosteo.getDocente().getPersona().getNombre());
 				faltante.setCodigoCargo(faltanteCosteo.getId());
 				faltante.setUltimoCosto(faltanteCosteo.getUltimoCosto());
-				faltante.setFechaUltimoCosto(faltanteCosteo.getFechaUltCost());
+				faltante.setFechaUltimoCosto(LocalDate.now());
 				faltante.setTipo(CargoFaltante.FALTA_COSTEO);
 				this.gestorCargosFaltantes.agregarCargoFaltante(faltante);
 			}
@@ -264,7 +264,27 @@ public class GestorImportarCosto {
 	private void actualizarListas() {
 		this.faltantesSistema = new ArrayList<ICargoFaltante>();
 		this.faltantesCosteo = new ArrayList<ICargoDocente>();
-		if (this.cargosImportados != null && !this.cargosImportados.isEmpty()) {
+		// Recuperar los últimos cargos faltantes
+		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
+			// Sólo cargar los últimos
+			LocalDate ultimaFecha = this.gestorCargosFaltantes.getMaxFechaUltimoCosto();
+			
+			for (ICargoFaltante faltanteCosteo : this.gestorCargosFaltantes.listarCargosEnSistema()) {
+				if (!faltanteCosteo.getFechaUltimoCosto().isBefore(ultimaFecha)) {
+					// Chequear que esté en el sistema
+					ICargoDocente cargo = getCargo(faltanteCosteo.getCodigoCargo());
+					if (cargo != null)
+						this.faltantesCosteo.add(cargo);
+				}
+			}
+			
+			for (ICargoFaltante faltanteSistema : this.gestorCargosFaltantes.listarCargosEnCosteo()) {
+				if (!faltanteSistema.getFechaUltimoCosto().isBefore(ultimaFecha)) {
+					this.faltantesSistema.add(faltanteSistema);
+				}
+			}
+			
+		} else {
 			// Recuperar todos los cargos del sistema, para luego agregarlos
 			// a los faltantes del costeo
 			List<ICargoDocente> cargosSistema = this.gestorDocente.listarCargo(null, null);
