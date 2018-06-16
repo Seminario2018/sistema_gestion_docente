@@ -101,18 +101,35 @@ public class GestorDivision {
 
             ManejoDatos md = new ManejoDatos();
             String tabla = "Divisiones";
-            String campos = "`Descripcion` = '" + division.getDescripcion() + "'";
+            String campos = "";
+            
+            if (division.getDescripcion() != null && !division.getDescripcion().equals("")) {
+            	campos += "`Descripcion` = '" + division.getDescripcion() + "'";
+            }
+            		
             if (division.getJefe() != null) {
-            	campos += ", `Jefe`= " + division.getJefe().getLegajo();
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "`Jefe`= " + division.getJefe().getLegajo();
             }
             if (division.getDisposicion() != null && !division.getDisposicion().equals("")) {
-            	campos += ", Disposicion = '" + division.getDisposicion() + "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "Disposicion = '" + division.getDisposicion() + "'";
             }
             if (division.getDispDesde() != null) {
-            	campos += ", Desde = '" + division.getDisposicion() + "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "Desde = '" + division.getDisposicion() + "'";
             }
             if (division.getDispHasta() != null) {
-            	campos += ", Hasta= '" + Date.valueOf(division.getDispHasta()) +  "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+            	campos += "Hasta= '" + Date.valueOf(division.getDispHasta()) +  "'";
             }
             String condicion = "Codigo = " + division.getCodigo() + "'";
             md.update(tabla, campos, condicion);

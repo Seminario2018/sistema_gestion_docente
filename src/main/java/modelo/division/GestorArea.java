@@ -116,21 +116,37 @@ public class GestorArea {
             ManejoDatos md = new ManejoDatos();
 
             String tabla = "Areas";
-            String campos = "`Division`= '" + area.getDivision().getCodigo() + "'";
+            String campos = "";
+            
+            if (area.getDivision() != null) {
+            	campos += "`Division`= '" + area.getDivision().getCodigo() + "'";
+            }
             if (area.getDescripcion() != null && !area.getDescripcion().equals("")) {
-                campos += ", `Descripcion` = '" + area.getDescripcion() + "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+                campos += "`Descripcion` = '" + area.getDescripcion() + "'";
             }
             if (area.getDocenteResponsable() != null) {
-                campos += ", `Responsable`= " + area.getDocenteResponsable().getLegajo();
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+                campos += "`Responsable`= " + area.getDocenteResponsable().getLegajo();
             }
             if (area.getDispDesde() != null) {
-                campos += ", `Desde`" + Date.valueOf(area.getDispDesde()) + "',";
+                campos += "`Desde`" + Date.valueOf(area.getDispDesde()) + "',";
             }
             if (area.getDispHasta() != null) {
-                campos += ", `Hasta` = '" + Date.valueOf(area.getDispHasta()) + "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+                campos += "`Hasta` = '" + Date.valueOf(area.getDispHasta()) + "'";
             }
             if (area.getAreaDe() != null) {
-                campos += ", `SubArea_De`= '" + area.getAreaDe().getCodigo() + "'";
+            	if (!campos.equals("")) {
+            		campos += ", ";
+            	}
+                campos += "`SubArea_De`= '" + area.getAreaDe().getCodigo() + "'";
             }
 
             String condicion = "`Codigo` = '" + area.getCodigo() + "'";
