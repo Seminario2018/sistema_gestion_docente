@@ -16,7 +16,7 @@ public class GestorCargosFaltantes {
 			String tabla = "cargosfaltantes";
 			String campos = "`Legajo`, `Cargo`, `FechaUltimoCosto`, `Tipo`";
 			String valores = cargo.getLegajo() + ", " + cargo.getCodigoCargo() + ", "
-					+ "'" + Date.valueOf(cargo.getFechaUltimoCosto()) + "', " + (cargo.isTipo() ? 0 : 1);
+					+ "'" + Date.valueOf(cargo.getFechaUltimoCosto()) + "', " + (cargo.isTipo() ? 1 : 0);
 			if (cargo.getApellido() != null && !cargo.getApellido().equals("")) {
 				campos += ", Apellido";
 				valores += ", '" + cargo.getApellido() + "'";
@@ -77,7 +77,7 @@ public class GestorCargosFaltantes {
 				c.setLegajo(Integer.parseInt(reg.get("Legajo")));
 				c.setCodigoCargo(Integer.parseInt(reg.get("Cargo")));
 				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
-				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 0);
+				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
 
 				if (!reg.get("Apellido").equals("")) {
 					c.setApellido(reg.get("Apellido"));
@@ -112,7 +112,7 @@ public class GestorCargosFaltantes {
 				c.setLegajo(Integer.parseInt(reg.get("Legajo")));
 				c.setCodigoCargo(Integer.parseInt(reg.get("Cargo")));
 				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
-				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 0);
+				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
 
 				if (!reg.get("Apellido").equals("")) {
 					c.setApellido(reg.get("Apellido"));
@@ -147,7 +147,7 @@ public class GestorCargosFaltantes {
 				c.setLegajo(Integer.parseInt(reg.get("Legajo")));
 				c.setCodigoCargo(Integer.parseInt(reg.get("Cargo")));
 				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
-				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 0);
+				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
 
 				if (!reg.get("Apellido").equals("")) {
 					c.setApellido(reg.get("Apellido"));

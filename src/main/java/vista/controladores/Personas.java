@@ -85,7 +85,7 @@ public class Personas extends ControladorVista implements Initializable {
             btnDatosGuardar.setVisible(false);
             btnDatosDescartar.setVisible(false);
             txtDatosApellido.setEditable(false);
-            cmbDatosTipoDocumento.setEditable(false);
+            cmbDatosTipoDocumento.setDisable(true);
             txtDatosDocumento.setEditable(false);
             dtpDatosFechaNacimiento.setEditable(false);
 
@@ -95,7 +95,7 @@ public class Personas extends ControladorVista implements Initializable {
             btnContactosDescartar.setVisible(false);
             btnContactosEliminar.setVisible(false);
 
-            cmbContactosTipo.setEditable(false);
+            cmbContactosTipo.setDisable(true);
             txtContactosDato.setEditable(false);
 
             // Pestaña Domicilios:
@@ -104,7 +104,7 @@ public class Personas extends ControladorVista implements Initializable {
             btnDomicilioDescartar.setVisible(false);
             btnDomiciliosEliminar.setVisible(false);
 
-            cmbDomiciliosProvincia.setEditable(false);
+            cmbDomiciliosProvincia.setDisable(true);
             txtDomiciliosCiudad.setEditable(false);
             txtDomiciliosCP.setEditable(false);
             txtDomiciliosDireccion.setEditable(false);
@@ -130,42 +130,42 @@ public class Personas extends ControladorVista implements Initializable {
 	public void modoModificar() {
 	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
 	        // Pestaña Datos:
-            btnDatosGuardar.setVisible(false);
-            btnDatosDescartar.setVisible(false);
-            txtDatosApellido.setEditable(false);
-            cmbDatosTipoDocumento.setEditable(false);
-            txtDatosDocumento.setEditable(false);
-            dtpDatosFechaNacimiento.setEditable(false);
+            btnDatosGuardar.setVisible(true);
+            btnDatosDescartar.setVisible(true);
+            txtDatosApellido.setEditable(true);
+            cmbDatosTipoDocumento.setDisable(false);
+            txtDatosDocumento.setEditable(true);
+            dtpDatosFechaNacimiento.setEditable(true);
 
             // Pestaña Contactos:
-            btnContactosNuevo.setVisible(false);
-            btnContactosGuardar.setVisible(false);
-            btnContactosDescartar.setVisible(false);
-            btnContactosEliminar.setVisible(false);
+            btnContactosNuevo.setVisible(true);
+            btnContactosGuardar.setVisible(true);
+            btnContactosDescartar.setVisible(true);
+            btnContactosEliminar.setVisible(true);
 
-            cmbContactosTipo.setEditable(false);
-            txtContactosDato.setEditable(false);
+            cmbContactosTipo.setDisable(false);
+            txtContactosDato.setEditable(true);
 
             // Pestaña Domicilios:
-            btnDomiciliosNuevo.setVisible(false);
-            btnDomiciliosGuardar.setVisible(false);
-            btnDomicilioDescartar.setVisible(false);
-            btnDomiciliosEliminar.setVisible(false);
+            btnDomiciliosNuevo.setVisible(true);
+            btnDomiciliosGuardar.setVisible(true);
+            btnDomicilioDescartar.setVisible(true);
+            btnDomiciliosEliminar.setVisible(true);
 
-            cmbDomiciliosProvincia.setEditable(false);
-            txtDomiciliosCiudad.setEditable(false);
-            txtDomiciliosCP.setEditable(false);
-            txtDomiciliosDireccion.setEditable(false);
+            cmbDomiciliosProvincia.setDisable(false);
+            txtDomiciliosCiudad.setEditable(true);
+            txtDomiciliosCP.setEditable(true);
+            txtDomiciliosDireccion.setEditable(true);
 
             // Pestaña Títulos:
-            txtTitulosTitulo.setEditable(false);
-            btnTitulosAgregar.setVisible(false);
-            btnTitulosQuitar.setVisible(false);
-            btnTitulosMayor.setVisible(false);
+            txtTitulosTitulo.setEditable(true);
+            btnTitulosAgregar.setVisible(true);
+            btnTitulosQuitar.setVisible(true);
+            btnTitulosMayor.setVisible(true);
 	    }
 
 	    if (this.permiso.getEliminar()) {
-	        btnPersonasEliminar.setVisible(false);
+	        btnPersonasEliminar.setVisible(true);
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Persona");
@@ -180,38 +180,38 @@ public class Personas extends ControladorVista implements Initializable {
 	    btnPersonasEliminar.setVisible(false);
 
 	    // Pestaña Datos:
-        btnDatosGuardar.setVisible(true);
-        btnDatosDescartar.setVisible(true);
-        txtDatosApellido.setEditable(true);
-        cmbDatosTipoDocumento.setEditable(true);
-        txtDatosDocumento.setEditable(true);
-        dtpDatosFechaNacimiento.setEditable(true);
+        btnDatosGuardar.setVisible(false);
+        btnDatosDescartar.setVisible(false);
+        txtDatosApellido.setEditable(false);
+        cmbDatosTipoDocumento.setDisable(true);
+        txtDatosDocumento.setEditable(false);
+        dtpDatosFechaNacimiento.setDisable(false);
 
         // Pestaña Contactos:
-        btnContactosNuevo.setVisible(true);
-        btnContactosGuardar.setVisible(true);
-        btnContactosDescartar.setVisible(true);
-        btnContactosEliminar.setVisible(true);
+        btnContactosNuevo.setVisible(false);
+        btnContactosGuardar.setVisible(false);
+        btnContactosDescartar.setVisible(false);
+        btnContactosEliminar.setVisible(false);
 
-        cmbContactosTipo.setEditable(true);
-        txtContactosDato.setEditable(true);
+        cmbContactosTipo.setDisable(true);
+        txtContactosDato.setEditable(false);
 
         // Pestaña Domicilios:
-        btnDomiciliosNuevo.setVisible(true);
-        btnDomiciliosGuardar.setVisible(true);
-        btnDomicilioDescartar.setVisible(true);
-        btnDomiciliosEliminar.setVisible(true);
+        btnDomiciliosNuevo.setVisible(false);
+        btnDomiciliosGuardar.setVisible(false);
+        btnDomicilioDescartar.setVisible(false);
+        btnDomiciliosEliminar.setVisible(false);
 
-        cmbDomiciliosProvincia.setEditable(true);
-        txtDomiciliosCiudad.setEditable(true);
-        txtDomiciliosCP.setEditable(true);
-        txtDomiciliosDireccion.setEditable(true);
+        cmbDomiciliosProvincia.setDisable(true);
+        txtDomiciliosCiudad.setEditable(false);
+        txtDomiciliosCP.setEditable(false);
+        txtDomiciliosDireccion.setEditable(false);
 
         // Pestaña Títulos:
-        txtTitulosTitulo.setEditable(true);
-        btnTitulosAgregar.setVisible(true);
-        btnTitulosQuitar.setVisible(true);
-        btnTitulosMayor.setVisible(true);
+        txtTitulosTitulo.setEditable(false);
+        btnTitulosAgregar.setVisible(false);
+        btnTitulosQuitar.setVisible(false);
+        btnTitulosMayor.setVisible(false);
 
 	    this.window.setTitle(TITULO);
 	    this.gestorPantalla.mensajeEstado("");
@@ -268,6 +268,9 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML public void nuevaPersona(ActionEvent event) {
 	    personaSeleccion = controlPersona.getIPersona();
 	    generalVaciarControles();
+	    modoModificar();
+	    this.window.setTitle(TITULO + " - Nueva Persona");
+	    this.gestorPantalla.mensajeEstado("Nueva Persona");
 	}
 
 	@FXML private Button btnPersonasEliminar;
@@ -276,6 +279,7 @@ public class Personas extends ControladorVista implements Initializable {
             if (exitoEliminar(controlPersona.eliminarPersona(personaSeleccion), TITULO, "Eliminar Persona")) {
                 personaSeleccion = null;
                 generalVaciarControles();
+                modoVer();
             }
         }
 	}
@@ -347,7 +351,9 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosDescartar;
 	@FXML public void descartarPersona(ActionEvent event) {
-	    datosMostrarPersona();
+	    personaSeleccion = null;
+	    generalVaciarControles();
+	    modoVer();
 	}
 
 	@FXML private TextField txtDatosApellido;

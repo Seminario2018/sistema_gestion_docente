@@ -12,6 +12,7 @@ delete from EstadosPersonas;
 delete from TiposDocumentos;
 delete from TiposCargos;
 delete from TiposContactos;
+DELETE from cargosfaltantes;
 
 
 insert into TiposCargos values
@@ -256,3 +257,103 @@ insert into Areas values
 
 insert into CargosDocentes values
 (1, 143191, 'CO.01.00', 228, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+
+
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('10', 'Cabo Benítez', 'Jorge', '1', '14095.33', '2018-06-15', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('10', 'Cabo Benítez', 'Jorge', '2', '77791.13', '2018-06-16', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('57', 'Fernandez Perez', 'Julieta', '3', '28191.09', '2018-06-17', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('57', 'Fernandez Perez', 'Julieta', '4', '15248.58', '2018-06-18', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('81', 'Vázquez Cabeza', 'Carmen Rosario', '5', '28191.09', '2018-06-19', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('81', 'Vázquez Cabeza', 'Carmen Rosario', '6', '24309.69', '2018-06-20', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('94', 'Cisneros', 'Guillermo', '7', '52597.41', '2018-06-21', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('94', 'Cisneros', 'Guillermo', '8', '15248.58', '2018-06-22', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('104', 'Aramburu', 'Graciela', '9', '15248.58', '2018-06-23', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('104', 'Aramburu', 'Graciela', '10', '26298.66', '2018-06-24', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('107', 'Urritiaga', 'Daniel Alfonso', '11', '32072.46', '2018-06-25', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('107', 'Urritiaga', 'Daniel Alfonso', '12', '48619.45', '2018-06-26', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('218', 'González', 'Adán', '13', '14095.33', '2018-06-27', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('218', 'González', 'Adán', '14', '56382.22', '2018-06-28', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('257', 'Lopes Martínez', 'Ana', '15', '14095.33', '2018-06-29', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('257', 'Lopes Martínez', 'Ana', '16', '14095.33', '2018-06-30', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('268', 'Lafuente', 'Dolores', '17', '56382.22', '2018-07-01', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('268', 'Lafuente', 'Dolores', '18', '56382.22', '2018-07-02', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('318', 'Cabo Benítez', 'Jorge', '19', '18784.76', '2018-07-03', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('318', 'Cabo Benítez', 'Jorge', '20', '28191.09', '2018-07-04', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('325', 'Peralta San Juan', 'Leonardo', '21', '10214.01', '2018-07-05', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('325', 'Peralta San Juan', 'Leonardo', '22', '56382.22', '2018-07-06', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('427', 'Peralta', 'Ramón', '23', '14095.33', '2018-07-07', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('427', 'Peralta', 'Ramón', '24', '49724.44', '2018-07-08', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('467', 'Castaño', 'Juan', '25', '12430.91', '2018-07-09', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('467', 'Castaño', 'Juan', '26', '24309.69', '2018-07-10', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('469', 'Gonzalez', 'Julián', '27', '28191.09', '2018-07-11', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('469', 'Gonzalez', 'Julián', '28', '24309.69', '2018-07-12', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('480', 'Alcaraz', 'Marcelo Fernando', '29', '12154.67', '2018-07-13', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('480', 'Alcaraz', 'Marcelo Fernando', '30', '24309.69', '2018-07-14', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('521', 'Lozano Peralta', 'Guillermo Javier', '31', '24309.69', '2018-07-15', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('521', 'Lozano Peralta', 'Guillermo Javier', '32', '60995.31', '2018-07-16', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('671', 'Lozano', 'Carmen Rosario', '33', '7037', '2018-07-17', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('671', 'Lozano', 'Carmen Rosario', '34', '14095.33', '2018-07-18', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('948', 'Del Moral', 'Francisco Guillermo', '35', '14095.33', '2018-07-19', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('948', 'Del Moral', 'Francisco Guillermo', '36', '12154.67', '2018-07-20', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1027', 'Benítez López', 'Pilar Laura', '37', '48619.45', '2018-07-21', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1027', 'Benítez López', 'Pilar Laura', '38', '7428.37', '2018-07-22', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1108', 'González Muñoz', 'Jorge Carlos', '39', '56382.22', '2018-07-23', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1108', 'González Muñoz', 'Jorge Carlos', '40', '20428.32', '2018-07-24', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1153', 'Cabeza Algaba', 'Vicente', '41', '28191.09', '2018-07-25', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1153', 'Cabeza Algaba', 'Vicente', '42', '24309.69', '2018-07-26', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1193', 'Benítez García', 'Francisco Jorge', '43', '28191.09', '2018-07-27', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1193', 'Benítez García', 'Francisco Jorge', '44', '48619.45', '2018-07-28', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1221', 'González Gutiérrez', 'Vicente', '45', '26298.66', '2018-07-29', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1221', 'González Gutiérrez', 'Vicente', '46', '14095.33', '2018-07-30', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1229', 'Miranda', 'Martín', '47', '20428.32', '2018-07-31', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1229', 'Miranda', 'Martín', '48', '20428.32', '2018-08-01', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1358', 'Sainz Álvarez', 'Leonardo', '49', '20428.32', '2018-08-02', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1358', 'Sainz Álvarez', 'Leonardo', '50', '24309.69', '2018-08-03', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1640', 'Benítez', 'Elías Adán', '51', '48619.45', '2018-08-04', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('1640', 'Benítez', 'Elías Adán', '52', '12154.67', '2018-08-05', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2067', 'García', 'Julián', '53', '28191.09', '2018-08-06', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2067', 'García', 'Julián', '54', '10214.01', '2018-08-07', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2125', 'Sainz Cabeza', 'Dolores Ana', '55', '14095.33', '2018-08-08', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2125', 'Sainz Cabeza', 'Dolores Ana', '56', '28191.09', '2018-08-09', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2176', 'Lozano Benítez', 'Carmen María', '57', '14095.33', '2018-08-10', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2176', 'Lozano Benítez', 'Carmen María', '58', '56382.22', '2018-08-11', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2194', 'Iborra Mate', 'Rosario', '59', '14095.33', '2018-08-12', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2194', 'Iborra Mate', 'Rosario', '60', '14095.33', '2018-08-13', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2330', 'Peralta Castaño', 'Juan Nicolás', '61', '115221', '2018-08-14', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2330', 'Peralta Castaño', 'Juan Nicolás', '62', '48619.45', '2018-08-15', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2407', 'Pérez', 'Óscar', '63', '56382.22', '2018-08-16', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2407', 'Pérez', 'Óscar', '64', '21585', '2018-08-17', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2459', 'Manzano', 'María', '65', '12596.66', '2018-08-18', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2459', 'Manzano', 'María', '66', '12596.66', '2018-08-19', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2592', 'Peralta Sánchez', 'Nicolás', '67', '29216.22', '2018-08-20', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2592', 'Peralta Sánchez', 'Nicolás', '68', '50387.44', '2018-08-21', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2609', 'Montserrat', 'Martín Javier', '69', '14607.89', '2018-08-22', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2609', 'Montserrat', 'Martín Javier', '70', '56382.22', '2018-08-23', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2647', 'López', 'Adán Antonio', '71', '14095.33', '2018-08-24', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2647', 'López', 'Adán Antonio', '72', '28191.09', '2018-08-25', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2653', 'Peralta Fernández', 'Ezequiel José', '73', '24309.69', '2018-08-26', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2653', 'Peralta Fernández', 'Ezequiel José', '74', '14095.33', '2018-08-27', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2675', 'Mate', 'Cristina', '75', '26909.67', '2018-08-28', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2675', 'Mate', 'Cristina', '76', '14095.33', '2018-08-29', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2786', 'Pérez', 'Rosa', '77', '55869.65', '2018-08-30', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2786', 'Pérez', 'Rosa', '78', '13967.2', '2018-08-31', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2859', 'López Lafuente', 'Martín', '79', '9749.73', '2018-09-01', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2859', 'López Lafuente', 'Martín', '80', '58432.48', '2018-09-02', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2924', 'Herrero Rubio', 'Nuria', '81', '24309.69', '2018-09-03', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2924', 'Herrero Rubio', 'Nuria', '82', '12154.67', '2018-09-04', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2974', 'Rubio', 'Leonardo', '83', '24309.69', '2018-09-05', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('2974', 'Rubio', 'Leonardo', '84', '7428.37', '2018-09-06', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3043', 'Gutiérrez Pérez', 'Óscar', '85', '13454.64', '2018-09-07', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3043', 'Gutiérrez Pérez', 'Óscar', '86', '43171', '2018-09-08', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3049', 'Peralta García', 'Óscar', '87', '49334.71', '2018-09-09', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3049', 'Peralta García', 'Óscar', '88', '56382.22', '2018-09-10', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3097', 'Martínez Mate', 'Laura', '89', '18571.2', '2018-09-11', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('3097', 'Martínez Mate', 'Laura', '90', '24309.69', '2018-09-12', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143191', 'Juran', 'Martín Tomás', '91', '9749.73', '2018-09-13', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143191', 'Juran', 'Martín Tomás', '92', '51256.56', '2018-09-14', '0');
+INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143112', 'Marazzo', 'Leonardo', '93', '12813.94', '2018-09-15', '0');
+
+
+
+
+
