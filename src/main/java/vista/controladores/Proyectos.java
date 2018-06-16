@@ -29,6 +29,9 @@ import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
+import modelo.usuario.IPermiso;
+import modelo.usuario.IRol;
+import modelo.usuario.Modulo;
 import vista.GestorPantalla;
 /**
  * @author Martín Tomás Juran
@@ -39,6 +42,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     public void setProyectoSeleccion(Object proyecto, String tipo) {
         if (proyecto instanceof IProyecto) {
             proyectoSeleccion = (IProyecto) proyecto;
+            modoModificar();
             generalMostrarProyecto();
         }
     }
@@ -90,6 +94,260 @@ public class Proyectos extends ControladorVista implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	}
 
+	@Override
+	public void inicializar() {
+	    /* Ocultar controles según roles del usuario: */
+	    boolean crear = false;
+	    boolean modificar = false;
+	    boolean eliminar = false;
+	    boolean listar = false;
+
+	    for (IRol rol : this.usuario.getGrupos()) {
+	        for (IPermiso permiso : rol.getPermisos()) {
+	            if (permiso.getModulo() == Modulo.PROYECTOS) {
+	                this.permiso = permiso;
+	                crear |= permiso.getCrear();
+	                modificar |= permiso.getModificar();
+	                eliminar |= permiso.getEliminar();
+	                listar |= permiso.getListar();
+	            }
+	        }
+	    }
+
+	    if (!crear) {
+	        btnProyectosNuevo.setVisible(false);
+	    }
+
+	    if (!modificar) {
+	        // Pestaña Datos:
+	        btnDatosGuardar.setVisible(false);
+	        btnDatosDescartar.setVisible(false);
+
+	        txtDatosNombre.setEditable(false);
+	        txtDatosDirector.setEditable(false);
+	        btnDatosDirector.setVisible(false);
+	        txtDatosCodirector.setEditable(false);
+	        btnDatosCodirector.setVisible(false);
+	        cmbDatosEstado.setDisable(true);
+	        dtpDatosPresentacion.setEditable(false);
+	        dtpDatosAprobacion.setEditable(false);
+	        dtpDatosInicio.setEditable(false);
+	        dtpDatosFinalizacion.setEditable(false);
+
+	        // Pestaña Integrantes:
+	        btnIntegrantesNuevo.setVisible(false);
+	        btnIntegrantesGuardar.setVisible(false);
+	        btnIntegrantesDescartar.setVisible(false);
+	        btnIntegrantesEliminar.setVisible(false);
+
+	        btnIntegrantesDocente.setVisible(false);
+	        txtIntegrantesApellido.setEditable(false);
+	        txtIntegrantesNombre.setEditable(false);
+	        txtIntegrantesCargo.setEditable(false);
+	        txtIntegrantesInstitucion.setEditable(false);
+	        txtIntegrantesHoras.setEditable(false);
+
+	        // Pestaña Subsidios:
+	        btnSubsidiosNuevo.setVisible(false);
+            btnSubsidiosGuardar.setVisible(false);
+            btnSubsidiosDescartar.setVisible(false);
+            btnSubsidiosEliminar.setVisible(false);
+
+            txtSubsidiosAnio.setVisible(false);
+            txtSubsidiosMonto.setEditable(false);
+            txtSubsidiosDisp.setEditable(false);
+            txtaSubsidiosObservaciones.setEditable(false);
+
+	        // Pestaña Rendiciones:
+            btnRendicionesNueva.setVisible(false);
+            btnRendicionesGuardar.setVisible(false);
+            btnRendicionesDescartar.setVisible(false);
+            btnRendicionesEliminar.setVisible(false);
+
+            cmbRendicionesAnio.setDisable(true);
+            dtpRendicionesFecha.setEditable(false);
+            txtRendicionesMonto.setEditable(false);
+            txtaRendicionesObservaciones.setEditable(false);
+
+            // Pestaña Prórrogas:
+            btnProrrogasNueva.setVisible(false);
+            btnProrrogasGuardar.setVisible(false);
+            btnProrrogasDescartar.setVisible(false);
+            btnProrrogasEliminar.setVisible(false);
+
+            dtpProrrogasFinalizacion.setEditable(false);
+            txtProrrogasDisp.setEditable(false);
+
+            // Pestaña Resumen:
+            btnResumenGuardar.setVisible(false);
+            btnResumenDescartar.setVisible(false);
+
+            txtaResumen.setEditable(false);
+	    }
+
+	    if (!eliminar) {
+	        btnProyectosEliminar.setVisible(false);
+	    }
+
+	    if (!listar) {
+	    }
+
+	    modoVer();
+	}
+
+	@Override
+	public void modoModificar() {
+	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	        // Pestaña Datos:
+            btnDatosGuardar.setVisible(true);
+            btnDatosDescartar.setVisible(true);
+
+            txtDatosNombre.setEditable(true);
+            txtDatosDirector.setEditable(true);
+            btnDatosDirector.setVisible(true);
+            txtDatosCodirector.setEditable(true);
+            btnDatosCodirector.setVisible(true);
+            cmbDatosEstado.setDisable(false);
+            dtpDatosPresentacion.setEditable(true);
+            dtpDatosAprobacion.setEditable(true);
+            dtpDatosInicio.setEditable(true);
+            dtpDatosFinalizacion.setEditable(true);
+
+            // Pestaña Integrantes:
+            btnIntegrantesNuevo.setVisible(true);
+            btnIntegrantesGuardar.setVisible(true);
+            btnIntegrantesDescartar.setVisible(true);
+            btnIntegrantesEliminar.setVisible(true);
+
+            btnIntegrantesDocente.setVisible(true);
+            txtIntegrantesApellido.setEditable(true);
+            txtIntegrantesNombre.setEditable(true);
+            txtIntegrantesCargo.setEditable(true);
+            txtIntegrantesInstitucion.setEditable(true);
+            txtIntegrantesHoras.setEditable(true);
+
+            // Pestaña Subsidios:
+            btnSubsidiosNuevo.setVisible(true);
+            btnSubsidiosGuardar.setVisible(true);
+            btnSubsidiosDescartar.setVisible(true);
+            btnSubsidiosEliminar.setVisible(true);
+
+            txtSubsidiosAnio.setVisible(true);
+            txtSubsidiosMonto.setEditable(true);
+            txtSubsidiosDisp.setEditable(true);
+            txtaSubsidiosObservaciones.setEditable(true);
+
+            // Pestaña Rendiciones:
+            btnRendicionesNueva.setVisible(true);
+            btnRendicionesGuardar.setVisible(true);
+            btnRendicionesDescartar.setVisible(true);
+            btnRendicionesEliminar.setVisible(true);
+
+            cmbRendicionesAnio.setDisable(false);
+            dtpRendicionesFecha.setEditable(true);
+            txtRendicionesMonto.setEditable(true);
+            txtaRendicionesObservaciones.setEditable(true);
+
+            // Pestaña Prórrogas:
+            btnProrrogasNueva.setVisible(true);
+            btnProrrogasGuardar.setVisible(true);
+            btnProrrogasDescartar.setVisible(true);
+            btnProrrogasEliminar.setVisible(true);
+
+            dtpProrrogasFinalizacion.setEditable(true);
+            txtProrrogasDisp.setEditable(true);
+
+            // Pestaña Resumen:
+            btnResumenGuardar.setVisible(true);
+            btnResumenDescartar.setVisible(true);
+
+            txtaResumen.setEditable(true);
+	    }
+
+	    if (this.permiso.getEliminar()) {
+	        btnProyectosEliminar.setVisible(true);
+	    }
+
+	    this.window.setTitle(TITULO + " - Modificar Proyecto");
+	    if (this.proyectoSeleccion != null) {
+	        this.gestorPantalla.mensajeEstado("Modificar al Proyecto " + this.proyectoSeleccion.getNombre());
+	    }
+	}
+
+	@Override
+	public void modoVer() {
+	    // General:
+	    btnProyectosEliminar.setVisible(false);
+
+	    // Pestaña Datos:
+        btnDatosGuardar.setVisible(false);
+        btnDatosDescartar.setVisible(false);
+
+        txtDatosNombre.setEditable(false);
+        txtDatosDirector.setEditable(false);
+        btnDatosDirector.setVisible(false);
+        txtDatosCodirector.setEditable(false);
+        btnDatosCodirector.setVisible(false);
+        cmbDatosEstado.setDisable(true);
+        dtpDatosPresentacion.setEditable(false);
+        dtpDatosAprobacion.setEditable(false);
+        dtpDatosInicio.setEditable(false);
+        dtpDatosFinalizacion.setEditable(false);
+
+        // Pestaña Integrantes:
+        btnIntegrantesNuevo.setVisible(false);
+        btnIntegrantesGuardar.setVisible(false);
+        btnIntegrantesDescartar.setVisible(false);
+        btnIntegrantesEliminar.setVisible(false);
+
+        btnIntegrantesDocente.setVisible(false);
+        txtIntegrantesApellido.setEditable(false);
+        txtIntegrantesNombre.setEditable(false);
+        txtIntegrantesCargo.setEditable(false);
+        txtIntegrantesInstitucion.setEditable(false);
+        txtIntegrantesHoras.setEditable(false);
+
+        // Pestaña Subsidios:
+        btnSubsidiosNuevo.setVisible(false);
+        btnSubsidiosGuardar.setVisible(false);
+        btnSubsidiosDescartar.setVisible(false);
+        btnSubsidiosEliminar.setVisible(false);
+
+        txtSubsidiosAnio.setVisible(false);
+        txtSubsidiosMonto.setEditable(false);
+        txtSubsidiosDisp.setEditable(false);
+        txtaSubsidiosObservaciones.setEditable(false);
+
+        // Pestaña Rendiciones:
+        btnRendicionesNueva.setVisible(false);
+        btnRendicionesGuardar.setVisible(false);
+        btnRendicionesDescartar.setVisible(false);
+        btnRendicionesEliminar.setVisible(false);
+
+        cmbRendicionesAnio.setDisable(true);
+        dtpRendicionesFecha.setEditable(false);
+        txtRendicionesMonto.setEditable(false);
+        txtaRendicionesObservaciones.setEditable(false);
+
+        // Pestaña Prórrogas:
+        btnProrrogasNueva.setVisible(false);
+        btnProrrogasGuardar.setVisible(false);
+        btnProrrogasDescartar.setVisible(false);
+        btnProrrogasEliminar.setVisible(false);
+
+        dtpProrrogasFinalizacion.setEditable(false);
+        txtProrrogasDisp.setEditable(false);
+
+        // Pestaña Resumen:
+        btnResumenGuardar.setVisible(false);
+        btnResumenDescartar.setVisible(false);
+
+        txtaResumen.setEditable(false);
+
+        this.window.setTitle(TITULO);
+        this.gestorPantalla.mensajeEstado("");
+	}
+
 // -------------------------------- General --------------------------------- //
 
 	private IProyecto proyectoSeleccion = null;
@@ -115,7 +373,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	/** Vacía los controles generales y los de todas las pestañas */
     private void generalVaciarControles() {
-//        txtProyectosId.clear();
         txtProyectosNombre.clear();
 
         // Vaciar controles de las pestañas:
@@ -125,6 +382,8 @@ public class Proyectos extends ControladorVista implements Initializable {
         rendicionesVaciarControles();
         prorrogasVaciarControles();
         resumenVaciarControles();
+
+        this.gestorPantalla.mensajeEstado("");
     }
 
 	@FXML private Button btnProyectosBuscar;
@@ -133,6 +392,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         args.put(Busqueda.KEY_NUEVO, false);
         args.put(Busqueda.KEY_TIPO, Proyectos.TITULO);
         args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PROYECTO);
         args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Proyectos.TITULO, args);
 	}
@@ -141,6 +401,9 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void nuevoProyecto(ActionEvent event) {
 	    this.proyectoSeleccion = controlInvestigacion.getIProyecto();
         generalVaciarControles();
+        modoModificar();
+        this.window.setTitle(TITULO + " - Nuevo Proyecto");
+        this.gestorPantalla.mensajeEstado("Nuevo Proyecto");
 	}
 
 	@FXML private Button btnProyectosEliminar;
@@ -149,6 +412,7 @@ public class Proyectos extends ControladorVista implements Initializable {
             if (exitoEliminar(controlInvestigacion.eliminarProyecto(proyectoSeleccion), TITULO, "Eliminar Proyecto")) {
                 proyectoSeleccion = null;
                 generalVaciarControles();
+                modoVer();
             }
         }
     }
@@ -225,7 +489,9 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosDescartar;
     @FXML void descartarProyecto(ActionEvent event) {
-        datosMostrarProyecto();
+        proyectoSeleccion = null;
+        generalVaciarControles();
+        modoVer();
     }
 
     @FXML private TextField txtDatosDirector;
