@@ -53,6 +53,7 @@ public class ImportarCosto extends ControladorVista {
 	}
 	
 	private void actualizarTablaCosteo() {
+		this.filasFaltantesCosteo.clear();
 		List<ICargoDocente> faltantesCosteo = this.control.getFaltantesCosteo();
 		for (ICargoDocente cargo : faltantesCosteo) {
 			FilaCosteo fc = new FilaCosteo(cargo);
@@ -61,6 +62,7 @@ public class ImportarCosto extends ControladorVista {
 	}
 	
 	private void actualizarTablaSistema() {
+		this.filasFaltantesSistema.clear();
 		List<ICargoFaltante> faltantesSistema = this.control.getFaltantesSistema();
 		for (ICargoFaltante cargo : faltantesSistema) {
 			FilaSistema fs = new FilaSistema(cargo);
@@ -136,6 +138,9 @@ public class ImportarCosto extends ControladorVista {
     		EstadoCargo ec = this.cmbEstado.getValue();
     		if (ec != null) {
     			this.control.modificarEstado(fc.getCargo(), ec);
+    			this.gestorPantalla.mensajeEstado("Se ha actualizado el Cargo "
+    					+ fc.getCodigo() + " al Estado " + ec.getDescripcion());
+    			actualizarTablas();
     		}
     	}
     }

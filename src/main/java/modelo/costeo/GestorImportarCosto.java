@@ -41,6 +41,8 @@ public class GestorImportarCosto {
 	private List<ICargoFaltante> faltantesSistema = new ArrayList<ICargoFaltante>();
 	// Cargos que faltan en el costeo pero aparecen en el sistema como "activos"
 	private List<ICargoDocente> faltantesCosteo = new ArrayList<ICargoDocente>();
+	// Cargos modificados por el usuario
+	private List<ICargoDocente> faltantesCosteoModificados = new ArrayList<ICargoDocente>();
 	// Cargos importados de la planilla
 	private List<ICargoFaltante> cargosImportados = new ArrayList<ICargoFaltante>();
 	
@@ -87,7 +89,7 @@ public class GestorImportarCosto {
 	        
 	        return new EstadoOperacion(EstadoOperacion.CodigoEstado.OP_OK,
 	        		"La importación del costeo se ha realizado con éxito.");
-		} catch (InvalidFormatException e) {
+		} catch (InvalidFormatException | NumberFormatException e) {
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.OP_ERROR,
 					"El archivo no tiene el formato correcto. Asegúrese de que"
 			        + " se trata de la planilla con el costeo del mes.");
@@ -160,7 +162,7 @@ public class GestorImportarCosto {
 					// El estado del cargo actual es distinto al anterior
 					if (cargoActual.getEstado().getId() != cargoFaltanteSistema.getEstado().getId()) {
 						cargoActual.setEstado(cargoFaltanteSistema.getEstado().clone());
-						EstadoOperacion eo2 = this.gestorDocente.modificarCargoDocente(null, cargoActual);
+						EstadoOperacion eo2 = this.gestorDocente.modificarCargoDocente(cargoActual.getDocente(), cargoActual);
 						switch (eo2.getEstado()) {
 						case UPDATE_OK:
 							this.faltantesCosteo.remove(cargoFaltanteSistema);
@@ -292,6 +294,12 @@ public class GestorImportarCosto {
 					this.faltantesCosteo.add(cargo);
 				}
 			}
+			// Actualizar los cargos que fueron modificados por el usuario
+			for (ICargoDocente modificado : this.faltantesCosteoModificados) {
+				ICargoDocente anterior = buscarCargo(modificado.getId(), this.faltantesCosteo);
+				if (anterior != null)
+					anterior.setEstado(modificado.getEstado());
+			}
 		}
 	}
 	
@@ -316,8 +324,12 @@ public class GestorImportarCosto {
 	 * @param estado El nuevo Estado del CargoDocente 
 	 */
 	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
-		ICargoDocente cargoActualizar = buscarCargo(cargo.getId(), this.faltantesCosteo);
-		cargoActualizar.setEstado(estado);
+		ICargoDocente cargoActualizar = buscarCargo(cargo.getId(), this.faltantesCosteoModificados);
+		if (cargoActualizar != null)
+			cargoActualizar.setEstado(estado);
+		else
+			cargo.setEstado(estado);
+			this.faltantesCosteoModificados.add(cargo);
 	}
 	
 	/**
