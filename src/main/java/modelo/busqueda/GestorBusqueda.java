@@ -162,11 +162,11 @@ public class GestorBusqueda {
         return proyectos;
 	}
 
-	public List<BusquedaRol> listarRoles(String criterio) {
+	public List<BusquedaRole> listarRoles(String criterio) {
 	    String tabla = "ViewRol";
         String campos = "id, nombre";
         String condicion = "TRUE";
-        List<BusquedaRol> roles = new ArrayList<BusquedaRol>();
+        List<BusquedaRole> roles = new ArrayList<BusquedaRole>();
 
         if (criterio != null && !criterio.equals("")) {
             condicion = armarCondicion(campos.split(", "), criterio);
@@ -176,7 +176,7 @@ public class GestorBusqueda {
             ManejoDatos md = new ManejoDatos();
             ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
             for (Hashtable<String, String> reg : res) {
-                BusquedaRol doc = new BusquedaRol(
+                BusquedaRole doc = new BusquedaRole(
                         Integer.parseInt(reg.get("id")),
                         reg.get("nombre"));
                 roles.add(doc);

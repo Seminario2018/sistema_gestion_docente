@@ -305,7 +305,7 @@ public class Programas extends ControladorVista implements Initializable {
 
         for (IRol rol : this.usuario.getGrupos()) {
             for (IPermiso permiso : rol.getPermisos()) {
-                if (permiso.getModulo() == Modulo.DOCENTES) {
+                if (permiso.getModulo() == Modulo.PROGRAMAS) {
                     this.permiso = permiso;
                     crear |= permiso.getCrear();
                     modificar |= permiso.getModificar();

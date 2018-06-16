@@ -1,15 +1,15 @@
 package modelo.busqueda;
 
 
-public class BusquedaRol {
+public class BusquedaRole {
 	private int id;
 	private String nombre;
 
-	public BusquedaRol() {
+	public BusquedaRole() {
 
 	}
 
-	public BusquedaRol(int id, String nombre) {
+	public BusquedaRole(int id, String nombre) {
 		this.id = id;
 		this.nombre = nombre;
 	}

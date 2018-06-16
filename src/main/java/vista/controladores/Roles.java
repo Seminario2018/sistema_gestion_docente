@@ -10,12 +10,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
+import modelo.usuario.Modulo;
 import vista.GestorPantalla;
 
 /**
@@ -40,6 +42,71 @@ public class Roles extends ControladorVista implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 	    inicializarTabla("Permisos");
 	    actualizarTabla();
+	}
+
+	@Override
+	public void inicializar() {
+	    /* Ocultar controles según roles del usuario: */
+	    boolean crear = false;
+	    boolean modificar = false;
+	    boolean eliminar = false;
+	    boolean listar = false;
+
+	    for (IRol rol : this.usuario.getGrupos()) {
+	        for (IPermiso permiso : rol.getPermisos()) {
+	            if (permiso.getModulo() == Modulo.ROLES) {
+	                this.permiso = permiso;
+	                crear |= permiso.getCrear();
+	                modificar |= permiso.getModificar();
+	                eliminar |= permiso.getEliminar();
+	                listar |= permiso.getListar();
+	            }
+	        }
+	    }
+
+	    if (!crear) {
+	        btnRolesNuevo.setVisible(false);
+	    }
+
+	    if (!modificar) {
+	        btnRolesGuardar.setVisible(false);
+	        btnRolesDescartar.setVisible(false);
+	    }
+
+	    if (!eliminar) {
+	        btnRolesEliminar.setVisible(false);
+	    }
+
+	    if (!listar) {
+	    }
+
+	    modoVer();
+	}
+
+	@Override
+	public void modoModificar() {
+	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	        btnRolesGuardar.setVisible(true);
+            btnRolesDescartar.setVisible(true);
+	    }
+
+	    if (this.permiso.getEliminar()) {
+	        btnRolesEliminar.setVisible(true);
+	    }
+
+	    this.window.setTitle(TITULO + " - Modificar Rol");
+	    if (this.rolSeleccion != null) {
+	        this.gestorPantalla.mensajeEstado("Modificar al Rol " + this.rolSeleccion.getDescripcion());
+	    }
+	}
+
+	@Override
+	public void modoVer() {
+	    btnRolesGuardar.setVisible(false);
+        btnRolesDescartar.setVisible(false);
+
+        this.window.setTitle(TITULO);
+        this.gestorPantalla.mensajeEstado("");
 	}
 
 	public class FilaPermiso {
@@ -102,8 +169,11 @@ public class Roles extends ControladorVista implements Initializable {
 	    txtRolesDescripcion.clear();
 
 	    vaciarTablas();
+
+	    this.gestorPantalla.mensajeEstado("");
 	}
 
+	@FXML private Button btnRolesBuscar;
 	@FXML private void buscarRol() {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, false);
@@ -114,11 +184,13 @@ public class Roles extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Roles.TITULO, args);
 	}
 
+	@FXML private Button btnRolesNuevo;
 	@FXML private void nuevoRol() {
 	    rolSeleccion = controlUsuario.getIRol();
 	    vaciarControles();
 	}
 
+	@FXML private Button btnRolesGuardar;
 	@FXML private void guardarRol() {
 	    if (rolSeleccion != null) {
 	        rolSeleccion.setNombre(txtRolesNombre.getText());
@@ -129,16 +201,21 @@ public class Roles extends ControladorVista implements Initializable {
 	    }
 	}
 
+	@FXML private Button btnRolesDescartar;
 	@FXML private void descartarRol() {
-	    mostrarRol();
+	    rolSeleccion = null;
+	    vaciarControles();
+	    modoVer();
 	}
 
+	@FXML private Button btnRolesEliminar;
 	@FXML private void eliminarRol() {
 	    if (rolSeleccion != null) {
 	        EstadoOperacion resultado = controlUsuario.eliminarGrupo(rolSeleccion);
 	        if (exitoEliminar(resultado, TITULO, "Eliminar Rol")) {
 	            rolSeleccion = null;
 	            vaciarControles();
+	            modoVer();
 	        }
 	    }
 	}
@@ -178,6 +255,7 @@ public class Roles extends ControladorVista implements Initializable {
     public void setRoleSeleccion(Object rol, String tipo) {
         if (rol instanceof IRol) {
             rolSeleccion = (IRol) rol;
+            modoModificar();
             mostrarRol();
         }
     }
