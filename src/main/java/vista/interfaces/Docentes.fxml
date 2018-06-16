@@ -228,7 +228,7 @@
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Button contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarCargo" text="Eliminar cargo" GridPane.columnIndex="3">
+                                          <Button fx:id="btnCargosEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarCargo" text="Eliminar cargo" GridPane.columnIndex="3">
                                              <GridPane.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </GridPane.margin>

@@ -130,18 +130,21 @@ public class Docentes extends ControladorVista implements Initializable {
             // Pestaña Datos:
             btnDatosGuardar.setVisible(false);
             btnDatosDescartar.setVisible(false);
+
             txtDatosLegajo.setEditable(false);
-            cmbDatosEstado.setEditable(false);
-            cmbDatosCategoria.setEditable(false);
+            cmbDatosEstado.setDisable(false);
+            cmbDatosCategoria.setDisable(false);
 
             // Pestaña Cargos:
             btnCargosNuevo.setVisible(false);
             btnCargosGuardar.setVisible(false);
             btnCargosDescartar.setVisible(false);
+            btnCargosEliminar.setVisible(false);
+
             btnCargosArea.setVisible(false);
             btnCargosCargo.setVisible(false);
-            cmbCargosEstado.setEditable(false);
-            cmbCargosTipo.setEditable(false);
+            cmbCargosEstado.setDisable(false);
+            cmbCargosTipo.setDisable(false);
             txtCargosDisp.setEditable(false);
             dtpCargosDispDesde.setEditable(false);
             dtpCargosDispHasta.setEditable(false);
@@ -170,49 +173,6 @@ public class Docentes extends ControladorVista implements Initializable {
 
         modoVer();
     }
-
-	@Override
-    public void modoVer() {
-	    // General:
-	    btnDocentesEliminar.setVisible(false);
-
-        // Pestaña Datos:        
-        btnDatosDatos.setVisible(false);
-        btnDatosGuardar.setVisible(false);
-        btnDatosDescartar.setVisible(false);
-        txtDatosLegajo.setEditable(false);
-        cmbDatosEstado.setDisable(true);
-        cmbDatosCategoria.setDisable(true);
-
-        // Pestaña Cargos:
-        btnCargosNuevo.setVisible(false);
-        btnCargosGuardar.setVisible(false);
-        btnCargosDescartar.setVisible(false);
-        btnCargosArea.setVisible(false);
-        btnCargosCargo.setVisible(false);
-        cmbCargosEstado.setDisable(true);
-        cmbCargosTipo.setDisable(true);
-        txtCargosDisp.setEditable(false);
-        dtpCargosDispDesde.setEditable(false);
-        dtpCargosDispHasta.setEditable(false);
-        txtCargosRes.setEditable(false);
-        dtpCargosResDesde.setEditable(false);
-        dtpCargosResHasta.setEditable(false);
-
-        // Pestaña Incentivos:
-        btnIncentivosNuevo.setVisible(false);
-        btnIncentivosGuardar.setVisible(false);
-        btnIncentivosDescartar.setVisible(false);
-        txtIncentivosAnio.setEditable(false);
-
-        // Pestaña Observaciones:
-        btnObservacionesGuardar.setVisible(false);
-        btnObservacionesDescartar.setVisible(false);
-        txtaObservaciones.setEditable(false);
-
-	    this.window.setTitle(TITULO);
-	    this.gestorPantalla.mensajeEstado("");
-	}
 
 	@Override
     public void modoModificar() {
@@ -255,13 +215,57 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 
 	    if (this.permiso.getEliminar()) {
-	        btnDocentesEliminar.setVisible(false);
+	        btnDocentesEliminar.setVisible(true);
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Docente");
-        if (this.docenteSeleccion != null) {
-            this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
-        }
+	    if (this.docenteSeleccion != null) {
+	        this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
+	    }
+	}
+
+	@Override
+	public void modoVer() {
+	    // General:
+	    btnDocentesEliminar.setVisible(false);
+	    btnDocentesCosto.setVisible(true);
+
+	    // Pestaña Datos:
+	    btnDatosGuardar.setVisible(false);
+	    btnDatosDescartar.setVisible(false);
+	    txtDatosLegajo.setEditable(false);
+	    cmbDatosEstado.setDisable(false);
+	    cmbDatosCategoria.setDisable(false);
+
+	    // Pestaña Cargos:
+	    btnCargosNuevo.setVisible(false);
+	    btnCargosGuardar.setVisible(false);
+	    btnCargosDescartar.setVisible(false);
+
+	    btnCargosArea.setVisible(false);
+	    btnCargosCargo.setVisible(false);
+	    cmbCargosEstado.setDisable(false);
+	    cmbCargosTipo.setDisable(false);
+	    txtCargosDisp.setEditable(false);
+	    dtpCargosDispDesde.setEditable(false);
+	    dtpCargosDispHasta.setEditable(false);
+	    txtCargosRes.setEditable(false);
+	    dtpCargosResDesde.setEditable(false);
+	    dtpCargosResHasta.setEditable(false);
+
+	    // Pestaña Incentivos:
+	    btnIncentivosNuevo.setVisible(false);
+	    btnIncentivosGuardar.setVisible(false);
+	    btnIncentivosDescartar.setVisible(false);
+	    txtIncentivosAnio.setEditable(false);
+
+	    // Pestaña Observaciones:
+	    btnObservacionesGuardar.setVisible(false);
+	    btnObservacionesDescartar.setVisible(false);
+	    txtaObservaciones.setEditable(false);
+
+	    this.window.setTitle(TITULO);
+	    this.gestorPantalla.mensajeEstado("");
 	}
 
 // -------------------------------- General --------------------------------- //
