@@ -51,11 +51,34 @@ public class GestorUsuario {
         try {
         	ManejoDatos md = new ManejoDatos();
         	String tabla = "Usuarios";
-        	String campos = "`Usuario` = '"+ usuario.getUser() +
-        			"', `Hash` = '"+ usuario.getHash().getHash() +"', `Salt`= '"+ usuario.getHash().getSalt() +
-        			"', `TipoDocumentoPersona`= "+ usuario.getPersona().getTipoDocumento().getId() +
-        			", `NroDocumentoPerson` = '"+ usuario.getPersona().getNroDocumento() +"'";
+        	String campos = "";
         	String condicion = "`Usuario` = '" + usuario.getUser() + "'";
+        	
+        	if (usuario.getUser() != null && !usuario.getUser().equals("")) {
+        		campos += "`Usuario` = '"+ usuario.getUser() + "'";
+        	}
+        	if (usuario.getHash() != null) {
+        		if (!campos.equals("")) {
+        			campos += ", ";
+        		}
+        		campos += "`Hash` = '"+ usuario.getHash().getHash() +"', "
+        				+ "`Salt`= '"+ usuario.getHash().getSalt() + "'";
+        	}
+        	if (usuario.getPersona() != null) {
+        		if (usuario.getPersona().getTipoDocumento() != null) {
+        			if (!campos.equals("")) {
+            			campos += ", ";
+            		}
+            		campos += "`TipoDocumento` = '" + usuario.getPersona().getTipoDocumento().getId();
+            	}
+            	if (usuario.getPersona().getNroDocumento() != -1) {
+            		if (!campos.equals("")) {
+            			campos += ", ";
+            		}
+            		campos += "`NroDocumento`= '" + usuario.getPersona().getNroDocumento() + "'";
+            	}
+        	}
+        	
 
         	md.update(tabla, campos, condicion);
 
