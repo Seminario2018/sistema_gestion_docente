@@ -54,7 +54,7 @@ public class Roles extends ControladorVista implements Initializable {
 
 	    for (IRol rol : this.usuario.getGrupos()) {
 	        for (IPermiso permiso : rol.getPermisos()) {
-	            if (permiso.getModulo() == Modulo.GRUPOS) {
+	            if (permiso.getModulo() == Modulo.ROLES) {
 	                this.permiso = permiso;
 	                crear |= permiso.getCrear();
 	                modificar |= permiso.getModificar();

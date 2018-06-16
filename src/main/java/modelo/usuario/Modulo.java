@@ -4,7 +4,7 @@ package modelo.usuario;
 public enum Modulo {
 	GENERAL,
 	ESTACION,
-	GRUPOS,
+	ROLES,
 	USUARIOS,
 	CARGOS,
 	DOCENTES,
@@ -19,7 +19,7 @@ public enum Modulo {
 	public String toString() {
 	    switch (this) {
 	        case GENERAL: return "General";
-	        case GRUPOS: return "Roles";
+	        case ROLES: return "Roles";
 	        case USUARIOS: return "Usuarios";
 	        case DOCENTES: return "Docentes";
 	        case INVESTIGACION: return "Investigación";

@@ -41,7 +41,7 @@ public class UsuariosTest {
 		
 		r = new Rol(2, "usuario");
 		for (IPermiso p : r.getPermisos()) {
-			if (p.getModulo() != Modulo.GRUPOS && p.getModulo() != Modulo.USUARIOS) {
+			if (p.getModulo() != Modulo.ROLES && p.getModulo() != Modulo.USUARIOS) {
 				p.setCrear(true);
 				p.setEliminar(true);
 				p.setListar(true);
@@ -60,7 +60,7 @@ public class UsuariosTest {
 		
 		r = new Rol(3, "invitado");
 		for (IPermiso p : r.getPermisos()) {
-			if (p.getModulo() != Modulo.GRUPOS && p.getModulo() != Modulo.USUARIOS) {
+			if (p.getModulo() != Modulo.ROLES && p.getModulo() != Modulo.USUARIOS) {
 				p.setListar(true);
 			}			
 		}
