@@ -16,9 +16,9 @@ public class GestorUsuario {
     public EstadoOperacion nuevoUsuario(IUsuario usuario) {
 
     	try {
-    		
-    		
-    		
+
+
+
     		ManejoDatos md = new ManejoDatos();
         	String table = "Usuarios";
         	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
@@ -56,10 +56,11 @@ public class GestorUsuario {
         	String tabla = "Usuarios";
         	String campos = "";
         	String condicion = "`Usuario` = '" + usuario.getUser() + "'";
-        	
+
         	if (usuario.getUser() != null && !usuario.getUser().equals("")) {
         		campos += "`Usuario` = '"+ usuario.getUser() + "'";
         	}
+
         	if (usuario.getHash() != null) {
         		if (!campos.equals("")) {
         			campos += ", ";
@@ -67,21 +68,28 @@ public class GestorUsuario {
         		campos += "`Hash` = '"+ usuario.getHash().getHash() +"', "
         				+ "`Salt`= '"+ usuario.getHash().getSalt() + "'";
         	}
+
         	if (usuario.getPersona() != null) {
         		if (usuario.getPersona().getTipoDocumento() != null) {
         			if (!campos.equals("")) {
             			campos += ", ";
             		}
-            		campos += "`TipoDocumento` = '" + usuario.getPersona().getTipoDocumento().getId();
+            		campos += "`TipoDocumentoPersona` = " + usuario.getPersona().getTipoDocumento().getId();
             	}
             	if (usuario.getPersona().getNroDocumento() != -1) {
             		if (!campos.equals("")) {
             			campos += ", ";
             		}
-            		campos += "`NroDocumento`= '" + usuario.getPersona().getNroDocumento() + "'";
+            		campos += "`NroDocumentoPerson`= '" + usuario.getPersona().getNroDocumento() + "'";
             	}
         	}
-        	
+
+        	if (usuario.getDescripcion() != null && !usuario.getDescripcion().equals("")) {
+        	    if (!campos.equals("")) {
+                    campos += ", ";
+                }
+                campos += "`Descripcion`= '" + usuario.getDescripcion() + "'";
+        	}
 
         	md.update(tabla, campos, condicion);
 
