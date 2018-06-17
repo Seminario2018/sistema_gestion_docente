@@ -59,19 +59,26 @@ public abstract class ControladorVista implements Initializable {
 	public void setUsuario(IUsuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	/**
 	 * Vista en modo "Modificar"
 	 */
 	protected void modoModificar() {
-		
+
 	}
-	
+
+	/**
+     * Vista en modo "Nuevo"
+     */
+    protected void modoNuevo() {
+
+    }
+
 	/**
 	 * Vista en modo "Ver"
 	 */
 	protected void modoVer() {
-		
+
 	}
 
 	@Override

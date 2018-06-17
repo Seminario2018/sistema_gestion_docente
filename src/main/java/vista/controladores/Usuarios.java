@@ -82,6 +82,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 
         if (!crear) {
             btnNuevo.setVisible(false);
+            btnPersona.setVisible(false);
         }
 
         if (!modificar) {
@@ -145,7 +146,8 @@ public class Usuarios extends ControladorVista implements Initializable {
 
     @Override
     protected void modoModificar() {
-    	if (this.permiso.getModificar() || this.permiso.getCrear()) {
+//        if (this.permiso.getModificar() || this.permiso.getCrear()) {
+    	if (this.permiso.getModificar()) {
     		btnGuardar.setVisible(true);
     		btnDescartar.setVisible(true);
     		btnAgregar.setVisible(true);
@@ -166,12 +168,32 @@ public class Usuarios extends ControladorVista implements Initializable {
     }
 
     @Override
+    protected void modoNuevo() {
+        if (this.permiso.getCrear()) {
+            btnDescartar.setVisible(true);
+            btnGuardar.setVisible(true);
+            btnNuevo.setVisible(true);
+            btnPersona.setVisible(true);
+            txtConfirmar.setEditable(true);
+            txtContrasena.setEditable(true);
+            txtDescripcion.setEditable(true);
+            txtUsuario.setEditable(true);
+        }
+
+        this.window.setTitle(TITULO + " - Nuevo Usuario");
+        if (this.usuarioSeleccion != null) {
+            this.gestorPantalla.mensajeEstado("Nuevo Usuario ");
+        }
+    }
+
+    @Override
     protected void modoVer() {
     	btnGuardar.setVisible(false);
         btnDescartar.setVisible(false);
         btnAgregar.setVisible(false);
         btnQuitar.setVisible(false);
         btnEliminar.setVisible(false);
+        btnPersona.setVisible(false);
         txtUsuario.setEditable(false);
     	txtContrasena.setEditable(false);
     	txtConfirmar.setEditable(false);
@@ -216,6 +238,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML private TextField txtDocumento;
 	@FXML private TextField txtNombre;
 
+	@FXML private Button btnPersona;
 	@FXML public void seleccionarPersona(ActionEvent event) {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_NUEVO, true);
@@ -246,9 +269,10 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML public void nuevoUsuario(ActionEvent event) {
 	    usuarioSeleccion = controlUsuario.getIUsuario();
         vaciarControles();
-        modoModificar();
-        this.window.setTitle(TITULO + " - Nuevo Usuario");
-        this.gestorPantalla.mensajeEstado("Nuevo Usuario");
+//        modoModificar();
+        modoNuevo();
+//        this.window.setTitle(TITULO + " - Nuevo Usuario");
+//        this.gestorPantalla.mensajeEstado("Nuevo Usuario");
 	}
 
 	@FXML private Button btnGuardar;
@@ -264,6 +288,8 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 	                EstadoOperacion resultado = controlUsuario.guardarUsuario(usuarioSeleccion);
 	                exitoGuardado(resultado, TITULO, "Guardar Usuario");
+
+	                modoModificar();
 
 	            } else { alertaError(TITULO, "Guardar Usuario", "Las contraseñas no coinciden"); }
 	        } else { alertaError(TITULO, "Guardar Usuario", "Tiene que haber una persona seleccionada"); }
