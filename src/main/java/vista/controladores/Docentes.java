@@ -121,6 +121,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
         if (!crear) {
             btnDocentesNuevo.setVisible(false);
+            btnDatosPersona.setVisible(false);
         }
 
         if (!modificar) {
@@ -176,7 +177,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@Override
     public void modoModificar() {
-	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+//	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	    if (this.permiso.getModificar()) {
 	        // General:
 	        btnDocentesCosto.setVisible(true);
 
@@ -215,13 +217,32 @@ public class Docentes extends ControladorVista implements Initializable {
 	    }
 
 	    if (this.permiso.getEliminar()) {
-//	        btnDocentesEliminar.setVisible(true);
+	        btnDocentesEliminar.setVisible(true);
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Docente");
 	    if (this.docenteSeleccion != null) {
 	        this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
 	    }
+	}
+
+	@Override
+    public void modoNuevo() {
+	    if (this.permiso.getCrear()) {
+	        // General:
+	        btnDocentesNuevo.setVisible(true);
+
+	        // Pestaña Datos:
+	        btnDatosDescartar.setVisible(true);
+	        btnDatosGuardar.setVisible(true);
+	        btnDatosPersona.setVisible(true);
+	        txtDatosLegajo.setEditable(true);
+	        cmbDatosEstado.setDisable(false);
+	        cmbDatosCategoria.setDisable(false);
+
+	        this.window.setTitle(TITULO + " - Nuevo Docente");
+	        this.gestorPantalla.mensajeEstado("Nuevo Docente ");
+        }
 	}
 
 	@Override
@@ -233,6 +254,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    // Pestaña Datos:
 	    btnDatosGuardar.setVisible(false);
 	    btnDatosDescartar.setVisible(false);
+	    btnDatosPersona.setVisible(false);
 	    txtDatosLegajo.setEditable(false);
 	    cmbDatosEstado.setDisable(true);
 	    cmbDatosCategoria.setDisable(true);
@@ -315,9 +337,10 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML private void nuevoDocente() {
 		docenteSeleccion = controlDocente.getIDocente();
 		generalVaciarControles();
-		modoModificar();
-		this.window.setTitle(TITULO + " - Nuevo Docente");
-		this.gestorPantalla.mensajeEstado("Nuevo Docente");
+//		modoModificar();
+		modoNuevo();
+//		this.window.setTitle(TITULO + " - Nuevo Docente");
+//		this.gestorPantalla.mensajeEstado("Nuevo Docente");
     }
 
 	@FXML Button btnDocentesEliminar;
@@ -411,6 +434,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
     	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
 
+    	        modoModificar();
+
 	        } catch (NumberFormatException e) {
 	            alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
 	        }
@@ -424,6 +449,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    generalVaciarControles();
 	}
 
+	@FXML private Button btnDatosPersona;
 	@FXML private void seleccionarPersona() {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put(Busqueda.KEY_NUEVO, true);

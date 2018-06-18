@@ -110,6 +110,7 @@
                                  <rowConstraints>
                                     <RowConstraints vgrow="NEVER" />
                                     <RowConstraints vgrow="NEVER" />
+                                    <RowConstraints vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
                                     <GridPane hgap="10.0">
@@ -175,6 +176,7 @@
                                                 <Insets />
                                              </GridPane.margin>
                                           </ComboBox>
+                                          <Button fx:id="btnDatosPersona" mnemonicParsing="false" onAction="#seleccionarPersona" prefHeight="30.0" prefWidth="307.0" text="Asignar Persona" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" minWidth="50.0" />
