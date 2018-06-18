@@ -64,10 +64,10 @@ public class GestorDocente {
             ManejoDatos md = new ManejoDatos();
             String tabla = "Docentes";
             String campos = "";
-            		
+
             if (docente.getPersona() != null) {
             	if (docente.getPersona().getTipoDocumento() != null) {
-            		campos += "`TipoDocumento` = '" + docente.getPersona().getTipoDocumento().getId();
+            		campos += "`TipoDocumento` = " + docente.getPersona().getTipoDocumento().getId();
             	}
             	if (docente.getPersona().getNroDocumento() != -1) {
             		if (!campos.equals("")) {
@@ -315,9 +315,9 @@ public class GestorDocente {
                 valores += ", '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
             }
             md.insertar("CargosDocentes", campos, valores);
-            
+
             this.guardarCostos(cargoDocente);
-            
+
             if (md.isEstado()) {
                 ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El Cargo Docente se agregó correctamente");
@@ -330,23 +330,23 @@ public class GestorDocente {
         }
     }
 
-   
+
 
 	private void guardarCostos(ICargoDocenteg cargoDocente) {
 		for(Costo c : cargoDocente.getCostos()) {
 			c.guardar(cargoDocente);
 		}
-		
+
 	}
 
 	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cd) {
         try {
-        	
+
         	ICargoDocenteg cargoDocente = (ICargoDocenteg) cd;
-        	
+
             String campos = "";
-            
-            
+
+
             if (docente != null && docente.getLegajo() != -1) {
             	campos += "`Legajo` = " + docente.getLegajo();
             }
@@ -415,12 +415,13 @@ public class GestorDocente {
 
             ManejoDatos md = new ManejoDatos();
             md.update("CargosDocentes", campos, condicion);
-            
+
             this.guardarCostos(cargoDocente);
-            
+
             if (md.isEstado()) {
-            	if (docente != null)
-            		((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
+            	if (docente != null) {
+                    ((IDocente) docente).setCargosDocentes(new ArrayList<ICargoDocente>());
+                }
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El CargoDocente se modificó correctamente");
             } else {
                 return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "El CargoDocente no se modificó");
@@ -589,8 +590,8 @@ public class GestorDocente {
             return false;
         }
     }
-    
-    
+
+
     public List<ProyectoDocente> listarProyectosDocente(IDocente docente){
     	List<ProyectoDocente> proyectos;
 		try {
@@ -601,7 +602,7 @@ public class GestorDocente {
 			if (docente != null && docente.getLegajo() != -1) {
 				condicion = "Legajo = " + docente.getLegajo();
 			}
-			
+
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				ProyectoDocente pd = new ProyectoDocente();
@@ -616,9 +617,9 @@ public class GestorDocente {
 			e.printStackTrace();
 			proyectos = new ArrayList<ProyectoDocente>();
 		}
-    	
+
     	return proyectos;
-    	
+
     }
 
 
