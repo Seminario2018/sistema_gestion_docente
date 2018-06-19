@@ -215,7 +215,7 @@ public class Proyecto implements IProyecto, IProyectog {
 		if (this.integrantes.isEmpty()) {
 			GestorProyecto gp = new GestorProyecto();
 			for (IIntegrante integrante : gp.listarIntegrantes(this, null)) {
-				this.agregarIntegrante(integrante);
+				this.integrantes.add(integrante);
 			}
 		}
 
@@ -237,7 +237,7 @@ public class Proyecto implements IProyecto, IProyectog {
 		if (this.subsidios.isEmpty()) {
 			GestorProyecto gp = new GestorProyecto();
 			for (ISubsidio subsidio : gp.listarSubsidios(this, null)) {
-            	this.agregarSubsidio(subsidio);
+            	this.subsidios.add(subsidio);
             }
 		}
 		return this.subsidios;
@@ -258,7 +258,7 @@ public class Proyecto implements IProyecto, IProyectog {
 		if (this.prorrogas.isEmpty()) {
 			GestorProyecto gp = new GestorProyecto();
 			for (IProrroga pro : gp.listarProrrogas(this, null)) {
-            	this.agregarProrroga(pro);
+            	this.prorrogas.add(pro);
             }
 		}
 		return this.prorrogas;

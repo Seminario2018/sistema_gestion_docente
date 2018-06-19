@@ -270,8 +270,21 @@ public class Programas extends ControladorVista implements Initializable {
         } else {
             txtProgramas.setText(programaSeleccion.getNombre());
             txtProgramasNombre.setText(programaSeleccion.getNombre());
-            txtProgramasDirector.setText(programaSeleccion.getDirector().getPersona().getNombreCompleto());
-            txtProgramasCodirector.setText(programaSeleccion.getCodirector().getPersona().getNombreCompleto());
+
+            IDocente director = programaSeleccion.getDirector();
+            txtProgramasDirector.setText(
+                director.getLegajo() + " - " +
+                director.getPersona().getNombreCompleto());
+
+            IDocente codirector = programaSeleccion.getCodirector();
+            if (codirector == null) {
+                txtProgramasCodirector.setText("");
+            } else {
+                txtProgramasCodirector.setText(
+                    codirector.getLegajo() + " - " +
+                    codirector.getPersona().getNombreCompleto());
+            }
+
             cmbProgramasEstado.getSelectionModel().select(programaSeleccion.getEstado());
             txtProgramasDisp.setText(programaSeleccion.getDisposicion());
             dtpProgramasInicio.setValue(programaSeleccion.getFechaInicio());

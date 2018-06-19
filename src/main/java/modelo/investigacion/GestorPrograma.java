@@ -1,7 +1,6 @@
 package modelo.investigacion;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -68,7 +67,7 @@ public class GestorPrograma {
 
 			String condicion = "id = " + programa.getId();
 
-			
+
 			if (programa.getNombre() != null && !programa.getNombre().equals("")) {
 				campos += "`Nombre` = '"+ programa.getNombre() +"'";
 			}
@@ -158,21 +157,14 @@ public class GestorPrograma {
 				p.setId(Integer.parseInt(reg.get("id")));
 				p.setNombre(reg.get("Nombre"));
 
-
 				if (!reg.get("Disposicion").equals("")) {
 					p.setDisposicion(reg.get("Disposicion"));
 				}
 				if (!reg.get("Desde").equals("")) {
-					String[] fecha = reg.get("Desde").split("-");
-					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]),
-							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
-					p.setFechaInicio(fld);
+					p.setFechaInicio(Date.valueOf(reg.get("Desde")).toLocalDate());
 				}
 				if (!reg.get("Hasta").equals("")) {
-					String[] fecha = reg.get("Hasta").split("-");
-					LocalDate fld = LocalDate.of(Integer.parseInt(fecha[0]),
-							Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
-					p.setFechaFin(fld);
+					p.setFechaFin(Date.valueOf(reg.get("Hasta")).toLocalDate());
 				}
 
 				programas.add(p);

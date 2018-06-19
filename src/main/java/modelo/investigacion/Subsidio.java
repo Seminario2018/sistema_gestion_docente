@@ -26,7 +26,7 @@ public class Subsidio implements ISubsidio {
 	    this.disposicion = null;
 	    this.montoTotal = -1;
 	    this.observaciones = null;
-	    this.rendiciones = null;
+	    this.rendiciones = new ArrayList<IRendicion>();
 	}
 
 	@Override

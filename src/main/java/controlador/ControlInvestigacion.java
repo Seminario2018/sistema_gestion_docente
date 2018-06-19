@@ -58,11 +58,11 @@ public class ControlInvestigacion {
 
     //    Integrantes
     public EstadoOperacion guardarIntegrante(IProyecto proyecto, IIntegrante integrante) {
-        return gestorProyecto.AgregarIntegrante(proyecto, integrante);
+        return gestorProyecto.agregarIntegrante(proyecto, integrante);
     }
 
     public EstadoOperacion quitarIntegrante(IProyecto proyecto, IIntegrante integrante) {
-        return gestorProyecto.AgregarIntegrante(proyecto, integrante);
+        return gestorProyecto.quitarIntegrante(proyecto, integrante);
     }
 
     public List<IIntegrante> listarIntegrantes(IProyecto proyecto, IIntegrante integrante) {

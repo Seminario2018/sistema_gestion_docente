@@ -433,6 +433,7 @@ public class Docentes extends ControladorVista implements Initializable {
     	        docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
 
     	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
+    	        generalMostrarDocente();
 
     	        modoModificar();
 

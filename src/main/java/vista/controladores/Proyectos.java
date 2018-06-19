@@ -4,6 +4,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import controlador.ControlInvestigacion;
@@ -16,7 +17,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -197,8 +197,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@Override
 	public void modoModificar() {
-//	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
 	    if (this.permiso.getModificar()) {
+	        // General:
+	        btnProyectosNuevo.setVisible(true);
+
 	        // Pestaña Datos:
             btnDatosGuardar.setVisible(true);
             btnDatosDescartar.setVisible(true);
@@ -373,14 +375,11 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	private IProyecto proyectoSeleccion = null;
 
-	@FXML private TabPane tabpaneProyectos;
-//	@FXML private TextField txtProyectosId;
 	@FXML private TextField txtProyectosNombre;
 
 	/** Muestra los datos del proyecto seleccionado en los controles generales */
     private void generalMostrarProyecto() {
         if (proyectoSeleccion != null) {
-//            txtProyectosId.setText(String.valueOf(proyectoSeleccion.getId()));
             txtProyectosNombre.setText(proyectoSeleccion.getNombre());
 
             datosMostrarProyecto();
@@ -462,8 +461,21 @@ public class Proyectos extends ControladorVista implements Initializable {
     private void datosMostrarProyecto() {
         if (proyectoSeleccion != null) {
             txtDatosNombre.setText(proyectoSeleccion.getNombre());
-            txtDatosDirector.setText(proyectoSeleccion.getDirector().getPersona().getNombreCompleto());
-            txtDatosCodirector.setText(proyectoSeleccion.getCodirector().getPersona().getNombreCompleto());
+
+            IDocente director = proyectoSeleccion.getDirector();
+            txtDatosDirector.setText(
+                director.getLegajo() + " - " +
+                director.getPersona().getNombreCompleto());
+
+            IDocente codirector = proyectoSeleccion.getCodirector();
+            if (codirector == null) {
+                txtDatosCodirector.setText("");
+            } else {
+                txtDatosCodirector.setText(
+                    codirector.getLegajo() + " - " +
+                    codirector.getPersona().getNombreCompleto());
+            }
+
             cmbDatosEstado.getSelectionModel().select(proyectoSeleccion.getEstado());
             dtpDatosPresentacion.setValue(proyectoSeleccion.getFechaPresentacion());
             dtpDatosAprobacion.setValue(proyectoSeleccion.getFechaAprobacion());
@@ -503,6 +515,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
 
 	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Proyecto");
+	        generalMostrarProyecto();
 
 	        modoModificar();
 	    }
@@ -553,7 +566,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	private ICargoDocente cargoDocenteSeleccion = null;
 	protected ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
 
-	class FilaIntegrante {
+	public class FilaIntegrante {
         private IIntegrante integrante;
 
         public FilaIntegrante(IIntegrante integrante) {
@@ -572,7 +585,7 @@ public class Proyectos extends ControladorVista implements Initializable {
             return this.integrante.getCargo();
         }
 
-        public String getUnidad() {
+        public String getInstitucion() {
             return this.integrante.getInstitucion();
         }
 
@@ -697,11 +710,11 @@ public class Proyectos extends ControladorVista implements Initializable {
             this.subsidio = subsidio;
         }
 
-        public int getFecha() {
+        public int getAnio() {
             return this.subsidio.getFecha().getValue();
         }
 
-        public float getMontoTotal() {
+        public float getMonto() {
             return this.subsidio.getMontoTotal();
         }
 
@@ -718,7 +731,8 @@ public class Proyectos extends ControladorVista implements Initializable {
     private void subsidiosActualizarTabla() {
         filasSubsidios.clear();
         if (proyectoSeleccion != null) {
-            for (ISubsidio subsidio : proyectoSeleccion.getSubsidios()) {
+            List<ISubsidio> subsidios = proyectoSeleccion.getSubsidios();
+            for (ISubsidio subsidio : subsidios) {
                 filasSubsidios.add(new FilaSubsidio(subsidio));
             }
         }
@@ -792,10 +806,10 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
-	@FXML private TableView<FilaSubsidio> tblSubsidios;
-	@FXML private TableColumn<FilaSubsidio, Integer> colSubsidiosAnio;
-	@FXML private TableColumn<FilaSubsidio, Float> colSubsidiosMonto;
-	@FXML private TableColumn<FilaSubsidio, String> colSubsidiosObservaciones;
+	@FXML protected TableView<FilaSubsidio> tblSubsidios;
+	@FXML protected TableColumn<FilaSubsidio, Integer> colSubsidiosAnio;
+	@FXML protected TableColumn<FilaSubsidio, Float> colSubsidiosMonto;
+	@FXML protected TableColumn<FilaSubsidio, String> colSubsidiosObservaciones;
 
 	@FXML private TextField txtSubsidiosAnio;
 	@FXML private TextField txtSubsidiosMonto;
@@ -924,10 +938,10 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
-	@FXML private TableView<FilaRendicion> tblRendiciones;
-	@FXML private TableColumn<FilaRendicion, LocalDate> colRendicionesFecha;
-	@FXML private TableColumn<FilaRendicion, Float> colRendicionesMonto;
-	@FXML private TableColumn<FilaRendicion, String> colRendicionesObservaciones;
+	@FXML protected TableView<FilaRendicion> tblRendiciones;
+	@FXML protected TableColumn<FilaRendicion, LocalDate> colRendicionesFecha;
+	@FXML protected TableColumn<FilaRendicion, Float> colRendicionesMonto;
+	@FXML protected TableColumn<FilaRendicion, String> colRendicionesObservaciones;
 
 	@FXML private DatePicker dtpRendicionesFecha;
 	@FXML private TextField txtRendicionesMonto;
@@ -945,12 +959,7 @@ public class Proyectos extends ControladorVista implements Initializable {
             this.prorroga = prorroga;
         }
 
-        public LocalDate getFechaInicio() {
-            // Prorrogas: Fila fecha inicio
-            return null;
-        }
-
-        public LocalDate getfechaFin() {
+        public LocalDate getFinalizacion() {
             return this.prorroga.getFechaFin();
         }
 
@@ -961,7 +970,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	private void prorrogasActualizarTabla() {
 	    filasProrrogas.clear();
-        if (prorrogaSeleccion != null) {
+        if (proyectoSeleccion != null) {
             for (IProrroga prorroga : proyectoSeleccion.getProrrogas()) {
                 filasProrrogas.add(new FilaProrroga(prorroga));
             }
@@ -1003,7 +1012,6 @@ public class Proyectos extends ControladorVista implements Initializable {
     @FXML private Button btnProrrogasGuardar;
     @FXML void guardarProrroga(ActionEvent event) {
         if (proyectoSeleccion != null && prorrogaSeleccion != null) {
-            // TODO Prorrogas: prorrogaSeleccion.setFechaInicio(dtpProrrogasInicio.getValue());
             prorrogaSeleccion.setFechaFin(dtpProrrogasFinalizacion.getValue());
             prorrogaSeleccion.setDisposicion(txtProrrogasDisp.getText());
 
@@ -1029,9 +1037,9 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
-	@FXML private TableView<FilaProrroga> tblProrrogas;
-//	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
-	@FXML private TableColumn<FilaProrroga, LocalDate> colProrrogasFinalización;
+	@FXML protected TableView<FilaProrroga> tblProrrogas;
+//	@FXML protected TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
+	@FXML protected TableColumn<FilaProrroga, LocalDate> colProrrogasFinalizacion;
 
 	@FXML private DatePicker dtpProrrogasFinalizacion;
 	@FXML private TextField txtProrrogasDisp;
