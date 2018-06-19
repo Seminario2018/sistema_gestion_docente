@@ -230,8 +230,8 @@ public class GestorProyecto {
 			String valores = integrante.getId() + ", " + proyecto.getId();
 
 			if (integrante.getCargoDocente2() != null) {
-				campos = ", CargoDocente";
-				valores = ", " + integrante.getCargoDocente2();
+				campos += ", CargoDocente";
+				valores += ", " + integrante.getCargoDocente2().getId();
 			}
 			if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
 				campos += ", Apellido";
@@ -598,11 +598,17 @@ public class GestorProyecto {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String c = "MAX("+ campo + ")";
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, c);
+			List<Hashtable<String, String>> res = md.select(tabla, c);
 			Hashtable<String, String> reg = res.get(0);
-			return Integer.parseInt(reg.get(c));
 
-		} catch (NullPointerException | NumberFormatException e) {
+			String salida = reg.get(c);
+			if (salida.equals("")) {
+			    return 0;
+			} else {
+			    return Integer.parseInt(salida);
+			}
+
+		} catch (Exception e) {
 		    e.printStackTrace();
 			return 0;
 		}

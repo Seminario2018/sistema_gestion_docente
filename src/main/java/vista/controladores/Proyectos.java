@@ -6,7 +6,9 @@ import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
+import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -682,7 +684,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
 	    // TODO Integrantes: buscarCargoDocente
+	    if (proyectoSeleccion != null &&
+	        integranteSeleccion != null) {
 
+    	    ControlDocente cd = new ControlDocente(this);
+    	    List<ICargoDocente> cargosDocentes = cd.listarCargosDocente(null, null);
+    	    Random random = new Random();
+    	    int index = random.nextInt(cargosDocentes.size());
+    	    integranteSeleccion.setCargoDocente(cargosDocentes.get(index));
+	    }
 	}
 
 	@FXML protected TableView<FilaIntegrante> tblIntegrantes;
