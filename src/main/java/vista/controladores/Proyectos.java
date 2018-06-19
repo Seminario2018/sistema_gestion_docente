@@ -197,7 +197,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@Override
 	public void modoModificar() {
-	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+//	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	    if (this.permiso.getModificar()) {
 	        // Pestaña Datos:
             btnDatosGuardar.setVisible(true);
             btnDatosDescartar.setVisible(true);
@@ -272,6 +273,26 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (this.proyectoSeleccion != null) {
 	        this.gestorPantalla.mensajeEstado("Modificar al Proyecto " + this.proyectoSeleccion.getNombre());
 	    }
+	}
+
+	@Override
+    public void modoNuevo() {
+	    if (this.permiso.getCrear()) {
+            btnProyectosNuevo.setVisible(false);
+            btnDatosGuardar.setVisible(true);
+            btnDatosDescartar.setVisible(true);
+            txtDatosNombre.setEditable(true);
+            btnDatosDirector.setVisible(true);
+            btnDatosCodirector.setVisible(true);
+            cmbDatosEstado.setDisable(false);
+            dtpDatosPresentacion.setEditable(true);
+            dtpDatosAprobacion.setEditable(true);
+            dtpDatosInicio.setEditable(true);
+            dtpDatosFinalizacion.setEditable(true);
+
+            this.window.setTitle(TITULO + " - Nuevo Proyecto");
+            this.gestorPantalla.mensajeEstado("Nuevo Proyecto");
+        }
 	}
 
 	@Override
@@ -401,9 +422,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void nuevoProyecto(ActionEvent event) {
 	    this.proyectoSeleccion = controlInvestigacion.getIProyecto();
         generalVaciarControles();
-        modoModificar();
-        this.window.setTitle(TITULO + " - Nuevo Proyecto");
-        this.gestorPantalla.mensajeEstado("Nuevo Proyecto");
+        modoNuevo();
 	}
 
 	@FXML private Button btnProyectosEliminar;
@@ -484,6 +503,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
 
 	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Proyecto");
+
+	        modoModificar();
 	    }
 	}
 
