@@ -36,9 +36,9 @@
               </rowConstraints>
                <children>
                   <Label text="Documento" />
-                  <TextField fx:id="txtPersonasDocumento" GridPane.columnIndex="1" />
+                  <TextField fx:id="txtPersonasDocumento" editable="false" GridPane.columnIndex="1" />
                   <Label text="Apellido y nombre" GridPane.columnIndex="2" />
-                  <TextField fx:id="txtPersonasNombre" GridPane.columnIndex="3" />
+                  <TextField fx:id="txtPersonasNombre" editable="false" GridPane.columnIndex="3" />
                </children>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -122,7 +122,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtDatosApellido" editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el apellido" GridPane.columnIndex="1">
+                                    <TextField fx:id="txtDatosApellido" editable="false" focusTraversable="false" promptText="Ingrese el apellido" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -132,7 +132,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtDatosNombre" editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el nombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <TextField fx:id="txtDatosNombre" editable="false" focusTraversable="false" promptText="Ingrese el nombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -152,7 +152,7 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtDatosDocumento" editable="false" focusTraversable="false" mouseTransparent="true" promptText="Ingrese el número de documento" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                    <TextField fx:id="txtDatosDocumento" editable="false" focusTraversable="false" promptText="Ingrese el número de documento" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -292,7 +292,7 @@
                                  <columns>
                                     <TableColumn fx:id="colDomiciliosProvincia" prefWidth="253.0" text="Provincia" />
                                     <TableColumn fx:id="colDomiciliosCiudad" prefWidth="523.0" text="Ciudad" />
-                                    <TableColumn fx:id="colDomiciliosCP" prefWidth="253.0" text="C.P." />
+                                    <TableColumn fx:id="colDomiciliosCP" prefWidth="253.0" text="CP" />
                                     <TableColumn fx:id="colDomiciliosDireccion" prefWidth="253.0" text="Dirección" />
                                  </columns>
                               </TableView>

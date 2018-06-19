@@ -17,10 +17,10 @@ public class ControlPersona {
     private GestorPersona gestorPersona = new GestorPersona();
 
     public EstadoOperacion guardarPersona(IPersona persona) {
-        if (persona.getNroDocumento() == 0) {
-            return gestorPersona.nuevaPersona(persona);
-        } else {
+        if (GestorPersona.existePersona(persona)) {
             return gestorPersona.modificarPersona(persona);
+        } else {
+            return gestorPersona.nuevaPersona(persona);
         }
     }
 

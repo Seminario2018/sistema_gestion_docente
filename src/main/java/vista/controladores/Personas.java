@@ -2,7 +2,9 @@ package vista.controladores;
 
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import controlador.ControlPersona;
@@ -54,6 +56,7 @@ public class Personas extends ControladorVista implements Initializable {
 	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+
 	}
 
 	@Override
@@ -128,7 +131,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@Override
 	public void modoModificar() {
-	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	    if (this.permiso.getModificar()) {
 	        // Pestaña Datos:
             btnDatosGuardar.setVisible(true);
             btnDatosDescartar.setVisible(true);
@@ -171,6 +174,23 @@ public class Personas extends ControladorVista implements Initializable {
 	    this.window.setTitle(TITULO + " - Modificar Persona");
 	    if (this.personaSeleccion != null) {
 	        this.gestorPantalla.mensajeEstado("Modificar a la Persona " + this.personaSeleccion.getNombreCompleto());
+	    }
+	}
+
+	@Override
+    public void modoNuevo() {
+	    if (this.permiso.getCrear()) {
+	        btnPersonasNueva.setVisible(true);
+	        btnDatosGuardar.setVisible(true);
+	        btnDatosDescartar.setVisible(true);
+	        txtDatosApellido.setEditable(true);
+	        txtDatosNombre.setEditable(true);
+	        cmbDatosTipoDocumento.setDisable(false);
+	        txtDatosDocumento.setEditable(true);
+	        dtpDatosFechaNacimiento.setEditable(true);
+
+	        this.window.setTitle(TITULO + " - Nueva Persona");
+	        this.gestorPantalla.mensajeEstado("Nueva Persona ");
 	    }
 	}
 
@@ -268,9 +288,10 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML public void nuevaPersona(ActionEvent event) {
 	    personaSeleccion = controlPersona.getIPersona();
 	    generalVaciarControles();
-	    modoModificar();
-	    this.window.setTitle(TITULO + " - Nueva Persona");
-	    this.gestorPantalla.mensajeEstado("Nueva Persona");
+//	    modoModificar();
+	    modoNuevo();
+//	    this.window.setTitle(TITULO + " - Nueva Persona");
+//	    this.gestorPantalla.mensajeEstado("Nueva Persona");
 	}
 
 	@FXML private Button btnPersonasEliminar;
@@ -342,8 +363,11 @@ public class Personas extends ControladorVista implements Initializable {
     	        personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
 
     	        exitoGuardado(controlPersona.guardarPersona(personaSeleccion), TITULO, "Guardar Persona");
+    	        generalMostrarPersona();
 
-	        } catch (NumberFormatException nfe) {
+    	        modoModificar();
+
+	        } catch (NumberFormatException e) {
 	            alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
 	        }
 	    }
@@ -536,7 +560,35 @@ public class Personas extends ControladorVista implements Initializable {
 
         domiciliosActualizarTabla();
 
-        // TODO Llenar combobox de provincias
+        // Llenar combobox de provincias:
+        List<String> provincias = new ArrayList<String>();
+        provincias.add("Buenos Aires");
+        provincias.add("Catamarca");
+        provincias.add("Chaco");
+        provincias.add("Chubut");
+        provincias.add("Córdoba");
+        provincias.add("Corrientes");
+        provincias.add("Entre Ríos");
+        provincias.add("Formosa");
+        provincias.add("Jujuy");
+        provincias.add("La Pampa");
+        provincias.add("La Rioja");
+        provincias.add("Mendoza");
+        provincias.add("Misiones");
+        provincias.add("Neuquén");
+        provincias.add("Rio Negro");
+        provincias.add("Salta");
+        provincias.add("San Juan");
+        provincias.add("San Luis");
+        provincias.add("Santa Cruz");
+        provincias.add("Santa Fe");
+        provincias.add("Santiago del Estero");
+        provincias.add("Tierra del Fuego");
+        provincias.add("Tucumán");
+
+        cmbDomiciliosProvincia.setItems(
+            FXCollections.observableArrayList(
+                provincias));
     }
 
 	@FXML private Button btnDomiciliosNuevo;
@@ -644,7 +696,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnTitulosAgregar;
 	@FXML public void agregarTitulo(ActionEvent event) {
-	    if (personaSeleccion != null && tituloSeleccion != null) {
+	    if (personaSeleccion != null) {
     	    tituloSeleccion = controlPersona.getITitulo();
     	    tituloSeleccion.setNombre(txtTitulosTitulo.getText());
 

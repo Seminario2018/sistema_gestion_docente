@@ -17,12 +17,10 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 
-
 			persona.getTipoDocumento().guardarTipoDocumento();
 
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
-
 
 			String table = "Personas";
 			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`";
@@ -34,6 +32,7 @@ public class GestorPersona {
 				campos += ", `FechaNacimiento`";
 				valores += ", '" + fechaNac + "'";
 			}
+
 			if (persona.getEstado() != null) {
 				persona.getEstado().guardar();
 				campos += ", `Estado`";
@@ -48,14 +47,12 @@ public class GestorPersona {
 				}
 			}
 
-
 			if (persona.getDomicilios() != null && !persona.getDomicilios().isEmpty()) {
 				for(IDomicilio domicilio : persona.getDomicilios()) {
 					this.insertarDomicilios(persona, domicilio);
 				}
 
 			}
-
 
 			if (persona.getTitulos() != null) {
 				if (!persona.getTitulos().isEmpty()) {
@@ -140,7 +137,7 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Personas";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " and NroDocumento = '" + persona.getNroDocumento() + "'";
 
 			md.delete(table, condicion);
 
@@ -149,6 +146,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar la persona");
@@ -156,28 +154,24 @@ public class GestorPersona {
 	}
 
 	public EstadoOperacion modificarPersona(IPersona persona) {
-
 		try {
-
-			persona.getEstado().guardar();
-
 			ManejoDatos md = new ManejoDatos();
 			String table = "Personas";
-			String condicion =	" TipoDocumento = " + persona.getTipoDocumento() + ", NroDocumento = '" + persona.getNroDocumento() + "'";
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento() + "'";
 
 			String campos =	"";
-			
-			
+
 			if (persona.getApellido() != null && !persona.getApellido().equals("")) {
 				campos += "`Apellido` = '" + persona.getApellido() + "'";
 			}
+
 			if (persona.getNombre() != null && !persona.getNombre().equals("")) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
 				campos += "`Nombre` = '" + persona.getNombre() + "'";
-				
 			}
+
 			if (persona.getFechaNacimiento() != null) {
 				if (!campos.equals("")) {
 					campos += ", ";
@@ -198,9 +192,10 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar la persona");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo modificar la persona");
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar la persona");
 		}
 	}
 
@@ -263,6 +258,7 @@ public class GestorPersona {
 				domicilios.add(d);
 			}
 			return domicilios;
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new ArrayList<IDomicilio>();
@@ -364,19 +360,18 @@ public class GestorPersona {
 	}
 
 	private int getMax(String tabla,String campo) {
-		try {
-			String campos = "MAX(" + campo + ")";
+		String campos = "MAX(" + campo + ")";
 
-			ManejoDatos md = new ManejoDatos();
+		ManejoDatos md = new ManejoDatos();
 
-			List<Hashtable<String, String>> res = md.select(tabla, campos);
-			int max = Integer.parseInt(res.get(0).get(campos));
-			return max;
-		} catch (Exception e) {
-		    e.printStackTrace();
-			return 0;
+		List<Hashtable<String, String>> res = md.select(tabla, campos);
+
+		String maximoActual = res.get(0).get(campos);
+		if (maximoActual.equals("")) {
+		    return 0;
+		} else {
+		    return Integer.parseInt(maximoActual);
 		}
-
 	}
 
 
@@ -385,14 +380,14 @@ public class GestorPersona {
 		if (persona == null || persona.getTipoDocumento() == null || persona.getNroDocumento() == -1) {
 			return false;
 		}
-		String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + ", "
+		String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + " and "
 				+ "NroDocumento = '" + persona.getNroDocumento() + "'";
 		try {
 			ManejoDatos md = new ManejoDatos();
 			List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			return !(res.isEmpty());
 
-		}catch (Exception e) {
+		} catch (Exception e) {
 		    e.printStackTrace();
 			return false;
 		}
@@ -421,11 +416,9 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 
-
 			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
-
 
 			if (contacto.getId() == -1) {
 				contacto.setId(this.getMax("Contactos", "idcontacto") + 1);
@@ -440,7 +433,6 @@ public class GestorPersona {
 					+ contacto.getDato() + "'";
 
 			md.insertar(table, campos, valores);
-
 
 			if (md.isEstado()) {
 			    persona.setContactos(new ArrayList<IContacto>());
@@ -457,17 +449,12 @@ public class GestorPersona {
 
     public EstadoOperacion modificarContacto(IPersona persona, IContacto contacto) {
     	try {
-
-			persona.getEstado().guardar();
-
 			ManejoDatos md = new ManejoDatos();
 			String table = "Contactos";
 			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `idcontacto`="+contacto.getId();
 
 			String campos =	"`Tipo` = " + contacto.getTipo().getId() + ", "
 							+ "`Valor` = '" + contacto.getDato() + "'";
-
-
 
 			md.update(table, campos, condicion);
 
@@ -477,6 +464,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el contacto");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el contacto");
@@ -508,7 +496,6 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 
-
 			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
@@ -523,13 +510,11 @@ public class GestorPersona {
 					+ tipoDoc + ", '"
 					+ nroDoc + "', '"
 					+ domicilio.getProvincia() + "', '"
-					+ domicilio.getCiudad() + "', "
-					+ "'" + domicilio.getCodigoPostal() + "', '"
+					+ domicilio.getCiudad() + "', '"
+					+ domicilio.getCodigoPostal() + "', '"
 					+ domicilio.getDireccion() + "'";
 
 			md.insertar(table, campos, valores);
-
-
 
 			if (md.isEstado()) {
 			    persona.setDomicilios(new ArrayList<IDomicilio>());
@@ -547,31 +532,37 @@ public class GestorPersona {
 
     public EstadoOperacion modificarDomicilio(IPersona persona, IDomicilio domicilio) {
     	try {
-
-			persona.getEstado().guardar();
-
 			ManejoDatos md = new ManejoDatos();
 			String table = "Domicilios";
-			String condicion =	" `TipoDocumento` = '" + persona.getTipoDocumento().getId() + "' AND `NroDocumento` = '" + persona.getNroDocumento() + "', `iddomicilios`="+domicilio.getId();
+			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `iddomicilios`="+domicilio.getId();
 
 			String campos =	"";
-			
-			
+
 			if (domicilio.getProvincia() != null && !domicilio.getProvincia().equals("")) {
 				campos += "`Provincia` = '" + domicilio.getProvincia() + "'";
 			}
+
 			if (domicilio.getCiudad() != null && !domicilio.getCiudad().equals("")) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
 				campos += "`Ciudad` = '" + domicilio.getCiudad() + "'";
 			}
+
 			if (domicilio.getCodigoPostal() != null && !domicilio.getCodigoPostal().equals("")) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
 				campos += "`CodigoPostal` = '" + domicilio.getCodigoPostal() + "'";
 			}
+
+			if (domicilio.getDireccion() != null && !domicilio.getDireccion().equals("")) {
+			    if (!campos.equals("")) {
+                    campos += ", ";
+                }
+                campos += "`Direccion` = '" + domicilio.getDireccion() + "'";
+			}
+
 			md.update(table, campos, condicion);
 
 			if (md.isEstado()) {
@@ -580,6 +571,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el domicilio");
@@ -590,7 +582,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Domicilios";
-			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ " AND idDomicilios = " + domicilio.getId();
+			String condicion = " TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ "' AND idDomicilios = " + domicilio.getId();
 
 			md.delete(table, condicion);
 
@@ -600,6 +592,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Domicilio");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el Domicilio");
@@ -610,7 +603,6 @@ public class GestorPersona {
     public EstadoOperacion agregarTitulo(IPersona persona, ITitulo titulo) {
     	try {
 			ManejoDatos md = new ManejoDatos();
-
 
 			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
@@ -632,7 +624,6 @@ public class GestorPersona {
 
 			md.insertar(table, campos, valores);
 
-
 			if (md.isEstado()) {
 			    persona.setTitulos(new ArrayList<ITitulo>());
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El título se creo correctamente");
@@ -649,16 +640,13 @@ public class GestorPersona {
 
     public EstadoOperacion modificarTitulo(IPersona persona, ITitulo titulo) {
     	try {
-
-			persona.getEstado().guardar();
 			int esMayor = titulo.isEsMayor() ? 1 : 0;
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `id`='"+titulo.getId()+"'";
+			String condicion =	" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " AND `NroDocumento` = '" + persona.getNroDocumento() + "' AND `id`="+titulo.getId();
 
 			String campos =	"`Nombre` = '" + titulo.getNombre() + "', "
 							+ "`EsMayor` = " + esMayor;
-
 
 			md.update(table, campos, condicion);
 
@@ -668,6 +656,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el título");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el título");
@@ -678,7 +667,7 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Titulos";
-			String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ "' AND Id = " + titulo.getId();
+			String condicion = "TipoDocumento = " + persona.getTipoDocumento().getId() + " AND NroDocumento = '" + persona.getNroDocumento()+ "' AND id = " + titulo.getId();
 
 			md.delete(table, condicion);
 
@@ -688,6 +677,7 @@ public class GestorPersona {
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo título el Domicilio");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo título el Domicilio");
