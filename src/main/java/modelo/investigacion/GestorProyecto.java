@@ -268,6 +268,59 @@ public class GestorProyecto {
 		}
 	}
 
+	public EstadoOperacion modificarIntegrante(IIntegrante i) {
+		try {
+			IIntegranteg integrante = (IIntegranteg) i;
+			ManejoDatos md =  new ManejoDatos();
+			String tabla = "Integrantes";
+			String condicion = "id=" + integrante.getId();
+			
+			String campos = "";
+			if (integrante.getCargoDocente2() != null) {
+				campos += "CargoDocente = " + integrante.getCargoDocente2().getId();
+			}
+			if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "Apellido = '" + integrante.getApellido() + "'";
+			}
+			if (integrante.getNombre() != null && !integrante.getNombre().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos +=  "Nombre = '" + integrante.getNombre() + "'"; 
+			}
+			if (integrante.getCargo() != null && !integrante.getCargo().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos +=  "Cargo = '" + integrante.getCargo() + "'";
+			}
+			if (integrante.getInstitucion() != null && !integrante.getInstitucion().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos +=  "Institucion = '" + integrante.getInstitucion() + "'";
+			}
+			if (integrante.getHorasSemanales() != -1) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos +=  "HorasSemanales = " + integrante.getHorasSemanales();
+			}
+			
+			md.update(tabla, campos, condicion);
+			
+			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizo correctamente") :
+				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
+		}
+	}
+	
+	
 	public EstadoOperacion quitarIntegrante(IProyecto proyecto, IIntegrante integrante) {
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -400,7 +453,6 @@ public class GestorProyecto {
     		String tabla = "`Subsidios`";
     		String condicion =
 		        "Proyecto=" + proyecto.getId() + " AND " +
-//		        "Disposicion = '" + subsidio.getDisposicion() + "'";
 	            "Year = '" + subsidio.getFecha().toString() + "'";
     		md.delete(tabla, condicion);
 
@@ -415,6 +467,43 @@ public class GestorProyecto {
             e.printStackTrace();
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar el subsidio");
         }
+	}
+	
+	public EstadoOperacion modificarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
+		try {
+			ManejoDatos md =  new ManejoDatos();
+			String tabla = "Subsidios";
+			String condicion = "Proyecto = " + proyecto.getId() + " AND Year = " + subsidio.getFecha().toString();
+			String campos = "";
+			
+			if (subsidio.getDisposicion() != null && !subsidio.getDisposicion().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "Disposicion = '" + subsidio.getDisposicion() + "'";
+			}
+			if (subsidio.getMontoTotal() != -1) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "MontoTotal = " + subsidio.getMontoTotal();
+			}
+			if (subsidio.getObservaciones() != null && !subsidio.getObservaciones().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "Observaciones = '" + subsidio.getObservaciones() + "'";
+			}
+			
+			
+			md.update(tabla, campos, condicion);
+			
+			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizo correctamente") :
+				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
+		}
 	}
 
 	public List<ISubsidio> listarSubsidios(IProyecto proyecto, ISubsidio subsidio){
@@ -493,6 +582,23 @@ public class GestorProyecto {
 
 	public IProrroga getIProrroga() {
 		return new Prorroga();
+	}
+	
+	public EstadoOperacion modificarProrroga(IProyecto proyecto, IProrroga prorroga) {
+		try {
+			ManejoDatos md =  new ManejoDatos();
+			String tabla = "Prorrogas";
+			String condicion = "Proyecto = " + proyecto.getId() + " AND Disposicion = " + prorroga.getDisposicion();
+			String campos = "FechaFin = '" + Date.valueOf(prorroga.getFechaFin()) + "'";
+			
+			
+			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prorroga se actualizo correctamente") :
+				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prorroga");
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prorroga");
+		}
 	}
 
 	public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {
