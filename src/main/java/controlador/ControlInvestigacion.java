@@ -58,7 +58,11 @@ public class ControlInvestigacion {
 
     //    Integrantes
     public EstadoOperacion guardarIntegrante(IProyecto proyecto, IIntegrante integrante) {
-        return gestorProyecto.agregarIntegrante(proyecto, integrante);
+        if (integrante.getId() == -1) {
+            return gestorProyecto.agregarIntegrante(proyecto, integrante);
+        } else {
+            return gestorProyecto.modificarIntegrante(proyecto, integrante);
+        }
     }
 
     public EstadoOperacion quitarIntegrante(IProyecto proyecto, IIntegrante integrante) {
@@ -75,7 +79,11 @@ public class ControlInvestigacion {
 
     //    Subsidios
     public EstadoOperacion guardarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
-        return gestorProyecto.agregarSubsidio(proyecto, subsidio);
+        if (subsidio.getFecha() == null) {
+            return gestorProyecto.agregarSubsidio(proyecto, subsidio);
+        } else {
+            return gestorProyecto.modificarSubsidio(proyecto, subsidio);
+        }
     }
 
     public EstadoOperacion quitarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
@@ -109,7 +117,11 @@ public class ControlInvestigacion {
 
     //    Prorrogas
     public EstadoOperacion guardarProrroga(IProyecto proyecto, IProrroga prorroga) {
-        return gestorProyecto.agregarProrroga(proyecto, prorroga);
+        if (prorroga.getDisposicion() == null || prorroga.getDisposicion().equals("")) {
+            return gestorProyecto.agregarProrroga(proyecto, prorroga);
+        } else {
+            return gestorProyecto.modificarProrroga(proyecto, prorroga);
+        }
     }
 
     public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {

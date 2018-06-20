@@ -914,9 +914,14 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void guardarRendicion(ActionEvent event) {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
 	        try {
+	            LocalDate fecha = dtpRendicionesFecha.getValue();
+	            if (Year.of(fecha.getYear()) != subsidioSeleccion.getFecha()) {
+	                throw new IllegalArgumentException("El año no coincide con el subsidio seleccionado");
+	            }
+
 	            float monto = Float.parseFloat(txtRendicionesMonto.getText());
 
-    	        rendicionSeleccion.setFecha(dtpRendicionesFecha.getValue());
+    	        rendicionSeleccion.setFecha(fecha);
     	        rendicionSeleccion.setMonto(monto);
     	        rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
 
@@ -924,8 +929,9 @@ public class Proyectos extends ControladorVista implements Initializable {
                 rendicionesActualizarTabla();
 
 	        } catch (NumberFormatException e) {
-	            e.printStackTrace();
 	            alertaError(TITULO, "Guardar Rendición", "El monto ingresado no es numérico.");
+	        } catch (IllegalArgumentException e) {
+	            alertaError(TITULO, "Guardar Rendición", e.getMessage());
 	        }
 	    }
 	}

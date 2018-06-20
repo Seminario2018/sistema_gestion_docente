@@ -82,6 +82,13 @@ public class Subsidio implements ISubsidio {
 
     @Override
     public List<IRendicion> getRendiciones() {
+//        return this.rendiciones;
+        if (this.rendiciones.isEmpty()) {
+            GestorProyecto gp = new GestorProyecto();
+            for (IRendicion ren : gp.listarRendiciones(null, this, null)) {
+                this.rendiciones.add(ren);
+            }
+        }
         return this.rendiciones;
     }
 

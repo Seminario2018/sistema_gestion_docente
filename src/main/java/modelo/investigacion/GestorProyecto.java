@@ -268,13 +268,13 @@ public class GestorProyecto {
 		}
 	}
 
-	public EstadoOperacion modificarIntegrante(IIntegrante i) {
+	public EstadoOperacion modificarIntegrante(IProyecto proyecto, IIntegrante i) {
 		try {
 			IIntegranteg integrante = (IIntegranteg) i;
 			ManejoDatos md =  new ManejoDatos();
 			String tabla = "Integrantes";
 			String condicion = "id=" + integrante.getId();
-			
+
 			String campos = "";
 			if (integrante.getCargoDocente2() != null) {
 				campos += "CargoDocente = " + integrante.getCargoDocente2().getId();
@@ -289,7 +289,7 @@ public class GestorProyecto {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
-				campos +=  "Nombre = '" + integrante.getNombre() + "'"; 
+				campos +=  "Nombre = '" + integrante.getNombre() + "'";
 			}
 			if (integrante.getCargo() != null && !integrante.getCargo().equals("")) {
 				if (!campos.equals("")) {
@@ -309,18 +309,23 @@ public class GestorProyecto {
 				}
 				campos +=  "HorasSemanales = " + integrante.getHorasSemanales();
 			}
-			
+
 			md.update(tabla, campos, condicion);
-			
-			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizo correctamente") :
-				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
+
+			if (md.isEstado()) {
+			    proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizó correctamente");
+			} else {
+			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
 		}
 	}
-	
-	
+
+
 	public EstadoOperacion quitarIntegrante(IProyecto proyecto, IIntegrante integrante) {
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -468,14 +473,14 @@ public class GestorProyecto {
             return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar el subsidio");
         }
 	}
-	
+
 	public EstadoOperacion modificarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
 		try {
 			ManejoDatos md =  new ManejoDatos();
 			String tabla = "Subsidios";
 			String condicion = "Proyecto = " + proyecto.getId() + " AND Year = " + subsidio.getFecha().toString();
 			String campos = "";
-			
+
 			if (subsidio.getDisposicion() != null && !subsidio.getDisposicion().equals("")) {
 				if (!campos.equals("")) {
 					campos += ", ";
@@ -494,12 +499,16 @@ public class GestorProyecto {
 				}
 				campos += "Observaciones = '" + subsidio.getObservaciones() + "'";
 			}
-			
-			
+
 			md.update(tabla, campos, condicion);
-			
-			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizo correctamente") :
-				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
+
+			if (md.isEstado()) {
+			    proyecto.setSubsidios(new ArrayList<ISubsidio>());
+			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizó correctamente");
+			} else {
+			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
@@ -583,21 +592,26 @@ public class GestorProyecto {
 	public IProrroga getIProrroga() {
 		return new Prorroga();
 	}
-	
+
 	public EstadoOperacion modificarProrroga(IProyecto proyecto, IProrroga prorroga) {
 		try {
 			ManejoDatos md =  new ManejoDatos();
-			String tabla = "Prorrogas";
-			String condicion = "Proyecto = " + proyecto.getId() + " AND Disposicion = " + prorroga.getDisposicion();
+			String tabla = "prorrogas";
+			String condicion = "Proyecto = " + proyecto.getId() + " AND Disposicion = '" + prorroga.getDisposicion() + "'";
 			String campos = "FechaFin = '" + Date.valueOf(prorroga.getFechaFin()) + "'";
-			
-			
-			return md.isEstado() ? new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prorroga se actualizo correctamente") :
-				new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prorroga");
+
+			md.update(tabla, campos, condicion);
+
+			if (md.isEstado()) {
+			    proyecto.setProrrogas(new ArrayList<IProrroga>());
+			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prórroga se actualizó correctamente");
+			} else {
+			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
+			}
+
 		} catch (Exception e) {
-			
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prorroga");
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
 		}
 	}
 
@@ -778,12 +792,56 @@ public class GestorProyecto {
 		}
 	}
 
-	public List<IRendicion> listarRendiciones(IRendicion rendicion){
+	public EstadoOperacion modificarRendicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
+        try {
+            ManejoDatos md =  new ManejoDatos();
+            String tabla = "Rendiciones";
+            String condicion =
+                "Proyecto = " + proyecto.getId() + " AND " +
+                "YearSubsidio = " + subsidio.getFecha().toString() + " AND " +
+                "id = " + rendicion.getId();
+            String campos = "";
+
+            if (rendicion.getFecha() != null) {
+                if (!campos.equals("")) {
+                    campos += ", ";
+                }
+                campos += "Fecha = '" + Date.valueOf(rendicion.getFecha());
+            }
+
+            if (!campos.equals("")) {
+                campos += ", ";
+            }
+            campos += "Monto = " + rendicion.getMonto();
+
+            if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
+                if (!campos.equals("")) {
+                    campos += ", ";
+                }
+                campos += "Observaciones = '" + rendicion.getObservaciones() + "'";
+            }
+
+            md.update(tabla, campos, condicion);
+
+            if (md.isEstado()) {
+                proyecto.setSubsidios(new ArrayList<ISubsidio>());
+                return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La rendición se actualizó correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+        }
+    }
+
+	public List<IRendicion> listarRendiciones(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion){
 		List<IRendicion> rendiciones = new ArrayList<IRendicion>();
 		try {
     		ManejoDatos md = new ManejoDatos();
     		String tabla = "Rendiciones";
-    		String condicion = this.armarCondicion(rendicion);
+    		String condicion = this.armarCondicion(proyecto, subsidio, rendicion);
 
     		List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
     		for (Hashtable<String, String> reg : res) {
@@ -806,8 +864,17 @@ public class GestorProyecto {
 		}
 	}
 
-	private String armarCondicion(IRendicion rendicion) {
+	private String armarCondicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
 		String condicion = "TRUE";
+
+		if (proyecto != null && proyecto.getId() != -1) {
+		    condicion += " AND Proyecto = " + proyecto.getId();
+		}
+
+		if (subsidio != null && subsidio.getFecha() != null) {
+		    condicion += " AND YearSubsidio = '" + subsidio.getFecha() + "'";
+		}
+
 		if (rendicion != null) {
 			if (rendicion.getId() != -1) {
 				condicion += " AND id = " + rendicion.getId();
