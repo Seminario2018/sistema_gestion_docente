@@ -13,7 +13,7 @@ public class GestorRol {
 			if (grupo.getId() == -1) {
 				grupo.setId(this.getMaxid() + 1);
 			}
-			
+
 			md.insertar("roles", "id, nombre", grupo.getId() + ", '"+grupo.getNombre()+"'");
 			String tabla = "permisos";
 			String campos = "`Crear`, `Eliminar`, `Modificar`, `Listar`, `Rol`, `Modulo`";
@@ -90,55 +90,58 @@ public class GestorRol {
 
     public List<IRol> listarGrupo(IRol grupo) {
     	try {
-    		ArrayList<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
-    		ArrayList<IRol> roles = new ArrayList<IRol>();
+    		List<IRol> roles = new ArrayList<IRol>();
 
     		String tabla = "roles";
             String campos = "*";
             String condicion = "TRUE";
 
 			if (grupo != null) {
-//			    condicion = "nombre = '" + grupo.getNombre() + "'";
 			    int id = grupo.getId();
 			    if (id != -1) {
-			        condicion += "and id = " + grupo.getId();
+			        condicion += " and id = " + grupo.getId();
 			    }
 
 			    String nombre = grupo.getNombre();
 			    if (nombre != null && !nombre.equals("")) {
-			        condicion += "nombre = '" + grupo.getNombre() + "'";
+			        condicion += " and nombre = '" + grupo.getNombre() + "'";
 			    }
 			}
+
 			ManejoDatos md = new ManejoDatos();
-			res = md.select(tabla, "*", condicion);
+			List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 
+			for (Hashtable<String, String> regRol : res) {
+				IRol rol = new Rol(Integer.parseInt(regRol.get("id")), regRol.get("nombre"));
+	            List<Hashtable<String, String>> per =
+	                md.select(
+	                    "`permisos`",
+	                    "*",
+	                    "`Rol` = " + rol.getId());
 
-			for (Hashtable<String, String> reg : res) {
-				Rol rol = new Rol(Integer.parseInt(reg.get("id")), reg.get("nombre").toString());
-				tabla = "permisos";
-	            campos = "*";
-	            condicion = "rol = '" + rol.getNombre() + "'";
-	            ArrayList<Hashtable<String, String>> per = md.select(tabla, campos, condicion);
-	            for (Hashtable<String, String> reg2 : per) {
-					Permiso p = new Permiso(Modulo.values()[Integer.parseInt(reg2.get("modulos").toString())]							);
-					if(reg2.get("crear").toString().equals("1")) {
+	            for (Hashtable<String, String> regPermiso : per) {
+					IPermiso p = new Permiso(Modulo.values()[Integer.parseInt(regPermiso.get("Modulo"))]							);
+					if(regPermiso.get("Crear").toString().equals("1")) {
 						p.setCrear(true);
 					}
-					if(reg2.get("eliminar").toString().equals("1")) {
+					if(regPermiso.get("Eliminar").toString().equals("1")) {
 						p.setEliminar(true);
 					}
-					if(reg2.get("modificar").toString().equals("1")) {
+					if(regPermiso.get("Modificar").toString().equals("1")) {
 						p.setModificar(true);
 					}
-					if(reg2.get("listar").toString().equals("1")) {
+					if(regPermiso.get("Listar").toString().equals("1")) {
 						p.setListar(true);
 					}
 					rol.agregarPermiso(p);
 				}
+	            roles.add(rol);
 			}
 			return roles;
+
 		} catch (Exception e) {
-			return null;
+		    e.printStackTrace();
+			return new ArrayList<IRol>();
 		}
     }
 

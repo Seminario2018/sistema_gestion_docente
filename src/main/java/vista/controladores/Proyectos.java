@@ -565,7 +565,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 // -------------------------- Pestaña Integrantes --------------------------- //
 
 	private IIntegrante integranteSeleccion = null;
-	private ICargoDocente cargoDocenteSeleccion = null;
 	protected ObservableList<FilaIntegrante> filasIntegrantes = FXCollections.observableArrayList();
 
 	public class FilaIntegrante {

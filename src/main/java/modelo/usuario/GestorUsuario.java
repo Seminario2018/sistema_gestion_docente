@@ -182,41 +182,55 @@ public class GestorUsuario {
     }
 
     public EstadoOperacion agregarRol(IUsuario usuario, IRol rol) {
-    	ManejoDatos md = new ManejoDatos();
-    	GestorRol gr = new GestorRol();
-    	List<IRol> roles = gr.listarGrupo(rol);
+        try {
+        	GestorRol gr = new GestorRol();
+        	List<IRol> roles = gr.listarGrupo(rol);
 
-    	if (roles.isEmpty()) {
-    		gr.nuevoGrupo(rol);
-    	}
+        	if (roles.isEmpty()) {
+        		gr.nuevoGrupo(rol);
+        	}
 
-    	String tabla = "RolesXUsuario";
-    	String campos = "Usuario, Rol";
-    	String valores = "'" + usuario.getUser() + "', " + rol.getId();
+        	String tabla = "RolesXUsuario";
+        	String campos = "Usuario, Rol";
+        	String valores = "'" + usuario.getUser() + "', " + rol.getId();
 
-    	md.insertar(tabla, campos, valores);
+        	ManejoDatos md = new ManejoDatos();
+        	md.insertar(tabla, campos, valores);
 
-    	if (md.isEstado()) {
-    	    usuario.setGrupos(new ArrayList<IRol>());
-    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El grupo se agregó correctamente");
-    	} else {
-    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El grupo no se pudo agregar.");
-    	}
+        	if (md.isEstado()) {
+        	    usuario.setGrupos(new ArrayList<IRol>());
+        	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El grupo se agregó correctamente");
+        	} else {
+        	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El grupo no se pudo agregar.");
+        	}
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El grupo no se pudo agregar.");
+        }
     }
 
     public EstadoOperacion quitarGrupo(IUsuario usuario, IRol grupo) {
-    	ManejoDatos md = new ManejoDatos();
-    	String tabla = "RolesXUsuario";
-    	String condicion = " Usuario = '" + usuario.getUser() + "', " + grupo.getId();
+        try {
+        	ManejoDatos md = new ManejoDatos();
+        	String tabla = "`rolesXusuario`";
+        	String condicion =
+        	    "Usuario = '" + usuario.getUser() + "' AND " +
+        	    "Rol = " + grupo.getId();
 
-    	md.delete(tabla, condicion);
+        	md.delete(tabla, condicion);
 
-    	if (md.isEstado()) {
-    	    usuario.setGrupos(new ArrayList<IRol>());
-    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se quitó correctamente");
-    	} else {
-    	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El grupo no se pudo quitar");
-    	}
+        	if (md.isEstado()) {
+        	    usuario.setGrupos(new ArrayList<IRol>());
+        	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se quitó correctamente");
+        	} else {
+        	    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El grupo no se pudo quitar");
+        	}
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El grupo no se pudo quitar");
+        }
     }
 
     private String armarCondicion(IUsuario usuario) {

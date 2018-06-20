@@ -111,7 +111,7 @@ public class Usuarios extends ControladorVista implements Initializable {
     private void setPersonaSeleccion(Object persona, String tipo) {
 	    if (persona instanceof IPersona) {
 	        usuarioSeleccion.setPersona((IPersona) persona);
-            mostrarUsuario();
+            mostrarPersona();
         }
 	}
 
@@ -208,12 +208,20 @@ public class Usuarios extends ControladorVista implements Initializable {
 	private IUsuario usuarioSeleccion = null;
     private ControlUsuario controlUsuario = new ControlUsuario(this);
 
+    private void mostrarPersona() {
+        if (usuarioSeleccion != null &&
+            usuarioSeleccion.getPersona() != null) {
+
+            txtDocumento.setText(String.valueOf(usuarioSeleccion.getPersona().getNroDocumento()));
+            txtNombre.setText(usuarioSeleccion.getPersona().getNombreCompleto());
+        }
+    }
+
     private void mostrarUsuario() {
         if (usuarioSeleccion == null) {
             vaciarControles();
         } else {
-            txtDocumento.setText(String.valueOf(usuarioSeleccion.getPersona().getNroDocumento()));
-            txtNombre.setText(usuarioSeleccion.getPersona().getNombreCompleto());
+            mostrarPersona();
             txtUsuario.setText(usuarioSeleccion.getUser());
             txtDescripcion.setText(usuarioSeleccion.getDescripcion());
 
@@ -368,7 +376,9 @@ public class Usuarios extends ControladorVista implements Initializable {
 	    if (usuarioSeleccion != null) {
 	        if (rolDisponibleSeleccion != null) {
 	            EstadoOperacion resultado = controlUsuario.agregarRol(usuarioSeleccion, rolDisponibleSeleccion);
-	            exitoGuardado(resultado, TITULO, "Agregar Rol");
+	            if (exitoGuardado(resultado, TITULO, "Agregar Rol")) {
+	                rolDisponibleSeleccion = null;
+	            }
                 mostrarUsuario();
 
 	        } else { alertaError(TITULO, "Agregar Rol", "No hay un rol seleccionado"); }
@@ -380,7 +390,9 @@ public class Usuarios extends ControladorVista implements Initializable {
 	    if (usuarioSeleccion != null) {
 	        if (rolUsuarioSeleccion != null) {
 	            EstadoOperacion resultado = controlUsuario.quitarRol(usuarioSeleccion, rolUsuarioSeleccion);
-	            exitoEliminar(resultado, TITULO, "Quitar Rol");
+	            if (exitoEliminar(resultado, TITULO, "Quitar Rol")) {
+	                rolUsuarioSeleccion = null;
+	            }
 	            mostrarUsuario();
 
 	        } else { alertaError(TITULO, "Quitar Rol", "No hay un rol seleccionado"); }

@@ -91,12 +91,28 @@ public class Rol implements IRol {
     			this.permisos.remove(i);
     		}
     		i++;
-    	}	
+    	}
         this.permisos.add(permiso);
     }
 
     @Override
     public void quitarPermiso(IPermiso permiso) {
         this.permisos.remove(permiso);
+    }
+
+    @Override
+    public boolean equals(Object objeto) {
+        if (objeto == null) {
+            return false;
+        }
+        if (objeto == this) {
+            return true;
+        }
+        if (!(objeto instanceof Rol)) {
+            return false;
+        }
+
+        Rol rol = (Rol) objeto;
+        return this.id == rol.id;
     }
 }
