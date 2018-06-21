@@ -57,11 +57,6 @@ public class Informes extends ControladorVista implements Initializable {
     @FXML protected TableView<?> tblInformes;
     
 // -------------------------------- Filtros --------------------------------- //
-
-    @FXML protected Button btnFiltroDuplicar;
-    @FXML public void duplicarColumna(ActionEvent event) {
-
-    }
     
     @FXML protected Button btnFiltroVer;
     @FXML public void verColumna(ActionEvent event) {

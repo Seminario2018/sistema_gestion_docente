@@ -8,9 +8,16 @@ import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import persistencia.ManejoDatos;
+import utilidades.Utilidades;
 
 
 public class GestorInforme {
+	
+	
+	
+	
+	
+	
 
 	public EstadoOperacion nuevoInforme(ITipoInforme informe) {
 		try {
@@ -57,9 +64,9 @@ public class GestorInforme {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String table = "Columnas";
-			String campos = "`TipoInforme`, `Visible`, `Atributo`, `Ordenar`, `Posicion`";
+			String campos = "`TipoInforme`, `Visible`, `Atributo`, `Ordenar`, `Posicion`, `Tipo`";
 			int visible = col.isVisible() ? 1 : 0;
-			String valores = informe.getId() + ", " + visible + ", '" + col.getAtributo() + "', " + col.getOrdenar() + ", " + col.getPosicion();
+			String valores = informe.getId() + ", " + visible + ", '" + col.getAtributo() + "', " + col.getOrdenar() + ", " + col.getPosicion() + ", '" + col.getTipo() + "'";
 
 			if (col.getNombre() != null && !col.getNombre().equals("")) {
 				campos += ", `Nombre`";
@@ -81,8 +88,36 @@ public class GestorInforme {
 			throw new Exception();
 		}
 	}
+	
+	public void modificarColumna(ITipoInforme informe, ColumnaInforme col) {
+		try {
+			if (informe == null || informe.getId() < 0) throw new Exception("Falta el ID de Informe");
+			if (col == null || col.getAtributo() == null || col.getAtributo().equals("")) throw new Exception ("Falta el atributo de la columna");
+			
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "Columnas";
+			String condicion = "`TipoInforme` = " + informe.getId() + " AND `Atributo` = " + col.getAtributo();
+			
+			List<String> campos = new ArrayList<String>();
+			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
+			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
+			if (col.getFiltros() != null && !col.getFiltros().isEmpty())
+				campos.add("Filtros = '" + col.getFiltros().get(0) + "'");
+			if (col.getCalculo() != null && !col.getCalculo().equals(""))
+				campos.add("Calculo = '" + col.getCalculo() + "'");
+			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
+			if (col.getPosicion() > -1) campos.add("Posicion = " + col.getPosicion());
+			if (col.getTipo() != null && !col.getTipo().equals(""))
+				campos.add("Tipo = '" + col.getTipo() + "'");
+			
+			md.update(tabla, Utilidades.joinString(campos, ", "), condicion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+		
 
-	public void eliminarComuna(TipoInforme informe, ColumnaInforme col) {
+	public void eliminarColumna(ITipoInforme informe, ColumnaInforme col) {
 		ManejoDatos md = new ManejoDatos();
 		md.delete("Columnas", "TipoInforme = " + informe.getId() + " AND Atributo = '" + col.getAtributo() + "'");
 	}
@@ -135,15 +170,14 @@ public class GestorInforme {
 	public ArrayList<ITipoInforme> listarInforme(ITipoInforme informe) {
 
 		ArrayList<ITipoInforme> informes = new ArrayList<ITipoInforme>();
-		String condicion = "TRUE";
-		condicion += this.armarCondicion(informe);
+		String condicion = this.armarCondicion(informe);
 		//`id`, `Nombre`, `Descripcion`, `Editable`, `FromString`, `GroupByString`
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "TiposInformes";
 			ArrayList<Hashtable<String,String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
-				TipoInforme t=new TipoInforme();
+				TipoInforme t = new TipoInforme();
 				t.setId(Integer.parseInt(reg.get("id")));
 				t.setNombre(reg.get("Nombre"));
 
@@ -160,7 +194,7 @@ public class GestorInforme {
 					t.setGroupByString(reg.get("GroupByString"));
 				}
 
-				t.setColumnas(this.listarColumnas(informe, null));
+				t.setColumnas(this.listarColumnas(t));
 
 				informes.add(t);
 			}
@@ -174,9 +208,40 @@ public class GestorInforme {
 	}
 
 
+	public List<ColumnaInforme> listarColumnas(ITipoInforme informe) {
+		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>(); 
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "Columnas";
+			String condicion = "TipoInforme = " + informe.getId() + " ORDER BY Columnas.Posicion";
+			
+			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			for (Hashtable<String, String> reg : res) {
+				ColumnaInforme c = new ColumnaInforme();
+				
+				c.setAtributo(reg.get("Atributo"));
+				c.setVisible("1".equals(reg.get("Visible")) ? true : false);
+				if (!reg.get("Nombre").equals("")) {
+					c.setNombre(reg.get("Nombre"));
+				}
+				if (!reg.get("Filtros").equals("")) {
+					c.setFiltros(Arrays.asList(reg.get("Filtros").split("AND")));
+				}
+				if (!reg.get("Calculo").equals("")) {
+					c.setCalculo(reg.get("Calculo"));
+				}
+				c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
+				c.setPosicion(Integer.parseInt(reg.get("Posicion")));
+				columnas.add(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return columnas;
+	}
 
 
-	private List<ColumnaInforme> listarColumnas(ITipoInforme informe, ColumnaInforme columna) {
+	public List<ColumnaInforme> listarColumnas(ITipoInforme informe, ColumnaInforme columna) {
 		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>();
 		ManejoDatos md = new ManejoDatos();
 		String tabla = "Columnas";

@@ -23,4 +23,3 @@ ADD CONSTRAINT `fk_domicilios_1`
   REFERENCES `personas` (`TipoDocumento` , `NroDocumento`)
   ON DELETE CASCADE
   ON UPDATE CASCADE;
-

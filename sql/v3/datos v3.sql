@@ -1,3 +1,5 @@
+delete from columnas;
+delete from tiposinformes;
 delete from Modulos;
 delete from Permisos;
 delete from Roles;
@@ -21,6 +23,24 @@ delete from TiposDocumentos;
 delete from TiposCargos;
 delete from TiposContactos;
 delete from cargosfaltantes;
+
+
+insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
+(0, 'Impacto Docente', 'Lista el costo de los docentes activos y su carga horaria total', true,
+ 'DOCENTES INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE',
+ 'DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE');
+
+insert into columnas (TipoInforme, Visible, Nombre, Atributo, Filtros, Calculo, Ordenar, Posicion, Tipo) values
+(0, 1, 'Legajo', 'DOCENTES.LEGAJO', '', '', 0, 0, 'INTEGER'),
+(0, 0, 'Estado Docente', 'DOCENTES.ESTADO', '= 0', '', 0, 1, 'INTEGER'),
+(0, 1, 'Apellido', 'PERSONAS.APELLIDO', '', '', 0, 2, 'STRING'),
+(0, 1, 'Nombre', 'PERSONAS.NOMBRE', '', '', 0, 3, 'STRING'),
+(0, 1, 'Cantidad Cargos', 'CARGOSDOCENTES.CODIGO', '', 'COUNT', 0, 4, 'INTEGER'),
+(0, 0, 'Estado Cargo', 'CARGOSDOCENTES.ESTADOCARGO', '= 0', '', 0, 5, 'INTEGER'),
+(0, 1, 'Costo de planta', 'CARGOSDOCENTES.ULTIMOCOSTO', '', 'SUM', 0, 6, 'FLOAT'),
+(0, 1, 'Horas de docencia', 'CARGOS.CARGAHORARIA', '', 'SUM', 0, 7, 'FLOAT'),
+(0, 1, 'Proyectos en los que participa', 'INTEGRANTES.ID', '', 'COUNT', 0, 8, 'INTEGER'),
+(0, 1, 'Horas de investigación', 'INTEGRANTES.HORASSEMANALES', '', 'SUM', 0, 9, 'FLOAT');
 
 
 

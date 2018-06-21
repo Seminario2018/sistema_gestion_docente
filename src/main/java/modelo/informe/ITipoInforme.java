@@ -18,4 +18,6 @@ public interface ITipoInforme {
     public void setFromString(String from);
     public String getGroupByString();
     public void setGroupByString(String groupby);
+    
+    public String armarConsulta();
 }

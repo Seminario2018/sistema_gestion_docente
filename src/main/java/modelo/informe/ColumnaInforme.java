@@ -7,38 +7,43 @@ public class ColumnaInforme {
 	public static final int ASCENDENTE = 1;
 	public static final int DESCENDENTE = 2;
 	
-	private boolean visible;
+	// Tipos de valores
+	public static final String INTEGER = "INTEGER";
+	public static final String FLOAT = "FLOAT";
+	public static final String STRING = "STRING";
+	public static final String DATE = "DATE";
+	
+	private Boolean visible;
 	private String nombre;
 	private String atributo; // PLANTA.ULTIMO_COSTO
 	private List<String> filtros; // >= 2017
 	private String calculo; // COUNT
 	private int ordenar; // SIN_ORDEN, ASCENDENTE O DESCENDENTE
 	private int posicion; // Posición de la columna en el informe
+	private String tipo; // Tipo de valor
 	
-	public ColumnaInforme(boolean visible, String nombre, String atributo, List<String> filtros, String calculo, int ordenar, int posicion) {
+	public ColumnaInforme(Boolean visible, String nombre, String atributo, List<String> filtros, String calculo, int ordenar, int posicion, String tipo) {
 		super();
 		this.visible = visible;
-		this.setNombre(nombre);  	
+		this.nombre = nombre;  	
 		this.atributo = atributo;
 		this.filtros = filtros;
 		this.calculo = calculo;
 		this.ordenar = ordenar;
 		this.posicion = posicion;
+		this.tipo = tipo;
 	}
 	
 	public ColumnaInforme() {
-		this.setNombre(null);  	
-		this.atributo = null;
 		this.filtros = null;
-		this.calculo = null;
 		this.ordenar = -1;
 		this.posicion = -1;
 	}
 
-	public boolean isVisible() {
+	public Boolean isVisible() {
 		return visible;
 	}
-	public void setVisible(boolean visible) {
+	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
 	public String getNombre() {
@@ -76,5 +81,11 @@ public class ColumnaInforme {
 	}
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
+	}
+	public String getTipo() {
+		return tipo;
+	}
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

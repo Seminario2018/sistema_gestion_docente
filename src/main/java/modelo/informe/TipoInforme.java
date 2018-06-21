@@ -37,21 +37,23 @@ public class TipoInforme implements ITipoInforme {
 		for (ColumnaInforme columna : columnas) {
 
 			String atributo = columna.getAtributo();
-
-			// Armar el SELECT
-			if (first_select) {
-				select += " ";
-				first_select = false;
-			} else {
-				select += ", ";
-			}
-
-			if (columna.getCalculo() != null) {
-				// SUM(PLANTA.ULTIMO_COSTO)
-				select += columna.getCalculo() + "(" + atributo + ")";
-			} else {
-				// PLANTA.ULTIMO_COSTO
-				select += atributo;
+			
+			if (columna.isVisible()) {
+				// Armar el SELECT
+				if (first_select) {
+					select += " ";
+					first_select = false;
+				} else {
+					select += ", ";
+				}
+	
+				if (columna.getCalculo() != null) {
+					// SUM(PLANTA.ULTIMO_COSTO)
+					select += columna.getCalculo() + "(" + atributo + ")";
+				} else {
+					// PLANTA.ULTIMO_COSTO
+					select += atributo;
+				}
 			}
 
 			// Armar el WHERE
@@ -68,7 +70,7 @@ public class TipoInforme implements ITipoInforme {
 				}
 
 				while (i < filtros.size()) {
-					where += " AND " + atributo + filtros.get(i);
+					where += " AND " + atributo + " " + filtros.get(i);
 					i++;
 				}
 			}

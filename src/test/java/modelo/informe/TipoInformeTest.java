@@ -36,7 +36,8 @@ public class TipoInformeTest {
 				filtro,
 				null,
 				ColumnaInforme.ASCENDENTE,
-				1);
+				1,
+				"INTEGER");
 		columnas.add(legajo);
 		
 		ColumnaInforme apynom = new ColumnaInforme(
@@ -46,7 +47,8 @@ public class TipoInformeTest {
 				null,
 				null,
 				ColumnaInforme.DESCENDENTE,
-				2);
+				2,
+				"STRING");
 		columnas.add(apynom);
 		
 		ColumnaInforme sumcosto = new ColumnaInforme(
@@ -56,7 +58,8 @@ public class TipoInformeTest {
 				null,
 				"SUM",
 				ColumnaInforme.SIN_ORDEN,
-				3);
+				3,
+				"FLOAT");
 		columnas.add(sumcosto);
 		
 		TipoInforme impactoDocente = new TipoInforme(
@@ -76,5 +79,34 @@ public class TipoInformeTest {
 		
 		Assert.assertEquals(consulta, impactoDocente.armarConsulta());
 	}
-
+	
+	
+	@Test
+	public void armarConsulta2() {
+		/*
+		SELECT DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE, COUNT(CARGOSDOCENTES.CODIGO), SUM(CARGOSDOCENTES.ULTIMOCOSTO), SUM(CARGOS.CARGAHORARIA), COUNT(INTEGRANTES.ID), SUM(INTEGRANTES.HORASSEMANALES)
+		FROM DOCENTES
+		INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO
+		LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO
+		INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO
+		LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE
+		WHERE DOCENTES.ESTADO = 0
+		AND CARGOSDOCENTES.ESTADOCARGO = 0
+		GROUP BY DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE;
+		*/
+		GestorInforme gi = new GestorInforme();
+		ITipoInforme impactoDocente = gi.listarInforme(null).get(0);
+//		/*
+		System.out.println();
+		System.out.println(impactoDocente.armarConsulta());
+		System.out.println();
+//		*/
+		String consulta = "SELECT DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE, COUNT(CARGOSDOCENTES.CODIGO), SUM(CARGOSDOCENTES.ULTIMOCOSTO), SUM(CARGOS.CARGAHORARIA), COUNT(INTEGRANTES.ID), SUM(INTEGRANTES.HORASSEMANALES)\r\n"
+				+ "FROM DOCENTES INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE\r\n"
+				+ "WHERE DOCENTES.ESTADO = 0 AND CARGOSDOCENTES.ESTADOCARGO = 0\r\n"
+				+ "GROUP BY DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE";
+//		System.out.println(consulta);
+		
+		Assert.assertEquals(consulta, impactoDocente.armarConsulta());
+	}
 }
