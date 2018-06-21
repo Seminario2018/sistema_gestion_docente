@@ -85,7 +85,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	}
 
 	private ControlDocente controlDocente = new ControlDocente(this);
-	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
+	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
 	public IDocente docenteSeleccion;
 
 	public static final String TITULO = "Docentes";

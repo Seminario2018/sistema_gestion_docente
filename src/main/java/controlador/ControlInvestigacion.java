@@ -12,11 +12,17 @@ import modelo.investigacion.IProrroga;
 import modelo.investigacion.IProyecto;
 import modelo.investigacion.IRendicion;
 import modelo.investigacion.ISubsidio;
+import vista.controladores.ControladorVista;
 
 public class ControlInvestigacion {
 
     private GestorPrograma gestorPrograma = new GestorPrograma();
     private GestorProyecto gestorProyecto = new GestorProyecto();
+    private ControladorVista vista;
+
+    public ControlInvestigacion(ControladorVista vista) {
+        this.vista = vista;
+    }
 
     //    Proyectos
     public EstadoOperacion guardarProyecto(IProyecto proyecto) {
@@ -53,11 +59,45 @@ public class ControlInvestigacion {
     }
 
     public EstadoOperacion agregarProyecto(IPrograma programa, IProyecto proyecto) {
-        return gestorPrograma.agregarProyecto(programa, proyecto);
+        EstadoOperacion resultado = gestorPrograma.agregarProyecto(programa, proyecto);
+        switch (resultado.getEstado()) {
+            case UPDATE_OK:
+                try {
+                    if (gestorPrograma.getCantidadProyectos(programa) < 2) {
+                        vista.alertaError("Programas", "Asignación de Proyecto a Programa",
+                            "El programa tiene menos de 2 proyectos asignados");
+                    }
+                } catch (RuntimeException e) {
+                    vista.alertaError("Programas", "Asignación de Proyecto a Programa", e.getMessage());
+                }
+                break;
+            case UPDATE_ERROR:
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
+        return resultado;
     }
 
     public EstadoOperacion quitarProyecto(IPrograma programa, IProyecto proyecto) {
-        return gestorPrograma.quitarProyecto(programa, proyecto);
+        EstadoOperacion resultado = gestorPrograma.quitarProyecto(programa, proyecto);
+        switch (resultado.getEstado()) {
+            case UPDATE_OK:
+                try {
+                    if (gestorPrograma.getCantidadProyectos(programa) < 2) {
+                        vista.alertaError("Programas", "Quita de Proyecto a Programa",
+                            "El programa tiene menos de 2 proyectos asignados");
+                    }
+                } catch (RuntimeException e) {
+                    vista.alertaError("Programas", "Quita de Proyecto a Programa", e.getMessage());
+                }
+                break;
+            case UPDATE_ERROR:
+                break;
+            default:
+                throw new RuntimeException("Estado de modificación no esperado: " + resultado.getMensaje());
+        }
+        return resultado;
     }
 
     public IPrograma getIPrograma() {

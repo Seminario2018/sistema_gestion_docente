@@ -41,7 +41,7 @@ public class Programas extends ControladorVista implements Initializable {
     private static final String TIPO_PROGRAMA = "Programa";
     private static final String TIPO_PROYECTO = "Proyecto";
 
-    private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
+    private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
     private IPrograma programaSeleccion = null;
     private IDocente directorSeleccion = null;
     private IDocente codirectorSeleccion = null;

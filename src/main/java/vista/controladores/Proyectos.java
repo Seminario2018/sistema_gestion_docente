@@ -81,7 +81,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private ScrollPane mainPane;
 
 	public static final String TITULO = "Proyectos";
-	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
+	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
 
 	// Tipos respuesta:
 	private static final String TIPO_CARGODOCENTE = "CargoDocente";

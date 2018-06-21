@@ -179,6 +179,24 @@ public class GestorPrograma {
 		}
 	}
 
+	public int getCantidadProyectos(IPrograma programa) {
+	    try {
+	        ManejoDatos md = new ManejoDatos();
+
+	        String campo = "count(*)";
+	        List<Hashtable<String, String>> res = md.select(
+	            "`proyectos`",
+	            campo,
+	            "Programa=" + programa.getId());
+
+	        return Integer.parseInt(res.get(0).get(campo));
+
+	    } catch (NumberFormatException e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Error al acceder a la base de datos.");
+	    }
+	}
+
 	private String armarCondicion(IPrograma p) {
 		IProgramag programa = (IProgramag) p;
 
