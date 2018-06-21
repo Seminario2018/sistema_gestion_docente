@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+
 import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -18,7 +17,7 @@ public class NotificacionCargo2 {
 
     public static final String mailDesde = "semint2018@gmail.com";
     public static final String contrasena = "semintunlu";
-
+    
     private List<Map<String, String>> mails = new ArrayList<Map<String, String>>();
     public static final String KEY_DESTINO = "destino";
     public static final String KEY_ASUNTO = "asunto";
@@ -30,30 +29,32 @@ public class NotificacionCargo2 {
     		+ "Plumas 2 - Sistema de Gestión Docente @2018\n"
     		+ "Departamento de Ciencias Básicas\n"
     		+ "Universidad Nacional de Luján";
-
+    
     private NotificacionCargo2() {
     }
-
+    
     public static NotificacionCargo2 getInstance() {
     	if (noti == null) {
     		noti = new NotificacionCargo2();
     	}
     	return noti;
     }
-
-    private Timer timerMail;
-
-    /** Thread que envía mails cada {@code ThreadMail.MILISEGUNDOS}. */
-    class TimerTaskMail extends TimerTask {
-    	private static final int MILISEGUNDOS = 60000;
+    
+    private Thread threadMail;
+    
+    /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
+    class ThreadMail implements Runnable {
+    	private static final int MILISEGUNDOS = 60000; 
     	private NotificacionCargo2 noti;
-
-    	public TimerTaskMail(NotificacionCargo2 noti) {
-    		this.noti = noti;
+    	public ThreadMail(NotificacionCargo2 noti) {
+    		this.noti = noti; 
     	}
-
 		@Override
 		public void run() {
+			System.out.println("Se prepararon mails para enviar."
+					+ " Se enviarán después de " + (MILISEGUNDOS / 1000) + " segundos.");
+			try {
+				Thread.sleep(MILISEGUNDOS);
 			List<Map<String, String>> mails = this.noti.getMails();
 			if (mails != null && !mails.isEmpty()) {
 				IMail mailSend = new Mail();
@@ -67,23 +68,30 @@ public class NotificacionCargo2 {
 							NotificacionCargo2.contrasena);
 				}
 				System.out.println("Se han enviado todos los mails");
-				mails.clear();
+				this.noti.setMails(new ArrayList<Map<String, String>>());
+			}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
     }
-
+    
     public void setMails(List<Map<String, String>> mails) {
     	this.mails = mails;
     }
-
+    
     public List<Map<String, String>> getMails() {
     	return this.mails;
+    }
+    
+    public void setThreadMail(Thread threadMail) {
+    	this.threadMail = threadMail;
     }
 
     /**
      * Genera un mail con el resultado de la actualización de un cargo,
      * indicando el alta, baja o modificación del mismo, y almacenándolo en
-     * {@code mails}.
+     * {@code mails}. 
      * @param estadoOperacion el resultado de la operación.
      */
     public void notificar(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
@@ -105,11 +113,10 @@ public class NotificacionCargo2 {
     		System.err.println("El Jefe de la División no tiene Mail Laboral.");
     		e.printStackTrace();
     	}
-
-    	if (destinos == null || destinos.equals("")) {
-            throw new IllegalArgumentException("El Jefe de la División no tiene Mail Laboral.");
-        }
-
+    	
+    	if (destinos == null || destinos.equals(""))
+    		throw new IllegalArgumentException("El Jefe de la División no tiene Mail Laboral.");
+    	
     	// Averiguar si hay que actualizar un mail o crear uno nuevo
     	boolean mailNuevo = true;
     	Map<String, String> mailActual = null;
@@ -119,16 +126,16 @@ public class NotificacionCargo2 {
     			mailNuevo = false;
     		}
     	}
-
+    	
     	String asunto;
     	String mensaje;
-
+    	
     	// Si se crea un nuevo mail, agregar asunto y saludo
     	if (mailActual == null || mailActual.isEmpty()) {
 			mailActual = new HashMap<String, String>();
-			asunto = "[Plumas 2] Se han actualizado Cargos en la División "
+			asunto = "[Plumas 2] Se han actualizado Cargos en la División " 
 		        		+ cargo.getArea().getDivision().getDescripcion();
-
+    	        
 	        mensaje = "Estimado/a Sr/a. " + cargo.getArea().getDivision().getJefe().getPersona().getApellido() + ",\n\n"
 	        		+ "\tSe le informa que se han realizado actualizaciones en los siguientes Cargos de la División "
 	        		+ cargo.getArea().getDivision().getDescripcion() + ":\n\n";
@@ -136,7 +143,7 @@ public class NotificacionCargo2 {
     		asunto = mailActual.get(NotificacionCargo2.KEY_ASUNTO);
     		mensaje = mailActual.get(NotificacionCargo2.KEY_MENSAJE);
     	}
-
+    	
     	String operacionMensaje;
     	switch (estado.getEstado()) {
     	case INSERT_OK:
@@ -148,12 +155,12 @@ public class NotificacionCargo2 {
     	default:
     		operacionMensaje = "actualizó";
     	}
-
+    	
     	mensaje += "Al docente:\n\n"
     			+ "\tLegajo: " + docente.getLegajo()+ "\n"
 	            + "\tApellido: " + docente.getPersona().getApellido() + "\n"
 	            + "\tNombre: " + docente.getPersona().getNombre() + "\n"
-
+	           
 	            + "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n"
 	            + "\tCargo: " + cargo.getCargo().getDescripcion() + "\n"
 	            + "\tÁrea: " + cargo.getArea().getDescripcion() + "\n"
@@ -162,7 +169,7 @@ public class NotificacionCargo2 {
 	            + "\tEstado de cargo: " + cargo.getEstado().getDescripcion() + "\n\n"
 	            + "--------------------------------------------------------------------------------\n\n";
 
-
+    	
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO, asunto);
     	mailActual.put(NotificacionCargo2.KEY_MENSAJE, mensaje);
@@ -171,10 +178,9 @@ public class NotificacionCargo2 {
     		this.mails.add(mailActual);
     	}
     	System.out.println("Se agregó el mail a la lista");
-    	if (this.timerMail == null) {
-    	    this.timerMail = new Timer(true);
-    	    this.timerMail.schedule(new TimerTaskMail(this), 0, TimerTaskMail.MILISEGUNDOS);
+    	if (this.threadMail == null) {
+    		this.threadMail = new Thread(new ThreadMail(this));
+    		threadMail.start();
     	}
-
     }
 }
