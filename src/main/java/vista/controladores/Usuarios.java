@@ -395,8 +395,8 @@ public class Usuarios extends ControladorVista implements Initializable {
 //	            }
 //                mostrarUsuario();
             if (filaRolDisponibleSeleccion != null) {
+            	filasUsuario.add(filaRolDisponibleSeleccion);
                 filasDisponibles.remove(filaRolDisponibleSeleccion);
-                filasUsuario.add(filaRolDisponibleSeleccion);
 
 	        } else { alertaError(TITULO, "Agregar Rol", "No hay un rol seleccionado"); }
 	    }
@@ -412,8 +412,8 @@ public class Usuarios extends ControladorVista implements Initializable {
 //	            }
 //	            mostrarUsuario();
 	        if (filaRolUsuarioSeleccion != null) {
-	            filasUsuario.remove(filaRolUsuarioSeleccion);
 	            filasDisponibles.add(filaRolUsuarioSeleccion);
+	            filasUsuario.remove(filaRolUsuarioSeleccion);
 
 	        } else { alertaError(TITULO, "Quitar Rol", "No hay un rol seleccionado"); }
 	    }
