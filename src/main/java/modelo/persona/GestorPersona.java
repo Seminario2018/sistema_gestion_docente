@@ -17,8 +17,6 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 
-			persona.getTipoDocumento().guardarTipoDocumento();
-
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
@@ -416,7 +414,6 @@ public class GestorPersona {
 		try {
 			ManejoDatos md = new ManejoDatos();
 
-			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
@@ -496,7 +493,6 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 
-			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
@@ -604,7 +600,6 @@ public class GestorPersona {
     	try {
 			ManejoDatos md = new ManejoDatos();
 
-			persona.getTipoDocumento().guardarTipoDocumento();
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
