@@ -217,7 +217,7 @@ insert into Personas values
 
 # Equipo
 (0, 39586150, 'Juran', 'Martín Tomás', '1996-06-29', 0),
-(0, 40520127, 'Marazzo', 'Leonardo José', '1997-06-22', 0);
+(0, 40455634, 'Marazzo', 'Leonardo José', '1997-06-22', 0);
 
 
 
@@ -283,7 +283,7 @@ insert into Docentes values
 
 # Equipo
 (143191, 0, 39586150, 'Observaciones de Juran', 1, 0),
-(143112, 0, 40520127, 'Observaciones de Marazzo', 1, 0);
+(143112, 0, 40455634, 'Observaciones de Marazzo', 1, 0);
 
 
 insert into Divisiones values

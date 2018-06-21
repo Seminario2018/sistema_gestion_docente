@@ -26,7 +26,7 @@ public class Main extends Application {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 		GestorPantalla gp = new GestorPantalla();
 
-		/*
+		
 		ControlUsuario controlUsuario = new ControlUsuario(null);
 		IUsuario usuario = controlUsuario.getIUsuario();
 		usuario.setUser("pepe");
@@ -43,11 +43,11 @@ public class Main extends Application {
 	        r.agregarPermiso(permiso);
 		}
 		usuario.agregarRol(r); 
-		*/
 		
-//		gp.lanzarPantallaPrincipal(usuario);
 		
-		gp.lanzarPantallaLogin();
+		gp.lanzarPantallaPrincipal(usuario);
+		
+//		gp.lanzarPantallaLogin();
 	}
 
 	public static void main(String[] args) {
