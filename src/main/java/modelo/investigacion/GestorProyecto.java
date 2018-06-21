@@ -14,7 +14,7 @@ public class GestorProyecto {
 
 	public GestorProyecto() {}
 
-	public EstadoOperacion nuevoProyecto(IProyecto proyecto, IPrograma programa) {
+	public EstadoOperacion nuevoProyecto(IProyecto proyecto) {
 		try {
 			if (proyecto.getId() == -1) {
 				proyecto.setId(GestorProyecto.getMaxID("Proyectos", "id") + 1);
@@ -51,10 +51,6 @@ public class GestorProyecto {
 				campos += ", `Fecha_Fin`";
 				valores += ", '" + Date.valueOf(proyecto.getFechaFin()) + "'";
 			}
-			if (programa != null) {
-				campos += ", `Programa`";
-				valores += ", " + programa.getId();
-			}
 
 			for (IIntegrante i : proyecto.getIntegrantes()) {
 				this.agregarIntegrante(proyecto, i);
@@ -77,7 +73,7 @@ public class GestorProyecto {
 		}
 	}
 
-	public EstadoOperacion modificarProyecto(IProyecto proyecto, IPrograma programa) {
+	public EstadoOperacion modificarProyecto(IProyecto proyecto) {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Proyectos";
@@ -142,12 +138,7 @@ public class GestorProyecto {
 				}
 				campos += "`Fecha_Fin` = '" + Date.valueOf(proyecto.getFechaFin()) + "'";
 			}
-			if (programa != null) {
-				if (!campos.equals("")) {
-					campos += ", ";
-				}
-				campos += "`Programa` = " + programa.getId();
-			}
+
 			String condicion = "`Id` = " + proyecto.getId();
 			md.update(tabla, campos, condicion);
 			return (md.isEstado()) ?

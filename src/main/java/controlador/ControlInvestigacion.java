@@ -19,11 +19,11 @@ public class ControlInvestigacion {
     private GestorProyecto gestorProyecto = new GestorProyecto();
 
     //    Proyectos
-    public EstadoOperacion guardarProyecto(IProyecto proyecto, IPrograma programa) {
+    public EstadoOperacion guardarProyecto(IProyecto proyecto) {
         if (proyecto.getId() == -1) {
-            return gestorProyecto.nuevoProyecto(proyecto, programa);
+            return gestorProyecto.nuevoProyecto(proyecto);
         } else {
-            return gestorProyecto.modificarProyecto(proyecto, programa);
+            return gestorProyecto.modificarProyecto(proyecto);
         }
     }
 
@@ -50,6 +50,14 @@ public class ControlInvestigacion {
 
     public EstadoOperacion eliminarPrograma(IPrograma programa) {
         return gestorPrograma.eliminarPrograma(programa);
+    }
+
+    public EstadoOperacion agregarProyecto(IPrograma programa, IProyecto proyecto) {
+        return gestorPrograma.agregarProyecto(programa, proyecto);
+    }
+
+    public EstadoOperacion quitarProyecto(IPrograma programa, IProyecto proyecto) {
+        return gestorPrograma.quitarProyecto(programa, proyecto);
     }
 
     public IPrograma getIPrograma() {

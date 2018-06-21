@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import persistencia.ManejoDatos;
 
 public class GestorPrograma {
@@ -15,14 +16,13 @@ public class GestorPrograma {
 				programa.setId(this.getMaxID() + 1);
 			}
 
-			// programa.getEstado().guardar();
-
 			ManejoDatos md = new ManejoDatos();
 			String table = "ProgramasInvestigacion";
 			String campos = "`id`, `Nombre`, `Director`, `Estado`";
 			String valores = programa.getId() + ", '" + programa.getNombre() + "', "
 					+ programa.getDirector().getLegajo() + ", " + programa.getEstado().getId();
-			if (programa.getCodirector() != null) {
+
+			if (((IProgramag) programa).getCodirector2() != null) {
 				campos += ", `Codirector`";
 				valores += ", " + programa.getCodirector().getLegajo();
 			}
@@ -43,12 +43,12 @@ public class GestorPrograma {
 			}
 
 			md.insertar(table, campos, valores);
-
 			if (md.isEstado()) {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El programa se guardo correctamente");
 			} else {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo guardar el programa");
 			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo guardar el programa");
@@ -57,34 +57,29 @@ public class GestorPrograma {
 
 	public EstadoOperacion modificarPrograma(IPrograma programa) {
 		try {
-			// programa.getEstado().guardar();
-
 			ManejoDatos md = new ManejoDatos();
 			String table = "ProgramasInvestigacion";
-			String campos = "";/*, "
-					+ "`Director` = " + programa.getDirector().getLegajo() + ", "
-					+ "`Estado` = " + programa.getEstado().getId();*/
-
+			String campos = "";
 			String condicion = "id = " + programa.getId();
-
 
 			if (programa.getNombre() != null && !programa.getNombre().equals("")) {
 				campos += "`Nombre` = '"+ programa.getNombre() +"'";
 			}
-			if (programa.getDirector() != null) {
+
+			if (((IProgramag) programa).getDirector2() != null) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
 				campos += "`Director` = " + programa.getDirector().getLegajo();
 			}
-			if (programa.getEstado() != null) {
+			if (((IProgramag) programa).getEstado2() != null) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
 				campos += "`Estado` = " + programa.getEstado().getId();
 			}
 
-			if (programa.getCodirector() != null) {
+			if (((IProgramag) programa).getCodirector2() != null) {
 				if (!campos.equals("")) {
 					campos += ", ";
 				}
@@ -129,6 +124,13 @@ public class GestorPrograma {
 	public EstadoOperacion eliminarPrograma(IPrograma programa) {
 	    try {
 	        ManejoDatos md = new ManejoDatos();
+	        // Dejar huérfanos a proyectos asociados:
+	        md.update(
+	            "proyectos",
+	            "Programa = NULL",
+	            "Programa = " + programa.getId());
+
+	        // Eliminar programa:
             md.delete("programasinvestigacion", "id = " + programa.getId());
 
             if (md.isEstado()) {
@@ -143,17 +145,18 @@ public class GestorPrograma {
 	    }
 	}
 
-	public List<IPrograma> listarProgramas(IPrograma programa){
-		List<IPrograma> programas = new ArrayList<IPrograma>();
+	public List<IPrograma> listarProgramas(IPrograma programa) {
 		try {
+		    List<IPrograma> programas = new ArrayList<IPrograma>();
+
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "ProgramasInvestigacion";
 			String campos = "*";
 			String condicion = this.armarCondicion(programa);
 
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+			List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
-				Programa p = new Programa();
+				IPrograma p = new Programa();
 				p.setId(Integer.parseInt(reg.get("id")));
 				p.setNombre(reg.get("Nombre"));
 
@@ -168,19 +171,15 @@ public class GestorPrograma {
 				}
 
 				programas.add(p);
-
 			}
-		} catch (NumberFormatException e) {
-			programas = new ArrayList<IPrograma>();
-		}
+			return programas;
 
-		return programas;
+		} catch (NumberFormatException e) {
+			return new ArrayList<IPrograma>();
+		}
 	}
 
-
-
 	private String armarCondicion(IPrograma p) {
-
 		IProgramag programa = (IProgramag) p;
 
 		String condicion = "TRUE";
@@ -195,7 +194,7 @@ public class GestorPrograma {
 				condicion += " AND " + "Director = " + programa.getDirector2().getLegajo();
 			}
 			if (programa.getCodirector2() != null) {
-				condicion += " AND " +  "Codirector = " + programa.getCodirector2().getLegajo();
+				condicion += " AND " + "Codirector = " + programa.getCodirector2().getLegajo();
 			}
 			if (programa.getDisposicion() != null && !programa.getDisposicion().equals("")) {
 				condicion += " AND " + "Disposicion = '" + programa.getDisposicion() + "'";
@@ -209,7 +208,6 @@ public class GestorPrograma {
 			if (programa.getEstado2() != null) {
 				condicion += " AND " + "Estado = " + programa.getEstado2().getId();
 			}
-
 		}
 		return condicion;
 	}
@@ -219,20 +217,58 @@ public class GestorPrograma {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "ProgramasInvestigacion";
 			String campos = "MAX(id)";
-			int maxID = 0;
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos);
-			maxID = Integer.parseInt(res.get(0).get(campos));
+			List<Hashtable<String, String>> res = md.select(tabla, campos);
+			return Integer.parseInt(res.get(0).get(campos));
 
-
-			return maxID;
 		} catch (NumberFormatException e) {
 			return 0;
 		}
 	}
 
-
 	public IPrograma getIPrograma() {
         return new Programa();
+    }
+
+    public EstadoOperacion agregarProyecto(IPrograma programa, IProyecto proyecto) {
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "`proyectos`";
+            String condicion = "id = " + proyecto.getId();
+            String valores = "Programa = " + programa.getId();
+
+            md.update(tabla, valores, condicion);
+            if (md.isEstado()) {
+                programa.setProyectos(new ArrayList<IProyecto>());
+                return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se agregó al programa correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se pudo agregar al programa");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se pudo agregar al programa");
+        }
+    }
+
+    public EstadoOperacion quitarProyecto(IPrograma programa, IProyecto proyecto) {
+        try {
+            ManejoDatos md = new ManejoDatos();
+            md.update(
+                "`proyectos`",
+                "Programa = NULL",
+                "id = " + proyecto.getId());
+
+            if (md.isEstado()) {
+                programa.setProyectos(new ArrayList<IProyecto>());
+                return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se quitó del programa correctamente");
+            } else {
+                return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se pudo quitar del programa");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se pudo quitar del programa");
+        }
     }
 
 }

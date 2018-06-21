@@ -111,8 +111,8 @@ public class Roles extends ControladorVista implements Initializable {
 	        txtRolesNombre.setEditable(true);
 	        txtRolesDescripcion.setEditable(true);
 
-	        this.window.setTitle(TITULO);
-	        this.gestorPantalla.mensajeEstado("");
+	        this.window.setTitle(TITULO + "- Nuevo Rol");
+	        this.gestorPantalla.mensajeEstado("Nuevo Rol");
 	    }
 	}
 

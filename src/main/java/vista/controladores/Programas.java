@@ -99,9 +99,7 @@ public class Programas extends ControladorVista implements Initializable {
 	@FXML private void nuevoPrograma() {
 	    programaSeleccion = controlInvestigacion.getIPrograma();
 	    vaciarControles();
-	    modoModificar();
-	    this.window.setTitle(TITULO + " - Nuevo Programa");
-	    this.gestorPantalla.mensajeEstado("Nuevo Programa");
+	    modoNuevo();
 	}
 
 	@FXML private Button btnProgramasEliminar;
@@ -127,6 +125,9 @@ public class Programas extends ControladorVista implements Initializable {
 	        programaSeleccion.setFechaFin(dtpProgramasFinalizacion.getValue());
 
 	        exitoGuardado(controlInvestigacion.guardarPrograma(programaSeleccion), TITULO, "Guardar Programa");
+	        mostrarPrograma();
+
+	        modoModificar();
 	    }
 	}
 
@@ -169,15 +170,15 @@ public class Programas extends ControladorVista implements Initializable {
 	        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PROYECTO);
 	        args.put(GestorPantalla.KEY_PADRE, Programas.TITULO);
 	        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Proyectos.TITULO, args);
-	    } else {
-	        System.out.println("agregarProyecto(): proyecto es null");
 	    }
 	}
 
 	@FXML private Button btnProyectosQuitar;
 	@FXML private void quitarProyecto() {
 	    if (programaSeleccion != null && proyectoSeleccion != null) {
-	        exitoEliminar(controlInvestigacion.eliminarProyecto(proyectoSeleccion), TITULO, "Quitar Proyecto");
+	        EstadoOperacion resultado = controlInvestigacion.quitarProyecto(programaSeleccion, proyectoSeleccion);
+	        exitoGuardado(resultado, TITULO, "Quitar Proyecto");
+	        actualizarTabla();
 	    }
 	}
 
@@ -249,7 +250,7 @@ public class Programas extends ControladorVista implements Initializable {
         if (proyecto instanceof IProyecto) {
             // Recibo un objeto proyecto para agregarlo al programa
             IProyecto proyectoAgregar = (IProyecto) proyecto;
-            EstadoOperacion resultado = controlInvestigacion.guardarProyecto(proyectoAgregar, programaSeleccion);
+            EstadoOperacion resultado = controlInvestigacion.agregarProyecto(programaSeleccion, proyectoAgregar);
             exitoGuardado(resultado, TITULO, "Agregar Proyecto");
             actualizarTabla();
         }
@@ -362,7 +363,7 @@ public class Programas extends ControladorVista implements Initializable {
 
     @Override
     public void modoModificar() {
-        if (this.permiso.getModificar() || this.permiso.getCrear()) {
+        if (this.permiso.getModificar()) {
             // Información del programa:
             btnProgramasGuardar.setVisible(true);
             btnProgramasDescartar.setVisible(true);
@@ -386,6 +387,26 @@ public class Programas extends ControladorVista implements Initializable {
         this.window.setTitle(TITULO + " - Modificar Programa");
         if (this.programaSeleccion != null) {
             this.gestorPantalla.mensajeEstado("Modificar al Programa" + this.programaSeleccion.getNombre());
+        }
+    }
+
+    @Override
+    public void modoNuevo() {
+        if (this.permiso.getCrear()) {
+            btnProgramasDescartar.setVisible(true);
+            btnProgramasGuardar.setVisible(true);
+            btnProgramasNuevo.setVisible(true);
+
+            txtProgramasNombre.setEditable(true);
+            btnProgramasDirector.setVisible(true);
+            btnProgramasCodirector.setVisible(true);
+            cmbProgramasEstado.setDisable(false);
+            txtProgramasDisp.setEditable(true);
+            dtpProgramasInicio.setEditable(true);
+            dtpProgramasFinalizacion.setEditable(true);
+
+            this.window.setTitle(TITULO + " - Nuevo Programa");
+            this.gestorPantalla.mensajeEstado("Nuevo Programa ");
         }
     }
 

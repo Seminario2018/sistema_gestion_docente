@@ -146,7 +146,6 @@ public class Usuarios extends ControladorVista implements Initializable {
 
     @Override
     protected void modoModificar() {
-//        if (this.permiso.getModificar() || this.permiso.getCrear()) {
     	if (this.permiso.getModificar()) {
     		btnGuardar.setVisible(true);
     		btnDescartar.setVisible(true);
@@ -181,9 +180,7 @@ public class Usuarios extends ControladorVista implements Initializable {
         }
 
         this.window.setTitle(TITULO + " - Nuevo Usuario");
-        if (this.usuarioSeleccion != null) {
-            this.gestorPantalla.mensajeEstado("Nuevo Usuario ");
-        }
+        this.gestorPantalla.mensajeEstado("Nuevo Usuario ");
     }
 
     @Override
@@ -277,10 +274,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML public void nuevoUsuario(ActionEvent event) {
 	    usuarioSeleccion = controlUsuario.getIUsuario();
         vaciarControles();
-//        modoModificar();
         modoNuevo();
-//        this.window.setTitle(TITULO + " - Nuevo Usuario");
-//        this.gestorPantalla.mensajeEstado("Nuevo Usuario");
 	}
 
 	@FXML private Button btnGuardar;

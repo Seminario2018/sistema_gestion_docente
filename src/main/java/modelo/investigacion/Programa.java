@@ -163,7 +163,7 @@ public class Programa implements IPrograma, IProgramag {
     public EstadoPrograma getEstado() {
     	if (this.estado == null) {
     		ManejoDatos md = new ManejoDatos();
-    		ArrayList<Hashtable<String, String>> res =
+    		List<Hashtable<String, String>> res =
     				md.select("ProgramasInvestigacion", "Estado", "id = " + this.getId());
     		Hashtable<String, String> reg = res.get(0);
     		EstadoPrograma estado = new EstadoPrograma();
@@ -215,5 +215,11 @@ public class Programa implements IPrograma, IProgramag {
 	public EstadoPrograma getEstado2() {
 		return this.estado;
 	}
+
+
+	@Override
+    public void setProyectos(List<IProyecto> proyectos) {
+        this.proyectos = proyectos;
+    }
 
 }

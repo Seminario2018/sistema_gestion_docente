@@ -456,9 +456,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 // ----------------------------- Pestaña Datos ------------------------------ //
 
-//    private IDocente directorSeleccion = null;
-//    private IDocente codirectorSeleccion = null;
-
     /** Muestra los datos del proyecto seleccionado */
     private void datosMostrarProyecto() {
         if (proyectoSeleccion != null) {
@@ -516,7 +513,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
 	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
 
-	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Proyecto");
+	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Proyecto");
 	        generalMostrarProyecto();
 
 	        modoModificar();
@@ -826,7 +823,6 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TextArea txtaSubsidiosObservaciones;
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
-// TODO agregar Año de subsidio a los controles
 	@FXML private ComboBox<Year> cmbRendicionesAnio;
 
 	private IRendicion rendicionSeleccion = null;
@@ -1053,7 +1049,6 @@ public class Proyectos extends ControladorVista implements Initializable {
     }
 
 	@FXML protected TableView<FilaProrroga> tblProrrogas;
-//	@FXML protected TableColumn<FilaProrroga, LocalDate> colProrrogasInicio;
 	@FXML protected TableColumn<FilaProrroga, LocalDate> colProrrogasFinalizacion;
 
 	@FXML private DatePicker dtpProrrogasFinalizacion;
@@ -1080,7 +1075,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
             proyectoSeleccion.setResumen(txtaResumen.getText());
 
-            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion, null), TITULO, "Guardar Resumen");
+            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Resumen");
         }
     }
 

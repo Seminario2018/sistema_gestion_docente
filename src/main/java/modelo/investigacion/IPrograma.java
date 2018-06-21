@@ -2,7 +2,6 @@ package modelo.investigacion;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import modelo.auxiliares.EstadoPrograma;
 import modelo.docente.IDocente;
 
@@ -26,6 +25,7 @@ public interface IPrograma {
     public void setEstado(EstadoPrograma estado);
 
     public List<IProyecto> getProyectos();
+    public void setProyectos(List<IProyecto> proyectos);
     public void agregarProyecto(IProyecto proyecto);
     public void quitarProyecto(IProyecto proyecto);
 
