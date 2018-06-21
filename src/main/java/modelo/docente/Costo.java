@@ -53,15 +53,20 @@ public class Costo {
 			this.id = getMaxCodigo(cd) + 1;
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "costos";
+			String tabla2 = "CargosDocentes";
 			String campos = "id, CodigoCargo, Costo";
+			String campos2 = "`UltimoCosto` = " + this.getCosto();
 			String valores = this.id + ", " + cd.getId() + ", " + this.getCosto();
+			String condicion = "Codigo = " + cd.getId();
 			
 			if (this.fechaCosto != null) {
 				campos += ", Fecha";
 				valores += ", '" + Date.valueOf(fechaCosto) + "'";
+				campos2 += ", `FechaUltimoCosto` = '" + Date.valueOf(fechaCosto) + "'";
 			}
 			
 			md.insertar(tabla, campos, valores);
+			md.update(tabla2, campos2, condicion);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
