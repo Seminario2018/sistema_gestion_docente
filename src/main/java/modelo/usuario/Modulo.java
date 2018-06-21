@@ -9,11 +9,10 @@ public enum Modulo {
 	CARGOS(4, "Cargos"),
 	DOCENTES(5, "Docentes"),
 	INVESTIGACION(6, "Investigación"),
-	INFORMES(7, "Ver Informes"),
-	INFORMES2(8, "Editar Informes"),
-	PERSONAS(9, "Personas"),
-	PROYECTOS(10, "Proyectos"),
-	PROGRAMAS(11, "Programas");
+	INFORMES(7, "Informes"),
+	PERSONAS(8, "Personas"),
+	PROYECTOS(9, "Proyectos"),
+	PROGRAMAS(10, "Programas");
 
     private int id;
     private String descripcion;
