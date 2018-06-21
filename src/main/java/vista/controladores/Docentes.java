@@ -781,9 +781,7 @@ public class Docentes extends ControladorVista implements Initializable {
 	    if (docenteSeleccion != null && incentivoSeleccion != null) {
 	        try {
 	            incentivoSeleccion.setFecha(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
-
-	            exitoGuardado(controlDocente.agregarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Guardar Incentivo");
-
+	            exitoGuardado(controlDocente.guardarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Guardar Incentivo");
 	            incentivosActualizarTabla();
 
 	        } catch (DateTimeException e) {

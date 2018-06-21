@@ -13,7 +13,6 @@ public class Incentivo implements IIncentivo {
 
     }
 
-
     @Override
     public IIncentivo clone() {
         return (IIncentivo) new Incentivo(this.fecha);

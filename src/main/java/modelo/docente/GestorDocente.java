@@ -37,7 +37,7 @@ public class GestorDocente {
 
             if (docente.getIncentivos2() != null) {
                 for (IIncentivo incentivo : docente.getIncentivos2()) {
-                    this.agregarIncentivo(docente, incentivo);
+                    this.agregarIncentivo((IDocente) docente, incentivo);
                 }
             }
 
@@ -201,31 +201,44 @@ public class GestorDocente {
         return condicion;
     }
 
-    public EstadoOperacion agregarIncentivo(IDocenteg docente, IIncentivo incentivo) {
-        ManejoDatos md = new ManejoDatos();
+    public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "Incentivos";
+            String campos = "`Fecha`, `Legajo`";
+            String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo();
+            md.insertar(tabla, campos, valores);
+            if (md.isEstado()) {
+                docente.setIncentivos(new ArrayList<IIncentivo>());
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El incentivo se creó correctamente");
+            } else {
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El incentivo no se creo");
+            }
 
-        String tabla = "Incentivos";
-        String campos = "`Fecha`, `Legajo`";
-        String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo();
-        md.insertar(tabla, campos, valores);
-        if (md.isEstado()) {
-            ((IDocente) docente).setIncentivos(new ArrayList<IIncentivo>());
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El incentivo se creó correctamente");
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "El incentivo no se creo");
         }
     }
 
     public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {
-        ManejoDatos md = new ManejoDatos();
-        String tabla = "Incentivos";
-        String condicion = " Legajo = " + docente.getLegajo() + " AND Fecha = '" + incentivo.getFecha() + "'";
+        try {
+            ManejoDatos md = new ManejoDatos();
+            String tabla = "Incentivos";
+            String condicion =
+                "Legajo = " + docente.getLegajo() + " AND " +
+                "Fecha = '" + incentivo.getFecha() + "'";
 
-        md.delete(tabla, condicion);
-        if (md.isEstado()) {
-            docente.setIncentivos(new ArrayList<IIncentivo>());
-            return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El incentivo se quitó correctamente");
-        } else {
+            md.delete(tabla, condicion);
+            if (md.isEstado()) {
+                docente.setIncentivos(new ArrayList<IIncentivo>());
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El incentivo se quitó correctamente");
+            } else {
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El incentivo no se quitó");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "El incentivo no se quitó");
         }
     }

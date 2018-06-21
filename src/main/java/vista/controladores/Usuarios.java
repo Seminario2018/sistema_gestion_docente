@@ -2,6 +2,7 @@ package vista.controladores;
 
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,14 +46,16 @@ public class Usuarios extends ControladorVista implements Initializable {
 	    inicializarTabla("Disponibles");
 	    tblDisponibles.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, filaSelection) -> {
             if (filaSelection != null) {
-                rolDisponibleSeleccion = filaSelection.getInstanciaRol();
+//                rolDisponibleSeleccion = filaSelection.getInstanciaRol();
+                filaRolDisponibleSeleccion = filaSelection;
             }
         });
 
 	    inicializarTabla("Usuario");
 	    tblUsuario.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, filaSelection) -> {
             if (filaSelection != null) {
-                rolUsuarioSeleccion = filaSelection.getInstanciaRol();
+//                rolUsuarioSeleccion = filaSelection.getInstanciaRol();
+                filaRolUsuarioSeleccion = filaSelection;
             }
         });
 	}
@@ -169,10 +172,12 @@ public class Usuarios extends ControladorVista implements Initializable {
     @Override
     protected void modoNuevo() {
         if (this.permiso.getCrear()) {
+            btnAgregar.setVisible(true);
             btnDescartar.setVisible(true);
             btnGuardar.setVisible(true);
             btnNuevo.setVisible(true);
             btnPersona.setVisible(true);
+            btnQuitar.setVisible(true);
             txtConfirmar.setEditable(true);
             txtContrasena.setEditable(true);
             txtDescripcion.setEditable(true);
@@ -274,6 +279,10 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML public void nuevoUsuario(ActionEvent event) {
 	    usuarioSeleccion = controlUsuario.getIUsuario();
         vaciarControles();
+
+        actualizarTablaDisponibles();
+        actualizarTablaUsuario();
+
         modoNuevo();
 	}
 
@@ -288,9 +297,16 @@ public class Usuarios extends ControladorVista implements Initializable {
 	                usuarioSeleccion.setPass(txtContrasena.getText());
 	                usuarioSeleccion.setDescripcion(txtDescripcion.getText());
 
+	                List<IRol> rolesNuevos = new ArrayList<IRol>();
+	                for (FilaRol fila : filasUsuario) {
+	                    rolesNuevos.add(fila.getInstanciaRol());
+	                }
+	                usuarioSeleccion.setGrupos(rolesNuevos);
+
 	                EstadoOperacion resultado = controlUsuario.guardarUsuario(usuarioSeleccion);
 	                exitoGuardado(resultado, TITULO, "Guardar Usuario");
 
+	                mostrarUsuario();
 	                modoModificar();
 
 	            } else { alertaError(TITULO, "Guardar Usuario", "Las contraseñas no coinciden"); }
@@ -319,8 +335,12 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 // --------------------------------- Roles ---------------------------------- //
 
-	private IRol rolDisponibleSeleccion = null;
-	private IRol rolUsuarioSeleccion = null;
+//	private IRol rolDisponibleSeleccion = null;
+//	private IRol rolUsuarioSeleccion = null;
+
+	private FilaRol filaRolDisponibleSeleccion = null;
+	private FilaRol filaRolUsuarioSeleccion = null;
+
 	protected ObservableList<FilaRol> filasDisponibles = FXCollections.observableArrayList();
 	protected ObservableList<FilaRol> filasUsuario = FXCollections.observableArrayList();
 
@@ -368,12 +388,15 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML private Button btnAgregar;
 	@FXML public void agregarRol(ActionEvent event) {
 	    if (usuarioSeleccion != null) {
-	        if (rolDisponibleSeleccion != null) {
-	            EstadoOperacion resultado = controlUsuario.agregarRol(usuarioSeleccion, rolDisponibleSeleccion);
-	            if (exitoGuardado(resultado, TITULO, "Agregar Rol")) {
-	                rolDisponibleSeleccion = null;
-	            }
-                mostrarUsuario();
+//	        if (rolDisponibleSeleccion != null) {
+//	            EstadoOperacion resultado = controlUsuario.agregarRol(usuarioSeleccion, rolDisponibleSeleccion);
+//	            if (exitoGuardado(resultado, TITULO, "Agregar Rol")) {
+//	                rolDisponibleSeleccion = null;
+//	            }
+//                mostrarUsuario();
+            if (filaRolDisponibleSeleccion != null) {
+                filasDisponibles.remove(filaRolDisponibleSeleccion);
+                filasUsuario.add(filaRolDisponibleSeleccion);
 
 	        } else { alertaError(TITULO, "Agregar Rol", "No hay un rol seleccionado"); }
 	    }
@@ -382,12 +405,15 @@ public class Usuarios extends ControladorVista implements Initializable {
 	@FXML private Button btnQuitar;
 	@FXML public void quitarRol(ActionEvent event) {
 	    if (usuarioSeleccion != null) {
-	        if (rolUsuarioSeleccion != null) {
-	            EstadoOperacion resultado = controlUsuario.quitarRol(usuarioSeleccion, rolUsuarioSeleccion);
-	            if (exitoEliminar(resultado, TITULO, "Quitar Rol")) {
-	                rolUsuarioSeleccion = null;
-	            }
-	            mostrarUsuario();
+//	        if (rolUsuarioSeleccion != null) {
+//	            EstadoOperacion resultado = controlUsuario.quitarRol(usuarioSeleccion, rolUsuarioSeleccion);
+//	            if (exitoEliminar(resultado, TITULO, "Quitar Rol")) {
+//	                rolUsuarioSeleccion = null;
+//	            }
+//	            mostrarUsuario();
+	        if (filaRolUsuarioSeleccion != null) {
+	            filasUsuario.remove(filaRolUsuarioSeleccion);
+	            filasDisponibles.add(filaRolUsuarioSeleccion);
 
 	        } else { alertaError(TITULO, "Quitar Rol", "No hay un rol seleccionado"); }
 	    }

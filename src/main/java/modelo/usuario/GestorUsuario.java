@@ -14,11 +14,7 @@ import persistencia.ManejoDatos;
 public class GestorUsuario {
 
     public EstadoOperacion nuevoUsuario(IUsuario usuario) {
-
     	try {
-
-
-
     		ManejoDatos md = new ManejoDatos();
         	String table = "Usuarios";
         	String campos = "`Usuario`, `Hash`, `Salt`, `TipoDocumentoPersona`, `NroDocumentoPerson`, `Descripcion`";
@@ -29,14 +25,13 @@ public class GestorUsuario {
     			String.valueOf(usuario.getPersona().getNroDocumento()) + "', '" +
     			usuario.getDescripcion() + "'";
 
-
         	md.insertar(table, campos, valores);
 
-        	table = "RolesXUsuario";
-        	campos = "`Usuario`, `Rol`";
-        	for(IRol r : usuario.getRoles()) {
-        		valores = "'" + usuario.getUser() + "', " + r.getId();
-            	md.insertar(table, campos, valores);
+        	for (IRol rol : usuario.getRoles()) {
+            	md.insertar(
+            	    "RolesXUsuario",
+            	    "`Usuario`, `Rol`",
+            	    "'" + usuario.getUser() + "', " + rol.getId());
         	}
 
         	return md.isEstado() ?
@@ -92,6 +87,15 @@ public class GestorUsuario {
         	}
 
         	md.update(tabla, campos, condicion);
+
+        	// Actualizar roles de usuario:
+        	md.delete("RolesXUsuario", "Usuario = '" + usuario.getUser() + "'");
+        	for (IRol rol : usuario.getRoles()) {
+                md.insertar(
+                    "RolesXUsuario",
+                    "`Usuario`, `Rol`",
+                    "'" + usuario.getUser() + "', " + rol.getId());
+            }
 
         	return md.isEstado() ?
         	    new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El usuario se modificó correctamente") :

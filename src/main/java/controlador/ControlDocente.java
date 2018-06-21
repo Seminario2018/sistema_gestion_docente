@@ -165,19 +165,15 @@ public class ControlDocente {
         return this.gestorDocente.getIIncentivo();
     }
 
-
-    public EstadoOperacion agregarIncentivo(IDocente docente, IIncentivo incentivo) {
-        return this.gestorDocente.agregarIncentivo((IDocenteg) docente, incentivo);
+    public EstadoOperacion guardarIncentivo(IDocente docente, IIncentivo incentivo) {
+        return this.gestorDocente.agregarIncentivo(docente, incentivo);
     }
-
 
     public EstadoOperacion quitarIncentivo(IDocente docente, IIncentivo incentivo) {
         return this.gestorDocente.quitarIncentivo(docente, incentivo);
     }
 
-
     public List<IIncentivo> listarIncentivos(IDocente docente, IIncentivo incentivo) {
         return this.gestorDocente.listarIncentivos(docente, incentivo);
     }
-
 }
