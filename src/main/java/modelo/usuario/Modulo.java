@@ -4,7 +4,7 @@ package modelo.usuario;
 public enum Modulo {
 	GENERAL(0, "General"),
 	ESTACION(1, "Estación"),
-	ROLES(2, "Grupos"),
+	ROLES(2, "Roles"),
 	USUARIOS(3, "Usuarios"),
 	CARGOS(4, "Cargos"),
 	DOCENTES(5, "Docentes"),

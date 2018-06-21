@@ -2,8 +2,8 @@ delete from Modulos;
 delete from Permisos;
 delete from Roles;
 delete from Usuarios;
-delete from programasinvestigacion;
 delete from proyectos;
+delete from programasinvestigacion;
 delete from CargosDocentes;
 delete from Areas where Areas.SubAreaDe is not null;
 delete from Areas;
@@ -27,7 +27,7 @@ delete from cargosfaltantes;
 insert into modulos (idmodulo, Descripcion) values
 	(0, 'General'),
 	(1, 'Estación'),
-	(2, 'Grupos'),
+	(2, 'Roles'),
 	(3, 'Usuarios'),
 	(4, 'Cargos'),
 	(5, 'Docentes'),
@@ -37,7 +37,7 @@ insert into modulos (idmodulo, Descripcion) values
 	(9, 'Proyectos'),
 	(10, 'Programas');
 
--- Usuario administrador, con rol administrador:
+-- Rol Administrador:
 insert into roles (id, nombre, descripcion) values (0, 'admin', 'Administrador');
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 0);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 1);
@@ -50,6 +50,35 @@ insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) value
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 8);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 9);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 10);
+
+-- Rol Usuario común:
+insert into roles (id, nombre, descripcion) values (1, 'usuario', 'Usuario común');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 0, 0, 0, 0, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 0, 0, 0, 0, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 10);
+
+-- Rol Invitado:
+insert into roles (id, nombre, descripcion) values (2, 'invitado', 'Invitado');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 10);
+
 
 
 insert into TiposCargos values
