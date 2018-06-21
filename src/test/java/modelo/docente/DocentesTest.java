@@ -10,7 +10,6 @@ import controlador.ControlInvestigacion;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
-import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
 import vista.controladores.Docentes;
 import vista.controladores.Docentes.FilaCargo;
@@ -19,7 +18,7 @@ import vista.controladores.Docentes.FilaInvestigacion;
 public class DocentesTest {
 
     private ControlDocente controlDocente = new ControlDocente(null);
-    ControlInvestigacion controlInvestigacion = new ControlInvestigacion();
+    private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(null);
 
     private IDocente docenteSeleccionado;
 
