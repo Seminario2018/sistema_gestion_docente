@@ -82,16 +82,6 @@ public class Rol implements IRol {
 
     @Override
     public void agregarPermiso(IPermiso permiso) {
-    	boolean existe = false;
-    	int i = 0;
-    	while (i < this.permisos.size() && !existe) {
-    		IPermiso p = this.permisos.get(i);
-    		if (p != null && permiso.getModulo() == p.getModulo()) {
-    			existe = true;
-    			this.permisos.remove(i);
-    		}
-    		i++;
-    	}
         this.permisos.add(permiso);
     }
 

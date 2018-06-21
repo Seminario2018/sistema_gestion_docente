@@ -123,10 +123,10 @@
                         <TableView fx:id="tblPermisos" editable="true">
                           <columns>
                             <TableColumn fx:id="colPermisosModulo" editable="false" prefWidth="75.0" text="Módulo" />
-                              <TableColumn fx:id="colPermisosVer" maxWidth="700.0" prefWidth="75.0" text="Ver" />
-                            <TableColumn fx:id="colPermisosCrear" maxWidth="700.0" prefWidth="75.0" text="Crear" />
-                              <TableColumn fx:id="colPermisosModificar" maxWidth="700.0" prefWidth="75.0" text="Modificar" />
-                              <TableColumn fx:id="colPermisosEliminar" maxWidth="700.0" prefWidth="75.0" text="Eliminar" />
+                              <TableColumn fx:id="colPermisosVer" maxWidth="700.0" prefWidth="75.0" style="-fx-alignment: center;" text="Ver" />
+                            <TableColumn fx:id="colPermisosCrear" maxWidth="700.0" prefWidth="75.0" style="-fx-alignment: center;" text="Crear" />
+                              <TableColumn fx:id="colPermisosModificar" maxWidth="700.0" prefWidth="75.0" style="-fx-alignment: center;" text="Modificar" />
+                              <TableColumn fx:id="colPermisosEliminar" maxWidth="700.0" prefWidth="75.0" style="-fx-alignment: center;" text="Eliminar" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

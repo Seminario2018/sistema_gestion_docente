@@ -22,7 +22,9 @@ import modelo.investigacion.IPrograma;
 import modelo.investigacion.IProyecto;
 import modelo.persona.GestorPersona;
 import modelo.persona.IPersona;
+import modelo.usuario.GestorRol;
 import modelo.usuario.GestorUsuario;
+import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
 import vista.controladores.ControladorVista;
 
@@ -32,7 +34,8 @@ import vista.controladores.ControladorVista;
  */
 public class ControlBusqueda {
 
-	private ControladorVista vista;
+	@SuppressWarnings("unused")
+    private ControladorVista vista;
 
 	private GestorBusqueda gestorBusqueda = new GestorBusqueda();
 	private GestorDocente gestorDocente;
@@ -132,6 +135,14 @@ public class ControlBusqueda {
 		    IUsuario usuario = gestorUsuario.getIUsuario();
 		    usuario.setUser(bu.getUsuario());
 		    return gestorUsuario.listarUsuario(usuario).get(0);
+		}
+
+		if (fila instanceof BusquedaRole) {
+		    BusquedaRole br = (BusquedaRole) fila;
+		    GestorRol gestorRol = new GestorRol();
+		    IRol rol = gestorRol.getIRol();
+		    rol.setId(br.getId());
+		    return gestorRol.listarGrupo(rol).get(0);
 		}
 
 		return null;

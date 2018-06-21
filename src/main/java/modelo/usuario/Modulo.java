@@ -2,33 +2,33 @@ package modelo.usuario;
 
 
 public enum Modulo {
-	GENERAL,
-	ESTACION,
-	ROLES,
-	USUARIOS,
-	CARGOS,
-	DOCENTES,
-	INVESTIGACION,
-	INFORMES,
-	PERSONAS,
-	PROYECTOS,
-	PROGRAMAS;
+	GENERAL(0, "General"),
+	ESTACION(1, "Estación"),
+	ROLES(2, "Grupos"),
+	USUARIOS(3, "Usuarios"),
+	CARGOS(4, "Cargos"),
+	DOCENTES(5, "Docentes"),
+	INVESTIGACION(6, "Investigación"),
+	INFORMES(7, "Ver Informes"),
+	INFORMES2(8, "Editar Informes"),
+	PERSONAS(9, "Personas"),
+	PROYECTOS(10, "Proyectos"),
+	PROGRAMAS(11, "Programas");
+
+    private int id;
+    private String descripcion;
+
+    private Modulo(int id, String descripcion) {
+        this.id = id;
+        this.descripcion = descripcion;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 
 	@Override
 	public String toString() {
-	    switch (this) {
-	        case GENERAL: return "General";
-	        case ESTACION: return "Estación";
-	        case ROLES: return "Roles";
-	        case USUARIOS: return "Usuarios";
-	        case CARGOS: return "Cargos";
-	        case DOCENTES: return "Docentes";
-	        case INVESTIGACION: return "Investigación";
-	        case INFORMES: return "Informes";
-            case PERSONAS: return "Personas";
-            case PROGRAMAS: return "Programas";
-            case PROYECTOS: return "Proyectos";
-            default: return "";
-	    }
+	    return this.descripcion;
 	}
 }

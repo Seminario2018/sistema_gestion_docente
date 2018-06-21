@@ -14,7 +14,11 @@ public class GestorRol {
 				grupo.setId(this.getMaxid() + 1);
 			}
 
-			md.insertar("roles", "id, nombre", grupo.getId() + ", '"+grupo.getNombre()+"'");
+			md.insertar("roles", "id, nombre, descripcion",
+		        grupo.getId() + ", '" +
+	            grupo.getNombre() + "', '" +
+		        grupo.getDescripcion() + "'");
+
 			String tabla = "permisos";
 			String campos = "`Crear`, `Eliminar`, `Modificar`, `Listar`, `Rol`, `Modulo`";
 			for (IPermiso p : grupo.getPermisos()) {
@@ -22,19 +26,20 @@ public class GestorRol {
 				int eliminar = p.getCrear() ? 1 : 0;
 				int modificar = p.getCrear() ? 1 : 0;
 				int listar = p.getListar() ? 1 : 0;
-				if (md.select("modulos", "*","Descripcion = '" + p.getModulo().name() + "'").isEmpty()) {
-					md.insertar("modulos", "idmodulo, Descripcion",
-							p.getModulo().ordinal() + ", '" + p.getModulo().name() + "'");
-				}
 
-				String valores = crear + ", " + eliminar + ", "
-						+  modificar + ", " + listar + ", "
-						+ grupo.getId() + ", " + p.getModulo().ordinal();
+				String valores = crear + ", " + eliminar + ", " +  modificar
+				    + ", " + listar + ", " + grupo.getId() + ", "
+				    + p.getModulo().getId();
 
 				md.insertar(tabla, campos, valores);
 			}
 
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El rol se creó correctamente");
+			if (md.isEstado()) {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El rol se creó correctamente");
+			} else {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el rol");
+			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear el rol");
@@ -56,18 +61,37 @@ public class GestorRol {
 	public EstadoOperacion modificarGrupo(IRol grupo) {
     	try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "permisos";
-			String campos = "`crear`, `eliminar`, `modificar`, `listar`, `rol`";
-			md.delete(tabla, "rol = '" + grupo.getNombre() + "'");
+
+			// Persistir cambios al rol:
+			String tablaRol = "`roles`";
+			List<String> camposRol = new ArrayList<String>();
+			if (grupo.getNombre() != null && !grupo.getNombre().equals("")) {
+			    camposRol.add("`nombre`='" + grupo.getNombre() + "'");
+			}
+			if (grupo.getDescripcion() != null && !grupo.getDescripcion().equals("")) {
+                camposRol.add("`descripcion`='" + grupo.getDescripcion() + "'");
+            }
+			md.update(tablaRol, String.join(", ", camposRol), "id=" + grupo.getId());
+
+			String tabla = "`permisos`";
+			String campos = "`Crear`, `Eliminar`, `Modificar`, `Listar`, `Rol`, `Modulo`";
+			md.delete(tabla, "Rol=" + grupo.getId());
+
 			for (IPermiso p : grupo.getPermisos()) {
 				int crear = p.getCrear() ? 1 : 0;
 				int eliminar = p.getCrear() ? 1 : 0;
 				int modificar = p.getCrear() ? 1 : 0;
 				int listar = p.getListar() ? 1 : 0;
-				String valores = crear + ", " + eliminar + ", " + modificar + ", " + listar + ", '" + grupo.getNombre() + "'";
+				String valores = crear + ", " + eliminar + ", " + modificar + ", " + listar + ", " + grupo.getId() + ", " + p.getModulo().getId();
 				md.insertar(tabla, campos, valores);
 			}
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El grupo se modificó correctamente");
+
+			if (md.isEstado()) {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_OK, "El grupo se modificó correctamente");
+			} else {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el grupo");
+			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR, "No se pudo modificar el grupo");
@@ -77,11 +101,15 @@ public class GestorRol {
     public EstadoOperacion eliminarGrupo(IRol grupo) {
     	try {
 			ManejoDatos md = new ManejoDatos();
-			String tabla = "permisos";
-			md.delete(tabla, "rol = '" + grupo.getNombre() + "'");
-			tabla = "roles";
-			md.delete(tabla, "nombre = '" + grupo.getNombre() + "'");
-			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se eliminó correctamente");
+			md.delete("permisos", "rol = " + grupo.getId());
+			md.delete("roles",    "id = "  + grupo.getId());
+
+			if (md.isEstado()) {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_OK, "El grupo se eliminó correctamente");
+			} else {
+			    return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "Erorr al eliminar el grupo");
+			}
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "No se pudo eliminar el grupo");
@@ -112,7 +140,13 @@ public class GestorRol {
 			List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 
 			for (Hashtable<String, String> regRol : res) {
-				IRol rol = new Rol(Integer.parseInt(regRol.get("id")), regRol.get("nombre"));
+//				IRol rol = new Rol(Integer.parseInt(regRol.get("id")), regRol.get("nombre"));
+//			    IRol rol = this.getIRol();
+			    IRol rol = new Rol();
+			    rol.setId(Integer.parseInt(regRol.get("id")));
+			    rol.setNombre(regRol.get("nombre"));
+			    rol.setDescripcion(regRol.get("descripcion"));
+
 	            List<Hashtable<String, String>> per =
 	                md.select(
 	                    "`permisos`",
@@ -120,20 +154,20 @@ public class GestorRol {
 	                    "`Rol` = " + rol.getId());
 
 	            for (Hashtable<String, String> regPermiso : per) {
-					IPermiso p = new Permiso(Modulo.values()[Integer.parseInt(regPermiso.get("Modulo"))]							);
+					IPermiso permiso = new Permiso(Modulo.values()[Integer.parseInt(regPermiso.get("Modulo"))]							);
 					if(regPermiso.get("Crear").toString().equals("1")) {
-						p.setCrear(true);
+						permiso.setCrear(true);
 					}
 					if(regPermiso.get("Eliminar").toString().equals("1")) {
-						p.setEliminar(true);
+						permiso.setEliminar(true);
 					}
 					if(regPermiso.get("Modificar").toString().equals("1")) {
-						p.setModificar(true);
+						permiso.setModificar(true);
 					}
 					if(regPermiso.get("Listar").toString().equals("1")) {
-						p.setListar(true);
+						permiso.setListar(true);
 					}
-					rol.agregarPermiso(p);
+					rol.agregarPermiso(permiso);
 				}
 	            roles.add(rol);
 			}
@@ -146,7 +180,16 @@ public class GestorRol {
     }
 
     public IRol getIRol() {
-        return new Rol();
+        IRol rol = new Rol();
+
+        // Inicializar permisos de rol nuevo:
+        for (Modulo modulo : Modulo.values()) {
+            IPermiso permiso = getIPermiso();
+            permiso.setModulo(modulo);
+            rol.agregarPermiso(permiso);
+        }
+
+        return rol;
     }
 
 	/**

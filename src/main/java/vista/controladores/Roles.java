@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -85,7 +86,7 @@ public class Roles extends ControladorVista implements Initializable {
 
 	@Override
 	public void modoModificar() {
-	    if (this.permiso.getModificar() || this.permiso.getCrear()) {
+	    if (this.permiso.getModificar()) {
 	        btnRolesGuardar.setVisible(true);
             btnRolesDescartar.setVisible(true);
 	    }
@@ -101,9 +102,25 @@ public class Roles extends ControladorVista implements Initializable {
 	}
 
 	@Override
+    public void modoNuevo() {
+	    if (this.permiso.getCrear()) {
+	        btnRolesDescartar.setVisible(true);
+	        btnRolesGuardar.setVisible(true);
+	        btnRolesNuevo.setVisible(true);
+
+	        txtRolesNombre.setEditable(true);
+	        txtRolesDescripcion.setEditable(true);
+
+	        this.window.setTitle(TITULO);
+	        this.gestorPantalla.mensajeEstado("");
+	    }
+	}
+
+	@Override
 	public void modoVer() {
+	    btnRolesDescartar.setVisible(false);
+	    btnRolesEliminar.setVisible(false);
 	    btnRolesGuardar.setVisible(false);
-        btnRolesDescartar.setVisible(false);
 
         this.window.setTitle(TITULO);
         this.gestorPantalla.mensajeEstado("");
@@ -111,32 +128,52 @@ public class Roles extends ControladorVista implements Initializable {
 
 	public class FilaPermiso {
 	    private IPermiso permiso;
+	    private CheckBox ver;
+	    private CheckBox crear;
+	    private CheckBox modificar;
+	    private CheckBox eliminar;
 
 	    public FilaPermiso(IPermiso permiso) {
 	        this.permiso = permiso;
+
+	        this.ver = new CheckBox();
+	        this.ver.setSelected(permiso.getListar());
+
+	        this.crear = new CheckBox();
+	        this.crear.setSelected(permiso.getCrear());
+
+	        this.modificar = new CheckBox();
+            this.modificar.setSelected(permiso.getModificar());
+
+            this.eliminar= new CheckBox();
+            this.eliminar.setSelected(permiso.getEliminar());
 	    }
 
 	    public String getModulo() {
 	        return this.permiso.getModulo().toString();
 	    }
 
-	    public String getVer() {
-	        return this.permiso.getListar() ? "Si" : "";
+	    public CheckBox getVer() {
+	        return this.ver;
 	    }
 
-	    public String getCrear() {
-            return this.permiso.getCrear() ? "Si" : "";
-        }
+	    public CheckBox getCrear() {
+	        return this.crear;
+	    }
 
-	    public String getModificar() {
-            return this.permiso.getModificar() ? "Si" : "";
-        }
+	    public CheckBox getModificar() {
+	        return this.modificar;
+	    }
 
-	    public String getEliminar() {
-            return this.permiso.getEliminar() ? "Si" : "";
-        }
+	    public CheckBox getEliminar() {
+	        return this.eliminar;
+	    }
 
 	    public IPermiso getInstanciaPermiso() {
+	        this.permiso.setCrear(this.crear.isSelected());
+	        this.permiso.setEliminar(this.eliminar.isSelected());
+	        this.permiso.setListar(this.ver.isSelected());
+	        this.permiso.setModificar(this.modificar.isSelected());
 	        return this.permiso;
 	    }
 	}
@@ -187,7 +224,9 @@ public class Roles extends ControladorVista implements Initializable {
 	@FXML private Button btnRolesNuevo;
 	@FXML private void nuevoRol() {
 	    rolSeleccion = controlUsuario.getIRol();
+	    modoNuevo();
 	    vaciarControles();
+	    actualizarTabla();
 	}
 
 	@FXML private Button btnRolesGuardar;
@@ -196,8 +235,17 @@ public class Roles extends ControladorVista implements Initializable {
 	        rolSeleccion.setNombre(txtRolesNombre.getText());
 	        rolSeleccion.setDescripcion(txtRolesDescripcion.getText());
 
+	        // Actualizar permisos:
+	        rolSeleccion.getPermisos().clear();
+	        for (FilaPermiso fila : filasPermisos) {
+	            rolSeleccion.agregarPermiso(fila.getInstanciaPermiso());
+	        }
+
 	        EstadoOperacion resultado = controlUsuario.guardarGrupo(rolSeleccion);
 	        exitoGuardado(resultado, TITULO, "Guardar Cambios");
+
+	        modoModificar();
+	        mostrarRol();
 	    }
 	}
 
@@ -226,10 +274,10 @@ public class Roles extends ControladorVista implements Initializable {
 
 	@FXML protected TableView<FilaPermiso> tblPermisos;
 	@FXML protected TableColumn<FilaPermiso, String> colPermisosModulo;
-	@FXML protected TableColumn<FilaPermiso, String> colPermisosVer;
-	@FXML protected TableColumn<FilaPermiso, String> colPermisosCrear;
-	@FXML protected TableColumn<FilaPermiso, String> colPermisosModificar;
-	@FXML protected TableColumn<FilaPermiso, String> colPermisosEliminar;
+	@FXML protected TableColumn<FilaPermiso, CheckBox> colPermisosVer;
+	@FXML protected TableColumn<FilaPermiso, CheckBox> colPermisosCrear;
+	@FXML protected TableColumn<FilaPermiso, CheckBox> colPermisosModificar;
+	@FXML protected TableColumn<FilaPermiso, CheckBox> colPermisosEliminar;
 
 	/**
      * Recibir parámetros de la pantalla de búsqueda
