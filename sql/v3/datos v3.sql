@@ -1,3 +1,9 @@
+delete from Modulos;
+delete from Permisos;
+delete from Roles;
+delete from Usuarios;
+delete from programasinvestigacion;
+delete from proyectos;
 delete from CargosDocentes;
 delete from Areas where Areas.SubAreaDe is not null;
 delete from Areas;
@@ -6,22 +12,56 @@ delete from Docentes;
 delete from Personas;
 delete from Cargos;
 delete from CategoriasInvestigacion;
+delete from estadosproyectos;
+delete from estadosprogramas;
 delete from EstadosCargos;
 delete from EstadosDocentes;
 delete from EstadosPersonas;
 delete from TiposDocumentos;
 delete from TiposCargos;
 delete from TiposContactos;
-DELETE from cargosfaltantes;
+delete from cargosfaltantes;
+
+
+
+insert into modulos (idmodulo, Descripcion) values
+	(0, 'General'),
+	(1, 'Estación'),
+	(2, 'Grupos'),
+	(3, 'Usuarios'),
+	(4, 'Cargos'),
+	(5, 'Docentes'),
+	(6, 'Investigación'),
+	(7, 'Informes'),
+	(8, 'Personas'),
+	(9, 'Proyectos'),
+	(10, 'Programas');
+
+-- Usuario administrador, con rol administrador:
+insert into roles (id, nombre, descripcion) values (0, 'admin', 'Administrador');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 10);
 
 
 insert into TiposCargos values
 (0, 'Ordinario'),
 (1, 'Interino');
 
-
 insert into TiposDocumentos values
-(0, 'DNI');
+(0, 'DNI'),
+(1, 'LC'),
+(2, 'LE'),
+(3, 'CI'),
+(4, 'CUIT');
 
 
 insert into TiposContactos values
@@ -52,6 +92,16 @@ insert into EstadosCargos values
 (1, 'Inactivo');
 
 
+insert into estadosprogramas values
+(0, 'Activo'),
+(1, 'Inactivo');
+
+
+insert into estadosproyectos values
+(0, 'Activo'),
+(1, 'Inactivo');
+
+
 insert into CategoriasInvestigacion values
 (0, 'No categorizado'),
 (1, 'I'),
@@ -68,17 +118,17 @@ insert into Cargos values
 (216,'Profesor Asociado Exclusiva',40.0),
 (217,'Profesor Asociado Semiexclusiva',20.0),
 (218,'Profesor Asociado Simple',10.0),
-(219,'Profesor Adjunto Exclusiva',0.0),
-(220,'Profesor Adjunto Semiexclusiva',0.0),
-(221,'Profesor Adjunto Simple',0.0),
-(222,'Jefe de Trabajos Prácticos Exclusiva',0.0),
+(219,'Profesor Adjunto Exclusiva',36.0),
+(220,'Profesor Adjunto Semiexclusiva',18.0),
+(221,'Profesor Adjunto Simple',9.0),
+(222,'Jefe de Trabajos Prácticos Exclusiva',36.0),
 (223,'Jefe de Trabajos Prácticos Semiexclusiva',18.0),
 (224,'Jefe de Trabajos Prácticos Simple',9.0),
 (225,'Ayudante de Primera Exclusiva',18.0),
-(226,'Ayudante de Primera Semiexclusiva',0.0),
+(226,'Ayudante de Primera Semiexclusiva',14.0),
 (227,'Ayudante de Primera Simple',9.0),
-(228,'Ayudante de Segunda',0.0),
-(638,'Bedel',0.0),
+(228,'Ayudante de Segunda',6.0),
+(638,'Bedel',4.0),
 (1213,'Profesor Titular Ad-Honorem',9.0),
 (1218,'Profesor Asociado Ad-Honorem',9.0),
 (1221,'Profesor Adjunto Ad-Honorem',9.0),
@@ -137,7 +187,8 @@ insert into Personas values
 (0, 14871880, 'Benítez', 'Elías Adán', '1961-12-06', 0),
 
 # Equipo
-(0, 39586150, 'Juran', 'Martín Tomás', '1996-06-29', 0);
+(0, 39586150, 'Juran', 'Martín Tomás', '1996-06-29', 0),
+(0, 40520127, 'Marazzo', 'Leonardo José', '1997-06-22', 0);
 
 
 
@@ -202,7 +253,8 @@ insert into Docentes values
 (1640, 0, 14871880, 'Observaciones de Benítez', 1, 0),
 
 # Equipo
-(143191, 0, 39586150, 'Observaciones de Juran', 1, 0);
+(143191, 0, 39586150, 'Observaciones de Juran', 1, 0),
+(143112, 0, 40520127, 'Observaciones de Marazzo', 1, 0);
 
 
 insert into Divisiones values
@@ -258,24 +310,21 @@ insert into Areas values
 insert into CargosDocentes values
 (100, 143191, 'CO.01.00', 228, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(1301, 143112, 'FI.02.00', 213, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(1301, 143112, 'FI.02.00', 228, 0, '507/19', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(1400, 57, 'QU.04.00', 214, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(1400, 1640, 'QU.04.00', 214, 0, '507/20', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(1500, 325, 'MA.01.00', 230, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(1500, 2176, 'MA.01.00', 224, 0, '507/21', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(2000, 521, 'ES.03.00', 230, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(2000, 1221, 'ES.03.00', 224, 0, '507/22', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(102, 57, 'QU.04.00', 214, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(102, 1640, 'QU.04.00', 214, 0, '507/23', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(500, 325, 'MA.01.00', 230, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(500, 2176, 'MA.01.00', 222, 0, '507/24', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 insert into CargosDocentes values
-(121, 521, 'ES.03.00', 230, 0, '507/18', null, null, null, null, null, 4000.0, '2018-06-1', 0);
+(121, 1221, 'ES.03.00', 213, 0, '507/25', null, null, null, null, null, 4000.0, '2018-06-1', 0);
 
-
-
-
-
+/*
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('10', 'Cabo Benítez', 'Jorge', '1', '14095.33', '2018-06-15', '0');
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('10', 'Cabo Benítez', 'Jorge', '2', '77791.13', '2018-06-16', '0');
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('57', 'Fernandez Perez', 'Julieta', '3', '28191.09', '2018-06-17', '0');
@@ -369,33 +418,31 @@ INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoC
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143191', 'Juran', 'Martín Tomás', '91', '9749.73', '2018-09-13', '0');
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143191', 'Juran', 'Martín Tomás', '92', '51256.56', '2018-09-14', '0');
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143112', 'Marazzo', 'Leonardo', '93', '12813.94', '2018-09-15', '0');
+*/
 
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
 	values (1, 'Estudios de los alimentos', 143112, 0);
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
-	values (2, 'Las Tecnologías de la información y la comunicación', 57, 0);
+	values (2, 'Las Tecnologías de la Información y la Comunicación', 57, 0);
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
-	values (3, 'Estudios de fisica', 325, 0);
+	values (3, 'Estudios de física', 325, 0);
+
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (1, 'Estudio de las calorias en grasas', '2018-06-01', 143112, 1, 0);
+	values (1, 'Estudio de las calorías en grasas', '2018-06-01', 143112, 1, 0);
     
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
 	values (2, 'Estudio del consumo de carne porcina', '2018-06-01', 81, 1, 0);
-
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
 	values (3, 'Estudio sobre las aguas', '2018-06-01', 104, 1, 0);
 
 
-
+insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
+	values (4, 'Las TIC y la educación', '2018-06-01', 218, 2, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (4, 'Las tic y la educacio', '2018-06-01', 218, 2, 0);
-
-insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (5, 'El uso de las tic en carreras no afines', '2018-06-01', 257, 2, 0);
-
+	values (5, 'El uso de las TIC en carreras no afines', '2018-06-01', 257, 2, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
 	values (6, 'WEB 2.0', '2018-06-01', 318, 2, 0);
@@ -407,8 +454,7 @@ insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Program
 	values (7, 'Los agujeros negros', '2018-06-01', 1153, 3, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
-	values (8, 'La aerodinamia de los automoviles', '2018-06-01', 1193, 3, 0);
-
+	values (8, 'La aerodinámica de los automóviles', '2018-06-01', 1193, 3, 0);
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
 	values (9, 'MRU', '2018-06-01', 1221, 3, 1);
