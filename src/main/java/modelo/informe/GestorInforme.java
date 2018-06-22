@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
@@ -17,8 +18,97 @@ import utilidades.Utilidades;
 
 public class GestorInforme {
 	
-	ITipoInforme informeActual;
+	private ITipoInforme informeActual;
 	
+	public ITipoInforme getInformeActual() {
+		return informeActual;
+	}
+	public void setInformeActual(ITipoInforme informeActual) {
+		this.informeActual = informeActual;
+	}
+	
+	/**
+	 * Almacena un Informe modificado en la Base de Datos, junto a sus columnas.
+	 * @param informe el TipoInforme a almacenar.
+	 * @return EstadoOperacion UPDATE
+	 */
+	public EstadoOperacion guardar() {
+		// Recuperar el anterior para hacer rollback
+		ITipoInforme informeSelect = new TipoInforme();
+		informeSelect.setId(this.informeActual.getId());
+		ITipoInforme informeAnterior = null;
+		List<ITipoInforme> informeList = listarInforme(informeSelect);
+		if (informeList != null && !informeList.isEmpty())
+			informeAnterior = informeList.get(0);
+		
+		EstadoOperacion eo = null;
+		if (informeAnterior != null)
+			// Modificar el anterior
+			eo = modificarInforme(this.informeActual);
+		else
+			// Crear uno
+			eo = nuevoInforme(this.informeActual);
+		
+		// Rollback si falló en modificar o agregar
+		if (eo.getEstado() == CodigoEstado.UPDATE_ERROR
+				|| eo.getEstado() == CodigoEstado.INSERT_ERROR) {
+			try {
+				eliminarInforme(this.informeActual);
+			} catch (Exception e) {	
+			}
+		}
+		
+		return eo;
+	}
+
+	/**
+	 * Actualiza la columna del informe.
+	 * @param columna La columna a actualizar. Se basa en su Posicion.
+	 * @return EstadoOperacion UPDATE
+	 */
+	public EstadoOperacion actualizarColumna(ColumnaInforme columna) {
+		if (columna != null) {
+			ColumnaInforme col = this.informeActual.getColumnas()
+					.get(columna.getPosicion());
+			if (col.getAtributo().equals(columna.getAtributo())) {
+				this.informeActual.getColumnas().set(columna.getPosicion(), columna);
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK,
+						"La columna se actualizó exitosamente.");
+			}
+		}
+		
+		return new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
+				"No se pudo actualizar la columna.");
+	}
+	
+	/**
+	 * Intercambia el orden de dos columnas.
+	 * @param a La primer columna 
+	 * @param b La segunda columna
+	 * @return 
+	 */
+	public EstadoOperacion swapColumn(int a, int b) {
+		if (this.informeActual == null) 
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
+					"No hay un informe seleccionado.");
+		try {
+			int posA = this.informeActual.getColumnas().get(a).getPosicion();
+			int posB = this.informeActual.getColumnas().get(b).getPosicion();
+			this.informeActual.getColumnas().get(a).setPosicion(posB);
+			this.informeActual.getColumnas().get(b).setPosicion(posA);
+			Collections.swap(this.informeActual.getColumnas(), a, b);
+			
+			return new EstadoOperacion(CodigoEstado.UPDATE_OK,
+					"Se intercambiaron las columnas " + a + " y " + b + ".");
+		} catch (Exception e) {
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
+					"No se pudieron intercambiar las columnas.");
+		}
+	}
+	
+	public List<List<String>> vistaPrevia() {
+		return vistaPrevia(this.informeActual);
+	}
 	
 	/**
 	 * Devuelve la vista previa del informe. También se usa para exportar a Excel
@@ -27,11 +117,11 @@ public class GestorInforme {
 	 */
 	public List<List<String>> vistaPrevia(ITipoInforme informe) {
 		List<List<String>> grilla = new ArrayList<List<String>>();
+		if (informe == null) return grilla;
 		Conexion conexion = new Conexion();
 		try {
 			String query = informe.armarConsulta();
 			LogQuery.log(query);
-			
 			Connection con = conexion.conectar();
 			
 			ResultSet resultSet = con.createStatement().executeQuery(query);
@@ -86,74 +176,13 @@ public class GestorInforme {
 
 			return md.isEstado() ?
 			    new EstadoOperacion(CodigoEstado.INSERT_OK, "El Informe se creó correctamente") :
-		        new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+		        new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Informe");
 		} catch (Exception e) {
 		    e.printStackTrace();
 			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Informe");
 		}
 	}
 
-	public void agregarColumna(ITipoInforme informe, ColumnaInforme col) throws Exception {
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String table = "Columnas";
-			String campos = "`TipoInforme`, `Visible`, `Atributo`, `Ordenar`, `Posicion`, `Tipo`";
-			int visible = col.isVisible() ? 1 : 0;
-			String valores = informe.getId() + ", " + visible + ", '" + col.getAtributo() + "', " + col.getOrdenar() + ", " + col.getPosicion() + ", '" + col.getTipo() + "'";
-
-			if (col.getNombre() != null && !col.getNombre().equals("")) {
-				campos += ", `Nombre`";
-				valores += ", '" + col.getNombre() + "'";
-			}
-			if (col.getFiltros() != null) {
-				campos += ", `Filtros`";
-				valores += ", '" + col.getFiltros() + "'";
-			}
-			if (col.getCalculo() != null && !col.getCalculo().equals("")) {
-				campos += ", `Calculo`";
-				valores += ", '" + col.getCalculo() + "'";
-			}
-
-			md.insertar(table, campos, valores);
-
-
-		} catch (Exception var6) {
-			throw new Exception();
-		}
-	}
-	
-	public void modificarColumna(ITipoInforme informe, ColumnaInforme col) {
-		try {
-			if (informe == null || informe.getId() < 0) throw new Exception("Falta el ID de Informe");
-			if (col == null || col.getAtributo() == null || col.getAtributo().equals("")) throw new Exception ("Falta el atributo de la columna");
-			
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "Columnas";
-			String condicion = "`TipoInforme` = " + informe.getId() + " AND `Atributo` = " + col.getAtributo();
-			
-			List<String> campos = new ArrayList<String>();
-			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
-			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
-			if (col.getFiltros() != null && !col.getFiltros().isEmpty())
-				campos.add("Filtros = '" + col.getFiltros().get(0) + "'");
-			if (col.getCalculo() != null && !col.getCalculo().equals(""))
-				campos.add("Calculo = '" + col.getCalculo() + "'");
-			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
-			if (col.getPosicion() > -1) campos.add("Posicion = " + col.getPosicion());
-			if (col.getTipo() != null && !col.getTipo().equals(""))
-				campos.add("Tipo = '" + col.getTipo() + "'");
-			
-			md.update(tabla, Utilidades.joinString(campos, ", "), condicion);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-		
-
-	public void eliminarColumna(ITipoInforme informe, ColumnaInforme col) {
-		ManejoDatos md = new ManejoDatos();
-		md.delete("Columnas", "TipoInforme = " + informe.getId() + " AND Atributo = '" + col.getAtributo() + "'");
-	}
 
 
 	public EstadoOperacion modificarInforme(ITipoInforme informe) {
@@ -177,15 +206,20 @@ public class GestorInforme {
 			}
 			String condicion = "`id` = '" + informe.getId() + "'";
 			md.update(tabla, campos, condicion);
-			return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El informe se modificó correctamente");
+			
+			for (ColumnaInforme col : informe.getColumnas()) {
+				this.modificarColumna(informe, col);
+			}
+			
+			return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El Informe se modificó correctamente");
 		} catch (Exception e) {
 		    e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el informe");
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo modificar el Informe");
 		}
 	}
 
 
-	public EstadoOperacion eliminarInforme(TipoInforme informe) {
+	public EstadoOperacion eliminarInforme(ITipoInforme informe) {
 		try {
 			ManejoDatos md = new ManejoDatos();
 
@@ -197,9 +231,8 @@ public class GestorInforme {
 		}
 	}
 
-
-
-
+	
+	
 	public ArrayList<ITipoInforme> listarInforme(ITipoInforme informe) {
 
 		ArrayList<ITipoInforme> informes = new ArrayList<ITipoInforme>();
@@ -240,6 +273,108 @@ public class GestorInforme {
 		return informes;
 	}
 
+	public void agregarColumna(ITipoInforme informe, ColumnaInforme col) throws Exception {
+		try {
+			ManejoDatos md = new ManejoDatos();
+			String table = "Columnas";
+			
+			int visible = col.isVisible() == null || !col.isVisible() ? 0 : 1;
+			
+			String campos = "`TipoInforme`, `Visible`, `Atributo`";
+			String valores = informe.getId() + ", " + visible + ", '" + col.getAtributo() + "'";
+			
+			if (col.getNombre() != null && !col.getNombre().equals("")) {
+				campos += ", `Nombre`";
+				valores += ", '" + col.getNombre() + "'";
+			}
+			if (col.getFiltros() != null) {
+				campos += ", `Filtros`";
+				valores += ", '" + col.getFiltros().get(0) + "'";
+			}
+			if (col.getCalculo() != null && !col.getCalculo().equals("")) {
+				campos += ", `Calculo`";
+				valores += ", '" + col.getCalculo() + "'";
+			}
+			
+			if (col.getOrdenar() > -1) {
+				campos += ", `Ordenar`";
+				valores += ", " + col.getOrdenar();
+			}
+			
+			if (col.getPosicion() > -1) {
+				campos += ", `Posicion`";
+				valores += ", " + col.getPosicion();
+			}
+			
+			if (col.getTipo() != null && !"".equals(col.getTipo())) {
+				campos += ", `Tipo`";
+				valores += ", '" + col.getTipo() + "'";
+			}
+			
+			md.insertar(table, campos, valores);
+			
+			
+		} catch (Exception var6) {
+			throw new Exception();
+		}
+	}
+	
+	
+	
+	public void modificarColumna(ITipoInforme informe, ColumnaInforme col) {
+		try {
+			if (informe == null || informe.getId() < 0) throw new Exception("Falta el ID de Informe");
+			if (col == null || col.getAtributo() == null || col.getAtributo().equals("")) throw new Exception ("Falta el atributo de la columna");
+			
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "Columnas";
+			String condicion = "`TipoInforme` = " + informe.getId() + " AND `Atributo` = " + col.getAtributo();
+			
+			List<String> campos = new ArrayList<String>();
+			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
+			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
+			if (col.getFiltros() != null && !col.getFiltros().isEmpty())
+				campos.add("Filtros = '" + col.getFiltros().get(0) + "'");
+			if (col.getCalculo() != null && !col.getCalculo().equals(""))
+				campos.add("Calculo = '" + col.getCalculo() + "'");
+			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
+			if (col.getPosicion() > -1) campos.add("Posicion = " + col.getPosicion());
+			if (col.getTipo() != null && !col.getTipo().equals(""))
+				campos.add("Tipo = '" + col.getTipo() + "'");
+			
+			md.update(tabla, Utilidades.joinString(campos, ", "), condicion);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public EstadoOperacion eliminarColumna(ITipoInforme informe, ColumnaInforme col) {
+		try {
+			String condicion = "TRUE";
+			if (informe != null && informe.getId() > -1)
+				condicion += " AND TipoInforme = " + informe.getId();
+			if (col != null) {
+				String atributo = col.getAtributo();
+				if (atributo != null && !"".equals(atributo))
+					condicion += " AND Atributo = '" + atributo + "'"; 
+			}
+			// No eliminar todo
+			if (condicion.equals("TRUE")) 
+				throw new Exception("No está permitido eliminar todo.");
+			
+			ManejoDatos md = new ManejoDatos();
+			md.delete("Columnas", condicion);
+			return new EstadoOperacion(CodigoEstado.DELETE_OK,
+					"La columna se eliminó con éxito.");
+		} catch (Exception e) {
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR,
+					"No se pudo eliminar la columna.");
+		}
+	}
+	
+	
 
 	public List<ColumnaInforme> listarColumnas(ITipoInforme informe) {
 		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>(); 
@@ -307,9 +442,7 @@ public class GestorInforme {
 	}
 
 
-
-
-
+	
 	private String armarCondicion(ITipoInforme informe, ColumnaInforme columna) {
 		String condicion = "TRUE";
 		if (informe != null) {
@@ -338,8 +471,6 @@ public class GestorInforme {
 
 
 
-
-
 	private String armarCondicion(ITipoInforme informe) {
 		String condicion = "TRUE";
 		if (informe != null) {
@@ -364,6 +495,8 @@ public class GestorInforme {
 		}
 		return condicion;
 	}
+	
+	
 
 	private static int getMaxID(String tabla, String string) {
 		int maxID = 0;
