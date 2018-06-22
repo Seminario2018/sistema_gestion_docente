@@ -115,9 +115,6 @@ public class Docentes extends ControladorVista implements Initializable {
                 }
             }
         }
-        // TODO Botones feos
-        btnDocentesEliminar.setVisible(false);
-        btnCargosEliminar.setVisible(false);
 
         if (!crear) {
             btnDocentesNuevo.setVisible(false);
@@ -167,6 +164,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
         if (!eliminar) {
             btnDocentesEliminar.setVisible(false);
+            btnCargosEliminar.setVisible(false);
         }
 
         if (!listar) {
@@ -218,6 +216,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	    if (this.permiso.getEliminar()) {
 	        btnDocentesEliminar.setVisible(true);
+	        btnCargosEliminar.setVisible(true);
 	    }
 
 	    this.window.setTitle(TITULO + " - Modificar Docente");
