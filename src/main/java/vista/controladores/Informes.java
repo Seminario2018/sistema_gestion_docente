@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 
 import controlador.ControlInforme;
 import javafx.fxml.Initializable;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,9 +16,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import modelo.auxiliares.Calculo;
 import modelo.auxiliares.Filtro;
 import modelo.informe.ColumnaInforme;
@@ -82,6 +85,8 @@ public class Informes extends ControladorVista implements Initializable {
 		if (!informeActual.isEditable())
 			this.btnInformesGuardar.setVisible(false);
 		
+		this.txtInformesNombre.setText(informeActual.getNombre());
+		this.txtInformesDescripcion.setText(informeActual.getDescripcion());
 		actualizarTablas();
 	}
 	
@@ -97,14 +102,28 @@ public class Informes extends ControladorVista implements Initializable {
 		this.tblInformes.getColumns().clear();
 		this.tblInformes.getItems().clear();
 		
+		int i = 0; 
 		for (ColumnaInforme col : informeActual.getColumnas()) {
-			TableColumn<List<String>, String> columna = new TableColumn<>(col.getNombre());
-			columna.setCellValueFactory(new PropertyValueFactory<List<String>, String>(col.getNombre()));
-			this.tblInformes.getColumns().add(columna);
+			if (col.isVisible()) {
+				TableColumn<List<String>, String> columna = new TableColumn<>(col.getNombre());
+				final int colNo = i;
+				columna.setCellValueFactory(new Callback<CellDataFeatures<List<String>, String>, ObservableValue<String>>() {
+	                @Override
+	                public ObservableValue<String> call(CellDataFeatures<List<String>, String> p) {
+	                	if (colNo < p.getValue().size())
+	                		return new SimpleStringProperty(p.getValue().get(colNo));
+	                	else
+	                		return new SimpleStringProperty("");
+	                }
+	            });
+				columna.setSortable(false);
+				this.tblInformes.getColumns().add(columna);
+				i++;
+			}
 		}
 		
 		ObservableList<List<String>> vistaPrevia = FXCollections.observableArrayList(this.control.vistaPrevia());
-		this.tblInformes.getItems().addAll(vistaPrevia);
+		this.tblInformes.setItems(vistaPrevia);
 	}
 	
 	

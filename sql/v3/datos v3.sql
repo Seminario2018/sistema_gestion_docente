@@ -472,7 +472,7 @@ INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoC
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143191', 'Juran', 'Martín Tomás', '92', '51256.56', '2018-09-14', '0');
 INSERT INTO `cargosfaltantes` (`Legajo`, `Apellido`, `Nombre`, `Cargo`, `UltimoCosto`, `FechaUltimoCosto`, `Tipo`) VALUES ('143112', 'Marazzo', 'Leonardo', '93', '12813.94', '2018-09-15', '0');
 */
-
+/*
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
 	values (1, 'Estudios de los alimentos', 143112, 0);
 insert into programasinvestigacion (`id`, `Nombre`, `Director`, `Estado`) 
@@ -511,7 +511,7 @@ insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Program
 
 insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`)
 	values (9, 'MRU', '2018-06-01', 1221, 3, 1);
-
+*/
 
 
 
