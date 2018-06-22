@@ -1,11 +1,14 @@
 package vista.controladores;
 
+import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import controlador.ControlInforme;
+import excel.Excel;
 import javafx.fxml.Initializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -82,9 +85,13 @@ public class Informes extends ControladorVista implements Initializable {
 	public void recibirParametros(Map<String, Object> args) {
 		ITipoInforme informeActual = (ITipoInforme) args.get(KEY_INFORME);
 		this.control.setInformeActual(informeActual);
-		if (!informeActual.isEditable())
-			this.btnInformesGuardar.setVisible(false);
 		
+		actualizarTodo();
+	}
+	
+	private void actualizarTodo() {
+		ITipoInforme informeActual = this.control.getInformeActual();
+		this.btnInformesGuardar.setVisible(informeActual.isEditable());
 		this.txtInformesNombre.setText(informeActual.getNombre());
 		this.txtInformesDescripcion.setText(informeActual.getDescripcion());
 		actualizarTablas();
@@ -148,17 +155,40 @@ public class Informes extends ControladorVista implements Initializable {
 	
 	@FXML protected Button btnInformesGuardar;
 	@FXML public void guardar(ActionEvent event) {
-		
+		ITipoInforme informe = this.control.getInformeActual();
+		informe.setNombre(this.txtInformesNombre.getText());
+		informe.setDescripcion(this.txtInformesDescripcion.getText());
+		this.control.guardar(informe);
 	}
 	
 	@FXML protected Button btnInformesGuardarComo;
 	@FXML public void guardarComo(ActionEvent event) {
-		
+		ITipoInforme informe = this.control.getInformeActual();
+		informe.setNombre(this.txtInformesNombre.getText());
+		informe.setDescripcion(this.txtInformesDescripcion.getText());
+		this.control.guardarComo(informe);
+		actualizarTodo();
 	}
 	
 	@FXML protected Button btnInformesExcel;
 	@FXML public void exportar(ActionEvent event) {
-		
+		List<String> extensiones = new ArrayList<String>();
+    	extensiones.add("*.xls");
+    	extensiones.add("*.xlsx");
+        File archivo = elegirRuta("Elija la ubicación del archivo", "Hojas de cálculo", extensiones);
+        if (archivo != null) {
+        	ITipoInforme informeActual = this.control.getInformeActual();
+        	List<String> encabezados = new ArrayList<String>();
+        	for (ColumnaInforme columna : informeActual.getColumnas()) {
+        		encabezados.add(columna.getNombre());
+        	}
+        	if (Excel.exportar(archivo.getPath(), encabezados, this.control.vistaPrevia())) {
+        		this.gestorPantalla.mensajeEstado("El informe se exportó correctamente en " + archivo.getPath());
+        	} else {
+        		alertaError("Exportar a Excel", "Error al exportar el Informe a Excel (" + archivo.getPath() + ")",
+        				"Asegúrese de que el archivo no fue abierto por otra aplicación.");
+        	}
+        }
 	}
 
 // -------------------------------- Informe --------------------------------- //

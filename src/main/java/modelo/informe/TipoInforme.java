@@ -1,10 +1,11 @@
 package modelo.informe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TipoInforme implements ITipoInforme {
 
-	private int id;
+	private int id = -1;
 	private String nombre;
 	private String descripcion;
 	private Boolean editable;
@@ -12,19 +13,6 @@ public class TipoInforme implements ITipoInforme {
 	private List<ColumnaInforme> columnas;
 	private String fromString; // solo from con joins
 	private String groupByString; // groupby prearmado
-
-	@Override
-    public ITipoInforme clone() {
-	    return new TipoInforme(
-            this.id,
-            this.nombre,
-            this.descripcion,
-            this.editable,
-            this.columnas,
-            this.fromString,
-            this.groupByString
-        );
-	}
 
 	public String armarConsulta() {
 		String select = "SELECT";
@@ -124,9 +112,22 @@ public class TipoInforme implements ITipoInforme {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.editable = editable;
-		this.columnas = columnas;
+		this.columnas = new ArrayList<ColumnaInforme>(columnas);
 		this.fromString = from;
 		this.groupByString = groupby;
+	}
+
+	@Override
+    public ITipoInforme clone() {
+	    return new TipoInforme(
+            this.id,
+            this.nombre,
+            this.descripcion,
+            this.editable,
+            this.columnas,
+            this.fromString,
+            this.groupByString
+        );
 	}
 
 	@Override

@@ -22,10 +22,10 @@ public class GestorInforme {
 	private ITipoInforme informeActual;
 	
 	public ITipoInforme getInformeActual() {
-		return informeActual;
+		return informeActual.clone();
 	}
 	public void setInformeActual(ITipoInforme informeActual) {
-		this.informeActual = informeActual;
+		this.informeActual = informeActual.clone();
 	}
 	
 	/**
@@ -38,7 +38,7 @@ public class GestorInforme {
 		informeSelect.setId(this.informeActual.getId());
 		ITipoInforme informeAnterior = null;
 		List<ITipoInforme> informeList = listarInforme(informeSelect);
-		if (informeList != null && !informeList.isEmpty())
+		if (informeList != null && !informeList.isEmpty() && informeSelect.getId() > -1)
 			informeAnterior = informeList.get(0);
 		
 		EstadoOperacion eo = new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
@@ -52,6 +52,7 @@ public class GestorInforme {
 					modificarInforme(informeAnterior);
 			} else {
 				// Crear uno
+				this.informeActual.setEditable(true);
 				eo = nuevoInforme(this.informeActual);
 				// Rollback si falló en agregar
 				if (eo.getEstado() != CodigoEstado.INSERT_OK) 
@@ -150,7 +151,7 @@ public class GestorInforme {
 			ManejoDatos md = new ManejoDatos();
 			String table = "TiposInformes";
 
-			informe.setId(GestorInforme.getMaxID(table, "id"));
+			informe.setId(GestorInforme.getMaxID(table, "id") + 1);
 
 			int editable = informe.isEditable() ? 1 : 0;
 			//
@@ -159,11 +160,11 @@ public class GestorInforme {
 
 			if (informe.getDescripcion() != null && !informe.getDescripcion().equals("")) {
 				campos += ", `Descripcion`";
-				valores += "'" + informe.getDescripcion() + "'";
+				valores += ", '" + informe.getDescripcion() + "'";
 			}
 			if (informe.getFromString() != null && !informe.getFromString().equals("")) {
 				campos += ", `FromString`";
-				valores += ", " + informe.getFromString() + "'";
+				valores += ", '" + informe.getFromString() + "'";
 			}
 			if (informe.getGroupByString() != null && !informe.getFromString().equals("")) {
 				campos += ", `GroupByString`";
@@ -254,7 +255,7 @@ public class GestorInforme {
 					t.setDescripcion(reg.get("Descripcion"));
 				}
 
-				t.setEditable((reg.get("Editable") == "1" ? true : false));
+				t.setEditable((reg.get("Editable").equals("1") ? true : false));
 
 				if (!reg.get("FromString").equals("")) {
 					t.setFromString(reg.get("FromString"));
@@ -268,14 +269,14 @@ public class GestorInforme {
 				informes.add(t);
 			}
 
-		}catch (Exception e) {
+		} catch (Exception e) {
 			informes = new ArrayList<ITipoInforme>();
 		}
-
-
 		return informes;
 	}
 
+	
+	
 	public void agregarColumna(ITipoInforme informe, ColumnaInforme col) throws Exception {
 		try {
 			ManejoDatos md = new ManejoDatos();
