@@ -30,7 +30,7 @@ public enum Filtro {
 		return filtro;
 	}
 
-	public Filtro[] getLista() {
+	public static Filtro[] getLista() {
 		return Filtro.values();
 	}
 }

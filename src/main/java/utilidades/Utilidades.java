@@ -90,4 +90,31 @@ public class Utilidades {
 		res += list[i];
 		return res;
 	}
+	
+	/**
+	 * Reemplaza caracteres especiales como % o \.
+	 * @param valor El valor a parametrizar.
+	 */
+	public static String parametrizarValor(String valor) {
+		String valorParametrizado = valor.replace("\\", "\\\\");
+		valorParametrizado = valorParametrizado.replace("%", "\\%");
+		valorParametrizado = valorParametrizado.replace("_", "\\_");
+		valorParametrizado = valorParametrizado.replace("\\0", "");
+		valorParametrizado = valorParametrizado.replace("'", "\\'");
+		valorParametrizado = valorParametrizado.replace("\"", "\\\"");
+		return valorParametrizado;
+	}
+	
+	/**
+	 * Agrega caracteres especiales como % o \.
+	 * @param valor El valor a desparametrizar.
+	 */
+	public static String desparametrizarValor(String valor) {
+		String valorParametrizado = valor.replace("\\\"", "\"");
+		valorParametrizado = valorParametrizado.replace("\\'", "'");
+		valorParametrizado = valorParametrizado.replace("\\_", "_");
+		valorParametrizado = valorParametrizado.replace("\\%", "%");
+		valorParametrizado = valorParametrizado.replace("\\\\", "\\");
+		return valorParametrizado;
+	}
 }

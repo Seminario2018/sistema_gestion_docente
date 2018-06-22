@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import modelo.auxiliares.Calculo;
 import modelo.informe.ColumnaInforme;
 import modelo.informe.TipoInforme;
 
@@ -24,8 +25,7 @@ public class TipoInformeTest {
 		GROUP BY DOCENTE.LEGAJO
 		ORDER BY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
 		*/
-		List<String> filtro = new ArrayList<String>();
-		filtro.add("> 140000");
+		FiltroColumna filtro = new FiltroColumna("> 140000");
 		
 		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>();
 		
@@ -56,7 +56,7 @@ public class TipoInformeTest {
 				"Último costo",
 				"PLANTA.ULTIMO_COSTO",
 				null,
-				"SUM",
+				Calculo.SUM,
 				ColumnaInforme.SIN_ORDEN,
 				3,
 				"FLOAT");
@@ -96,16 +96,16 @@ public class TipoInformeTest {
 		*/
 		GestorInforme gi = new GestorInforme();
 		ITipoInforme impactoDocente = gi.listarInforme(null).get(0);
-		/*
+//		/*
 		System.out.println();
 		System.out.println(impactoDocente.armarConsulta());
 		System.out.println();
-		*/
+//		*/
 		String consulta = "SELECT DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE, COUNT(CARGOSDOCENTES.CODIGO), SUM(CARGOSDOCENTES.ULTIMOCOSTO), SUM(CARGOS.CARGAHORARIA), COUNT(INTEGRANTES.ID), SUM(INTEGRANTES.HORASSEMANALES)\r\n"
 				+ "FROM DOCENTES INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE\r\n"
 				+ "WHERE DOCENTES.ESTADO = 0 AND CARGOSDOCENTES.ESTADOCARGO = 0\r\n"
 				+ "GROUP BY DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE";
-//		System.out.println(consulta);
+		System.out.println(consulta);
 		
 		Assert.assertEquals(consulta, impactoDocente.armarConsulta());
 	}

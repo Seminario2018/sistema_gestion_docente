@@ -4,10 +4,11 @@ package modelo.informe;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+
+import modelo.auxiliares.Calculo;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import persistencia.Conexion;
@@ -289,13 +290,13 @@ public class GestorInforme {
 				campos += ", `Nombre`";
 				valores += ", '" + col.getNombre() + "'";
 			}
-			if (col.getFiltros() != null) {
+			if (col.getFiltro() != null) {
 				campos += ", `Filtros`";
-				valores += ", '" + col.getFiltros().get(0) + "'";
+				valores += ", '" + col.getFiltro().toString() + "'";
 			}
 			if (col.getCalculo() != null && !col.getCalculo().equals("")) {
 				campos += ", `Calculo`";
-				valores += ", '" + col.getCalculo() + "'";
+				valores += ", '" + col.getCalculo().getCalculo() + "'";
 			}
 			
 			if (col.getOrdenar() > -1) {
@@ -335,10 +336,9 @@ public class GestorInforme {
 			List<String> campos = new ArrayList<String>();
 			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
 			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
-			if (col.getFiltros() != null && !col.getFiltros().isEmpty())
-				campos.add("Filtros = '" + col.getFiltros().get(0) + "'");
+			if (col.getFiltro() != null) campos.add("Filtros = '" + col.getFiltro().toString() + "'");
 			if (col.getCalculo() != null && !col.getCalculo().equals(""))
-				campos.add("Calculo = '" + col.getCalculo() + "'");
+				campos.add("Calculo = '" + col.getCalculo().getCalculo() + "'");
 			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
 			if (col.getPosicion() > -1) campos.add("Posicion = " + col.getPosicion());
 			if (col.getTipo() != null && !col.getTipo().equals(""))
@@ -395,10 +395,25 @@ public class GestorInforme {
 					c.setNombre(reg.get("Nombre"));
 				}
 				if (!reg.get("Filtros").equals("")) {
-					c.setFiltros(Arrays.asList(reg.get("Filtros").split("AND")));
+					c.setFiltro(new FiltroColumna(reg.get("Filtros")));
 				}
 				if (!reg.get("Calculo").equals("")) {
-					c.setCalculo(reg.get("Calculo"));
+					switch (reg.get("Calculo")) {
+					case "SUM":
+						c.setCalculo(Calculo.SUM);
+						break;
+					case "COUNT":
+						c.setCalculo(Calculo.COUNT);
+						break;
+					case "MIN":
+						c.setCalculo(Calculo.MIN);
+						break;
+					case "MAX":
+						c.setCalculo(Calculo.MAX);
+						break;
+					default:
+						break;
+					}
 				}
 				if (reg.containsKey("Tipo")) c.setTipo(reg.get("Tipo"));
 				
@@ -430,10 +445,25 @@ public class GestorInforme {
 			}
 			c.setAtributo(reg.get("Atributo"));
 			if (!reg.get("Filtros").equals("")) {
-				c.setFiltros(Arrays.asList(reg.get("Filtros").split(",")));
+				c.setFiltro(new FiltroColumna(reg.get("Filtros")));
 			}
 			if (!reg.get("Calculo").equals("")) {
-				c.setCalculo(reg.get("Calculo"));
+				switch (reg.get("Calculo")) {
+				case "SUM":
+					c.setCalculo(Calculo.SUM);
+					break;
+				case "COUNT":
+					c.setCalculo(Calculo.COUNT);
+					break;
+				case "MIN":
+					c.setCalculo(Calculo.MIN);
+					break;
+				case "MAX":
+					c.setCalculo(Calculo.MAX);
+					break;
+				default:
+					break;
+				}
 			}
 			c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
 			c.setPosicion(Integer.parseInt(reg.get("Posicion")));
@@ -457,8 +487,8 @@ public class GestorInforme {
 			if (columna.getAtributo() != null && ! columna.getAtributo().equals("")) {
 				condicion += " AND Atributo = '" + columna.getAtributo() + "'";
 			}
-			if (columna.getFiltros() != null) {
-				condicion += " AND Filtros = '" + columna.getFiltros().toString() + "'";
+			if (columna.getFiltro() != null) {
+				condicion += " AND Filtros = '" + columna.getFiltro().toString() + "'";
 			}
 			if (columna.getOrdenar() != -1) {
 				condicion += " AND Ordenar = " + columna.getOrdenar();

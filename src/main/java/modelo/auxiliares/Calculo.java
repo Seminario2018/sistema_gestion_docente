@@ -25,7 +25,7 @@ public enum Calculo {
 		return calculo;
 	}
 	
-	public Calculo[] getLista() {
+	public static Calculo[] getLista() {
 		return Calculo.values();
 	}
 }

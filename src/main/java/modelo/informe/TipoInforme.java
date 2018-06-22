@@ -49,7 +49,7 @@ public class TipoInforme implements ITipoInforme {
 	
 				if (columna.getCalculo() != null) {
 					// SUM(PLANTA.ULTIMO_COSTO)
-					select += columna.getCalculo() + "(" + atributo + ")";
+					select += columna.getCalculo().getCalculo() + "(" + atributo + ")";
 				} else {
 					// PLANTA.ULTIMO_COSTO
 					select += atributo;
@@ -57,21 +57,14 @@ public class TipoInforme implements ITipoInforme {
 			}
 
 			// Armar el WHERE
-			if (columna.getFiltros() != null && !columna.getFiltros().isEmpty()) {
-
-				int i = 0;
-				List<String> filtros = columna.getFiltros();
+			if (columna.getFiltro() != null) {
 
 				if (!b_where) {
 					// DOCENTE.LEGAJO > 140000
-					where += " " + atributo + " " + filtros.get(i);
+					where += " " + atributo + " " + columna.getFiltro().toString();
 					b_where = true;
-					i++;
-				}
-
-				while (i < filtros.size()) {
-					where += " AND " + atributo + " " + filtros.get(i);
-					i++;
+				} else {
+					where += " AND " + atributo + " " + columna.getFiltro().toString();
 				}
 			}
 

@@ -1,6 +1,6 @@
 package modelo.informe;
 
-import java.util.List;
+import modelo.auxiliares.Calculo;
 
 public class ColumnaInforme {
 	public static final int SIN_ORDEN = 0;
@@ -16,18 +16,18 @@ public class ColumnaInforme {
 	private Boolean visible;
 	private String nombre;
 	private String atributo; // PLANTA.ULTIMO_COSTO
-	private List<String> filtros; // >= 2017
-	private String calculo; // COUNT
+	private FiltroColumna filtro; // >= 2017
+	private Calculo calculo; // COUNT
 	private int ordenar; // SIN_ORDEN, ASCENDENTE O DESCENDENTE
 	private int posicion; // Posición de la columna en el informe
 	private String tipo; // Tipo de valor
 	
-	public ColumnaInforme(Boolean visible, String nombre, String atributo, List<String> filtros, String calculo, int ordenar, int posicion, String tipo) {
+	public ColumnaInforme(Boolean visible, String nombre, String atributo, FiltroColumna filtro, Calculo calculo, int ordenar, int posicion, String tipo) {
 		super();
 		this.visible = visible;
 		this.nombre = nombre;  	
 		this.atributo = atributo;
-		this.filtros = filtros;
+		this.filtro = filtro;
 		this.calculo = calculo;
 		this.ordenar = ordenar;
 		this.posicion = posicion;
@@ -35,7 +35,6 @@ public class ColumnaInforme {
 	}
 	
 	public ColumnaInforme() {
-		this.filtros = null;
 		this.ordenar = -1;
 		this.posicion = -1;
 	}
@@ -58,16 +57,16 @@ public class ColumnaInforme {
 	public void setAtributo(String atributo) {
 		this.atributo = atributo;
 	}
-	public List<String> getFiltros() {
-		return filtros;
+	public FiltroColumna getFiltro() {
+		return filtro;
 	}
-	public void setFiltros(List<String> filtros) {
-		this.filtros = filtros;
+	public void setFiltro(FiltroColumna filtro) {
+		this.filtro = filtro;
 	}
-	public String getCalculo() {
+	public Calculo getCalculo() {
 		return calculo;
 	}
-	public void setCalculo(String calculo) {
+	public void setCalculo(Calculo calculo) {
 		this.calculo = calculo;
 	}
 	public int getOrdenar() {
