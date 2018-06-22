@@ -294,7 +294,9 @@ public class Usuarios extends ControladorVista implements Initializable {
 	            String confirmar = txtConfirmar.getText();
 	            if (contrasena.equals(confirmar)) {
 	                usuarioSeleccion.setUser(txtUsuario.getText());
-	                usuarioSeleccion.setPass(txtContrasena.getText());
+	                if (!contrasena.equals("")) {
+	                    usuarioSeleccion.setPass(txtContrasena.getText());
+	                }
 	                usuarioSeleccion.setDescripcion(txtDescripcion.getText());
 
 	                List<IRol> rolesNuevos = new ArrayList<IRol>();
