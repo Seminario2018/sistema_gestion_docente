@@ -16,10 +16,6 @@ public class Rol implements IRol {
 	    this.nombre = "";
 	    this.descripcion = "";
 	    this.permisos = new ArrayList<IPermiso>();
-	    for (Modulo m : Modulo.values()) {
-	    	IPermiso p = new Permiso(m);
-	    	this.permisos.add(p);
-	    }
 	}
 
 	public Rol(int id) {
@@ -27,10 +23,6 @@ public class Rol implements IRol {
 	    this.nombre = "";
 	    this.descripcion = "";
 	    this.permisos = new ArrayList<IPermiso>();
-	    for (Modulo m : Modulo.values()) {
-	    	IPermiso p = new Permiso(m);
-	    	this.permisos.add(p);
-	    }
 	}
 
 	public Rol(int id, String nombre) {
@@ -38,10 +30,6 @@ public class Rol implements IRol {
 		this.nombre = nombre;
 	    this.descripcion = "";
 	    this.permisos = new ArrayList<IPermiso>();
-	    for (Modulo m : Modulo.values()) {
-	    	IPermiso p = new Permiso(m);
-	    	this.permisos.add(p);
-	    }
 	}
 
 	public Rol(int id, String nombre, List<IPermiso> permisos) {
