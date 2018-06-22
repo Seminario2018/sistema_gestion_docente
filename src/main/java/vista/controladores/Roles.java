@@ -192,7 +192,6 @@ public class Roles extends ControladorVista implements Initializable {
 	    if (rolSeleccion == null) {
 	        vaciarControles();
 	    } else {
-	        txtRolesId.setText(String.valueOf(rolSeleccion.getId()));
 	        txtRolesNombre.setText(rolSeleccion.getNombre());
 	        txtRolesDescripcion.setText(rolSeleccion.getDescripcion());
 
@@ -201,7 +200,6 @@ public class Roles extends ControladorVista implements Initializable {
 	}
 
 	private void vaciarControles() {
-	    txtRolesId.clear();
 	    txtRolesNombre.clear();
 	    txtRolesDescripcion.clear();
 
@@ -268,7 +266,6 @@ public class Roles extends ControladorVista implements Initializable {
 	    }
 	}
 
-	@FXML private TextField txtRolesId;
 	@FXML private TextField txtRolesNombre;
 	@FXML private TextField txtRolesDescripcion;
 
