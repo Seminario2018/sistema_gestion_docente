@@ -302,10 +302,10 @@
                                     <ComboBox fx:id="cmbDomiciliosProvincia" prefWidth="150.0" GridPane.columnIndex="1" />
                                     <Label text="Ciudad" GridPane.rowIndex="1" />
                                     <TextField fx:id="txtDomiciliosCiudad" promptText="Ingrese la ciudad" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="txtDomiciliosDireccion" promptText="Ingrese la dirección" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Dirección" GridPane.rowIndex="3" />
-                                    <TextField fx:id="txtDomiciliosCP" promptText="Ingrese el código postal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <Label text="Código postal" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtDomiciliosCP" promptText="Ingrese el código postal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Dirección" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtDomiciliosDireccion" promptText="Ingrese la dirección" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" minWidth="50.0" />

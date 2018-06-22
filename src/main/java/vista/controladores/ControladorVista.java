@@ -233,6 +233,13 @@ public abstract class ControladorVista implements Initializable {
 	    fileChooser.getExtensionFilters().add(extensionFilter);
 	    return fileChooser.showOpenDialog(new Stage());
 	}
+	
+	/**
+	 * Abre una ventana para permitir seleccionar una ruta para guardar un archivo.
+	 * @param titulo Título de la ventana
+	 * @return Ruta seleccionada
+	 */
+	
 
 	/**
 	 * Analiza el resultado de una operación de eliminación, y lanza una ventana

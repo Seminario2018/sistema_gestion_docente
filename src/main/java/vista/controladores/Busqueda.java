@@ -41,10 +41,17 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public static final String TITULO = "Busqueda";
 
 	private String tipo;
+	public String getTipo() {
+		return tipo;
+	}
+
 	private ControlBusqueda control = new ControlBusqueda(this);
 	// Recibe la respuesta (selección)
 	private ControladorVista controladorRespuesta;
-
+	public ControladorVista getControladorRespuesta() {
+		return this.controladorRespuesta;
+	}
+	
 	private String tipo_respuesta;
 
 	/* (non-Javadoc)

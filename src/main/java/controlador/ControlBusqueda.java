@@ -1,5 +1,6 @@
 package controlador;
 
+import java.util.ArrayList;
 import java.util.List;
 import modelo.busqueda.BusquedaArea;
 import modelo.busqueda.BusquedaCargo;
@@ -28,7 +29,9 @@ import modelo.usuario.GestorRol;
 import modelo.usuario.GestorUsuario;
 import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
+import vista.controladores.Busqueda;
 import vista.controladores.ControladorVista;
+import vista.controladores.Docentes;
 
 /**
  * @author Martín Tomás Juran
@@ -55,7 +58,26 @@ public class ControlBusqueda {
 	}
 
 	public List<BusquedaPersona> listarPersonas(String criterio) {
-		return gestorBusqueda.listarPersonas(criterio);
+		List<BusquedaPersona> personas = this.gestorBusqueda.listarPersonas(criterio);
+		/* Hotfix para no asignar dos Docentes a una Persona */
+		if (this.vista instanceof Busqueda) {
+			Busqueda busqueda = (Busqueda) this.vista;
+			if (busqueda.getControladorRespuesta() instanceof Docentes) {
+				List<BusquedaPersona> resultado = new ArrayList<BusquedaPersona>();
+				for (BusquedaPersona p : personas) {
+					this.gestorDocente = new GestorDocente();
+					this.gestorPersona = new GestorPersona();
+					IDocente docenteSelect = this.gestorDocente.getIDocente();
+					IPersona personaSelect = this.gestorPersona.getIPersona();
+					personaSelect.setNroDocumento(p.getDocumento());
+					docenteSelect.setPersona(personaSelect);
+					if (this.gestorDocente.listarDocentes(docenteSelect).isEmpty())
+						resultado.add(p);
+				}
+				return resultado;
+			}
+		}
+		return personas;
 	}
 
 	public List<BusquedaArea> listarAreas(String criterio) {
