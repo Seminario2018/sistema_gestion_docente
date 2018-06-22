@@ -318,9 +318,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDescartar;
 	@FXML public void descartarUsuario(ActionEvent event) {
-	    usuarioSeleccion = null;
-        vaciarControles();
-        modoVer();
+	    mostrarUsuario();
 	}
 
 	@FXML private Button btnEliminar;
@@ -355,8 +353,9 @@ public class Usuarios extends ControladorVista implements Initializable {
             rolesDisponibles.removeAll(rolesUsuario);
 
             for (IRol rol : rolesDisponibles) {
-            	if (rol.getId() != 0)
-            		filasDisponibles.add(new FilaRol(rol));
+            	if (rol.getId() != 0) {
+                    filasDisponibles.add(new FilaRol(rol));
+                }
             }
         }
 	}
