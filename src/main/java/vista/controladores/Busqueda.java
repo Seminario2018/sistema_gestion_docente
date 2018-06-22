@@ -51,7 +51,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public ControladorVista getControladorRespuesta() {
 		return this.controladorRespuesta;
 	}
-	
+
 	private String tipo_respuesta;
 
 	/* (non-Javadoc)
@@ -95,8 +95,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 					args.put(Busqueda.KEY_TIPO_RESPUESTA, this.tipo_respuesta);
 					this.controladorRespuesta.recibirParametros(args);
 					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
-				} else {
-				    System.out.printf("valor es null\n");
 				}
 
 			} catch (Exception e) {

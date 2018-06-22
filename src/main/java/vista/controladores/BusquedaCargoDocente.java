@@ -67,9 +67,18 @@ public class BusquedaCargoDocente extends ControladorVista implements Initializa
 
 	@FXML private Button btnCargoDocenteCargo;
 	@FXML public void nuevoCargo(ActionEvent event) {
-	    Map<String, Object> args = new HashMap<String, Object>();
-	    args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
-	    this.gestorPantalla.lanzarPantalla("Docentes", args);
+	    if (!tblCargoDocente.getSelectionModel().isEmpty()) {
+	        Object fila = tblCargoDocente.getSelectionModel().getSelectedItem();
+	        Object valor = this.control.seleccionar(fila);
+
+	        if (valor != null) {
+	            Map<String, Object> args = new HashMap<String, Object>();
+	            args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
+	            args.put(Busqueda.KEY_SELECCION, Docentes.TITULO);
+	            args.put(Busqueda.KEY_VALOR, valor);
+	            this.gestorPantalla.lanzarPantalla("Docentes", args);
+	        }
+	    }
 	}
 
 	@FXML private Button btnCargoDocenteSeleccionar;
