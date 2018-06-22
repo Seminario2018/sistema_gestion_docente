@@ -196,9 +196,11 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	        // Pestaña Cargos:
 	        cargosModoVer();
+	        btnCargosNuevo.setVisible(true);
 
 	        // Pestaña Incentivos:
 	        incentivosModoVer();
+	        btnIncentivosNuevo.setVisible(true);
 
 	        // Pestaña Observaciones:
 	        btnObservacionesGuardar.setVisible(true);
@@ -251,9 +253,11 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	    // Pestaña Cargos:
 	    cargosModoVer();
+	    btnCargosNuevo.setVisible(false);
 
 	    // Pestaña Incentivos:
 	    incentivosModoVer();
+	    btnIncentivosNuevo.setVisible(false);
 
 	    // Pestaña Observaciones:
 	    btnObservacionesGuardar.setVisible(false);
