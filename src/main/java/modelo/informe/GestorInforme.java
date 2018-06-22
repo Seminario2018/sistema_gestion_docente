@@ -91,7 +91,7 @@ public class GestorInforme {
 	 * @param b La segunda columna
 	 * @return 
 	 */
-	public EstadoOperacion swapColumn(int a, int b) {
+	public EstadoOperacion swapColumna(int a, int b) {
 		if (this.informeActual == null) 
 			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
 					"No hay un informe seleccionado.");

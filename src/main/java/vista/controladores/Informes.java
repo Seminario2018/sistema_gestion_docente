@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import controlador.ControlInforme;
-import excel.Excel;
 import javafx.fxml.Initializable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -176,19 +175,7 @@ public class Informes extends ControladorVista implements Initializable {
     	extensiones.add("*.xls");
     	extensiones.add("*.xlsx");
         File archivo = elegirRuta("Elija la ubicación del archivo", "Hojas de cálculo", extensiones);
-        if (archivo != null) {
-        	ITipoInforme informeActual = this.control.getInformeActual();
-        	List<String> encabezados = new ArrayList<String>();
-        	for (ColumnaInforme columna : informeActual.getColumnas()) {
-        		encabezados.add(columna.getNombre());
-        	}
-        	if (Excel.exportar(archivo.getPath(), encabezados, this.control.vistaPrevia())) {
-        		this.gestorPantalla.mensajeEstado("El informe se exportó correctamente en " + archivo.getPath());
-        	} else {
-        		alertaError("Exportar a Excel", "Error al exportar el Informe a Excel (" + archivo.getPath() + ")",
-        				"Asegúrese de que el archivo no fue abierto por otra aplicación.");
-        	}
-        }
+		this.control.exportar(archivo);
 	}
 
 // -------------------------------- Informe --------------------------------- //
@@ -202,22 +189,46 @@ public class Informes extends ControladorVista implements Initializable {
     
     @FXML protected Button btnFiltroVer;
     @FXML public void verColumna(ActionEvent event) {
-    	
+    	if (this.columnaSeleccion != null) {
+    		this.columnaSeleccion.setVisible(!this.columnaSeleccion.isVisible());
+    		actualizarColumna();
+    	}
     }
     
     @FXML protected Button btnFiltroOrdenar;
     @FXML public void ordenarColumna(ActionEvent event) {
-
+    	if (this.columnaSeleccion != null) {
+    		this.columnaSeleccion.setOrdenar(
+    				(this.columnaSeleccion.getOrdenar() + 1) % 3);
+    		actualizarColumna();
+    	}
     }
     
     @FXML protected Button btnFiltroSubir;
     @FXML public void subirColumna(ActionEvent event) {
-
+    	swapColumna(-1);
     }
 
     @FXML protected Button btnFiltroBajar;
     @FXML public void bajarColumna(ActionEvent event) {
-        
+        swapColumna(1);
+    }
+    
+    private void actualizarColumna() {
+    	this.control.actualizarColumna(this.columnaSeleccion);
+		int i = this.columnaSeleccion.getPosicion();
+		actualizarTablas();
+		this.tblFiltro.getSelectionModel().select(i);
+    }
+    
+    private void swapColumna(int cambio) {
+    	if (this.columnaSeleccion != null) {
+    		int a = this.columnaSeleccion.getPosicion();
+    		int b = a + cambio;
+    		this.control.swapColumna(a, b);
+    		actualizarTablas();
+    		this.tblFiltro.getSelectionModel().select(b);
+    	}
     }
 
     @FXML protected TextField txtFiltroNombre;
