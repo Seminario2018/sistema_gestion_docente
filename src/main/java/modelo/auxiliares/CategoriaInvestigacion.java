@@ -1,6 +1,7 @@
 package modelo.auxiliares;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
 import persistencia.ManejoDatos;
@@ -96,15 +97,22 @@ public class CategoriaInvestigacion {
 	 * @return la lista de categorías de investigación de la BD
 	 */
 	public static List<CategoriaInvestigacion> getLista() {
-		ArrayList<CategoriaInvestigacion> categorias = new ArrayList<CategoriaInvestigacion>();
+		List<CategoriaInvestigacion> categorias = new ArrayList<CategoriaInvestigacion>();
+
 		ManejoDatos md = new ManejoDatos();
-		ArrayList<Hashtable<String, String>> res = md.select("CategoriasInvestigacion", "*");
+		List<Hashtable<String, String>> res = md.select("CategoriasInvestigacion", "*");
 		for (Hashtable<String, String> reg : res) {
 			CategoriaInvestigacion cat = new CategoriaInvestigacion();
 			cat.setId(Integer.parseInt(reg.get("id")));
 			cat.setDescripcion(reg.get("Descripcion"));
 			categorias.add(cat);
 		}
+		categorias.sort(new Comparator<CategoriaInvestigacion>() {
+            @Override
+            public int compare(CategoriaInvestigacion cat1, CategoriaInvestigacion cat2) {
+                return cat1.id - cat2.id;
+            }
+		});
 		return categorias;
 	}
 
@@ -148,4 +156,5 @@ public class CategoriaInvestigacion {
 	public String toString() {
 		return this.descripcion;
 	}
+
 }
