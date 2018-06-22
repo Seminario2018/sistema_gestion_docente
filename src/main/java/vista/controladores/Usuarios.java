@@ -355,8 +355,8 @@ public class Usuarios extends ControladorVista implements Initializable {
             rolesDisponibles.removeAll(rolesUsuario);
 
             for (IRol rol : rolesDisponibles) {
-                filasDisponibles.add(
-                    new FilaRol(rol));
+            	if (rol.getId() != 0)
+            		filasDisponibles.add(new FilaRol(rol));
             }
         }
 	}

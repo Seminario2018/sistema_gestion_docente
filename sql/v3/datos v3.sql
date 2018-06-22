@@ -516,7 +516,7 @@ insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Program
 
 
 # SuperUsuario oculto (Contraseña superusuario)
-insert into roles (id, nombre, descripcion) values (0, 'admin', 'Administrador');
+insert into roles (id, nombre, descripcion) values (0, 'su', 'Oculto');
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 0);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 1);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 2);
