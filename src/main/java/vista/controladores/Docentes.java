@@ -387,14 +387,13 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	/** Muestra los datos de la persona seleccionada: */
 	private void datosMostrarDocente() {
-	    if (docenteSeleccion != null) {
-            IPersona persona = docenteSeleccion.getPersona();
-            txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
-            txtDatosNombre.setText(persona.getApellido() + " " + persona.getNombre());
-            txtDatosLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
-            cmbDatosEstado.getSelectionModel().select(docenteSeleccion.getEstado());
-            cmbDatosCategoria.getSelectionModel().select(docenteSeleccion.getCategoriaInvestigacion());
-        }
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, Personas.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DOCENTE);
+        args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+        this.gestorPantalla.lanzarPantalla(Personas.TITULO, args);
 	}
 
 	/** Vacía los controles de datos */
