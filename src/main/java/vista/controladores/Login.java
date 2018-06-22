@@ -1,7 +1,6 @@
 package vista.controladores;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import controlador.ControlUsuario;
 import javafx.application.Platform;
@@ -12,7 +11,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import modelo.usuario.IPermiso;
+import modelo.usuario.IRol;
 import modelo.usuario.IUsuario;
+import modelo.usuario.Modulo;
 
 /**
  * @author Martín Tomás Juran
@@ -52,7 +54,7 @@ public class Login extends ControladorVista implements Initializable {
 
 	@FXML private Button btnLoginIngresar;
 	@FXML void ingresar(ActionEvent event) {
-	    /* TEST Usuarios hardcodeados * /
+	    /* TEST Usuarios hardcodeados */
 		IUsuario usuario = this.control.getIUsuario();
 		IRol rol = this.control.getIRol();
 		boolean entra = false;
@@ -106,7 +108,7 @@ public class Login extends ControladorVista implements Initializable {
 		}
 		//*/
 
-	    /* TODO Implementar login */
+	    /* TODO Implementar login * /
         IUsuario usuario = control.getIUsuario();
         usuario.setUser(txtLoginUsuario.getText());
         usuario.setPass(txtLoginContrasena.getText());
