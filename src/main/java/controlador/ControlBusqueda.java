@@ -71,8 +71,9 @@ public class ControlBusqueda {
 					IPersona personaSelect = this.gestorPersona.getIPersona();
 					personaSelect.setNroDocumento(p.getDocumento());
 					docenteSelect.setPersona(personaSelect);
-					if (this.gestorDocente.listarDocentes(docenteSelect).isEmpty())
-						resultado.add(p);
+					if (this.gestorDocente.listarDocentes(docenteSelect).isEmpty()) {
+                        resultado.add(p);
+                    }
 				}
 				return resultado;
 			}
@@ -178,7 +179,7 @@ public class ControlBusqueda {
 		    GestorDocente gestorDocente = new GestorDocente();
 		    ICargoDocente cargoDocente = gestorDocente.getICargoDocente();
 		    cargoDocente.setId(bCD.getCodigo());
-		    return gestorDocente.listarCargo(null, cargoDocente);
+		    return gestorDocente.listarCargo(null, cargoDocente).get(0);
 		}
 
 		return null;

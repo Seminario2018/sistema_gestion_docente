@@ -20,6 +20,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
+import modelo.docente.ICargoDocente;
+import modelo.docente.IDocente;
 import utilidades.Utilidades;
 
 /**
@@ -71,11 +73,14 @@ public class BusquedaCargoDocente extends ControladorVista implements Initializa
 	        Object fila = tblCargoDocente.getSelectionModel().getSelectedItem();
 	        Object valor = this.control.seleccionar(fila);
 
-	        if (valor != null) {
+	        if (valor != null && valor instanceof ICargoDocente) {
+	            ICargoDocente cargoDocente = (ICargoDocente) valor;
+	            IDocente docente = cargoDocente.getDocente();
+
 	            Map<String, Object> args = new HashMap<String, Object>();
 	            args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
-	            args.put(Busqueda.KEY_SELECCION, Docentes.TITULO);
-	            args.put(Busqueda.KEY_VALOR, valor);
+	            args.put(Busqueda.KEY_SELECCION, "Docente");
+	            args.put(Busqueda.KEY_VALOR, docente);
 	            this.gestorPantalla.lanzarPantalla("Docentes", args);
 	        }
 	    }
