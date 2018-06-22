@@ -97,7 +97,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </GridPane>
-            <TabPane prefHeight="448.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
+            <TabPane fx:id="tabpDocentes" prefHeight="448.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
                   <Tab closable="false" onSelectionChanged="#inicializarDatos" text="Datos">
                      <content>

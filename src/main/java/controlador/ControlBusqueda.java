@@ -3,6 +3,7 @@ package controlador;
 import java.util.List;
 import modelo.busqueda.BusquedaArea;
 import modelo.busqueda.BusquedaCargo;
+import modelo.busqueda.BusquedaCargoDocente;
 import modelo.busqueda.BusquedaDocente;
 import modelo.busqueda.BusquedaPersona;
 import modelo.busqueda.BusquedaPrograma;
@@ -15,6 +16,7 @@ import modelo.cargo.ICargo;
 import modelo.division.GestorArea;
 import modelo.division.IArea;
 import modelo.docente.GestorDocente;
+import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.investigacion.GestorPrograma;
 import modelo.investigacion.GestorProyecto;
@@ -80,6 +82,10 @@ public class ControlBusqueda {
 	    return gestorBusqueda.listarUsuarios(criterio);
 	}
 
+	public List<BusquedaCargoDocente> listarCargoDocentes(String criterio) {
+        return gestorBusqueda.listarCargosDocentes(criterio);
+    }
+
 	public Object seleccionar(Object fila) {
 		if (fila instanceof BusquedaDocente) {
 			BusquedaDocente bd = (BusquedaDocente) fila;
@@ -143,6 +149,14 @@ public class ControlBusqueda {
 		    IRol rol = gestorRol.getIRol();
 		    rol.setId(br.getId());
 		    return gestorRol.listarGrupo(rol).get(0);
+		}
+
+		if (fila instanceof BusquedaCargoDocente) {
+		    BusquedaCargoDocente bCD = (BusquedaCargoDocente) fila;
+		    GestorDocente gestorDocente = new GestorDocente();
+		    ICargoDocente cargoDocente = gestorDocente.getICargoDocente();
+		    cargoDocente.setId(bCD.getCodigo());
+		    return gestorDocente.listarCargo(null, cargoDocente);
 		}
 
 		return null;

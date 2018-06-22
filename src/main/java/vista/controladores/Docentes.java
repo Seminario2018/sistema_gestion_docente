@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -95,6 +96,13 @@ public class Docentes extends ControladorVista implements Initializable {
 	private static final String TIPO_CARGO = "cargo";
 	private static final String TIPO_DOCENTE = "docente";
 	private static final String TIPO_PERSONA = "persona";
+
+	public static final String KEY_TAB = "pestaña";
+	public static final int TAB_DATOS = 0;
+	public static final int TAB_CARGOS = 1;
+	public static final int TAB_INVESTIGACION = 2;
+	public static final int TAB_INCENTIVOS = 3;
+	public static final int TAB_OBSERVACIONES = 4;
 
 	@Override
     public void inicializar() {
@@ -375,6 +383,10 @@ public class Docentes extends ControladorVista implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		Object pestana = args.get(KEY_TAB);
+		if (pestana != null) {
+		    tabpDocentes.getSelectionModel().select((Integer) pestana);
 		}
 	}
 
@@ -711,6 +723,8 @@ public class Docentes extends ControladorVista implements Initializable {
     @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionNombre;
     @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionArea;
     @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionCargo;
+
+    @FXML private TabPane tabpDocentes;
 
 // ----------------------------- Pestaña Incentivos ------------------------- //
 

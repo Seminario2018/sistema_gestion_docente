@@ -6,9 +6,7 @@ import java.time.Year;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
-import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoProyecto;
-import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProrroga;
@@ -676,7 +673,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-	    // TODO Integrantes: buscarCargoDocente
+	    /* TEST Integrantes: buscarCargoDocente * /
 	    if (proyectoSeleccion != null &&
 	        integranteSeleccion != null) {
 
@@ -686,6 +683,16 @@ public class Proyectos extends ControladorVista implements Initializable {
     	    int index = random.nextInt(cargosDocentes.size());
     	    integranteSeleccion.setCargoDocente(cargosDocentes.get(index));
 	    }
+	    //*/
+	    /* TODO Integrantes: buscarCargoDocente */
+	    Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, true);
+        args.put(Busqueda.KEY_TIPO, "CargoDocentes");
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DIRECTOR);
+        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
+        this.gestorPantalla.lanzarPantalla("BusquedaCargoDocente", args);
+	    //*/
 	}
 
 	@FXML protected TableView<FilaIntegrante> tblIntegrantes;

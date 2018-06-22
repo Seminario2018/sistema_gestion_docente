@@ -27,7 +27,7 @@ import utilidades.Utilidades;
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
-@SuppressWarnings({"rawtypes", "unchecked"})
+//@SuppressWarnings({"rawtypes", "unchecked"})
 public class Busqueda extends ControladorVista implements Initializable {
 
 	public static final String KEY_NUEVO = "nuevo";

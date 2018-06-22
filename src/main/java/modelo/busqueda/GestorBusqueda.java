@@ -215,6 +215,39 @@ public class GestorBusqueda {
         return usuarios;
 	}
 
+	public List<BusquedaCargoDocente> listarCargosDocentes(String criterio) {
+	    String tabla = "ViewCargoDocente";
+        String campos = "Legajo, Nombre, Apellido, Area, Codigo, descripcion";
+        String condicion = "TRUE";
+        List<BusquedaCargoDocente> cargosDocentes = new ArrayList<BusquedaCargoDocente>();
+
+        if (criterio != null && !criterio.equals("")) {
+            condicion = armarCondicion(campos.split(", "), criterio);
+        }
+
+        try {
+            ManejoDatos md = new ManejoDatos();
+            List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+            for (Hashtable<String, String> reg : res) {
+                BusquedaCargoDocente bCD = new BusquedaCargoDocente(
+                    reg.get("Legajo"),
+                    reg.get("Nombre"),
+                    reg.get("Apellido"),
+                    reg.get("Area"),
+                    reg.get("Codigo"),
+                    reg.get("descripcion")
+
+                );
+                cargosDocentes.add(bCD);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cargosDocentes;
+	}
+
 	private String armarCondicion(String[] campos, String criterio) {
 		String[] condicion = new String[campos.length];
 		for (int i = 0; i < campos.length; i++) {
