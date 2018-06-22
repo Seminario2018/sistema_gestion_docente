@@ -189,7 +189,7 @@ public class Informes extends ControladorVista implements Initializable {
     
     
     // No se me ocurrió otra cosa
- 	class FilaColumna {
+ 	public class FilaColumna {
  		private ColumnaInforme col;
  		public FilaColumna(ColumnaInforme col) {
  			this.col = col;

@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import modelo.usuario.IPermiso;
@@ -72,7 +71,7 @@ public class Principal extends ControladorVista implements Initializable {
     private MenuItem mnuPersonas;
 
     @FXML
-    private Menu mnuInformes;
+    private MenuItem mnuInformes;
 
     @FXML
     private Label lblMensajes;
