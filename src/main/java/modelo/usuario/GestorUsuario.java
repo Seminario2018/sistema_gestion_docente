@@ -126,7 +126,9 @@ public class GestorUsuario {
     }
 
     public List<IUsuario> listarUsuario(IUsuario usuario) {
-    	List<Hashtable<String, String>> res = new ArrayList<Hashtable<String, String>>();
+        /* listarUsuario original */
+        GestorPersona gp = new GestorPersona();
+
         List<IUsuario> usuarios = new ArrayList<IUsuario>();
 
         String tabla = "Usuarios INNER JOIN Personas ON Usuarios.TipoDocumentoPersona = Personas.TipoDocumento"
@@ -136,7 +138,7 @@ public class GestorUsuario {
 
     	try {
         	ManejoDatos md = new ManejoDatos();
-        	res = md.select(tabla, campos, condicion);
+        	List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
         	for (Hashtable<String, String> reg : res) {
 				IUsuario user = new Usuario(
 					reg.get("Usuario").toString(),
@@ -145,23 +147,22 @@ public class GestorUsuario {
 					new ArrayList<IRol>()
 				);
 
-				GestorPersona gp = new GestorPersona();
-				IPersona p = new Persona();
-				p.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
-				p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
-				p = (Persona) gp.listarPersonas(p).get(0);
-				user.setPersona(p);
+				IPersona personaBusqueda = new Persona();
+				personaBusqueda.setTipoDocumento(TipoDocumento.getTipo(new TipoDocumento(Integer.parseInt(reg.get("TipoDocumento")), null)));
+				personaBusqueda.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
+				IPersona persona = gp.listarPersonas(personaBusqueda).get(0);
+				user.setPersona(persona);
 				this.setRoles(user);
 
 				usuarios.add(user);
-
 			}
         	return usuarios;
 
         } catch(Exception e) {
             e.printStackTrace();
-        	return usuarios;
+        	return new ArrayList<IUsuario>();
         }
+    	//*/
     }
 
     public static boolean existeUsuario(IUsuario usuario) {
@@ -254,27 +255,40 @@ public class GestorUsuario {
     			}
     		}
     		//private String user;
-    		if (usuario.getUser() != null) {
+    		if (usuario.getUser() != null && !usuario.getUser().equals("")) {
     			if (!condicion.equals("")) {
 					condicion += " AND ";
 				}
     			condicion += "Usuario = '" + usuario.getUser() + "'";
     		}
 
+    		HashSalt hash = usuario.getHash();
+    		if (hash != null) {
+    		    if (!condicion.equals("")) {
+                    condicion += " AND ";
+                }
+    		    condicion +=
+    		        "`Hash` = '" + hash.getHash() + "' AND " +
+    		        "`Salt` = '" + hash.getSalt() + "'";
+    		}
+
         }
     	return condicion;
     }
 
-    private void  setRoles(IUsuario usuario) {
+    private void setRoles(IUsuario usuario) {
     	try {
-    		String tabla = "RolesXUsuario";
+    	    GestorRol gr = new GestorRol();
 
         	ManejoDatos md = new ManejoDatos();
-    		List<Hashtable<String, String>> res = md.select(tabla, "*", "Usuario = '" + usuario.getUser() + "'");
+    		List<Hashtable<String, String>> res =
+    		    md.select(
+    		        "RolesXUsuario",
+    		        "*",
+    		        "Usuario = '" + usuario.getUser() + "'");
     		for (Hashtable<String, String> reg : res) {
-				Rol r = new Rol(Integer.parseInt(reg.get("Rol")));
-				GestorRol gr = new GestorRol();
-				r = (Rol) gr.listarGrupo(r).get(0);
+				IRol r = new Rol(Integer.parseInt(reg.get("Rol")));
+				r = gr.listarGrupo(r).get(0);
 				usuario.agregarRol(r);
 			}
 

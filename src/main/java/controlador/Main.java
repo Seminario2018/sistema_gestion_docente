@@ -1,16 +1,8 @@
 package controlador;
 
-import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import modelo.usuario.IPermiso;
-import modelo.usuario.IRol;
-import modelo.usuario.IUsuario;
-import modelo.usuario.Modulo;
-import modelo.usuario.Permiso;
-import modelo.usuario.Rol;
 import vista.GestorPantalla;
-import vista.controladores.Login;
 
 /**
  * @author Martín Tomás Juran
@@ -26,7 +18,7 @@ public class Main extends Application {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 		GestorPantalla gp = new GestorPantalla();
 
-		
+		/* TEST Usuario hardcodeado *
 		ControlUsuario controlUsuario = new ControlUsuario(null);
 		IUsuario usuario = controlUsuario.getIUsuario();
 		usuario.setUser("pepe");
@@ -42,12 +34,12 @@ public class Main extends Application {
 	        permiso.setListar(true);
 	        r.agregarPermiso(permiso);
 		}
-		usuario.agregarRol(r); 
-		
-		
+		usuario.agregarRol(r);
+
+
 		gp.lanzarPantallaPrincipal(usuario);
-		
-//		gp.lanzarPantallaLogin();
+		//*/
+		gp.lanzarPantallaLogin();
 	}
 
 	public static void main(String[] args) {
