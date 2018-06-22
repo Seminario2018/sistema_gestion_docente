@@ -267,9 +267,10 @@ public class GestorUsuario {
     		    if (!condicion.equals("")) {
                     condicion += " AND ";
                 }
-    		    condicion +=
-    		        "`Hash` = '" + hash.getHash() + "' AND " +
-    		        "`Salt` = '" + hash.getSalt() + "'";
+//    		    condicion +=
+//    		        "`Hash` = '" + hash.getHash() + "' AND " +
+//    		        "`Salt` = '" + hash.getSalt() + "'";
+    		    condicion += "`Hash` = '" + hash.getHash() + "'";
     		}
 
         }

@@ -52,7 +52,7 @@ public class Login extends ControladorVista implements Initializable {
 
 	@FXML private Button btnLoginIngresar;
 	@FXML void ingresar(ActionEvent event) {
-	    /* TEST Usuarios hardcodeados *
+	    /* TEST Usuarios hardcodeados * /
 		IUsuario usuario = this.control.getIUsuario();
 		IRol rol = this.control.getIRol();
 		boolean entra = false;
