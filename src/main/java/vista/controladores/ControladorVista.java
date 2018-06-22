@@ -6,7 +6,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -14,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -219,6 +222,26 @@ public abstract class ControladorVista implements Initializable {
         alerta.setContentText(contenido);
         alerta.showAndWait();
 	}
+	
+	/**
+	 * Lanza un diálogo de entrada para el usuario.
+	 * @param titulo Título del mensaje.
+     * @param encabezado Encabezado del mensaje.
+     * @param contenido Contenido del mensaje.
+	 * @return La entrada del usuario.
+	 */
+	public String dialogoEntrada(String titulo, String encabezado, String contenido, String ejemplo) {
+		TextInputDialog dialog = new TextInputDialog(ejemplo);
+		dialog.setTitle(titulo);
+		dialog.setHeaderText(encabezado);
+		dialog.setContentText(contenido);
+		Optional<String> result = dialog.showAndWait();
+		String input = null;
+		if (result.isPresent()) {
+		    input = result.get();
+		}
+		return input;
+	}
 
 	/**
 	 * Abre una ventana para permitir seleccionar un archivo.
@@ -239,7 +262,14 @@ public abstract class ControladorVista implements Initializable {
 	 * @param titulo Título de la ventana
 	 * @return Ruta seleccionada
 	 */
-	
+	public File elegirRuta(String titulo, String descripcion, List<String> extensiones) {
+	    FileChooser fileChooser = new FileChooser();
+	    fileChooser.setTitle(titulo);
+	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
+	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
+	    fileChooser.getExtensionFilters().add(extensionFilter);
+	    return fileChooser.showSaveDialog(new Stage());
+	}
 
 	/**
 	 * Analiza el resultado de una operación de eliminación, y lanza una ventana

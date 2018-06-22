@@ -105,6 +105,7 @@ public class ListaInformes extends ControladorVista implements Initializable {
     @FXML private void nuevo() {
     	if (this.informeSeleccion != null) {
     		this.informeSeleccion.setId(-1);
+    		this.informeSeleccion.setEditable(true);
     		editar();
     	}
     }
@@ -123,7 +124,14 @@ public class ListaInformes extends ControladorVista implements Initializable {
     @FXML private void eliminar() {
     	FilaListaInformes fl = this.tblListaInformes.getSelectionModel().getSelectedItem();
     	if (fl != null) {
-    		this.control.eliminarInforme(fl.getInforme());
+    		ITipoInforme informe = fl.getInforme();
+    		if (!informe.isEditable()) {
+    			alertaError("Eliminar Informe", "Error al eliminar el Informe",
+    					"El Informe no pudo ser eliminado debido a que no posee permisos suficientes");
+    		} else {
+    			this.control.eliminarInforme(fl.getInforme());
+    			actualizarTabla();
+    		}
     	}
     }
 
@@ -137,8 +145,7 @@ public class ListaInformes extends ControladorVista implements Initializable {
     	if (this.informeSeleccion != null) {
     		this.btnListaInformesNuevo.setDisable(false);
     		this.btnListaInformesVerEditar.setDisable(false);
-    		if (this.informeSeleccion.isEditable())
-    			this.btnListaInformesEliminar.setDisable(false);
+    		this.btnListaInformesEliminar.setDisable(!this.informeSeleccion.isEditable());
     	}
     }
     
