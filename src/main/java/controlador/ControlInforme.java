@@ -1,9 +1,12 @@
 package controlador;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import excel.Excel;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.informe.ColumnaInforme;
 import modelo.informe.GestorInforme;
 import modelo.informe.ITipoInforme;
 import vista.controladores.ControladorVista;
@@ -82,6 +85,29 @@ public class ControlInforme {
 		informe.setId(-1);
 		guardar(informe);
 	}
-	
 
+	public void exportar(File archivo) {
+		if (archivo != null) {
+        	ITipoInforme informeActual = getInformeActual();
+        	List<String> encabezados = new ArrayList<String>();
+        	for (ColumnaInforme columna : informeActual.getColumnas()) {
+        		if (columna.isVisible())
+        			encabezados.add(columna.getNombre());
+        	}
+        	if (Excel.exportar(archivo.getPath(), encabezados, vistaPrevia())) {
+        		this.vista.mensajeEstado("El informe se exportó correctamente en " + archivo.getPath());
+        	} else {
+        		this.vista.alertaError("Exportar a Excel", "Error al exportar el Informe a Excel (" + archivo.getPath() + ")",
+        				"Asegúrese de que el archivo no fue abierto por otra aplicación.");
+        	}
+        }
+	}
+
+	public void actualizarColumna(ColumnaInforme columna) {
+		this.gestorInforme.actualizarColumna(columna);
+	}
+
+	public void swapColumna(int a, int b) {
+		this.gestorInforme.swapColumna(a, b);
+	}
 }
