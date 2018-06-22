@@ -5,12 +5,12 @@ package modelo.auxiliares;
  * @version 1.0, 31 de may. de 2018
  */
 public enum Filtro {
-	IGUAL ("Igual", "="),
-	DISTI ("Distinto", "<>"),
-	MENOR ("Menor", "<"),
-	MENIG ("Menor o igual", "<="),
-	MAYOR ("Mayor", ">"),
-	MAYIG ("Mayor o igual", ">="),
+	IGUAL ("Igual a", "="),
+	DISTI ("Distinto de", "<>"),
+	MENOR ("Menor a", "<"),
+	MENIG ("Menor o igual a", "<="),
+	MAYOR ("Mayor a", ">"),
+	MAYIG ("Mayor o igual a", ">="),
 	CONTI ("Contiene", "LIKE"),
 	EMPIE ("Empieza con", "LIKE"),
 	TERMI ("Termina con", "LIKE");
@@ -32,5 +32,10 @@ public enum Filtro {
 
 	public static Filtro[] getLista() {
 		return Filtro.values();
+	}
+	
+	@Override
+	public String toString() {
+		return this.getDescripcion();
 	}
 }

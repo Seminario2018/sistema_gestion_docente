@@ -28,4 +28,9 @@ public enum Calculo {
 	public static Calculo[] getLista() {
 		return Calculo.values();
 	}
+	
+	@Override
+	public String toString() {
+		return this.getDescripcion();
+	}
 }

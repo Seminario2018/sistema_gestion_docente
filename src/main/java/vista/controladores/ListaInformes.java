@@ -7,12 +7,14 @@ import java.util.ResourceBundle;
 
 import controlador.ControlInforme;
 import javafx.fxml.Initializable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyEvent;
 import modelo.informe.ITipoInforme;
 
 
@@ -38,6 +40,15 @@ public class ListaInformes extends ControladorVista implements Initializable {
 		deshabilitarBotones();
 		inicializarTablaListaInformes();
 		actualizarTabla();
+		if (!this.filasListaInformes.isEmpty()) {
+			this.tblListaInformes.getSelectionModel().selectFirst();
+			Platform.runLater(new Runnable() {
+		        @Override
+		        public void run() {
+		            tblListaInformes.requestFocus();
+		        }
+		    });
+		}	
 	}
 	
 	private void actualizarTabla() {
@@ -131,4 +142,13 @@ public class ListaInformes extends ControladorVista implements Initializable {
     	}
     }
     
+	@FXML public void keyPressed(KeyEvent event) {
+		switch (event.getCode()) {
+		case ENTER:
+			if (!this.tblListaInformes.getSelectionModel().isEmpty()) {
+				editar();
+			}
+		default:
+		}
+	}
 }

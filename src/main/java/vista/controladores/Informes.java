@@ -1,7 +1,6 @@
 package vista.controladores;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -26,7 +25,6 @@ import modelo.informe.ITipoInforme;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
-import utilidades.Utilidades;
 
 
 /**
@@ -243,14 +241,21 @@ public class Informes extends ControladorVista implements Initializable {
  			this.col.setOrdenar(ord);
  		}
  		public String getFiltro() {
- 			return this.col.getFiltro().getTipo().getDescripcion() + " " 
- 					+ this.col.getFiltro().getValor();
+ 			if (this.col.getFiltro() != null) {
+ 				return this.col.getFiltro().getTipo().getDescripcion() + " " 
+ 						+ this.col.getFiltro().getValor();
+ 			} else {
+ 				return "";
+ 			}
  		}
  		public void setFiltro(FiltroColumna filtro) {
  			this.col.setFiltro(filtro);
  		}
  		public String getCalculo() {
- 			return this.col.getCalculo().getDescripcion();
+ 			if (this.col.getCalculo() != null)
+ 				return this.col.getCalculo().getDescripcion();
+ 			else
+ 				return "";
  		}
  		public void setCalculo(Calculo calculo) {
  			this.col.setCalculo(calculo);
