@@ -24,6 +24,9 @@ delete from TiposDocumentos;
 delete from TiposCargos;
 delete from TiposContactos;
 delete from cargosfaltantes;
+delete from integrantes;
+delete from proyectos;
+delete from programasinvestigacion;
 
 
 insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
@@ -534,3 +537,46 @@ insert into usuarios values
 
 insert into rolesxusuario values
 ('su', 0);
+
+
+INSERT INTO `programasinvestigacion` (`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`) VALUES (1, 'Ciencias Biologicas', 143112, null, null, null, null, '0');
+INSERT INTO `programasinvestigacion` (`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`) VALUES (2, 'Las Tecnologías de la Información y la Comunicación', 57, null, null, null, null, '0');
+INSERT INTO `programasinvestigacion` (`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`) VALUES (3, 'Estudios de física', 325, null, null, null, null, 0);
+INSERT INTO `programasinvestigacion` (`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`) VALUES (4, 'Quimica', 671, null, null, null, null, 0);
+INSERT INTO `programasinvestigacion` (`id`, `Nombre`, `Director`, `Codirector`, `Disposicion`, `Desde`, `Hasta`, `Estado`) VALUES (5, 'Analisis matematicos', 521, null, null, null, null, 0);
+
+
+
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Codirector`, `FechaInicio`, `Programa`, `Estado`) VALUES (1, 'Cultivo in vitro de especies leñosas nativas', '2008-06-22', '94', null, '2008-09-15', '1', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Codirector`, `FechaInicio`, `Programa`, `Estado`) VALUES (2, 'Morfogénesis in vitro de Handroanthus impetiginosus', '2009-07-15', '107', null, '2009-10-30', '1', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Codirector`, `FechaInicio`, `Programa`, `Estado`) VALUES (3, 'El aprendizaje basado en problemas como técnicas didáctica.', '2015-02-14', '469', null, '2016-05-01', '1', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (4, 'P.A.M.P.A.', '2010-05-30', '107', '2010-06-14', '2', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (5, 'Decisiones inteligentes en sistemas complejos', '2011-02-01', '257', '2011-04-13', '2', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (6, 'Estudio multitemporal y monitoreo de los glaciares de Patagonia Sur y del Mar Weddell Sur ', '2011-03-01', '3049', '2012-02-01', '2', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (7, 'Medición de la Radiación Fotosintéticamente activa (PAR) en los planos con diferentes orientaciones, mediante el desarrollo y ensayo de un dispositivo ad-hoc', '2010-07-26', '2609', '2010-08-26', '3', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (8, 'Red solarimétrica Regional', '2017-02-01', '2647', '2017-06-15', '3', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Programa`, `Estado`) VALUES (9, 'Medición y modelo la componente directa de la radiación solar: aplicaciones', '2018-03-06', '3043', '3', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (10, 'Síntesis y estudio de la estereoquímica de Tetralinas e Indanos sustituidos', '2006-06-24', '2609', '2006-10-24', '4', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (11, 'Formulación de complejos entre ciclodextrinas y compuestos destinados a mejorar la calidad de los alimentos y su aplicación\n', '2006-07-28', '2609', '2006-11-01', '4', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (12, 'Propiedades de oxo – hidróxidos comunes en suelos. Su actividad como inmovilizantes de iones pesados y posibles uso en remediación', '2016-04-22', '104', '2017-11-22', '4', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (13, 'Los estilos de Aprendizaje y la Matemática', '2009-11-22', '218', '2011-02-22', '5', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (14, 'Los errores mas frecuentes en el aprendizaje de Matemática I', '2007-08-19', '257', '2009-04-19', '5', 0);
+INSERT INTO `proyectos` (`id`, `Nombre`, `FechaPresentacion`, `Director`, `FechaInicio`, `Programa`, `Estado`) VALUES (15, 'Un estudio sobre la comprensión en Matemática Superior. Consecuencias para la enseñanza', '2005-12-12', '427', '2007-01-19', '5', 0);
+
+
+
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Apellido`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (1, 100, '', 'UNLu', 15, 1);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (2, 102, 'UNLu', 48, 2);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (3, 121, 'UNLu', 20, 3);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (4, 500, 'UNLu', 11, 4);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (5, 1301, 'UNLu', 10, 5);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (6, 1400, 'UNLu', 5, 6);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (7, 1500, 'UNLu', 13, 7);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (8, 2000, 'UNLu', 22, 8);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (9, 2000, 'UNLu', 24, 9);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (10, 1500, 'UNLu', 5, 10);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (11, 1301, 'UNLu', 18, 11);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (12, 500, 'UNLu', 48, 12);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (13, 100, 'UNLu', 11, 13);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (14, 1400, 'UNLu', 11, 14);
+INSERT INTO `integrantes` (`id`, `CargoDocente`, `Institucion`, `HorasSemanales`, `Proyecto`) VALUES (15, 121, 'UNLu', 20, 15);
