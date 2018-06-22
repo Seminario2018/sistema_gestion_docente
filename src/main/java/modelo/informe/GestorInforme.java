@@ -28,9 +28,8 @@ public class GestorInforme {
 	}
 	
 	/**
-	 * Almacena un Informe modificado en la Base de Datos, junto a sus columnas.
-	 * @param informe el TipoInforme a almacenar.
-	 * @return EstadoOperacion UPDATE
+	 * Almacena el {@code informeActual} en la Base de Datos, junto a sus columnas.
+	 * @return EstadoOperacion UPDATE or INSERT
 	 */
 	public EstadoOperacion guardar() {
 		// Recuperar el anterior para hacer rollback
@@ -41,21 +40,24 @@ public class GestorInforme {
 		if (informeList != null && !informeList.isEmpty())
 			informeAnterior = informeList.get(0);
 		
-		EstadoOperacion eo = null;
-		if (informeAnterior != null)
-			// Modificar el anterior
-			eo = modificarInforme(this.informeActual);
-		else
-			// Crear uno
-			eo = nuevoInforme(this.informeActual);
-		
-		// Rollback si falló en modificar o agregar
-		if (eo.getEstado() == CodigoEstado.UPDATE_ERROR
-				|| eo.getEstado() == CodigoEstado.INSERT_ERROR) {
-			try {
-				eliminarInforme(this.informeActual);
-			} catch (Exception e) {	
-			}
+		EstadoOperacion eo = new EstadoOperacion(CodigoEstado.UPDATE_ERROR,
+				"Ocurrió un error al almacenar el Informe.");
+		try {
+			if (informeAnterior != null) {
+				// Modificar el anterior
+				eo = modificarInforme(this.informeActual);
+				// Rollback si falló en modificar
+				if (eo.getEstado() != CodigoEstado.UPDATE_OK)
+					modificarInforme(informeAnterior);
+			} else {
+				// Crear uno
+				eo = nuevoInforme(this.informeActual);
+				// Rollback si falló en agregar
+				if (eo.getEstado() != CodigoEstado.INSERT_OK) 
+					eliminarInforme(this.informeActual);
+			} 
+		} catch (Exception e) {	
+			e.printStackTrace();
 		}
 		
 		return eo;
