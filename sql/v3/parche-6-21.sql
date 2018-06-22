@@ -29,3 +29,41 @@ CHANGE COLUMN `Visible` `Visible` TINYINT NULL DEFAULT NULL ;
 
 ALTER TABLE `tiposinformes` 
 CHANGE COLUMN `Editable` `Editable` TINYINT NOT NULL DEFAULT 0 ;
+
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `viewusuario` AS
+    SELECT 
+        `usuarios`.`Usuario` AS `Usuario`
+    FROM
+        `usuarios`
+	WHERE
+		`usuarios`.`Usuario` != 'su';
+
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `viewpersona` AS
+    SELECT 
+        `p`.`NroDocumento` AS `NroDocumento`,
+        `p`.`Nombre` AS `Nombre`,
+        `p`.`Apellido` AS `Apellido`
+    FROM
+        `personas` `p`
+	WHERE
+		`p`.`NroDocumento` != 0;
+
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `viewrol` AS
+    SELECT 
+        `roles`.`id` AS `id`, `roles`.`nombre` AS `nombre`
+    FROM
+        `roles`
+	WHERE
+		`roles`.`id` != 0;

@@ -2,6 +2,7 @@ delete from columnas;
 delete from tiposinformes;
 delete from Modulos;
 delete from Permisos;
+delete from rolesxusuario;
 delete from Roles;
 delete from Usuarios;
 delete from proyectos;
@@ -56,54 +57,55 @@ insert into modulos (idmodulo, Descripcion) values
 	(8, 'Personas'),
 	(9, 'Proyectos'),
 	(10, 'Programas');
-
+    
+    
 -- Rol Administrador:
-insert into roles (id, nombre, descripcion) values (0, 'admin', 'Administrador');
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 0);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 1);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 2);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 3);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 4);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 5);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 6);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 7);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 8);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 9);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 10);
+insert into roles (id, nombre, descripcion) values (1, 'admin', 'Administrador');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 1, 1, 1, 10);
 
 -- Rol Usuario común:
-insert into roles (id, nombre, descripcion) values (1, 'usuario', 'Usuario común');
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 0);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 1);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 0, 0, 0, 0, 2);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 0, 0, 0, 0, 3);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 4);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 5);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 6);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 7);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 8);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 9);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 1, 1, 0, 1, 1, 10);
-
--- Rol Invitado:
-insert into roles (id, nombre, descripcion) values (2, 'invitado', 'Invitado');
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 0);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 1);
+insert into roles (id, nombre, descripcion) values (2, 'usuario', 'Usuario común');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 1);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 2);
 insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 0, 3);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 4);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 5);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 6);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 7);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 8);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 9);
-insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 0, 0, 0, 1, 10);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 2, 1, 0, 1, 1, 10);
 
+-- Rol Invitado:
+insert into roles (id, nombre, descripcion) values (3, 'invitado', 'Invitado');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 0, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 0, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 0, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 0, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 3, 0, 0, 0, 1, 10);
 
 
 insert into TiposCargos values
 (0, 'Ordinario'),
 (1, 'Interino');
+
 
 insert into TiposDocumentos values
 (0, 'DNI'),
@@ -249,7 +251,6 @@ insert into Contactos values
 (0, 0, 12675920, 0, 'semint2018@gmail.com'),
 (0, 0, 16405290, 0, 'semint2018@gmail.com'),
 (0, 0, 15603702, 0, 'semint2018@gmail.com');
-
 
 
 # Jefes de División
@@ -511,3 +512,25 @@ insert into proyectos (`id`, `Nombre`, `FechaPresentacion`, `Director`, `Program
 
 
 
+# SuperUsuario oculto (Contraseña superusuario)
+insert into roles (id, nombre, descripcion) values (0, 'admin', 'Administrador');
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 0);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 1);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 2);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 3);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 4);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 5);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 6);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 7);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 8);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 9);
+insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) values (0, 0, 1, 1, 1, 1, 10);
+
+insert into personas values
+(0, 0, 's', 'u', '2018-03-10', 1);
+
+insert into usuarios values
+('su', 'c3VwZXJ1c2Vy', 'B57myBiOuCT2UBCWlTlOOw==', 0, 0, 'Oculto');
+
+insert into rolesxusuario values
+('su', 0);
