@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import modelo.auxiliares.EstadoProyecto;
+import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProrroga;
@@ -72,6 +73,12 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
             proyectoSeleccion.setDirector(director);
             txtDatosDirector.setText(proyectoSeleccion.getDirector().getPersona().getNombreCompleto());
+        }
+    }
+
+    private void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
+        if (cargoDocente instanceof ICargoDocente) {
+            integranteSeleccion.setCargoDocente((ICargoDocente) cargoDocente);
         }
     }
 
