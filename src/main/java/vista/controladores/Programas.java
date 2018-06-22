@@ -133,9 +133,7 @@ public class Programas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnProgramasDescartar;
 	@FXML private void descartarCambios() {
-	    programaSeleccion = null;
-	    vaciarControles();
-	    modoVer();
+	    mostrarPrograma();
 	}
 
 	@FXML private Button btnProgramasDirector;

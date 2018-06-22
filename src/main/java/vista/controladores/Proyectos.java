@@ -522,9 +522,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosDescartar;
     @FXML void descartarProyecto(ActionEvent event) {
-        proyectoSeleccion = null;
-        generalVaciarControles();
-        modoVer();
+        datosMostrarProyecto();
     }
 
     @FXML private TextField txtDatosDirector;
@@ -662,8 +660,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDescartar;
 	@FXML void descartarIntegrante(ActionEvent event) {
-	    integranteSeleccion = null;
-	    integrantesVaciarControles();
+	    integrantesMostrarIntegrante();
 	}
 
 	@FXML private Button btnIntegrantesEliminar;
@@ -797,8 +794,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnSubsidiosDescartar;
 	@FXML void descartarSubsidio(ActionEvent event) {
-	    subsidioSeleccion = null;
-	    subsidiosVaciarControles();
+	    subsidiosMostrarSubsidio();
     }
 
 	@FXML private Button btnSubsidiosEliminar;
@@ -934,8 +930,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnRendicionesDescartar;
 	@FXML void descartarRendicion(ActionEvent event) {
-	    rendicionSeleccion = null;
-	    rendicionesVaciarControles();
+	    rendicionesMostrarRendicion();
 	}
 
     @FXML private Button btnRendicionesEliminar;
@@ -1033,8 +1028,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 
     @FXML private Button btnProrrogasDescartar;
     @FXML void descartarProrroga(ActionEvent event) {
-        prorrogaSeleccion = null;
-        prorrogasVaciarControles();
+        prorrogasMostrarProrroga();
     }
 
     @FXML private Button btnProrrogasEliminar;

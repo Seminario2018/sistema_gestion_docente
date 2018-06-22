@@ -444,9 +444,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosDescartar;
 	@FXML private void descartarDatos() {
-	    docenteSeleccion = null;
-	    modoVer();
-	    generalVaciarControles();
+	    datosMostrarDocente();
 	}
 
 	@FXML private Button btnDatosPersona;
@@ -594,8 +592,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML public Button btnCargosDescartar;
 	@FXML public void descartarCargo() {
-	    cargoDocenteSeleccion = null;
-	    cargosVaciarControles();
+	    cargosMostrarCargoDocente();
 	}
 
 	@FXML public Button btnCargosEliminar;
@@ -793,8 +790,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIncentivosDescartar;
 	@FXML private void descartarIncentivo() {
-	    incentivoSeleccion = null;
-	    incentivosVaciarControles();
+	    incentivosMostrarIncentivo();
 	}
 
 	@FXML private Button btnIncentivosEliminar;

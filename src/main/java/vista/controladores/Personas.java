@@ -375,9 +375,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDatosDescartar;
 	@FXML public void descartarPersona(ActionEvent event) {
-	    personaSeleccion = null;
-	    generalVaciarControles();
-	    modoVer();
+	    datosMostrarPersona();
 	}
 
 	@FXML private TextField txtDatosApellido;
@@ -470,8 +468,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnContactosDescartar;
 	@FXML public void descartarContacto(ActionEvent event) {
-	    contactoSeleccion = null;
-	    contactosVaciarControles();
+	    contactosMostrarContacto();
 	}
 
 	@FXML private Button btnContactosEliminar;
@@ -612,8 +609,7 @@ public class Personas extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDomicilioDescartar;
 	@FXML public void descartarDomicilio(ActionEvent event) {
-	    domicilioSeleccion = null;
-        domiciliosVaciarControles();
+	    domiciliosMostrarDomicilio();
 	}
 
 	@FXML private Button btnDomiciliosEliminar;

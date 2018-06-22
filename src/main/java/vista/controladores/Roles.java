@@ -249,9 +249,7 @@ public class Roles extends ControladorVista implements Initializable {
 
 	@FXML private Button btnRolesDescartar;
 	@FXML private void descartarRol() {
-	    rolSeleccion = null;
-	    vaciarControles();
-	    modoVer();
+	    mostrarRol();
 	}
 
 	@FXML private Button btnRolesEliminar;
