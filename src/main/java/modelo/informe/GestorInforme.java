@@ -1,24 +1,57 @@
 package modelo.informe;
 
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
+import persistencia.Conexion;
 import persistencia.ManejoDatos;
+import utilidades.LogQuery;
 import utilidades.Utilidades;
 
 
 public class GestorInforme {
 	
+	ITipoInforme informeActual;
 	
 	
+	/**
+	 * Devuelve la vista previa del informe. También se usa para exportar a Excel
+	 * @param informe El TipoInforme a importar
+	 * @return Una grilla con los valores del informe
+	 */
+	public List<List<String>> vistaPrevia(ITipoInforme informe) {
+		List<List<String>> grilla = new ArrayList<List<String>>();
+		Conexion conexion = new Conexion();
+		try {
+			String query = informe.armarConsulta();
+			LogQuery.log(query);
+			
+			Connection con = conexion.conectar();
+			
+			ResultSet resultSet = con.createStatement().executeQuery(query);
+		    while (resultSet.next()) {
+		    	List<String> fila = new ArrayList<String>();
+		    	for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
+		    		fila.add(resultSet.getString(i) == null ? "" : resultSet.getString(i));
+		    	grilla.add(fila);
+		    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conexion.desconectar();
+		}
+		
+		return grilla;
+	}
 	
+// ------------------------------ Persistencia ------------------------------ //  
 	
-	
-
 	public EstadoOperacion nuevoInforme(ITipoInforme informe) {
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -230,6 +263,8 @@ public class GestorInforme {
 				if (!reg.get("Calculo").equals("")) {
 					c.setCalculo(reg.get("Calculo"));
 				}
+				if (reg.containsKey("Tipo")) c.setTipo(reg.get("Tipo"));
+				
 				c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
 				c.setPosicion(Integer.parseInt(reg.get("Posicion")));
 				columnas.add(c);
@@ -306,49 +341,26 @@ public class GestorInforme {
 
 
 	private String armarCondicion(ITipoInforme informe) {
-
 		String condicion = "TRUE";
 		if (informe != null) {
-
-			if (informe.getId() != 0) {
-				condicion += " AND `id` = " + informe.getId();
-			}
-			if (!informe.getNombre().equals("") ){
-				if (!condicion.equals("")) {
-					condicion += " AND ";
-				}
-				condicion += " `Nombre` = '" + informe.getNombre() + "'";
-			}
-			if (!informe.getDescripcion().equals("")) {
-				if (!condicion.equals("")) {
-					condicion += " AND ";
-				}
-				condicion += " Descripcion = '" + informe.getDescripcion() + "'";
-			}
-			if (informe.isEditable()) {
-				if (!condicion.equals("")) {
-					condicion += " AND ";
-				}
-				condicion += " Editable = " + 1;
-			}else {
-				if (!condicion.equals("") ) {
-					condicion += " AND ";
-				}
-				condicion += " Editable = " + 0;
-			}
-			if (!informe.getFromString().equals("") ) {
-				if (!condicion.equals("") ) {
-					condicion += " AND ";
-				}
-				condicion += " `from` = '" + informe.getFromString() + "'";
-			}
-
-			if (informe.getColumnas()!= null) {
-				if (!condicion.equals("")) {
-					condicion += " AND ";
-				}
-				condicion += " `TipoInformecol` = '" +informe.getColumnas() + "'";
-			}
+			if (informe.getId() > -1)
+				condicion += " AND id = " + informe.getId();
+			
+			String nombre = informe.getNombre();
+			if (nombre != null && !"".equals(nombre))
+				condicion += " AND Nombre = '" + nombre + "'";
+			
+			String descripcion = informe.getDescripcion();
+			if (descripcion != null && !"".equals(descripcion))
+				condicion += " AND Descripcion = '" + descripcion + "'";
+			
+			if (informe.isEditable() != null)
+				condicion += " AND Editable = " + (informe.isEditable() ? 1 : 0);
+			/*	
+			String from = informe.getFromString();
+			if (from != null && !"".equals(from)) 
+				condicion += " AND FromString = '" + from + "'";
+			*/
 		}
 		return condicion;
 	}
@@ -366,5 +378,8 @@ public class GestorInforme {
 		return maxID;
 	}
 
+	public ITipoInforme getITipoInforme() {
+		return new TipoInforme();
+	}
 
 }

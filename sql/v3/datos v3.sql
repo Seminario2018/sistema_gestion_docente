@@ -26,7 +26,7 @@ delete from cargosfaltantes;
 
 
 insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
-(0, 'Impacto Docente', 'Lista el costo de los docentes activos y su carga horaria total', true,
+(0, 'Impacto Docente', 'Lista el costo de los docentes activos y su carga horaria total', 0,
  'DOCENTES INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE',
  'DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE');
 

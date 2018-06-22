@@ -96,11 +96,11 @@ public class TipoInformeTest {
 		*/
 		GestorInforme gi = new GestorInforme();
 		ITipoInforme impactoDocente = gi.listarInforme(null).get(0);
-//		/*
+		/*
 		System.out.println();
 		System.out.println(impactoDocente.armarConsulta());
 		System.out.println();
-//		*/
+		*/
 		String consulta = "SELECT DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE, COUNT(CARGOSDOCENTES.CODIGO), SUM(CARGOSDOCENTES.ULTIMOCOSTO), SUM(CARGOS.CARGAHORARIA), COUNT(INTEGRANTES.ID), SUM(INTEGRANTES.HORASSEMANALES)\r\n"
 				+ "FROM DOCENTES INNER JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CARGOSDOCENTES ON DOCENTES.LEGAJO = CARGOSDOCENTES.LEGAJO INNER JOIN CARGOS ON CARGOSDOCENTES.CARGO = CARGOS.CODIGO LEFT JOIN INTEGRANTES ON CARGOSDOCENTES.CODIGO = INTEGRANTES.CARGODOCENTE\r\n"
 				+ "WHERE DOCENTES.ESTADO = 0 AND CARGOSDOCENTES.ESTADOCARGO = 0\r\n"
@@ -108,5 +108,29 @@ public class TipoInformeTest {
 //		System.out.println(consulta);
 		
 		Assert.assertEquals(consulta, impactoDocente.armarConsulta());
+	}
+	
+	@Test
+	public void vistaPrevia1() {
+		try {
+			GestorInforme gi = new GestorInforme();
+			ITipoInforme informeSelect = gi.getITipoInforme();
+			informeSelect.setId(0);
+			ITipoInforme impactoDocente = gi.listarInforme(informeSelect).get(0);
+			
+			List<List<String>> grilla = gi.vistaPrevia(impactoDocente);
+			
+			for (int i = 0; i < grilla.size(); i++) {
+				List<String> fila = grilla.get(i);
+				for (int k = 0; k < fila.size(); k++) {
+					System.out.print(fila.get(k) + "\t");
+				}
+				System.out.println();
+			}
+			Assert.assertTrue(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.assertTrue(false);
+		}
 	}
 }

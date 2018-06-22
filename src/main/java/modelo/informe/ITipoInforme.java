@@ -10,8 +10,8 @@ public interface ITipoInforme {
     public void setNombre(String nombre);
     public String getDescripcion();
     public void setDescripcion(String descripcion);
-    public boolean isEditable();
-    public void setEditable(boolean editable);
+    public Boolean isEditable();
+    public void setEditable(Boolean editable);
     public List<ColumnaInforme> getColumnas();
     public void setColumnas(List<ColumnaInforme> columnas);
     public String getFromString();

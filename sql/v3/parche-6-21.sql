@@ -26,3 +26,6 @@ ADD CONSTRAINT `fk_columnas_1`
 
 ALTER TABLE `columnas` 
 CHANGE COLUMN `Visible` `Visible` TINYINT NULL DEFAULT NULL ;
+
+ALTER TABLE `plumasdocentes`.`tiposinformes` 
+CHANGE COLUMN `Editable` `Editable` TINYINT NOT NULL DEFAULT 1 ;

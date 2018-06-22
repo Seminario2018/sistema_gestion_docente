@@ -7,7 +7,7 @@ public class TipoInforme implements ITipoInforme {
 	private int id;
 	private String nombre;
 	private String descripcion;
-	private boolean editable;
+	private Boolean editable;
 
 	private List<ColumnaInforme> columnas;
 	private String fromString; // solo from con joins
@@ -167,12 +167,12 @@ public class TipoInforme implements ITipoInforme {
 	}
 
 	@Override
-    public boolean isEditable() {
+    public Boolean isEditable() {
 		return editable;
 	}
 
 	@Override
-    public void setEditable(boolean editable) {
+    public void setEditable(Boolean editable) {
 		this.editable = editable;
 	}
 
