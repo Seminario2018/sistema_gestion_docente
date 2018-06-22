@@ -153,11 +153,11 @@ public class Integrante implements IIntegrante, IIntegranteg {
 			ICargoDocente cargo = new CargoDocente();
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Integrantes";
-			String campos = "CodigoCargo";
+			String campos = "CargoDocente";
 			String condicion = "id = " + this.id;
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			Hashtable<String, String> reg = res.get(0);
-			cargo.setId(Integer.parseInt(reg.get("CodigoCargo")));
+			cargo.setId(Integer.parseInt(reg.get("CargoDocente")));
 			GestorDocente gd = new GestorDocente();
 			cargo = gd.listarCargo(null, cargo).get(0);
 			this.cargoDocente = cargo;
