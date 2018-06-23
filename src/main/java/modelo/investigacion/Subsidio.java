@@ -102,10 +102,29 @@ public class Subsidio implements ISubsidio {
         this.rendiciones.remove(rendicion);
     }
 
-
     @Override
     public void setRendiciones(List<IRendicion> rendiciones) {
         this.rendiciones = rendiciones;
     }
 
+    @Override
+    public String toString() {
+        return this.fecha.toString();
+    }
+
+    @Override
+    public boolean equals(Object objeto) {
+        if (this == objeto) {
+            return true;
+        }
+        if (objeto == null) {
+            return false;
+        }
+        if (!(objeto instanceof Subsidio)) {
+            return false;
+        }
+
+        Subsidio s = (Subsidio) objeto;
+        return this.fecha.equals(s.fecha);
+    }
 }

@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoProyecto;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -850,7 +851,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML private TextArea txtaSubsidiosObservaciones;
 
 // -------------------------- Pestaña Rendiciones --------------------------- //
-	@FXML private ComboBox<Year> cmbRendicionesAnio;
+//	@FXML private ComboBox<Year> cmbRendicionesAnio;
+	@FXML private ComboBox<ISubsidio> cmbRendicionesAnio;
 
 	private IRendicion rendicionSeleccion = null;
 	protected ObservableList<FilaRendicion> filasRendiciones = FXCollections.observableArrayList();
@@ -892,7 +894,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	/** Muestra los datos de la rendición seleccionada: */
     private void rendicionesMostrarRendicion() {
         if (rendicionSeleccion != null) {
-            cmbRendicionesAnio.getSelectionModel().select(subsidioSeleccion.getFecha());
+//            cmbRendicionesAnio.getSelectionModel().select(subsidioSeleccion.getFecha());
+            cmbRendicionesAnio.getSelectionModel().select(subsidioSeleccion);
             dtpRendicionesFecha.setValue(rendicionSeleccion.getFecha());
             txtRendicionesMonto.setText(String.valueOf(rendicionSeleccion.getMonto()));
             txtaRendicionesObservaciones.setText(rendicionSeleccion.getObservaciones());
@@ -949,9 +952,13 @@ public class Proyectos extends ControladorVista implements Initializable {
         });
 
 	    if (proyectoSeleccion != null) {
+//	        cmbRendicionesAnio.setItems(
+//	            FXCollections.observableArrayList(
+//	                controlInvestigacion.fechasSubsidios(proyectoSeleccion)));
 	        cmbRendicionesAnio.setItems(
 	            FXCollections.observableArrayList(
-	                controlInvestigacion.fechasSubsidios(proyectoSeleccion)));
+	                controlInvestigacion.listarSubsidios(proyectoSeleccion, null)));
+
 	    }
 
 	    rendicionesActualizarTabla();
@@ -963,6 +970,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        rendicionSeleccion = controlInvestigacion.getIRendicion();
 	        rendicionesVaciarControles();
 	        rendicionesModoNuevo();
+
+	        cmbRendicionesAnio.getSelectionModel().select(subsidioSeleccion);
 	    }
 	}
 
@@ -970,19 +979,41 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@FXML void guardarRendicion(ActionEvent event) {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
 	        try {
+	            float monto = Float.parseFloat(txtRendicionesMonto.getText());
 	            LocalDate fecha = dtpRendicionesFecha.getValue();
-	            if (!subsidioSeleccion.getFecha().equals(Year.of(fecha.getYear()))) {
-	                throw new IllegalArgumentException("El año no coincide con el subsidio seleccionado");
+
+	            rendicionSeleccion.setFecha(fecha);
+                rendicionSeleccion.setMonto(monto);
+                rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
+
+	            // Verificar si se cambió el año de la rendición:
+	            if (!subsidioSeleccion.equals(cmbRendicionesAnio.getValue())) {
+	                ISubsidio comboSubsidio = cmbRendicionesAnio.getValue();
+	                if (!comboSubsidio.getFecha().equals(Year.of(fecha.getYear()))) {
+	                    throw new IllegalArgumentException("El año no coincide con el subsidio seleccionado");
+	                }
+
+	                //
+	                EstadoOperacion agregarRendicion = controlInvestigacion.guardarRendicion(proyectoSeleccion, comboSubsidio, rendicionSeleccion);
+	                if (exitoGuardado(agregarRendicion, TITULO, "Guardar Rendición")) {
+	                    EstadoOperacion quitarRendicion = controlInvestigacion.quitarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion);
+	                    if (!exitoEliminar(quitarRendicion, TITULO, "Guardar Rendición")) {
+	                        System.out.println("Exito eliminar false");
+	                        controlInvestigacion.quitarRendicion(proyectoSeleccion, comboSubsidio, rendicionSeleccion);
+                        }
+                    }
+
+	                subsidioSeleccion = comboSubsidio;
+	                subsidiosMostrarSubsidio();
+
+	            } else {
+	                if (!subsidioSeleccion.getFecha().equals(Year.of(fecha.getYear()))) {
+                        throw new IllegalArgumentException("El año no coincide con el subsidio seleccionado");
+                    }
+	                exitoGuardado(controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Guardar Rendición");
 	            }
 
-	            float monto = Float.parseFloat(txtRendicionesMonto.getText());
-
-    	        rendicionSeleccion.setFecha(fecha);
-    	        rendicionSeleccion.setMonto(monto);
-    	        rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
-
-    	        exitoGuardado(controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Guardar Rendición");
-    	        rendicionesModoModificar();
+	            rendicionesModoModificar();
                 rendicionesActualizarTabla();
 
 	        } catch (NumberFormatException e) {

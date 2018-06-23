@@ -146,6 +146,10 @@ public class ControlInvestigacion {
         return gestorProyecto.getISubsidio();
     }
 
+    public List<ISubsidio> listarSubsidios(IProyecto proyecto, ISubsidio subsidio) {
+        return this.gestorProyecto.listarSubsidios(proyecto, subsidio);
+    }
+
     public List<Year> fechasSubsidios(IProyecto proyecto) {
         List<Year> fechasSubsidios = new ArrayList<Year>();
         for (ISubsidio subsidio : gestorProyecto.listarSubsidios(proyecto, null)) {
@@ -156,12 +160,21 @@ public class ControlInvestigacion {
 
     // Rendiciones
     public EstadoOperacion guardarRendicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
-        IRendicion rendicionBusqueda = gestorProyecto.getIRendicion();
-        rendicionBusqueda.setId(rendicion.getId());
-        if (gestorProyecto.listarRendiciones(proyecto, subsidio, rendicionBusqueda).isEmpty()) {
+
+//        System.out.println("ControlInv: rendicion = `" + rendicionBusqueda.getId() + "`");
+        System.out.println("ControlInv: rendicion = `" + rendicion.getId() + "`");
+
+//        if (gestorProyecto.listarRendiciones(proyecto, subsidio, rendicionBusqueda).isEmpty()) {
+        if (rendicion.getId() == -1) {
             return gestorProyecto.agregarRendicion(rendicion, proyecto, subsidio);
         } else {
-            return gestorProyecto.modificarRendicion(proyecto, subsidio, rendicion);
+            IRendicion rendicionBusqueda = gestorProyecto.getIRendicion();
+            rendicionBusqueda.setId(rendicion.getId());
+            if (gestorProyecto.listarRendiciones(proyecto, subsidio, rendicionBusqueda).isEmpty()) {
+                return gestorProyecto.agregarRendicion(rendicion, proyecto, subsidio);
+            } else {
+                return gestorProyecto.modificarRendicion(proyecto, subsidio, rendicion);
+            }
         }
     }
 
