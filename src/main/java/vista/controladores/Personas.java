@@ -141,24 +141,26 @@ public class Personas extends ControladorVista implements Initializable {
             dtpDatosFechaNacimiento.setEditable(true);
 
             // Pestaña Contactos:
+            contactosModoVer();
             btnContactosNuevo.setVisible(true);
-            btnContactosGuardar.setVisible(true);
-            btnContactosDescartar.setVisible(true);
-            btnContactosEliminar.setVisible(true);
-
-            cmbContactosTipo.setDisable(false);
-            txtContactosDato.setEditable(true);
+//            btnContactosGuardar.setVisible(true);
+//            btnContactosDescartar.setVisible(true);
+//            btnContactosEliminar.setVisible(true);
+//
+//            cmbContactosTipo.setDisable(false);
+//            txtContactosDato.setEditable(true);
 
             // Pestaña Domicilios:
+            domiciliosModoVer();
             btnDomiciliosNuevo.setVisible(true);
-            btnDomiciliosGuardar.setVisible(true);
-            btnDomicilioDescartar.setVisible(true);
-            btnDomiciliosEliminar.setVisible(true);
-
-            cmbDomiciliosProvincia.setDisable(false);
-            txtDomiciliosCiudad.setEditable(true);
-            txtDomiciliosCP.setEditable(true);
-            txtDomiciliosDireccion.setEditable(true);
+//            btnDomiciliosGuardar.setVisible(true);
+//            btnDomicilioDescartar.setVisible(true);
+//            btnDomiciliosEliminar.setVisible(true);
+//
+//            cmbDomiciliosProvincia.setDisable(false);
+//            txtDomiciliosCiudad.setEditable(true);
+//            txtDomiciliosCP.setEditable(true);
+//            txtDomiciliosDireccion.setEditable(true);
 
             // Pestaña Títulos:
             txtTitulosTitulo.setEditable(true);
@@ -208,24 +210,12 @@ public class Personas extends ControladorVista implements Initializable {
         dtpDatosFechaNacimiento.setDisable(false);
 
         // Pestaña Contactos:
+        contactosModoVer();
         btnContactosNuevo.setVisible(false);
-        btnContactosGuardar.setVisible(false);
-        btnContactosDescartar.setVisible(false);
-        btnContactosEliminar.setVisible(false);
-
-        cmbContactosTipo.setDisable(true);
-        txtContactosDato.setEditable(false);
 
         // Pestaña Domicilios:
+        domiciliosModoVer();
         btnDomiciliosNuevo.setVisible(false);
-        btnDomiciliosGuardar.setVisible(false);
-        btnDomicilioDescartar.setVisible(false);
-        btnDomiciliosEliminar.setVisible(false);
-
-        cmbDomiciliosProvincia.setDisable(true);
-        txtDomiciliosCiudad.setEditable(false);
-        txtDomiciliosCP.setEditable(false);
-        txtDomiciliosDireccion.setEditable(false);
 
         // Pestaña Títulos:
         txtTitulosTitulo.setEditable(false);
@@ -430,12 +420,39 @@ public class Personas extends ControladorVista implements Initializable {
         txtContactosDato.clear();
     }
 
+    private void contactosModoModificar() {
+        if (this.permiso.getModificar()) {
+            btnContactosGuardar.setVisible(true);
+            btnContactosDescartar.setVisible(true);
+            btnContactosEliminar.setVisible(true);
+
+            cmbContactosTipo.setDisable(false);
+            txtContactosDato.setEditable(true);
+        }
+    }
+
+    private void contactosModoNuevo() {
+        if (this.permiso.getModificar()) {
+            contactosModoModificar();
+            btnContactosEliminar.setVisible(false);
+        }
+    }
+
+    private void contactosModoVer() {
+        btnContactosDescartar.setVisible(false);
+        btnContactosEliminar.setVisible(false);
+        btnContactosGuardar.setVisible(false);
+        cmbContactosTipo.setDisable(true);
+        txtContactosDato.setEditable(false);
+    }
+
 	@FXML private void inicializarContactos() {
 	    inicializarTabla("Contactos");
 	    tblContactos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 contactoSeleccion = newSelection.getInstanciaContacto();
                 contactosMostrarContacto();
+                contactosModoModificar();
             }
         });
 
@@ -451,6 +468,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    if (personaSeleccion != null) {
     	    contactoSeleccion = controlPersona.getIContacto();
     	    contactosVaciarControles();
+    	    contactosModoNuevo();
 	    }
 	}
 
@@ -462,6 +480,7 @@ public class Personas extends ControladorVista implements Initializable {
 
     	    EstadoOperacion resultado = controlPersona.guardarContacto(personaSeleccion, contactoSeleccion);
             exitoGuardado(resultado, TITULO, "Guardar Contacto");
+            contactosModoModificar();
     	    contactosActualizarTabla();
 	    }
 	}
@@ -477,6 +496,7 @@ public class Personas extends ControladorVista implements Initializable {
             EstadoOperacion resultado = controlPersona.quitarContacto(personaSeleccion, contactoSeleccion);
             if (exitoEliminar(resultado, TITULO, "Eliminar Contacto")) {
                 contactoSeleccion = null;
+                contactosModoVer();
                 contactosVaciarControles();
             }
             contactosActualizarTabla();
@@ -546,12 +566,43 @@ public class Personas extends ControladorVista implements Initializable {
         txtDomiciliosDireccion.clear();
     }
 
+    private void domiciliosModoModificar() {
+        if (this.permiso.getModificar()) {
+            btnDomiciliosGuardar.setVisible(true);
+            btnDomicilioDescartar.setVisible(true);
+            btnDomiciliosEliminar.setVisible(true);
+            cmbDomiciliosProvincia.setDisable(false);
+            txtDomiciliosCiudad.setEditable(true);
+            txtDomiciliosCP.setEditable(true);
+            txtDomiciliosDireccion.setEditable(true);
+        }
+    }
+
+    private void domiciliosModoNuevo() {
+        if (this.permiso.getModificar()) {
+            domiciliosModoModificar();
+            btnDomiciliosEliminar.setVisible(false);
+        }
+    }
+
+    private void domiciliosModoVer() {
+        btnDomiciliosGuardar.setVisible(false);
+        btnDomicilioDescartar.setVisible(false);
+        btnDomiciliosEliminar.setVisible(false);
+
+        cmbDomiciliosProvincia.setDisable(true);
+        txtDomiciliosCiudad.setEditable(false);
+        txtDomiciliosCP.setEditable(false);
+        txtDomiciliosDireccion.setEditable(false);
+    }
+
     @FXML private void inicializarDomicilios() {
         inicializarTabla("Domicilios");
         tblDomicilios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 domicilioSeleccion = newSelection.getInstanciaDomicilio();
                 domiciliosMostrarDomicilio();
+                domiciliosModoModificar();
             }
         });
 
@@ -592,6 +643,7 @@ public class Personas extends ControladorVista implements Initializable {
 	@FXML public void nuevoDomicilio(ActionEvent event) {
 	    domicilioSeleccion = controlPersona.getIDomicilio();
 	    domiciliosVaciarControles();
+	    domiciliosModoNuevo();
 	}
 
 	@FXML private Button btnDomiciliosGuardar;
@@ -603,6 +655,7 @@ public class Personas extends ControladorVista implements Initializable {
     	    domicilioSeleccion.setDireccion(txtDomiciliosDireccion.getText());
 
             exitoGuardado(controlPersona.guardarDomicilio(personaSeleccion, domicilioSeleccion), TITULO, "Guardar Domicilio");
+            domiciliosModoModificar();
             domiciliosActualizarTabla();
 	    }
 	}
@@ -617,6 +670,7 @@ public class Personas extends ControladorVista implements Initializable {
 	    if (personaSeleccion != null && domicilioSeleccion != null) {
     	    if (exitoEliminar(controlPersona.quitarDomicilio(personaSeleccion, domicilioSeleccion), TITULO, "Eliminar Domicilio")) {
     	        domicilioSeleccion = null;
+    	        domiciliosModoVer();
                 domiciliosVaciarControles();
     	    }
             domiciliosActualizarTabla();
