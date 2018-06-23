@@ -240,8 +240,31 @@ public class Informes extends ControladorVista implements Initializable {
 
     @FXML protected Button btnFiltroAplicar;
     @FXML public void aplicarFiltro(ActionEvent event) {
-    	
+    	if (this.columnaSeleccion != null) {
+    		
+    		String nombre = this.txtFiltroNombre.getText(); 
+    		if (nombre != null && !"".equals(nombre))
+    			this.columnaSeleccion.setNombre(nombre);
+    		
+    		Filtro filtro = this.cmbFiltroFiltro.getSelectionModel().getSelectedItem();
+    		if (filtro != null) {
+    			String valor = this.txtFiltroCondicion.getText();
+    			if (valor != null && !"".equals(valor)) {
+    				FiltroColumna fc = new FiltroColumna(filtro, valor);
+    				this.columnaSeleccion.setFiltro(fc);
+    			}
+    		}
+    		
+    		Calculo calculo = this.cmbFiltroCalculo.getSelectionModel().getSelectedItem();
+    		if (calculo != null) {
+    			this.columnaSeleccion.setCalculo(calculo);
+    		}
+    		
+    		actualizarColumna();
+    	}
     }
+    
+    
     @FXML protected Button btnFiltroLimpiar;
     @FXML public void limpiarFiltro(ActionEvent event) {
     	if (this.columnaSeleccion != null) {
@@ -349,17 +372,24 @@ public class Informes extends ControladorVista implements Initializable {
  		if (columna.getPosicion() >= this.filasFiltro.size() - 1)
  			this.btnFiltroBajar.setDisable(true);
  		
+ 		this.txtFiltroNombre.clear();
  		String nombre = columna.getNombre();
  		if (nombre != null && !"".equals(nombre))
  			this.txtFiltroNombre.setText(nombre);
  		
+ 		this.txtFiltroCondicion.clear();
+ 		this.cmbFiltroFiltro.getSelectionModel().clearSelection();
  		FiltroColumna filtro = columna.getFiltro(); 
  		if (filtro != null) {
  			this.txtFiltroCondicion.setText(filtro.getValor());
  			this.cmbFiltroFiltro.setValue(filtro.getTipo());
  		}
  		
+ 		this.cmbFiltroCalculo.getSelectionModel().clearSelection();
  		Calculo calculo = columna.getCalculo();
+ 		if (calculo != null) {
+ 			this.cmbFiltroCalculo.setValue(calculo);
+ 		}
  	}
  	
  	private void inicializarTablaFiltro() {
