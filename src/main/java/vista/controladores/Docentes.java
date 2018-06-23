@@ -623,8 +623,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
     			cargosModoModificar();
 
-    		} catch (IllegalArgumentException e) {
-    			alertaError("Cargos", "Error en el campo Último costo", e.getMessage());
+    		} catch (Exception e) {
+    			mensajeEstado(e.getMessage());
     		}
     		cargosActualizarTabla();
 	    }
