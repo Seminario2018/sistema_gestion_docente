@@ -134,7 +134,7 @@ public class Principal extends ControladorVista implements Initializable {
     void manualUsuarios(ActionEvent event) {
 		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 		    try {
-				Desktop.getDesktop().browse(new URI("http://www.example.com"));
+				Desktop.getDesktop().browse(new URI("https://drive.google.com/open?id=1R3yBj3QhcbKckm97Z389lqZFrshZVPfh"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (URISyntaxException e) {
