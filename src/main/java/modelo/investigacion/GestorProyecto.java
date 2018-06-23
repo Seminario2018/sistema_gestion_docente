@@ -797,7 +797,7 @@ public class GestorProyecto {
                 if (!campos.equals("")) {
                     campos += ", ";
                 }
-                campos += "Fecha = '" + Date.valueOf(rendicion.getFecha());
+                campos += "Fecha = '" + Date.valueOf(rendicion.getFecha()) + "'";
             }
 
             if (!campos.equals("")) {

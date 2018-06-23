@@ -156,7 +156,13 @@ public class ControlInvestigacion {
 
     // Rendiciones
     public EstadoOperacion guardarRendicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
-        return gestorProyecto.agregarRendicion(rendicion, proyecto, subsidio);
+        IRendicion rendicionBusqueda = gestorProyecto.getIRendicion();
+        rendicionBusqueda.setId(rendicion.getId());
+        if (gestorProyecto.listarRendiciones(proyecto, subsidio, rendicionBusqueda).isEmpty()) {
+            return gestorProyecto.agregarRendicion(rendicion, proyecto, subsidio);
+        } else {
+            return gestorProyecto.modificarRendicion(proyecto, subsidio, rendicion);
+        }
     }
 
     public EstadoOperacion quitarRendicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
