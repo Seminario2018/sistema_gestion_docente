@@ -76,6 +76,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
+    @SuppressWarnings("unused")
     private void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
         if (cargoDocente instanceof ICargoDocente) {
             integranteSeleccion.setCargoDocente((ICargoDocente) cargoDocente);
@@ -223,48 +224,20 @@ public class Proyectos extends ControladorVista implements Initializable {
             dtpDatosFinalizacion.setEditable(true);
 
             // Pestaña Integrantes:
+            integrantesModoVer();
             btnIntegrantesNuevo.setVisible(true);
-            btnIntegrantesGuardar.setVisible(true);
-            btnIntegrantesDescartar.setVisible(true);
-            btnIntegrantesEliminar.setVisible(true);
-
-            btnIntegrantesDocente.setVisible(true);
-            txtIntegrantesApellido.setEditable(true);
-            txtIntegrantesNombre.setEditable(true);
-            txtIntegrantesCargo.setEditable(true);
-            txtIntegrantesInstitucion.setEditable(true);
-            txtIntegrantesHoras.setEditable(true);
 
             // Pestaña Subsidios:
+            subsidiosModoVer();
             btnSubsidiosNuevo.setVisible(true);
-            btnSubsidiosGuardar.setVisible(true);
-            btnSubsidiosDescartar.setVisible(true);
-            btnSubsidiosEliminar.setVisible(true);
-
-            txtSubsidiosAnio.setVisible(true);
-            txtSubsidiosMonto.setEditable(true);
-            txtSubsidiosDisp.setEditable(true);
-            txtaSubsidiosObservaciones.setEditable(true);
 
             // Pestaña Rendiciones:
+            rendicionesModoVer();
             btnRendicionesNueva.setVisible(true);
-            btnRendicionesGuardar.setVisible(true);
-            btnRendicionesDescartar.setVisible(true);
-            btnRendicionesEliminar.setVisible(true);
-
-            cmbRendicionesAnio.setDisable(false);
-            dtpRendicionesFecha.setEditable(true);
-            txtRendicionesMonto.setEditable(true);
-            txtaRendicionesObservaciones.setEditable(true);
 
             // Pestaña Prórrogas:
+            prorrogasModoVer();
             btnProrrogasNueva.setVisible(true);
-            btnProrrogasGuardar.setVisible(true);
-            btnProrrogasDescartar.setVisible(true);
-            btnProrrogasEliminar.setVisible(true);
-
-            dtpProrrogasFinalizacion.setEditable(true);
-            txtProrrogasDisp.setEditable(true);
 
             // Pestaña Resumen:
             btnResumenGuardar.setVisible(true);
@@ -324,48 +297,20 @@ public class Proyectos extends ControladorVista implements Initializable {
         dtpDatosFinalizacion.setEditable(false);
 
         // Pestaña Integrantes:
+        integrantesModoVer();
         btnIntegrantesNuevo.setVisible(false);
-        btnIntegrantesGuardar.setVisible(false);
-        btnIntegrantesDescartar.setVisible(false);
-        btnIntegrantesEliminar.setVisible(false);
-
-        btnIntegrantesDocente.setVisible(false);
-        txtIntegrantesApellido.setEditable(false);
-        txtIntegrantesNombre.setEditable(false);
-        txtIntegrantesCargo.setEditable(false);
-        txtIntegrantesInstitucion.setEditable(false);
-        txtIntegrantesHoras.setEditable(false);
 
         // Pestaña Subsidios:
+        subsidiosModoVer();
         btnSubsidiosNuevo.setVisible(false);
-        btnSubsidiosGuardar.setVisible(false);
-        btnSubsidiosDescartar.setVisible(false);
-        btnSubsidiosEliminar.setVisible(false);
-
-        txtSubsidiosAnio.setVisible(false);
-        txtSubsidiosMonto.setEditable(false);
-        txtSubsidiosDisp.setEditable(false);
-        txtaSubsidiosObservaciones.setEditable(false);
 
         // Pestaña Rendiciones:
+        rendicionesModoVer();
         btnRendicionesNueva.setVisible(false);
-        btnRendicionesGuardar.setVisible(false);
-        btnRendicionesDescartar.setVisible(false);
-        btnRendicionesEliminar.setVisible(false);
-
-        cmbRendicionesAnio.setDisable(true);
-        dtpRendicionesFecha.setEditable(false);
-        txtRendicionesMonto.setEditable(false);
-        txtaRendicionesObservaciones.setEditable(false);
 
         // Pestaña Prórrogas:
+        prorrogasModoVer();
         btnProrrogasNueva.setVisible(false);
-        btnProrrogasGuardar.setVisible(false);
-        btnProrrogasDescartar.setVisible(false);
-        btnProrrogasEliminar.setVisible(false);
-
-        dtpProrrogasFinalizacion.setEditable(false);
-        txtProrrogasDisp.setEditable(false);
 
         // Pestaña Resumen:
         btnResumenGuardar.setVisible(false);
@@ -628,12 +573,48 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    txtIntegrantesHoras.clear();
 	}
 
+	private void integrantesModoModificar() {
+	    if (this.permiso.getModificar()) {
+	        btnIntegrantesGuardar.setVisible(true);
+	        btnIntegrantesDescartar.setVisible(true);
+	        btnIntegrantesEliminar.setVisible(true);
+
+	        btnIntegrantesDocente.setVisible(true);
+	        txtIntegrantesApellido.setEditable(true);
+	        txtIntegrantesNombre.setEditable(true);
+	        txtIntegrantesCargo.setEditable(true);
+	        txtIntegrantesInstitucion.setEditable(true);
+	        txtIntegrantesHoras.setEditable(true);
+	    }
+	}
+
+	private void integrantesModoNuevo() {
+	    if (this.permiso.getModificar()) {
+	        integrantesModoModificar();
+	        btnIntegrantesEliminar.setVisible(false);
+	    }
+	}
+
+	private void integrantesModoVer() {
+	    btnIntegrantesGuardar.setVisible(false);
+        btnIntegrantesDescartar.setVisible(false);
+        btnIntegrantesEliminar.setVisible(false);
+
+        btnIntegrantesDocente.setVisible(false);
+        txtIntegrantesApellido.setEditable(false);
+        txtIntegrantesNombre.setEditable(false);
+        txtIntegrantesCargo.setEditable(false);
+        txtIntegrantesInstitucion.setEditable(false);
+        txtIntegrantesHoras.setEditable(false);
+	}
+
 	@FXML void inicializarIntegrantes() {
 	    inicializarTabla("Integrantes");
 	    tblIntegrantes.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 	        if (newSelection != null) {
 	            integranteSeleccion = newSelection.getInstanciaIntegrante();
                 integrantesMostrarIntegrante();
+                integrantesModoModificar();
 	        }
 	    });
 
@@ -645,6 +626,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
             integranteSeleccion = controlInvestigacion.getIIntegrante();
             integrantesVaciarControles();
+            integrantesModoNuevo();
         }
     }
 
@@ -658,7 +640,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
 
 	        exitoGuardado(controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Guardar Integrante");
-            integrantesActualizarTabla();
+            integrantesModoModificar();
+	        integrantesActualizarTabla();
 	    }
 	}
 
@@ -672,6 +655,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (proyectoSeleccion != null && integranteSeleccion != null) {
 	        if (exitoEliminar(controlInvestigacion.quitarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Eliminar Integrante")) {
 	            integranteSeleccion = null;
+	            integrantesModoVer();
                 integrantesVaciarControles();
 	        }
 	        integrantesActualizarTabla();
@@ -696,7 +680,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         args.put(Busqueda.KEY_NUEVO, true);
         args.put(Busqueda.KEY_TIPO, "CargoDocentes");
         args.put(Busqueda.KEY_CONTROLADOR, this);
-        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DIRECTOR);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGODOCENTE);
         args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
         this.gestorPantalla.lanzarPantalla("BusquedaCargoDocente", args);
 	    //*/
@@ -773,12 +757,42 @@ public class Proyectos extends ControladorVista implements Initializable {
         txtaSubsidiosObservaciones.clear();
 	}
 
+	private void subsidiosModoModificar() {
+	    if (this.permiso.getModificar()) {
+            btnSubsidiosDescartar.setVisible(true);
+            btnSubsidiosEliminar.setVisible(true);
+            btnSubsidiosGuardar.setVisible(true);
+            txtSubsidiosAnio.setEditable(true);
+            txtSubsidiosDisp.setEditable(true);
+            txtSubsidiosMonto.setEditable(true);
+            txtaSubsidiosObservaciones.setEditable(true);
+	    }
+	}
+
+	private void subsidiosModoNuevo() {
+	    if (this.permiso.getModificar()) {
+	        subsidiosModoModificar();
+	        btnSubsidiosEliminar.setVisible(false);
+	    }
+	}
+
+	private void subsidiosModoVer() {
+        btnSubsidiosDescartar.setVisible(false);
+        btnSubsidiosEliminar.setVisible(false);
+        btnSubsidiosGuardar.setVisible(false);
+        txtSubsidiosAnio.setEditable(false);
+        txtSubsidiosDisp.setEditable(false);
+        txtSubsidiosMonto.setEditable(false);
+        txtaSubsidiosObservaciones.setEditable(false);
+	}
+
 	@FXML void inicializarSubsidios() {
 	    inicializarTabla("Subsidios");
 	    tblSubsidios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 subsidioSeleccion = newSelection.getInstanciaSubsidio();
                 subsidiosMostrarSubsidio();
+                subsidiosModoModificar();
             }
         });
 
@@ -790,6 +804,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (proyectoSeleccion != null) {
 	        subsidioSeleccion = controlInvestigacion.getISubsidio();
 	        subsidiosVaciarControles();
+	        subsidiosModoNuevo();
 	    }
 	}
 
@@ -802,6 +817,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        subsidioSeleccion.setObservaciones(txtaSubsidiosObservaciones.getText());
 
 	        exitoGuardado(controlInvestigacion.guardarSubsidio(proyectoSeleccion, subsidioSeleccion), TITULO, "Guardar Subsidio");
+	        subsidiosModoModificar();
 	        subsidiosActualizarTabla();
 	    }
     }
@@ -816,6 +832,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
 	        if (exitoEliminar(controlInvestigacion.quitarSubsidio(proyectoSeleccion, subsidioSeleccion), TITULO, "Eliminar Subsidio")) {
 	            subsidioSeleccion = null;
+	            subsidiosModoVer();
                 subsidiosVaciarControles();
 	        }
             subsidiosActualizarTabla();
@@ -890,12 +907,44 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    txtaRendicionesObservaciones.clear();
 	}
 
+	private void rendicionesModoModificar() {
+	    if (this.permiso.getCrear()) {
+	        btnRendicionesGuardar.setVisible(true);
+            btnRendicionesDescartar.setVisible(true);
+            btnRendicionesEliminar.setVisible(true);
+
+            cmbRendicionesAnio.setDisable(false);
+            dtpRendicionesFecha.setEditable(true);
+            txtRendicionesMonto.setEditable(true);
+            txtaRendicionesObservaciones.setEditable(true);
+	    }
+	}
+
+	private void rendicionesModoNuevo() {
+	    if (this.permiso.getCrear()) {
+	        rendicionesModoModificar();
+	        btnRendicionesEliminar.setVisible(false);
+	    }
+	}
+
+	private void rendicionesModoVer() {
+	    btnRendicionesGuardar.setVisible(false);
+        btnRendicionesDescartar.setVisible(false);
+        btnRendicionesEliminar.setVisible(false);
+
+        cmbRendicionesAnio.setDisable(true);
+        dtpRendicionesFecha.setEditable(false);
+        txtRendicionesMonto.setEditable(false);
+        txtaRendicionesObservaciones.setEditable(false);
+	}
+
 	@FXML void inicializarRendiciones() {
 	    inicializarTabla("Rendiciones");
 	    tblRendiciones.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 rendicionSeleccion = newSelection.getInstanciaRendicion();
                 rendicionesMostrarRendicion();
+                rendicionesModoModificar();
             }
         });
 
@@ -913,6 +962,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null) {
 	        rendicionSeleccion = controlInvestigacion.getIRendicion();
 	        rendicionesVaciarControles();
+	        rendicionesModoNuevo();
 	    }
 	}
 
@@ -921,7 +971,7 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
 	        try {
 	            LocalDate fecha = dtpRendicionesFecha.getValue();
-	            if (Year.of(fecha.getYear()) != subsidioSeleccion.getFecha()) {
+	            if (!subsidioSeleccion.getFecha().equals(Year.of(fecha.getYear()))) {
 	                throw new IllegalArgumentException("El año no coincide con el subsidio seleccionado");
 	            }
 
@@ -932,6 +982,7 @@ public class Proyectos extends ControladorVista implements Initializable {
     	        rendicionSeleccion.setObservaciones(txtaRendicionesObservaciones.getText());
 
     	        exitoGuardado(controlInvestigacion.guardarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Guardar Rendición");
+    	        rendicionesModoModificar();
                 rendicionesActualizarTabla();
 
 	        } catch (NumberFormatException e) {
@@ -952,6 +1003,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null && subsidioSeleccion != null && rendicionSeleccion != null) {
             if (exitoEliminar(controlInvestigacion.quitarRendicion(proyectoSeleccion, subsidioSeleccion, rendicionSeleccion), TITULO, "Eliminar Rendición")) {
                 rendicionSeleccion = null;
+                rendicionesModoVer();
                 rendicionesVaciarControles();
             }
             rendicionesActualizarTabla();
@@ -1009,12 +1061,40 @@ public class Proyectos extends ControladorVista implements Initializable {
         txtProrrogasDisp.clear();
     }
 
+    private void prorrogasModoModificar() {
+        if (this.permiso.getModificar()) {
+            btnProrrogasGuardar.setVisible(true);
+            btnProrrogasDescartar.setVisible(true);
+            btnProrrogasEliminar.setVisible(true);
+
+            dtpProrrogasFinalizacion.setEditable(true);
+            txtProrrogasDisp.setEditable(true);
+        }
+    }
+
+    private void prorrogasModoNuevo() {
+        if (this.permiso.getModificar()) {
+            prorrogasModoModificar();
+            btnProrrogasEliminar.setVisible(false);
+        }
+    }
+
+    private void prorrogasModoVer() {
+        btnProrrogasGuardar.setVisible(false);
+        btnProrrogasDescartar.setVisible(false);
+        btnProrrogasEliminar.setVisible(false);
+
+        dtpProrrogasFinalizacion.setEditable(false);
+        txtProrrogasDisp.setEditable(false);
+    }
+
     @FXML void inicializarProrrogas() {
         inicializarTabla("Prorrogas");
         tblProrrogas.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 prorrogaSeleccion = newSelection.getInstanciaProrroga();
                 prorrogasMostrarProrroga();
+                prorrogasModoModificar();
             }
         });
 
@@ -1026,6 +1106,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null) {
             prorrogaSeleccion = controlInvestigacion.getIProrroga();
             prorrogasVaciarControles();
+            prorrogasModoNuevo();
         }
     }
 
@@ -1036,6 +1117,7 @@ public class Proyectos extends ControladorVista implements Initializable {
             prorrogaSeleccion.setDisposicion(txtProrrogasDisp.getText());
 
             exitoGuardado(controlInvestigacion.guardarProrroga(proyectoSeleccion, prorrogaSeleccion), TITULO, "Guardar Prórroga");
+            prorrogasModoModificar();
             prorrogasActualizarTabla();
         }
     }
@@ -1050,6 +1132,7 @@ public class Proyectos extends ControladorVista implements Initializable {
         if (proyectoSeleccion != null && prorrogaSeleccion != null) {
             if (exitoEliminar(controlInvestigacion.quitarProrroga(proyectoSeleccion, prorrogaSeleccion), TITULO, "Eliminar Prórroga")) {
                 prorrogaSeleccion = null;
+                prorrogasModoVer();
                 prorrogasVaciarControles();
             }
             prorrogasActualizarTabla();

@@ -100,7 +100,7 @@ public class BusquedaCargoDocente extends ControladorVista implements Initializa
                     args.put(Busqueda.KEY_VALOR, valor);
                     args.put(Busqueda.KEY_TIPO_RESPUESTA, this.tipo_respuesta);
                     this.controladorRespuesta.recibirParametros(args);
-                    this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
+                    this.gestorPantalla.cerrarPantalla("BusquedaCargoDocente");
                 } else {
                     System.out.printf("valor es null\n");
                 }

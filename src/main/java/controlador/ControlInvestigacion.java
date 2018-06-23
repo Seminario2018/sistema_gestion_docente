@@ -127,7 +127,11 @@ public class ControlInvestigacion {
 
     //    Subsidios
     public EstadoOperacion guardarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
-        if (subsidio.getFecha() == null) {
+
+        ISubsidio subsidioBusqueda = gestorProyecto.getISubsidio();
+        subsidioBusqueda.setFecha(subsidio.getFecha());
+        List<ISubsidio> subsidios = gestorProyecto.listarSubsidios(proyecto, subsidioBusqueda);
+        if (subsidios.isEmpty()) {
             return gestorProyecto.agregarSubsidio(proyecto, subsidio);
         } else {
             return gestorProyecto.modificarSubsidio(proyecto, subsidio);
