@@ -11,6 +11,7 @@ import java.util.List;
 import modelo.auxiliares.Calculo;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
+import modelo.informe.ColumnaInforme.TipoColumna;
 import persistencia.Conexion;
 import persistencia.ManejoDatos;
 import utilidades.LogQuery;
@@ -337,13 +338,13 @@ public class GestorInforme {
 			List<String> campos = new ArrayList<String>();
 			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
 			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
-			if (col.getFiltro() != null) campos.add("Filtros = '" + col.getFiltro().toString() + "'");
+			if (col.getTipo() != null && !col.getTipo().equals(""))
+				campos.add("Tipo = '" + col.getTipo() + "'");
+			if (col.getFiltro() != null) campos.add("Filtros = '" + col.getFiltro().toString(col.getTipo()) + "'");
 			if (col.getCalculo() != null && !col.getCalculo().equals(""))
 				campos.add("Calculo = '" + col.getCalculo().getCalculo() + "'");
 			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
 			if (col.getPosicion() > -1) campos.add("Posicion = " + col.getPosicion());
-			if (col.getTipo() != null && !col.getTipo().equals(""))
-				campos.add("Tipo = '" + col.getTipo() + "'");
 			
 			md.update(tabla, Utilidades.joinString(campos, ", "), condicion);
 		} catch (Exception e) {
@@ -395,28 +396,14 @@ public class GestorInforme {
 				if (!reg.get("Nombre").equals("")) {
 					c.setNombre(reg.get("Nombre"));
 				}
-				if (!reg.get("Filtros").equals("")) {
-					c.setFiltro(new FiltroColumna(reg.get("Filtros")));
-				}
 				if (!reg.get("Calculo").equals("")) {
-					switch (reg.get("Calculo")) {
-					case "SUM":
-						c.setCalculo(Calculo.SUM);
-						break;
-					case "COUNT":
-						c.setCalculo(Calculo.COUNT);
-						break;
-					case "MIN":
-						c.setCalculo(Calculo.MIN);
-						break;
-					case "MAX":
-						c.setCalculo(Calculo.MAX);
-						break;
-					default:
-						break;
-					}
+					c.setCalculo(Calculo.getEnum(reg.get("Calculo")));
 				}
-				if (reg.containsKey("Tipo")) c.setTipo(reg.get("Tipo"));
+				if (reg.containsKey("Tipo")) c.setTipo(TipoColumna.valueOf(reg.get("Tipo")));
+
+				if (!reg.get("Filtros").equals("")) {
+					c.setFiltro(new FiltroColumna(reg.get("Filtros"), c.getTipo()));
+				}
 				
 				c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
 				c.setPosicion(Integer.parseInt(reg.get("Posicion")));

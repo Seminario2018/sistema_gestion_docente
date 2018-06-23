@@ -1,6 +1,7 @@
 package modelo.informe;
 
 import modelo.auxiliares.Filtro;
+import modelo.informe.ColumnaInforme.TipoColumna;
 import utilidades.Utilidades;
 
 /**
@@ -21,6 +22,8 @@ public class FiltroColumna {
 		this.tipo = tipo;
 		this.valor = valor;
 	}
+	
+	
 	public FiltroColumna(String filtro) {
 		super();
 		String tipo = FiltroColumna.tipoFiltro(filtro);
@@ -54,6 +57,53 @@ public class FiltroColumna {
 		this.tipo = tipoFiltro;
 		this.valor = valor;
 	}
+	
+	
+	public FiltroColumna(String filtro, TipoColumna tipoColumna) {
+		super();
+		String tipo = FiltroColumna.tipoFiltro(filtro);
+		String valor = FiltroColumna.valorFiltro(filtro);
+		
+		switch (tipoColumna) {
+		case DATE:
+			valor = valor.replace("-", "/");
+		case STRING:
+			valor = valor.substring(1, valor.length()-1);
+			break;
+		default:
+			break;
+		}
+		
+		Filtro tipoFiltro = null;
+		int i = 0;
+		while (tipoFiltro == null && i < Filtro.getLista().length) {
+			Filtro f = Filtro.getLista()[i];
+			if (tipo.equals(f.getFiltro()))
+				// Si tiene LIKE, hay que saber de qué tipo se trata
+				if (f.getFiltro().equals(Filtro.CONTI.getFiltro())) {
+					
+					if (valor.startsWith("%")) {
+						if (valor.endsWith("%") && !valor.endsWith("\\%"))
+							// Contiene
+							tipoFiltro = Filtro.CONTI;
+						else
+							// Empieza con
+							tipoFiltro = Filtro.EMPIE;
+					} else { 
+						// Termina con
+						tipoFiltro = Filtro.TERMI;
+					}
+				} else {
+					tipoFiltro = f;					
+				}
+			i++;
+		}
+		
+		this.tipo = tipoFiltro;
+		this.valor = valor;
+	}
+	
+	
 	public Filtro getTipo() {
 		return tipo;
 	}
@@ -85,6 +135,40 @@ public class FiltroColumna {
 			break;
 		}
 		return resultado;
+	}
+	
+	
+	/**
+	 * Método alternativo para sanitizar la entrada dependiendo el tipo.
+	 * @param tipo
+	 * @return
+	 */
+	public String toString(TipoColumna tipoColumna) {
+		String tipo = this.tipo.getFiltro() + SEPARADOR;
+		String valor = this.valor;
+		switch (this.tipo) {
+		case CONTI:
+			valor = "%" + valor + "%";
+			break;
+		case EMPIE:
+			valor = valor + "%";
+			break;
+		case TERMI:
+			valor = "%" + valor;
+			break;
+		default:
+			break;
+		}
+		switch (tipoColumna) {
+		case DATE:
+			valor = valor.replace("/", "-");
+		case STRING:
+			valor = "'" + valor + "'";
+			break;
+		default:
+			break;
+		}
+		return tipo + valor;
 	}
 	
 	/**

@@ -224,6 +224,20 @@ public abstract class ControladorVista implements Initializable {
 	}
 	
 	/**
+     * Lanza un diálogo de información para el usuario.
+     * @param titulo Título del mensaje
+     * @param encabezado Encabezado del mensaje
+     * @param contenido Contenido del mensaje
+     */
+	public void dialogoInformacion(String titulo, String encabezado, String contenido) {
+	    Alert alerta = new Alert(AlertType.INFORMATION);
+	    alerta.setTitle(titulo);
+	    alerta.setHeaderText(encabezado);
+        alerta.setContentText(contenido);
+        alerta.showAndWait();
+	}
+	
+	/**
 	 * Lanza un diálogo de entrada para el usuario.
 	 * @param titulo Título del mensaje.
      * @param encabezado Encabezado del mensaje.

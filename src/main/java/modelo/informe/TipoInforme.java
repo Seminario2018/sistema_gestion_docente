@@ -49,10 +49,10 @@ public class TipoInforme implements ITipoInforme {
 
 				if (!b_where) {
 					// DOCENTE.LEGAJO > 140000
-					where += " " + atributo + " " + columna.getFiltro().toString();
+					where += " " + atributo + " " + columna.getFiltro().toString(columna.getTipo());
 					b_where = true;
 				} else {
-					where += " AND " + atributo + " " + columna.getFiltro().toString();
+					where += " AND " + atributo + " " + columna.getFiltro().toString(columna.getTipo());
 				}
 			}
 

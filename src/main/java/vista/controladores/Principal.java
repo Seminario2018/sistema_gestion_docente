@@ -1,5 +1,9 @@
 package vista.controladores;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -125,5 +129,33 @@ public class Principal extends ControladorVista implements Initializable {
     void pantallaListaInformes(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("ListaInformes", null);
     }
-		
+	
+    @FXML
+    void manualUsuarios(ActionEvent event) {
+		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+		    try {
+				Desktop.getDesktop().browse(new URI("http://www.example.com"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		} else {
+			dialogoConfirmacion("Manual de Usuario", "Sistema no soportado",
+					"Su Sistema Operativo no soporta la navegación en línea"
+					+ " del Manual de Usuario. Puede encontrar una copia en"
+					+ " la carpeta donde instaló este programa.");
+		}
+    }
+    
+    @FXML
+    void about(ActionEvent event) {
+    	dialogoInformacion("Acerca de...", "Plumas 2 - Sistema de Gestión Docente",
+    			"@2018\r\n" +
+    			"Departamento de Ciencias Básicas\r\n" +
+    			"Universidad Nacional de Luján\r\n"
+    			+ "\r\n"
+    			+ "Para obtener soporte, contáctese con semint2018@gmail.com");
+    }
+    
 }
