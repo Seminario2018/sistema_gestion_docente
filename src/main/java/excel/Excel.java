@@ -80,6 +80,10 @@ public class Excel {
 		        fila.createCell(k).setCellValue(grilla.get(j).get(k));
 		    }
 		}
+		
+		for (int p = 0; p < encabezados.size(); p++) {
+			hoja.autoSizeColumn(p);
+		}
 
 		try {
 		    libro.write(new FileOutputStream(path));
