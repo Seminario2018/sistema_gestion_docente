@@ -63,6 +63,7 @@ public class Excel {
 		Font fuenteEncabezados = libro.createFont();
 		fuenteEncabezados.setBold(true);
 		CellStyle estiloEncabezados = libro.createCellStyle();
+		estiloEncabezados.setFillBackgroundColor((short) 256);
 		estiloEncabezados.setFont(fuenteEncabezados);
 
 		Row filaEncabezados = hoja.createRow(0);

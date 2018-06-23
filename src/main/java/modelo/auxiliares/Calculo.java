@@ -8,7 +8,8 @@ public enum Calculo {
 	SUM ("SUM", "Suma"),
 	COUNT ("COUNT", "Contar"),
 	MAX ("MAX", "Máximo"),
-	MIN ("MIN", "Mínimo");
+	MIN ("MIN", "Mínimo"),
+	GROUP_CONCAT ("GROUP_CONCAT", "Agrupar");
 	
 	private String descripcion;
 	private String calculo;

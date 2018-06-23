@@ -46,6 +46,31 @@ insert into columnas (TipoInforme, Visible, Nombre, Atributo, Filtros, Calculo, 
 (0, 1, 'Proyectos en los que participa', 'INTEGRANTES.ID', '', 'COUNT', 0, 8, 'INTEGER'),
 (0, 1, 'Horas de investigación', 'INTEGRANTES.HORASSEMANALES', '', 'SUM', 0, 9, 'FLOAT');
 
+/*
+insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
+(1, 'Resumen de Proyectos de Investigación', 'Lista un resumen de cada Proyecto de Investigación', 0,
+'PROYECTOS JOIN INTEGRANTES ON PROYECTOS.ID = INTEGRANTES.PROYECTO JOIN CARGOSDOCENTES ON INTEGRANTES.CARGODOCENTE = CARGOSDOCENTES.CODIGO JOIN AREAS ON CARGOSDOCENTES.AREA = AREAS.CODIGO JOIN DIVISIONES ON AREAS.DIVISION = DIVISIONES.CODIGO JOIN DOCENTES ON PROYECTOS.DIRECTOR = DOCENTES.LEGAJO JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO JOIN CONTACTOS ON PERSONAS.NRODOCUMENTO = CONTACTOS.NRODOCUMENTO JOIN INCENTIVOS ON DOCENTES.LEGAJO = INCENTIVOS.LEGAJO JOIN PRORROGAS ON PROYECTOS.ID = PRORROGAS.PROYECTO JOIN SUBSIDIOS ON PROYECTOS.ID = SUBSIDIOS.PROYECTO',
+'PROYECTOS.NOMBRE, DIVISIONES.CODIGO, DIVISIONES.DESCRIPCION, AREAS.CODIGO, AREAS.DESCRIPCION, DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE, CONTACTOS.VALOR, PROYECTOS.FECHAINICIO, PROYECTOS.FECHA_FIN, PRORROGAS.FECHAFIN');
+
+insert into columnas (TipoInforme, Visible, Nombre, Atributo, Filtros, Calculo, Ordenar, Posicion, Tipo) values
+(1, 1, 'Nombre Proyecto', 'PROYECTOS.NOMBRE', '', '', 0, 0, 'STRING'),
+(1, 1, 'Código División', 'DIVISIONES.CODIGO', '', '', 0, 1, 'STRING'),
+(1, 1, 'División', 'DIVISIONES.DESCRIPCION', '', '', 0, 2, 'STRING'),
+(1, 1, 'Código Área', 'AREAS.CODIGO', '', '', 0, 3, 'STRING'),
+(1, 1, 'Área', 'AREAS.DESCRIPCION', '', '', 0, 4, 'STRING'),
+(1, 1, 'Legajo Director', 'DOCENTES.LEGAJO', '', '', 0, 5, 'INTEGER'),
+(1, 1, 'Apellido Director', 'PERSONAS.APELLIDO', '', '', 0, 6, 'STRING'),
+(1, 1, 'Nombre Director', 'PERSONAS.NOMBRE', '', '', 0, 7, 'STRING'),
+(1, 1, 'Mail Director', 'CONTACTOS.VALOR', '', '', 0, 8, 'STRING'),
+(1, 1, 'Fecha inicio', 'PROYECTOS.FECHAINICIO', '', '', 0, 9, 'DATE'),
+(1, 1, 'Fecha fin', 'PROYECTOS.FECHA_FIN', '', '', 0, 10, 'DATE'),
+(1, 1, 'Última Prórroga', 'PRORROGAS.FECHAFIN', '', 'MAX', 0, 11, 'DATE'),
+(1, 1, 'Total subsidiado', 'SUBSIDIOS.MONTOTOTAL', '', 'SUM', 0, 12, 'FLOAT'),
+(1, 1, 'Total horas semanales', 'INTEGRANTES.HORASSEMANALES', '', 'SUM', 0, 13, 'FLOAT'),
+(1, 1, 'Integrantes', 'INTEGRANTES.ID', '', 'COUNT', 0, 14, 'INTEGER'),
+(1, 1, 'Docentes Incentivados', 'INCENTIVOS.LEGAJO', '', 'COUNT', 0, 15, 'INTEGER');
+*/
+
 
 
 insert into modulos (idmodulo, Descripcion) values

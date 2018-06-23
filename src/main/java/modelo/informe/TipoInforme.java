@@ -3,6 +3,8 @@ package modelo.informe;
 import java.util.ArrayList;
 import java.util.List;
 
+import modelo.auxiliares.Calculo;
+
 public class TipoInforme implements ITipoInforme {
 
 	private int id = -1;
@@ -35,9 +37,13 @@ public class TipoInforme implements ITipoInforme {
 					select += ", ";
 				}
 	
-				if (columna.getCalculo() != null) {
+				Calculo calculo = columna.getCalculo(); 
+				if (calculo != null) {
 					// SUM(PLANTA.ULTIMO_COSTO)
-					select += columna.getCalculo().getCalculo() + "(" + atributo + ")";
+					select += calculo.getCalculo() + "(" + atributo;
+					if (calculo == Calculo.GROUP_CONCAT)
+						select += " SEPARATOR ', '";
+					select += ")";
 				} else {
 					// PLANTA.ULTIMO_COSTO
 					select += atributo;

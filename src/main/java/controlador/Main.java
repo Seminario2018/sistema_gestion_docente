@@ -33,7 +33,7 @@ public class Main extends Application {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 		GestorPantalla gp = new GestorPantalla();
 
-		/* TEST Usuario hardcodeado *
+//		/* TEST Usuario hardcodeado *
 		ControlUsuario controlUsuario = new ControlUsuario(null);
 		IUsuario usuario = controlUsuario.getIUsuario();
 		usuario.setUser("pepe");
@@ -53,8 +53,8 @@ public class Main extends Application {
 		
 				
 		gp.lanzarPantallaPrincipal(usuario);
-		*/
-		gp.lanzarPantallaLogin();
+//		*/
+//		gp.lanzarPantallaLogin();
 	}
 
 	public static void main(String[] args) {
