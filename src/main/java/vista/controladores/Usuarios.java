@@ -226,6 +226,8 @@ public class Usuarios extends ControladorVista implements Initializable {
             mostrarPersona();
             txtUsuario.setText(usuarioSeleccion.getUser());
             txtDescripcion.setText(usuarioSeleccion.getDescripcion());
+            txtContrasena.clear();
+            txtConfirmar.clear();
 
             actualizarTablaDisponibles();
             actualizarTablaUsuario();

@@ -63,6 +63,7 @@ public class Excel {
 		Font fuenteEncabezados = libro.createFont();
 		fuenteEncabezados.setBold(true);
 		CellStyle estiloEncabezados = libro.createCellStyle();
+		estiloEncabezados.setFillBackgroundColor((short) 256);
 		estiloEncabezados.setFont(fuenteEncabezados);
 
 		Row filaEncabezados = hoja.createRow(0);
@@ -78,6 +79,10 @@ public class Excel {
 		    for (int k = 0; k < grilla.get(j).size(); k++) {
 		        fila.createCell(k).setCellValue(grilla.get(j).get(k));
 		    }
+		}
+		
+		for (int p = 0; p < encabezados.size(); p++) {
+			hoja.autoSizeColumn(p);
 		}
 
 		try {

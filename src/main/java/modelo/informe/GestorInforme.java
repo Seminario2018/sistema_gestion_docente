@@ -3,6 +3,7 @@ package modelo.informe;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
@@ -132,8 +133,17 @@ public class GestorInforme {
 			ResultSet resultSet = con.createStatement().executeQuery(query);
 		    while (resultSet.next()) {
 		    	List<String> fila = new ArrayList<String>();
-		    	for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++)
-		    		fila.add(resultSet.getString(i) == null ? "" : resultSet.getString(i));
+		    	for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
+		    		String celda = resultSet.getString(i);
+		    		if (celda == null) celda = "";
+		    		else {
+		    			if (Utilidades.isNumeric(celda)) {
+		    				DecimalFormat df = new DecimalFormat("#.##");
+		    				celda = df.format(Utilidades.stringToFloat(celda));
+		    			}
+		    		}
+		    		fila.add(celda);
+		    	}
 		    	grilla.add(fila);
 		    }
 		} catch (Exception e) {

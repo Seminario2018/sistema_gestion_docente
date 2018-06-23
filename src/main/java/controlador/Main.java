@@ -2,6 +2,7 @@ package controlador;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import vista.GestorPantalla;
 
 /**
@@ -35,10 +36,10 @@ public class Main extends Application {
 	        r.agregarPermiso(permiso);
 		}
 		usuario.agregarRol(r);
-
-
+		
+				
 		gp.lanzarPantallaPrincipal(usuario);
-		//*/
+		*/
 		gp.lanzarPantallaLogin();
 	}
 

@@ -1,6 +1,7 @@
 package vista.controladores;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import controlador.ControlUsuario;
 import javafx.application.Platform;
@@ -11,10 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import modelo.usuario.IPermiso;
-import modelo.usuario.IRol;
+import modelo.auxiliares.hash.PasswordUtil;
 import modelo.usuario.IUsuario;
-import modelo.usuario.Modulo;
 
 /**
  * @author Martín Tomás Juran
@@ -54,7 +53,46 @@ public class Login extends ControladorVista implements Initializable {
 
 	@FXML private Button btnLoginIngresar;
 	@FXML void ingresar(ActionEvent event) {
+		String encabezado = "Iniciar Sesión";
+		String contenido = "El usuario y/o contraseña son inválidos";
+		
+		String nombre = this.txtLoginUsuario.getText();
+		if (nombre == null || "".equals(nombre)) {
+			alertaError(TITULO, encabezado, "El campo \"Usuario\" es obligatorio");
+            return;
+		}
+		
+		String contrasena = this.txtLoginContrasena.getText();
+        if (contrasena == null || "".equals(contrasena)) {
+        	alertaError(TITULO, encabezado, "El campo \"Contraseña\" es obligatorio");
+            return;
+        }
+        
+		IUsuario usuarioSelect = control.getIUsuario();
+        usuarioSelect.setUser(nombre);
+
+        List<IUsuario> listaUsuarios = control.listarUsuario(usuarioSelect);
+        if (listaUsuarios == null || listaUsuarios.isEmpty()) {
+            alertaError(TITULO, encabezado, contenido);
+            return;
+        }
+        
+        IUsuario usuario = listaUsuarios.get(0);
+        if (PasswordUtil.ValidatePass(contrasena,
+        		usuario.getHash().getHash(), usuario.getHash().getSalt())) {
+        	this.gestorPantalla.lanzarPantallaPrincipal(listaUsuarios.get(0));
+        	this.gestorPantalla.cerrarPantallaLogin();        	
+        } else {
+        	alertaError(TITULO, encabezado, contenido);
+        }
+        
+        
+        
+		
+		
+		
 	    /* TEST Usuarios hardcodeados */
+		/*
 		IUsuario usuario = this.control.getIUsuario();
 		IRol rol = this.control.getIRol();
 		boolean entra = false;
@@ -106,21 +144,7 @@ public class Login extends ControladorVista implements Initializable {
 			this.alertaError("Ingresar al sistema", "Usuario y contraseña no válidos",
 					"El usuario y contraseña ingresados no son válidos.");
 		}
-		//*/
-
-	    /* TODO Implementar login * /
-        IUsuario usuario = control.getIUsuario();
-        usuario.setUser(txtLoginUsuario.getText());
-        usuario.setPass(txtLoginContrasena.getText());
-
-        List<IUsuario> listaUsuarios = control.listarUsuario(usuario);
-        if (listaUsuarios.isEmpty()) {
-            alertaError(TITULO, "Iniciar Sesión", "El usuario y/o contraseña son inválidos");
-        } else {
-            this.gestorPantalla.lanzarPantallaPrincipal(listaUsuarios.get(0));
-            this.gestorPantalla.cerrarPantallaLogin();
-        }
-        //*/
+		*/
 	}
 
 }

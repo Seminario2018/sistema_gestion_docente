@@ -17,6 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -27,6 +28,7 @@ import modelo.auxiliares.Filtro;
 import modelo.informe.ColumnaInforme;
 import modelo.informe.FiltroColumna;
 import modelo.informe.ITipoInforme;
+import modelo.informe.ColumnaInforme.TipoColumna;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
@@ -235,6 +237,7 @@ public class Informes extends ControladorVista implements Initializable {
 
     @FXML protected TextField txtFiltroNombre;
     @FXML protected ComboBox<Filtro> cmbFiltroFiltro;
+    @FXML protected DatePicker dtpFiltroCondicion;
     @FXML protected TextField txtFiltroCondicion;
     @FXML protected ComboBox<Calculo> cmbFiltroCalculo;
 
@@ -248,7 +251,9 @@ public class Informes extends ControladorVista implements Initializable {
     		
     		Filtro filtro = this.cmbFiltroFiltro.getSelectionModel().getSelectedItem();
     		if (filtro != null) {
-    			String valor = this.txtFiltroCondicion.getText();
+    			String valor = (this.txtFiltroCondicion.isVisible())
+    					? this.txtFiltroCondicion.getText()
+    					: this.dtpFiltroCondicion.getValue().toString();
     			if (valor != null && !"".equals(valor)) {
     				FiltroColumna fc = new FiltroColumna(filtro, valor);
     				this.columnaSeleccion.setFiltro(fc);
@@ -377,11 +382,24 @@ public class Informes extends ControladorVista implements Initializable {
  		if (nombre != null && !"".equals(nombre))
  			this.txtFiltroNombre.setText(nombre);
  		
- 		this.txtFiltroCondicion.clear();
+ 		if (this.columnaSeleccion.getTipo() == TipoColumna.DATE) {
+ 			this.txtFiltroCondicion.setVisible(false);
+ 			this.dtpFiltroCondicion.setVisible(true);
+ 			this.dtpFiltroCondicion.getEditor().clear();
+ 		} else {
+ 			this.dtpFiltroCondicion.setVisible(false);
+ 			this.txtFiltroCondicion.setVisible(true); 			
+ 			this.txtFiltroCondicion.clear();
+ 		}
+ 		
  		this.cmbFiltroFiltro.getSelectionModel().clearSelection();
- 		FiltroColumna filtro = columna.getFiltro(); 
+ 		FiltroColumna filtro = columna.getFiltro();
  		if (filtro != null) {
- 			this.txtFiltroCondicion.setText(filtro.getValor());
+ 			if (this.columnaSeleccion.getTipo() == TipoColumna.DATE) {
+ 				this.dtpFiltroCondicion.getEditor().setText(filtro.getValor());
+ 			} else {
+ 				this.txtFiltroCondicion.setText(filtro.getValor());
+ 			}
  			this.cmbFiltroFiltro.setValue(filtro.getTipo());
  		}
  		
