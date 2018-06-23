@@ -215,10 +215,12 @@ public class Informes extends ControladorVista implements Initializable {
     }
     
     private void actualizarColumna() {
-    	this.control.actualizarColumna(this.columnaSeleccion);
-		int i = this.columnaSeleccion.getPosicion();
-		actualizarTablas();
-		this.tblFiltro.getSelectionModel().select(i);
+    	if (this.columnaSeleccion != null) {
+	    	this.control.actualizarColumna(this.columnaSeleccion);
+			int i = this.columnaSeleccion.getPosicion();
+			actualizarTablas();
+			this.tblFiltro.getSelectionModel().select(i);
+    	}
     }
     
     private void swapColumna(int cambio) {
@@ -242,7 +244,11 @@ public class Informes extends ControladorVista implements Initializable {
     }
     @FXML protected Button btnFiltroLimpiar;
     @FXML public void limpiarFiltro(ActionEvent event) {
-    	
+    	if (this.columnaSeleccion != null) {
+    		this.columnaSeleccion.setFiltro(null);
+    		this.columnaSeleccion.setCalculo(null);
+    		actualizarColumna();
+    	}
     }
     
     

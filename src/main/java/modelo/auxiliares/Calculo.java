@@ -5,17 +5,17 @@ package modelo.auxiliares;
  * @version 1.0, 31 de may. de 2018
  */
 public enum Calculo {
-	SUM ("Suma", "SUM"),
-	COUNT ("Contar", "COUNT"),
-	MAX ("Máximo", "MAX"),
-	MIN ("Mínimo", "MIN");
+	SUM ("SUM", "Suma"),
+	COUNT ("COUNT", "Contar"),
+	MAX ("MAX", "Máximo"),
+	MIN ("MIN", "Mínimo");
 	
 	private String descripcion;
 	private String calculo;
 	
-	Calculo(String descripcion, String calculo) {
-		this.descripcion = descripcion;
+	Calculo(String calculo, String descripcion) {
 		this.calculo = calculo;
+		this.descripcion = descripcion;
 	}	
 	
 	public String getDescripcion() {
@@ -27,6 +27,15 @@ public enum Calculo {
 	
 	public static Calculo[] getLista() {
 		return Calculo.values();
+	}
+	
+	
+	public static Calculo getEnum(String arg0) {
+		for (Calculo c : Calculo.values()) {
+			if (c.getCalculo().equals(arg0))
+				return c;
+		}
+		return null;
 	}
 	
 	@Override

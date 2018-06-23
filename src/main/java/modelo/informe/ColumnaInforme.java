@@ -7,11 +7,23 @@ public class ColumnaInforme {
 	public static final int ASCENDENTE = 1;
 	public static final int DESCENDENTE = 2;
 	
-	// Tipos de valores
-	public static final String INTEGER = "INTEGER";
-	public static final String FLOAT = "FLOAT";
-	public static final String STRING = "STRING";
-	public static final String DATE = "DATE";
+	public enum TipoColumna {
+		INTEGER("INTEGER"),
+		FLOAT("FLOAT"),
+		STRING("STRING"),
+		DATE("DATE");
+		
+		private String descripcion;
+		private TipoColumna(String descripcion) {
+			this.descripcion = descripcion;
+		}
+		public String getDescripcion() {
+			return descripcion;
+		}
+		public void setDescripcion(String descripcion) {
+			this.descripcion = descripcion;
+		}
+	}
 	
 	private Boolean visible;
 	private String nombre;
@@ -20,9 +32,10 @@ public class ColumnaInforme {
 	private Calculo calculo; // COUNT
 	private int ordenar; // SIN_ORDEN, ASCENDENTE O DESCENDENTE
 	private int posicion; // Posición de la columna en el informe
-	private String tipo; // Tipo de valor
+	private TipoColumna tipo; // Tipo de valor
 	
-	public ColumnaInforme(Boolean visible, String nombre, String atributo, FiltroColumna filtro, Calculo calculo, int ordenar, int posicion, String tipo) {
+	public ColumnaInforme(Boolean visible, String nombre, String atributo,
+			FiltroColumna filtro, Calculo calculo, int ordenar, int posicion, TipoColumna tipo) {
 		super();
 		this.visible = visible;
 		this.nombre = nombre;  	
@@ -81,10 +94,10 @@ public class ColumnaInforme {
 	public void setPosicion(int posicion) {
 		this.posicion = posicion;
 	}
-	public String getTipo() {
+	public TipoColumna getTipo() {
 		return tipo;
 	}
-	public void setTipo(String tipo) {
+	public void setTipo(TipoColumna tipo) {
 		this.tipo = tipo;
 	}
 }
