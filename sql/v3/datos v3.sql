@@ -46,6 +46,27 @@ insert into columnas (TipoInforme, Visible, Nombre, Atributo, Filtros, Calculo, 
 (0, 1, 'Proyectos en los que participa', 'INTEGRANTES.ID', '', 'COUNT', 0, 8, 'INTEGER'),
 (0, 1, 'Horas de investigación', 'INTEGRANTES.HORASSEMANALES', '', 'SUM', 0, 9, 'FLOAT');
 
+
+insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
+(1, 'Resumen de Proyectos de Investigación', 'Lista un resumen de cada Proyecto de Investigación', 0,
+'PROYECTOS LEFT JOIN INTEGRANTES ON PROYECTOS.ID = INTEGRANTES.PROYECTO LEFT JOIN CARGOSDOCENTES ON INTEGRANTES.CARGODOCENTE = CARGOSDOCENTES.CODIGO LEFT JOIN AREAS ON CARGOSDOCENTES.AREA = AREAS.CODIGO LEFT JOIN DIVISIONES ON AREAS.DIVISION = DIVISIONES.CODIGO LEFT JOIN DOCENTES ON PROYECTOS.DIRECTOR = DOCENTES.LEGAJO LEFT JOIN PERSONAS ON DOCENTES.NRODOCUMENTO = PERSONAS.NRODOCUMENTO LEFT JOIN CONTACTOS ON PERSONAS.NRODOCUMENTO = CONTACTOS.NRODOCUMENTO LEFT JOIN PRORROGAS ON PROYECTOS.ID = PRORROGAS.PROYECTO',
+'PROYECTOS.NOMBRE, PROYECTOS.FECHAINICIO, PROYECTOS.FECHA_FIN, PRORROGAS.FECHAFIN, DOCENTES.LEGAJO, PERSONAS.APELLIDO, PERSONAS.NOMBRE');
+
+insert into columnas (TipoInforme, Visible, Nombre, Atributo, Filtros, Calculo, Ordenar, Posicion, Tipo) values
+(1, 1, 'Nombre Proyecto', 'PROYECTOS.NOMBRE', '', '', 0, 0, 'STRING'),
+(1, 1, 'Código División', 'DIVISIONES.CODIGO', '', 'GROUP_CONCAT', 0, 1, 'STRING'),
+(1, 1, 'División', 'DIVISIONES.DESCRIPCION', '', 'GROUP_CONCAT', 0, 2, 'STRING'),
+(1, 1, 'Código Área', 'AREAS.CODIGO', '', 'GROUP_CONCAT', 0, 3, 'STRING'),
+(1, 1, 'Área', 'AREAS.DESCRIPCION', '', 'GROUP_CONCAT', 0, 4, 'STRING'),
+(1, 1, 'Fecha inicio', 'PROYECTOS.FECHAINICIO', '', '', 0, 5, 'DATE'),
+(1, 1, 'Fecha fin', 'PROYECTOS.FECHA_FIN', '', '', 0, 6, 'DATE'),
+(1, 1, 'Prórroga', 'PRORROGAS.FECHAFIN', '', 'MAX', 0, 7, 'DATE'),
+(1, 1, 'Legajo Director', 'DOCENTES.LEGAJO', '', '', 0, 8, 'INTEGER'),
+(1, 1, 'Apellido Director', 'PERSONAS.APELLIDO', '', '', 0, 9, 'STRING'),
+(1, 1, 'Nombre Director', 'PERSONAS.NOMBRE', '', '', 0, 10, 'STRING'),
+(1, 1, 'Mail Director', 'CONTACTOS.VALOR', '', 'GROUP_CONCAT', 0, 11, 'STRING');
+
+
 /*
 insert into tiposinformes (id, Nombre, Descripcion, Editable, FromString, GroupByString) values
 (1, 'Resumen de Proyectos de Investigación', 'Lista un resumen de cada Proyecto de Investigación', 0,

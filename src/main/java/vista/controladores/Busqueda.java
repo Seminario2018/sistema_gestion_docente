@@ -27,7 +27,7 @@ import utilidades.Utilidades;
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
-//@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Busqueda extends ControladorVista implements Initializable {
 
 	public static final String KEY_NUEVO = "nuevo";
@@ -182,6 +182,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 			String varName = campos[i].getName();
 			TableColumn columna = new TableColumn<>(Utilidades.primeraMayuscula(varName));
 			columna.setCellValueFactory(new PropertyValueFactory(varName));
+			if (i == 0) columna.setMaxWidth(1000d);
 			this.tblBusqueda.getColumns().add(columna);
 		}
 		this.tblBusqueda.setItems(this.filasBusqueda);

@@ -1,23 +1,9 @@
 package controlador;
 
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
-import modelo.auxiliares.Filtro;
-import modelo.usuario.IPermiso;
-import modelo.usuario.IRol;
-import modelo.usuario.IUsuario;
-import modelo.usuario.Modulo;
-import modelo.usuario.Permiso;
-import modelo.usuario.Rol;
-import vista.GestorPantalla;
-import vista.controladores.ControladorVista;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import vista.GestorPantalla;
 
 /**
  * @author Martín Tomás Juran
@@ -33,7 +19,7 @@ public class Main extends Application {
 //		setUserAgentStylesheet(STYLESHEET_CASPIAN);
 		GestorPantalla gp = new GestorPantalla();
 
-//		/* TEST Usuario hardcodeado *
+		/* TEST Usuario hardcodeado *
 		ControlUsuario controlUsuario = new ControlUsuario(null);
 		IUsuario usuario = controlUsuario.getIUsuario();
 		usuario.setUser("pepe");
@@ -53,8 +39,8 @@ public class Main extends Application {
 		
 				
 		gp.lanzarPantallaPrincipal(usuario);
-//		*/
-//		gp.lanzarPantallaLogin();
+		*/
+		gp.lanzarPantallaLogin();
 	}
 
 	public static void main(String[] args) {
