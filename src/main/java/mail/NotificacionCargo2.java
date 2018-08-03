@@ -8,6 +8,7 @@ import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.persona.IContacto;
+import utilidades.Plantilla;
 import utilidades.Utilidades;
 
 public class NotificacionCargo2 {
@@ -135,29 +136,29 @@ public class NotificacionCargo2 {
 
     	String operacionMensaje;
     	switch (estado.getEstado()) {
-    	case INSERT_OK:
-    		operacionMensaje = "añadió";
-    		break;
-    	case DELETE_OK:
-    		operacionMensaje = "eliminó";
-    		break;
-    	default:
-    		operacionMensaje = "actualizó";
+        	case INSERT_OK:
+        		operacionMensaje = "añadió";
+        		break;
+        	case DELETE_OK:
+        		operacionMensaje = "eliminó";
+        		break;
+        	default:
+        		operacionMensaje = "actualizó";
     	}
 
-    	mensaje += "Al docente:\n\n"
-    			+ "\tLegajo: " + docente.getLegajo()+ "\n"
-	            + "\tApellido: " + docente.getPersona().getApellido() + "\n"
-	            + "\tNombre: " + docente.getPersona().getNombre() + "\n"
+    	// Parámetros del mensaje:
+    	Map<String, String> parametros = new HashMap<>();
+    	parametros.put("legajo", String.valueOf(docente.getLegajo()));
+    	parametros.put("apellido", docente.getPersona().getApellido());
+    	parametros.put("nombre", docente.getPersona().getNombre());
+    	parametros.put("operacion", operacionMensaje);
+    	parametros.put("cargo", cargo.getCargo().getDescripcion());
+    	parametros.put("area", cargo.getArea().getDescripcion());
+    	parametros.put("division", cargo.getArea().getDivision().getDescripcion());
+    	parametros.put("tipocargo", cargo.getTipoCargo().getDescripcion());
+    	parametros.put("estadocargo", cargo.getEstado().getDescripcion());
 
-	            + "\nSe le " + operacionMensaje + " el siguiente cargo:\n\n"
-	            + "\tCargo: " + cargo.getCargo().getDescripcion() + "\n"
-	            + "\tÁrea: " + cargo.getArea().getDescripcion() + "\n"
-	            + "\tDivisión: " + cargo.getArea().getDivision().getDescripcion() + "\n"
-	            + "\tTipo de cargo: " + cargo.getTipoCargo().getDescripcion() + "\n"
-	            + "\tEstado de cargo: " + cargo.getEstado().getDescripcion() + "\n\n"
-	            + "--------------------------------------------------------------------------------\n\n";
-
+    	mensaje = Plantilla.armar("PlantillaNotificacion.txt", parametros);
 
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO, asunto);

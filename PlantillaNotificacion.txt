@@ -1,0 +1,12 @@
+Al docente:
+${tab}Legajo: $legajo
+${tab}Apellido: $apellido
+${tab}Nombre: $nombre
+
+Se le $operacion el siguiente cargo:
+${tab}Cargo: $cargo
+${tab}Área: $area
+${tab}División: $division
+${tab}Tipo de cargo: $tipocargo
+${tab}Estado de cargo: $estadocargo
+--------------------------------------------------------------------------------
