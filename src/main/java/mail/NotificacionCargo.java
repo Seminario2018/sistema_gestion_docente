@@ -118,6 +118,6 @@ public class NotificacionCargo {
         }
         destinos.setLength(destinos.length() - 1);
 
-        mail.enviarEmail(mailDesde, destinos.toString(), asunto, mensaje, contrasena);
+        mail.enviarEmail(destinos.toString(), asunto, mensaje);
     }
 }

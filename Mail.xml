@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+    <!--Mail-->
+    <usuario>semint2018@gmail.com</usuario>
+    
+    <!--Contraseña-->
+    <contraseña>semintunlu</contraseña>
+    
+    <!--Servidor SMTP-->
+    <servidor>smtp.gmail.com</servidor>
+    
+    <!--Puerto del servidor SMTP-->
+    <puerto>587</puerto>
+    
+    <!--Usar conexión protegida por TLS-->
+    <tls>true</tls>
+    
+    <!--Pie del mensaje, colocado al final de cada mail enviado-->
+    <post-mensaje>
+Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.
+NO intente responder a este mensaje
+
+Plumas 2 - Sistema de Gestión Docente @2018
+Departamento de Ciencias Básicas
+Universidad Nacional de Luján
+    </post-mensaje>
+    
+</mail>

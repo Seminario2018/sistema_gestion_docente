@@ -1,6 +1,12 @@
 package utilidades;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * @author Martín Tomás Juran
@@ -16,8 +22,10 @@ public class Utilidades {
 	 * con decimal.
 	 */
 	public static float stringToFloat(String s) throws IllegalArgumentException {
-		if (s == null || s.equals("")) return 0.0f;
-		
+		if (s == null || s.equals("")) {
+            return 0.0f;
+        }
+
 		String ss = s.replace(",", ".");
 		try {
 			return Float.valueOf(ss);
@@ -27,7 +35,7 @@ public class Utilidades {
 					+ "a un número con decimal (e.g. 0,1 o 1.2)");
 		}
 	}
-	
+
 	/**
 	 * Verifica si un String representa un número con decimal.
 	 * @param s el String que representa a un número.
@@ -37,7 +45,7 @@ public class Utilidades {
 	public static boolean isNumeric(String s) {
 	  return s.matches("\\d+(\\.\\d+)?");
 	}
-	
+
 	/**
 	 * @param original el String que se quiere modificar.
 	 * @return el String con la primer letra en mayúscula.
@@ -48,7 +56,7 @@ public class Utilidades {
 	    }
 	    return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
-	
+
 	/**
 	 * Devuelve un String, resultado de juntar la List (parecido a implode en PHP)
 	 * @param list la lista a juntar
@@ -62,14 +70,14 @@ public class Utilidades {
 		separator = separator == null ? "" : separator;
 		String res = "";
 		int i = 0;
-		while (i < list.size()-1) {			
+		while (i < list.size()-1) {
 			res += list.get(i) + separator;
 			i++;
 		}
 		res += list.get(i);
 		return res;
 	}
-	
+
 	/**
 	 * Devuelve un String, resultado de juntar la List (parecido a implode en PHP)
 	 * @param list la lista a juntar
@@ -83,14 +91,14 @@ public class Utilidades {
 		separator = separator == null ? "" : separator;
 		String res = "";
 		int i = 0;
-		while (i < list.length-1) {			
+		while (i < list.length-1) {
 			res += list[i] + separator;
 			i++;
 		}
 		res += list[i];
 		return res;
 	}
-	
+
 	/**
 	 * Reemplaza caracteres especiales como % o \.
 	 * @param valor El valor a parametrizar.
@@ -104,7 +112,7 @@ public class Utilidades {
 		valorParametrizado = valorParametrizado.replace("\"", "\\\"");
 		return valorParametrizado;
 	}
-	
+
 	/**
 	 * Agrega caracteres especiales como % o \.
 	 * @param valor El valor a desparametrizar.
@@ -116,5 +124,26 @@ public class Utilidades {
 		valorParametrizado = valorParametrizado.replace("\\%", "%");
 		valorParametrizado = valorParametrizado.replace("\\\\", "\\");
 		return valorParametrizado;
+	}
+
+	/**
+	 * Extrae el contenido de un archivo XML en un objeto.
+	 * @param nombreArchivo Nombre del archivo XML
+	 * @return Objeto que representa el contenido del archivo XML
+	 */
+	public static Document leerXML(String nombreArchivo) {
+	    try {
+            Document documento = DocumentBuilderFactory
+                .newInstance()
+                .newDocumentBuilder()
+                .parse(
+                    new File(nombreArchivo));
+            documento.getDocumentElement().normalize();
+            return documento;
+
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+            return null;
+        }
 	}
 }
