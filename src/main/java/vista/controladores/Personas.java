@@ -84,9 +84,13 @@ public class Personas extends ControladorVista implements Initializable {
         }
 
         if (!modificar) {
+            // General:
+            btnPersonasDescartar.setVisible(false);
+            btnPersonasGuardar.setVisible(false);
+
             // Pestaña Datos:
-            btnDatosGuardar.setVisible(false);
-            btnDatosDescartar.setVisible(false);
+//            btnDatosGuardar.setVisible(false);
+//            btnDatosDescartar.setVisible(false);
             txtDatosApellido.setEditable(false);
             cmbDatosTipoDocumento.setDisable(true);
             txtDatosDocumento.setEditable(false);
@@ -132,9 +136,13 @@ public class Personas extends ControladorVista implements Initializable {
 	@Override
 	public void modoModificar() {
 	    if (this.permiso.getModificar()) {
+	        // General:
+	        btnPersonasDescartar.setVisible(true);
+            btnPersonasGuardar.setVisible(true);
+
 	        // Pestaña Datos:
-            btnDatosGuardar.setVisible(true);
-            btnDatosDescartar.setVisible(true);
+//            btnDatosGuardar.setVisible(true);
+//            btnDatosDescartar.setVisible(true);
             txtDatosApellido.setEditable(true);
             cmbDatosTipoDocumento.setDisable(false);
             txtDatosDocumento.setEditable(true);
@@ -143,24 +151,10 @@ public class Personas extends ControladorVista implements Initializable {
             // Pestaña Contactos:
             contactosModoVer();
             btnContactosNuevo.setVisible(true);
-//            btnContactosGuardar.setVisible(true);
-//            btnContactosDescartar.setVisible(true);
-//            btnContactosEliminar.setVisible(true);
-//
-//            cmbContactosTipo.setDisable(false);
-//            txtContactosDato.setEditable(true);
 
             // Pestaña Domicilios:
             domiciliosModoVer();
             btnDomiciliosNuevo.setVisible(true);
-//            btnDomiciliosGuardar.setVisible(true);
-//            btnDomicilioDescartar.setVisible(true);
-//            btnDomiciliosEliminar.setVisible(true);
-//
-//            cmbDomiciliosProvincia.setDisable(false);
-//            txtDomiciliosCiudad.setEditable(true);
-//            txtDomiciliosCP.setEditable(true);
-//            txtDomiciliosDireccion.setEditable(true);
 
             // Pestaña Títulos:
             txtTitulosTitulo.setEditable(true);
@@ -183,8 +177,10 @@ public class Personas extends ControladorVista implements Initializable {
     public void modoNuevo() {
 	    if (this.permiso.getCrear()) {
 	        btnPersonasNueva.setVisible(true);
-	        btnDatosGuardar.setVisible(true);
-	        btnDatosDescartar.setVisible(true);
+	        btnPersonasDescartar.setVisible(true);
+            btnPersonasGuardar.setVisible(true);
+//	        btnDatosGuardar.setVisible(true);
+//	        btnDatosDescartar.setVisible(true);
 	        txtDatosApellido.setEditable(true);
 	        txtDatosNombre.setEditable(true);
 	        cmbDatosTipoDocumento.setDisable(false);
@@ -199,11 +195,13 @@ public class Personas extends ControladorVista implements Initializable {
 	@Override
 	public void modoVer() {
 	    // General:
+	    btnPersonasDescartar.setVisible(false);
 	    btnPersonasEliminar.setVisible(false);
+	    btnPersonasGuardar.setVisible(false);
 
 	    // Pestaña Datos:
-        btnDatosGuardar.setVisible(false);
-        btnDatosDescartar.setVisible(false);
+//        btnDatosGuardar.setVisible(false);
+//        btnDatosDescartar.setVisible(false);
         txtDatosApellido.setEditable(false);
         cmbDatosTipoDocumento.setDisable(true);
         txtDatosDocumento.setEditable(false);
@@ -295,6 +293,32 @@ public class Personas extends ControladorVista implements Initializable {
         }
 	}
 
+	@FXML private Button btnPersonasGuardar;
+	@FXML private void guardarPersona(ActionEvent event) {
+	    if (personaSeleccion != null) {
+            try {
+                personaSeleccion.setNroDocumento(Integer.parseInt(txtDatosDocumento.getText()));
+                personaSeleccion.setApellido(txtDatosApellido.getText());
+                personaSeleccion.setNombre(txtDatosNombre.getText());
+                personaSeleccion.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
+                personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
+
+                exitoGuardado(controlPersona.guardarPersona(personaSeleccion), TITULO, "Guardar Persona");
+                generalMostrarPersona();
+
+                modoModificar();
+
+            } catch (NumberFormatException e) {
+                alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
+            }
+        }
+	}
+
+	@FXML private Button btnPersonasDescartar;
+	@FXML private void descartarPersona(ActionEvent event) {
+	    datosMostrarPersona();
+	}
+
 	@Override
 	public void recibirParametros(Map<String, Object> args) {
 	    Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
@@ -342,31 +366,31 @@ public class Personas extends ControladorVista implements Initializable {
 	    dtpDatosFechaNacimiento.setValue(null);
 	}
 
-	@FXML private Button btnDatosGuardar;
-	@FXML public void guardarPersona(ActionEvent event) {
-	    if (personaSeleccion != null) {
-	        try {
-	            personaSeleccion.setNroDocumento(Integer.parseInt(txtDatosDocumento.getText()));
-    	        personaSeleccion.setApellido(txtDatosApellido.getText());
-    	        personaSeleccion.setNombre(txtDatosNombre.getText());
-    	        personaSeleccion.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
-    	        personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
-
-    	        exitoGuardado(controlPersona.guardarPersona(personaSeleccion), TITULO, "Guardar Persona");
-    	        generalMostrarPersona();
-
-    	        modoModificar();
-
-	        } catch (NumberFormatException e) {
-	            alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
-	        }
-	    }
-	}
-
-	@FXML private Button btnDatosDescartar;
-	@FXML public void descartarPersona(ActionEvent event) {
-	    datosMostrarPersona();
-	}
+//	@FXML private Button btnDatosGuardar;
+//	@FXML public void guardarPersona(ActionEvent event) {
+//	    if (personaSeleccion != null) {
+//	        try {
+//	            personaSeleccion.setNroDocumento(Integer.parseInt(txtDatosDocumento.getText()));
+//    	        personaSeleccion.setApellido(txtDatosApellido.getText());
+//    	        personaSeleccion.setNombre(txtDatosNombre.getText());
+//    	        personaSeleccion.setTipoDocumento(cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
+//    	        personaSeleccion.setFechaNacimiento(dtpDatosFechaNacimiento.getValue());
+//
+//    	        exitoGuardado(controlPersona.guardarPersona(personaSeleccion), TITULO, "Guardar Persona");
+//    	        generalMostrarPersona();
+//
+//    	        modoModificar();
+//
+//	        } catch (NumberFormatException e) {
+//	            alertaError(TITULO, "Guardar Persona", "El documento tiene que ser numérico");
+//	        }
+//	    }
+//	}
+//
+//	@FXML private Button btnDatosDescartar;
+//	@FXML public void descartarPersona(ActionEvent event) {
+//	    datosMostrarPersona();
+//	}
 
 	@FXML private TextField txtDatosApellido;
 	@FXML private TextField txtDatosNombre;

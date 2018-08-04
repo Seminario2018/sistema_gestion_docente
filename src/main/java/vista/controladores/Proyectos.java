@@ -126,9 +126,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    }
 
 	    if (!modificar) {
+	        // General:
+            btnProyectosDescartar.setVisible(false);
+            btnProyectosGuardar.setVisible(false);
+
 	        // Pestaña Datos:
-	        btnDatosGuardar.setVisible(false);
-	        btnDatosDescartar.setVisible(false);
+//	        btnDatosGuardar.setVisible(false);
+//	        btnDatosDescartar.setVisible(false);
 
 	        txtDatosNombre.setEditable(false);
 	        txtDatosDirector.setEditable(false);
@@ -186,8 +190,8 @@ public class Proyectos extends ControladorVista implements Initializable {
             txtProrrogasDisp.setEditable(false);
 
             // Pestaña Resumen:
-            btnResumenGuardar.setVisible(false);
-            btnResumenDescartar.setVisible(false);
+//            btnResumenGuardar.setVisible(false);
+//            btnResumenDescartar.setVisible(false);
 
             txtaResumen.setEditable(false);
 	    }
@@ -206,11 +210,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 	public void modoModificar() {
 	    if (this.permiso.getModificar()) {
 	        // General:
+	        btnProyectosDescartar.setVisible(true);
+            btnProyectosGuardar.setVisible(true);
 	        btnProyectosNuevo.setVisible(true);
 
 	        // Pestaña Datos:
-            btnDatosGuardar.setVisible(true);
-            btnDatosDescartar.setVisible(true);
+//            btnDatosGuardar.setVisible(true);
+//            btnDatosDescartar.setVisible(true);
 
             txtDatosNombre.setEditable(true);
             txtDatosDirector.setEditable(true);
@@ -240,8 +246,8 @@ public class Proyectos extends ControladorVista implements Initializable {
             btnProrrogasNueva.setVisible(true);
 
             // Pestaña Resumen:
-            btnResumenGuardar.setVisible(true);
-            btnResumenDescartar.setVisible(true);
+//            btnResumenGuardar.setVisible(true);
+//            btnResumenDescartar.setVisible(true);
 
             txtaResumen.setEditable(true);
 	    }
@@ -259,9 +265,11 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@Override
     public void modoNuevo() {
 	    if (this.permiso.getCrear()) {
+	        btnProyectosDescartar.setVisible(true);
+            btnProyectosGuardar.setVisible(true);
             btnProyectosNuevo.setVisible(false);
-            btnDatosGuardar.setVisible(true);
-            btnDatosDescartar.setVisible(true);
+//            btnDatosGuardar.setVisible(true);
+//            btnDatosDescartar.setVisible(true);
             txtDatosNombre.setEditable(true);
             btnDatosDirector.setVisible(true);
             btnDatosCodirector.setVisible(true);
@@ -279,11 +287,13 @@ public class Proyectos extends ControladorVista implements Initializable {
 	@Override
 	public void modoVer() {
 	    // General:
+	    btnProyectosDescartar.setVisible(false);
 	    btnProyectosEliminar.setVisible(false);
+	    btnProyectosGuardar.setVisible(false);
 
 	    // Pestaña Datos:
-        btnDatosGuardar.setVisible(false);
-        btnDatosDescartar.setVisible(false);
+//        btnDatosGuardar.setVisible(false);
+//        btnDatosDescartar.setVisible(false);
 
         txtDatosNombre.setEditable(false);
         txtDatosDirector.setEditable(false);
@@ -313,8 +323,8 @@ public class Proyectos extends ControladorVista implements Initializable {
         btnProrrogasNueva.setVisible(false);
 
         // Pestaña Resumen:
-        btnResumenGuardar.setVisible(false);
-        btnResumenDescartar.setVisible(false);
+//        btnResumenGuardar.setVisible(false);
+//        btnResumenDescartar.setVisible(false);
 
         txtaResumen.setEditable(false);
 
@@ -386,6 +396,30 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
+    @FXML private Button btnProyectosGuardar;
+    @FXML private void guardarProyecto(ActionEvent event) {
+        if (proyectoSeleccion != null) {
+            proyectoSeleccion.setNombre(txtDatosNombre.getText());
+            proyectoSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+            proyectoSeleccion.setFechaPresentacion(dtpDatosPresentacion.getValue());
+            proyectoSeleccion.setFechaAprobacion(dtpDatosAprobacion.getValue());
+            proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
+            proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
+
+            proyectoSeleccion.setResumen(txtaResumen.getText());
+
+            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Proyecto");
+            generalMostrarProyecto();
+
+            modoModificar();
+        }
+    }
+
+    @FXML private Button btnProyectosDescartar;
+    @FXML private void descartarProyecto(ActionEvent event) {
+        generalMostrarProyecto();
+    }
+
     @Override
     public void recibirParametros(Map<String, Object> args) {
         Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
@@ -452,27 +486,27 @@ public class Proyectos extends ControladorVista implements Initializable {
         datosMostrarProyecto();
     }
 
-	@FXML private Button btnDatosGuardar;
-	@FXML void guardarProyecto(ActionEvent event) {
-	    if (proyectoSeleccion != null) {
-	        proyectoSeleccion.setNombre(txtDatosNombre.getText());
-	        proyectoSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
-	        proyectoSeleccion.setFechaPresentacion(dtpDatosPresentacion.getValue());
-	        proyectoSeleccion.setFechaAprobacion(dtpDatosAprobacion.getValue());
-	        proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
-	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
-
-	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Proyecto");
-	        generalMostrarProyecto();
-
-	        modoModificar();
-	    }
-	}
-
-	@FXML private Button btnDatosDescartar;
-    @FXML void descartarProyecto(ActionEvent event) {
-        datosMostrarProyecto();
-    }
+//	@FXML private Button btnDatosGuardar;
+//	@FXML void guardarProyecto(ActionEvent event) {
+//	    if (proyectoSeleccion != null) {
+//	        proyectoSeleccion.setNombre(txtDatosNombre.getText());
+//	        proyectoSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+//	        proyectoSeleccion.setFechaPresentacion(dtpDatosPresentacion.getValue());
+//	        proyectoSeleccion.setFechaAprobacion(dtpDatosAprobacion.getValue());
+//	        proyectoSeleccion.setFechaInicio(dtpDatosInicio.getValue());
+//	        proyectoSeleccion.setFechaFin(dtpDatosFinalizacion.getValue());
+//
+//	        exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Proyecto");
+//	        generalMostrarProyecto();
+//
+//	        modoModificar();
+//	    }
+//	}
+//
+//	@FXML private Button btnDatosDescartar;
+//    @FXML void descartarProyecto(ActionEvent event) {
+//        datosMostrarProyecto();
+//    }
 
     @FXML private TextField txtDatosDirector;
     @FXML private Button btnDatosDirector;
@@ -1161,23 +1195,23 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    txtaResumen.clear();
 	}
 
-    @FXML private Button btnResumenGuardar;
-    @FXML void guardarResumen(ActionEvent event) {
-        if (proyectoSeleccion != null) {
-            proyectoSeleccion.setResumen(txtaResumen.getText());
-
-            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Resumen");
-        }
-    }
-
-    @FXML private Button btnResumenDescartar;
-    @FXML void descartarResumen(ActionEvent event) {
-        if (proyectoSeleccion != null) {
-            txtaResumen.setText(proyectoSeleccion.getResumen());
-        } else {
-            resumenVaciarControles();
-        }
-    }
+//    @FXML private Button btnResumenGuardar;
+//    @FXML void guardarResumen(ActionEvent event) {
+//        if (proyectoSeleccion != null) {
+//            proyectoSeleccion.setResumen(txtaResumen.getText());
+//
+//            exitoGuardado(controlInvestigacion.guardarProyecto(proyectoSeleccion), TITULO, "Guardar Resumen");
+//        }
+//    }
+//
+//    @FXML private Button btnResumenDescartar;
+//    @FXML void descartarResumen(ActionEvent event) {
+//        if (proyectoSeleccion != null) {
+//            txtaResumen.setText(proyectoSeleccion.getResumen());
+//        } else {
+//            resumenVaciarControles();
+//        }
+//    }
 
     @FXML private TextArea txtaResumen;
 }

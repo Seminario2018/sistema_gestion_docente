@@ -132,10 +132,12 @@ public class Docentes extends ControladorVista implements Initializable {
         if (!modificar) {
             // General:
             btnDocentesCosto.setVisible(false);
+            btnDocentesDescartar.setVisible(false);
+            btnDocentesGuardar.setVisible(false);
 
             // Pestaña Datos:
-            btnDatosGuardar.setVisible(false);
-            btnDatosDescartar.setVisible(false);
+//            btnDatosGuardar.setVisible(false);
+//            btnDatosDescartar.setVisible(false);
 
             txtDatosLegajo.setEditable(false);
             cmbDatosEstado.setDisable(true);
@@ -165,8 +167,8 @@ public class Docentes extends ControladorVista implements Initializable {
             txtIncentivosAnio.setEditable(false);
 
             // Pestaña Observaciones:
-            btnObservacionesGuardar.setVisible(false);
-            btnObservacionesDescartar.setVisible(false);
+//            btnObservacionesGuardar.setVisible(false);
+//            btnObservacionesDescartar.setVisible(false);
             txtaObservaciones.setEditable(false);
         }
 
@@ -186,10 +188,12 @@ public class Docentes extends ControladorVista implements Initializable {
 	    if (this.permiso.getModificar()) {
 	        // General:
 	        btnDocentesCosto.setVisible(true);
+	        btnDocentesDescartar.setVisible(true);
+	        btnDocentesGuardar.setVisible(true);
 
 	        // Pestaña Datos:
-	        btnDatosGuardar.setVisible(true);
-	        btnDatosDescartar.setVisible(true);
+//	        btnDatosGuardar.setVisible(true);
+//	        btnDatosDescartar.setVisible(true);
 	        txtDatosLegajo.setEditable(true);
 	        cmbDatosEstado.setDisable(false);
 	        cmbDatosCategoria.setDisable(false);
@@ -203,8 +207,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	        btnIncentivosNuevo.setVisible(true);
 
 	        // Pestaña Observaciones:
-	        btnObservacionesGuardar.setVisible(true);
-	        btnObservacionesDescartar.setVisible(true);
+//	        btnObservacionesGuardar.setVisible(true);
+//	        btnObservacionesDescartar.setVisible(true);
 	        txtaObservaciones.setEditable(true);
 	    }
 
@@ -222,11 +226,13 @@ public class Docentes extends ControladorVista implements Initializable {
     public void modoNuevo() {
 	    if (this.permiso.getCrear()) {
 	        // General:
+	        btnDocentesDescartar.setVisible(true);
+	        btnDocentesGuardar.setVisible(true);
 	        btnDocentesNuevo.setVisible(true);
 
 	        // Pestaña Datos:
-	        btnDatosDescartar.setVisible(true);
-	        btnDatosGuardar.setVisible(true);
+//	        btnDatosDescartar.setVisible(true);
+//	        btnDatosGuardar.setVisible(true);
 	        btnDatosPersona.setVisible(true);
 	        txtDatosLegajo.setEditable(true);
 	        cmbDatosEstado.setDisable(false);
@@ -240,12 +246,14 @@ public class Docentes extends ControladorVista implements Initializable {
 	@Override
 	public void modoVer() {
 	    // General:
+	    btnDocentesDescartar.setVisible(false);
 	    btnDocentesEliminar.setVisible(false);
+        btnDocentesGuardar.setVisible(false);
 	    btnDocentesCosto.setVisible(true);
 
 	    // Pestaña Datos:
-	    btnDatosGuardar.setVisible(false);
-	    btnDatosDescartar.setVisible(false);
+//	    btnDatosGuardar.setVisible(false);
+//	    btnDatosDescartar.setVisible(false);
 	    btnDatosPersona.setVisible(false);
 	    txtDatosLegajo.setEditable(false);
 	    cmbDatosEstado.setDisable(true);
@@ -260,8 +268,8 @@ public class Docentes extends ControladorVista implements Initializable {
 	    btnIncentivosNuevo.setVisible(false);
 
 	    // Pestaña Observaciones:
-	    btnObservacionesGuardar.setVisible(false);
-	    btnObservacionesDescartar.setVisible(false);
+//	    btnObservacionesGuardar.setVisible(false);
+//	    btnObservacionesDescartar.setVisible(false);
 	    txtaObservaciones.setEditable(false);
 
 	    this.window.setTitle(TITULO);
@@ -282,7 +290,7 @@ public class Docentes extends ControladorVista implements Initializable {
             cargosActualizarTabla();
             investigacionActualizarTabla();
             incentivosActualizarTabla();
-            mostrarObservaciones();
+            observacionesMostrarObservaciones();
         }
     }
 
@@ -336,6 +344,36 @@ public class Docentes extends ControladorVista implements Initializable {
 	@FXML private void importarUltimoCosto() {
 		this.gestorPantalla.lanzarPantalla(ImportarCosto.TITULO, null);
     }
+
+	@FXML Button btnDocentesGuardar;
+	@FXML private void guardarDocente() {
+	    if (docenteSeleccion != null) {
+            try {
+                int legajo = Integer.parseInt(txtDatosLegajo.getText());
+
+                // Pestaña "Datos"
+                docenteSeleccion.setLegajo(legajo);
+                docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+                docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
+
+                // Pestaña "Observaciones"
+                docenteSeleccion.setObservaciones(txtaObservaciones.getText());
+
+                exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
+                generalMostrarDocente();
+
+                modoModificar();
+
+            } catch (NumberFormatException e) {
+                alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
+            }
+        }
+	}
+
+	@FXML Button btnDocentesDescartar;
+	@FXML private void descartarDocente() {
+	    generalMostrarDocente();
+	}
 
 	/**
 	 * Recibir parámetros de la pantalla de búsqueda
@@ -411,31 +449,31 @@ public class Docentes extends ControladorVista implements Initializable {
         this.gestorPantalla.lanzarPantalla(Personas.TITULO, args);
 	}
 
-	@FXML private Button btnDatosGuardar;
-	@FXML private void guardarDatos() {
-	    if (docenteSeleccion != null) {
-	        try {
-	            int legajo = Integer.parseInt(txtDatosLegajo.getText());
+//	@FXML private Button btnDatosGuardar;
+//	@FXML private void guardarDatos() {
+//	    if (docenteSeleccion != null) {
+//	        try {
+//	            int legajo = Integer.parseInt(txtDatosLegajo.getText());
+//
+//    	        docenteSeleccion.setLegajo(legajo);
+//    	        docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
+//    	        docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
+//
+//    	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
+//    	        generalMostrarDocente();
+//
+//    	        modoModificar();
+//
+//	        } catch (NumberFormatException e) {
+//	            alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
+//	        }
+//	    }
+//	}
 
-    	        docenteSeleccion.setLegajo(legajo);
-    	        docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
-    	        docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
-
-    	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
-    	        generalMostrarDocente();
-
-    	        modoModificar();
-
-	        } catch (NumberFormatException e) {
-	            alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
-	        }
-	    }
-	}
-
-	@FXML private Button btnDatosDescartar;
-	@FXML private void descartarDatos() {
-	    datosMostrarDocente();
-	}
+//	@FXML private Button btnDatosDescartar;
+//	@FXML private void descartarDatos() {
+//	    datosMostrarDocente();
+//	}
 
 	@FXML private Button btnDatosPersona;
 	@FXML private void seleccionarPersona() {
@@ -890,27 +928,34 @@ public class Docentes extends ControladorVista implements Initializable {
 	    txtaObservaciones.clear();
 	}
 
-	@FXML private Button btnObservacionesGuardar;
-	@FXML private void guardarObservaciones() {
-	    if (docenteSeleccion != null) {
-            docenteSeleccion.setObservaciones(txtaObservaciones.getText());
-            exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Observaciones");
-        }
-	}
-
-	@FXML private Button btnObservacionesMostrar;
-	@FXML private void mostrarObservaciones() {
+	/** Muestra las observaciones del docente */
+	@FXML private void observacionesMostrarObservaciones() {
 	    if (docenteSeleccion != null) {
 	        txtaObservaciones.setText(docenteSeleccion.getObservaciones());
 	    }
 	}
 
-	@FXML private Button btnObservacionesDescartar;
-	@FXML private void descartarObservaciones() {
-	    if (docenteSeleccion != null) {
-            txtaObservaciones.setText(docenteSeleccion.getObservaciones());
-        } else {
-            txtaObservaciones.clear();
-        }
-	}
+//	@FXML private Button btnObservacionesGuardar;
+//	@FXML private void guardarObservaciones() {
+//	    if (docenteSeleccion != null) {
+//            docenteSeleccion.setObservaciones(txtaObservaciones.getText());
+//            exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Observaciones");
+//        }
+//	}
+//
+//	@FXML private Button btnObservacionesMostrar;
+//	@FXML private void mostrarObservaciones() {
+//	    if (docenteSeleccion != null) {
+//	        txtaObservaciones.setText(docenteSeleccion.getObservaciones());
+//	    }
+//	}
+//
+//	@FXML private Button btnObservacionesDescartar;
+//	@FXML private void descartarObservaciones() {
+//	    if (docenteSeleccion != null) {
+//            txtaObservaciones.setText(docenteSeleccion.getObservaciones());
+//        } else {
+//            txtaObservaciones.clear();
+//        }
+//	}
 }
