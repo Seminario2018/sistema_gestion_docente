@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import utilidades.LogQuery;
@@ -181,5 +182,55 @@ public class ManejoDatos {
         }
         return fields;
     }
+    
+    public boolean ejecutarQuerys(ArrayList<String> querys) {
+
+		Connection conn = con.conectar();
+		try
+		{
+			conn.setAutoCommit(false);
+			for (String string : querys) {
+				Statement s = conn.createStatement();
+				s.execute(string);
+				s.close();
+			}
+			conn.commit();
+		}
+		catch (SQLException e)
+		{
+			if (conn != null)
+			{
+				try
+				{
+					conn.rollback();
+				}
+				catch (SQLException i)
+				{
+				}
+			}
+			e.printStackTrace();
+		} finally
+		{
+			if (conn != null)
+			{
+				try
+				{
+					//con.rollback();
+					conn.close();
+					return true;
+				} catch (SQLException e)
+				{
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+    
+    
+    public String insertQuery(String tabla, String campos, String valores) {
+		return "insert into " + tabla + " (" + campos + ") values (" + valores + ")";
+	}
 
 }

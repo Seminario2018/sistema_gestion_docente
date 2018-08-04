@@ -109,4 +109,23 @@ public class Costo {
 	}
 
 
+	public String guardar2(ICargoDocenteg cd) {
+		if (!existe(cd)) {
+			this.id = getMaxCodigo(cd) + 1;
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "costos";
+			String campos = "id, CodigoCargo, Costo";
+			String valores = this.id + ", " + cd.getId() + ", " + this.getCosto();
+			String condicion = "Codigo = " + cd.getId();
+			
+			if (this.fechaCosto != null) {
+				campos += ", Fecha";
+				valores += ", '" + Date.valueOf(fechaCosto) + "'";
+			}
+			return md.insertQuery(tabla, campos, valores);
+		}
+		return null;
+	}
+
+
 }
