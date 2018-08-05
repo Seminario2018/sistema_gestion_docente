@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.media.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?scenebuilder-stylesheet Style.css?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Personas">
+   <content>
+      <GridPane vgap="5.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="377.0" prefHeight="536.0" valignment="CENTER" vgrow="ALWAYS" />
+         </rowConstraints>
+         <children>
+            <GridPane hgap="10.0" vgap="10.0">
+              <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="NEVER" />
+                  <RowConstraints vgrow="NEVER" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="btnConfigEmailGuardarconfig" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar configuración" GridPane.columnIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="btnConfigEmailDescartarconfig" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cargar configuración" GridPane.columnIndex="3">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="btnConfigEmailAceptar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="btnConfigEmailCancelar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="btnConfigEmailAplicar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aplicar" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </GridPane>
+            <TabPane tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
+              <tabs>
+                <Tab text="Servidor">
+                     <content>
+                        <GridPane alignment="BOTTOM_CENTER" vgap="10.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints fillHeight="false" valignment="CENTER" vgrow="ALWAYS" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.valignment="CENTER">
+                                 <children>
+                                    <Label text="Direccion de e-mail" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtServidorEmail" editable="false" focusTraversable="false" promptText="Ingrese direccion de e-mail" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Contraseña" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <PasswordField fx:id="txtServidorContraseña" editable="false" focusTraversable="false" promptText="Ingrese contraseña" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtServidorSmtp" editable="false" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Conexión cifrada (TLS)" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <ToggleButton fx:id="tglServidorTls" mnemonicParsing="false" selected="true" text="Activada" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label text="Servicio de notificaciones" />
+                                    <ToggleButton fx:id="tglServidorNotificaciones" mnemonicParsing="false" selected="true" text="Habilitado" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                <Tab text="Plantilla">
+                     <content>
+                        <GridPane alignment="TOP_CENTER" maxHeight="-Infinity">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="ALWAYS" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
+                              <RowConstraints vgrow="ALWAYS" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
+                              <RowConstraints vgrow="ALWAYS" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
+                              <RowConstraints vgrow="ALWAYS" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints valignment="BOTTOM" vgrow="NEVER" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane hgap="10.0" GridPane.rowIndex="10">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                              </GridPane>
+                              <TextArea fx:id="txtPlantillaMensaje" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="6" GridPane.vgrow="SOMETIMES" />
+                              <TextArea fx:id="txtPlantillaAsunto" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+                              <TextArea fx:id="txtPlantillaEncabezado" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="4" GridPane.vgrow="SOMETIMES" />
+                              <Label styleClass="label-border" text="Asunto" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
+                              <Label styleClass="label-border" text="Encabezado" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label styleClass="label-border" text="Mensaje" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label styleClass="label-border" text="Pie" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
+                                 <GridPane.margin>
+                                    <Insets top="5.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextArea fx:id="txtPlantillaPie" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="8" GridPane.vgrow="SOMETIMES" />
+                              <GridPane>
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints vgrow="NEVER" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="btnPlantillaTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Insertar tag" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <ComboBox fx:id="cmbPlantillaTag" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                 </children>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab text="Vista previa">
+                     <content>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0">
+                           <center>
+                              <TextArea fx:id="txtVistaprevia" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </BorderPane.margin>
+                              </TextArea>
+                           </center>
+                        </BorderPane>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
+      </GridPane>
+   </content>
+</ScrollPane>
