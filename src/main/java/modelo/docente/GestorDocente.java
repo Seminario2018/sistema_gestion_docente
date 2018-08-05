@@ -16,7 +16,7 @@ public class GestorDocente {
 
 
 
-	public EstadoOperacion guardarTodoDocentes(IDocente doc) {
+	public EstadoOperacion guardarTodo(IDocente doc) {
 		try{
 			ManejoDatos md = new ManejoDatos();
 
