@@ -450,13 +450,30 @@ public class GestorProyecto {
     		String condicion =
 		        "Proyecto=" + proyecto.getId() + " AND " +
 	            "Year = '" + subsidio.getFecha().toString() + "'";
+
+    		// Borrar las rendiciones del subsidio:
+    		for (IRendicion rendicion : subsidio.getRendiciones()) {
+    		    EstadoOperacion resultado = quitarRendicion(proyecto, subsidio, rendicion);
+    		    switch (resultado.getEstado()) {
+                    case DELETE_ERROR:
+                        return new EstadoOperacion(CodigoEstado.DELETE_ERROR,
+                            "No se pudo quitar una rendición del subsidio [id: " + rendicion.getId() + "]");
+                    case DELETE_OK:
+                        // Seguir iterando
+                        break;
+                    default:
+                        throw new RuntimeException("Estado de modificación no esperado: "
+                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
+    		    }
+    		}
+
     		md.delete(tabla, condicion);
 
     		if (md.isEstado()) {
     		    proyecto.setSubsidios(new ArrayList<ISubsidio>());
                 return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio se quitó correctamente");
     		} else {
-    		    return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio no se pudo quitar");
+    		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El subsidio no se pudo quitar");
     		}
 
 	    } catch (Exception e) {
@@ -607,16 +624,28 @@ public class GestorProyecto {
 	}
 
 	public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {
-		ManejoDatos md = new ManejoDatos();
+	    try {
+    		ManejoDatos md = new ManejoDatos();
 
-		String tabla = "`Prorrogas`";
-		String condicion =
-		    "`Proyecto`=" + proyecto.getId() + " AND " +
-		    "`Disposicion` = '" + prorroga.getDisposicion() + "'";
-		md.delete(tabla, condicion);
+    		String tabla = "`Prorrogas`";
+    		String condicion =
+    		    "`Proyecto`=" + proyecto.getId() + " AND " +
+    		    "`Disposicion` = '" + prorroga.getDisposicion() + "'";
 
-		proyecto.setProrrogas(new ArrayList<IProrroga>());
-		return new EstadoOperacion(CodigoEstado.DELETE_OK, "El cargo se quitó correctamente");
+    		md.delete(tabla, condicion);
+
+    		if (md.isEstado()) {
+    		    proyecto.setProrrogas(new ArrayList<IProrroga>());
+                return new EstadoOperacion(CodigoEstado.DELETE_OK, "La prórroga se quitó correctamente");
+
+    		} else {
+    		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+    		}
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+            return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+	    }
 	}
 
 	public List<IProrroga> listarProrrogas(IProyecto proyecto, IProrroga prorroga){
@@ -758,12 +787,12 @@ public class GestorProyecto {
 		return new Rendicion();
 	}
 
-	/**yearSubsidio lo puse con ''*/
 	public EstadoOperacion quitarRendicion(IProyecto proyecto,ISubsidio subsidio, IRendicion rendicion ) {
 		try {
     	    ManejoDatos md = new ManejoDatos();
 
     	    String tabla = "`Rendiciones`";
+    	    // yearSubsidio lo puse con ''
     	    String condicion =
     	        "Proyecto=" + proyecto.getId() + " AND " +
 	            "id=" + rendicion.getId() + " AND " +
@@ -886,6 +915,5 @@ public class GestorProyecto {
 	public IProyecto getIProyecto() {
 		return new Proyecto();
 	}
-
 
 }
