@@ -21,41 +21,49 @@
          <rowConstraints>
             <RowConstraints maxHeight="1.7976931348623157E308" vgrow="NEVER" />
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="377.0" prefHeight="536.0" valignment="CENTER" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="30.0" valignment="CENTER" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane hgap="10.0" vgap="10.0">
+            <GridPane hgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="30.0" />
+              </rowConstraints>
+               <children>
+                  <CheckBox fx:id="chkHabilitar" mnemonicParsing="false" text="Habilitar notificaciones por e-mail" />
+                  <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" />
+               </children>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </GridPane>
+            <GridPane hgap="10.0" vgap="10.0" GridPane.rowIndex="2">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints vgrow="NEVER" />
                   <RowConstraints vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnConfigEmailGuardarconfig" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Guardar configuración" GridPane.columnIndex="2">
+                  <Button fx:id="btnConfigEmailAceptar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnConfigEmailDescartarconfig" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cargar configuración" GridPane.columnIndex="3">
+                  <Button fx:id="btnConfigEmailCancelar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnConfigEmailAceptar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Button>
-                  <Button fx:id="btnConfigEmailCancelar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </Button>
-                  <Button fx:id="btnConfigEmailAplicar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aplicar" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Button fx:id="btnConfigEmailAplicar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aplicar" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -69,63 +77,70 @@
               <tabs>
                 <Tab text="Servidor">
                      <content>
-                        <GridPane alignment="BOTTOM_CENTER" vgap="10.0">
+                        <GridPane alignment="BOTTOM_CENTER" hgap="10.0" vgap="10.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                            </columnConstraints>
                            <rowConstraints>
+                              <RowConstraints fillHeight="false" minHeight="30.0" valignment="CENTER" vgrow="NEVER" />
                               <RowConstraints fillHeight="false" valignment="CENTER" vgrow="ALWAYS" />
                            </rowConstraints>
                            <children>
-                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.valignment="CENTER">
+                              <GridPane hgap="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
                                  <children>
-                                    <Label text="Direccion de e-mail" GridPane.rowIndex="1">
+                                    <Button fx:id="btnImportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Importar configuración" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnExportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exportar configuración" GridPane.columnIndex="2" />
+                                 </children>
+                              </GridPane>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                 <children>
+                                    <Label text="Dirección de e-mail">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtServidorEmail" editable="false" focusTraversable="false" promptText="Ingrese direccion de e-mail" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <TextField fx:id="txtServidorEmail" editable="false" focusTraversable="false" promptText="Ingrese la dirección que enviará las notificaciones" GridPane.columnIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </TextField>
-                                    <Label text="Contraseña" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+                                    <Label text="Contraseña" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <PasswordField fx:id="txtServidorContraseña" editable="false" focusTraversable="false" promptText="Ingrese contraseña" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="3">
+                                    <PasswordField fx:id="txtServidorContraseña" editable="false" focusTraversable="false" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtServidorSmtp" editable="false" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                    <TextField fx:id="txtServidorSmtp" editable="false" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </TextField>
-                                    <Label text="Conexión cifrada (TLS)" GridPane.rowIndex="4">
-                                       <GridPane.margin>
-                                          <Insets />
-                                       </GridPane.margin>
-                                    </Label>
-                                    <ToggleButton fx:id="tglServidorTls" mnemonicParsing="false" selected="true" text="Activada" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <Label text="Servicio de notificaciones" />
-                                    <ToggleButton fx:id="tglServidorNotificaciones" mnemonicParsing="false" selected="true" text="Habilitado" GridPane.columnIndex="1" />
-                                    <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <CheckBox fx:id="chkServidorTLS" mnemonicParsing="false" text="Utilizar conexión segura (TLS)" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
                                  </columnConstraints>
                                  <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                  </rowConstraints>
                               </GridPane>
                            </children>
@@ -165,7 +180,7 @@
                                 </columnConstraints>
                               </GridPane>
                               <TextArea fx:id="txtPlantillaMensaje" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="6" GridPane.vgrow="SOMETIMES" />
-                              <TextArea fx:id="txtPlantillaAsunto" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+                              <TextArea fx:id="txtPlantillaAsunto" maxHeight="30.0" minHeight="30.0" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
                               <TextArea fx:id="txtPlantillaEncabezado" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="4" GridPane.vgrow="SOMETIMES" />
                               <Label styleClass="label-border" text="Asunto" GridPane.rowIndex="1" GridPane.vgrow="NEVER" />
                               <Label styleClass="label-border" text="Encabezado" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
@@ -184,7 +199,7 @@
                                  </GridPane.margin>
                               </Label>
                               <TextArea fx:id="txtPlantillaPie" maxHeight="1.7976931348623157E308" prefHeight="200.0" GridPane.rowIndex="8" GridPane.vgrow="SOMETIMES" />
-                              <GridPane>
+                              <GridPane hgap="10.0" vgap="5.0">
                                 <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -192,19 +207,22 @@
                                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 </columnConstraints>
                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                   <RowConstraints vgrow="NEVER" />
                                 </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnPlantillaTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Insertar tag" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                    <Button fx:id="btnPlantillaTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Insertar tag" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
+                                          <Insets />
                                        </GridPane.margin>
                                     </Button>
-                                    <ComboBox fx:id="cmbPlantillaTag" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
+                                    <ComboBox fx:id="cmbPlantillaTag" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="10.0" right="10.0" />
+                                          <Insets />
                                        </GridPane.margin>
                                     </ComboBox>
+                                    <Button fx:id="btnExportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exportar plantilla" GridPane.columnIndex="2" />
+                                    <Button fx:id="btnImportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Importar plantilla" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
