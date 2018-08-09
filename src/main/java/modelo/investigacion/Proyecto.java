@@ -133,7 +133,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public IDocente getDirector() {
-		if (this.director == null) {
+		if (this.director == null && this.id != -1) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Director", "id = " + this.getId());
 			Hashtable<String, String> reg = res.get(0);
@@ -152,7 +152,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public IDocente getCodirector() {
-		if (this.codirector == null) {
+		if (this.codirector == null && this.id != -1) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Codirector", "id = " + this.getId());
 			Hashtable<String, String> reg = res.get(0);
@@ -193,7 +193,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public EstadoProyecto getEstado() {
-		if (this.estado == null) {
+		if (this.estado == null && this.id != -1) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Proyectos", "Estado", "id = " + this.getId());
 			Hashtable<String, String> reg = res.get(0);
@@ -212,7 +212,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public List<IIntegrante> getIntegrantes() {
-		if (this.integrantes.isEmpty()) {
+		if (this.integrantes.isEmpty() && this.id != -1) {
 			GestorProyecto gp = new GestorProyecto();
 			for (IIntegrante integrante : gp.listarIntegrantes(this, null)) {
 				this.integrantes.add(integrante);
@@ -234,7 +234,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public List<ISubsidio> getSubsidios() {
-		if (this.subsidios.isEmpty()) {
+		if (this.subsidios.isEmpty() && this.id != -1) {
 			GestorProyecto gp = new GestorProyecto();
 			for (ISubsidio subsidio : gp.listarSubsidios(this, null)) {
             	this.subsidios.add(subsidio);
@@ -255,7 +255,7 @@ public class Proyecto implements IProyecto, IProyectog {
 
 	@Override
 	public List<IProrroga> getProrrogas() {
-		if (this.prorrogas.isEmpty()) {
+		if (this.prorrogas.isEmpty() && this.id != -1) {
 			GestorProyecto gp = new GestorProyecto();
 			for (IProrroga pro : gp.listarProrrogas(this, null)) {
             	this.prorrogas.add(pro);

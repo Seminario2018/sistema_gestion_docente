@@ -445,9 +445,13 @@ public class Proyectos extends ControladorVista implements Initializable {
             txtDatosNombre.setText(proyectoSeleccion.getNombre());
 
             IDocente director = proyectoSeleccion.getDirector();
-            txtDatosDirector.setText(
-                director.getLegajo() + " - " +
-                director.getPersona().getNombreCompleto());
+            if (director == null) {
+                txtDatosDirector.setText("");
+            } else {
+                txtDatosDirector.setText(
+                    director.getLegajo() + " - " +
+                    director.getPersona().getNombreCompleto());
+            }
 
             IDocente codirector = proyectoSeleccion.getCodirector();
             if (codirector == null) {
