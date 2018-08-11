@@ -12,7 +12,7 @@
 <?import javafx.scene.text.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.Personas">
+<ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="600.0" prefWidth="800.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.ConfigEmail">
    <content>
       <GridPane vgap="5.0">
          <columnConstraints>
@@ -34,7 +34,7 @@
               </rowConstraints>
                <children>
                   <CheckBox fx:id="chkHabilitar" mnemonicParsing="false" text="Habilitar notificaciones por e-mail" />
-                  <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#pruebaConfiguracion" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" />
                </children>
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
@@ -53,17 +53,17 @@
                   <RowConstraints vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btnConfigEmailAceptar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aceptar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="btnConfigEmailAceptar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#aceptar" text="Aceptar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnConfigEmailCancelar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancelar" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Button fx:id="btnConfigEmailCancelar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnConfigEmailAplicar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Aplicar" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                  <Button fx:id="btnConfigEmailAplicar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#aplicar" text="Aplicar" GridPane.columnIndex="4" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -97,8 +97,8 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnImportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Importar configuración" GridPane.columnIndex="1" />
-                                    <Button fx:id="btnExportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exportar configuración" GridPane.columnIndex="2" />
+                                    <Button fx:id="btnImportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarConfiguracion" text="Importar configuración" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnExportar1" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportarConfiguracion" text="Exportar configuración" GridPane.columnIndex="2" />
                                  </children>
                               </GridPane>
                               <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="CENTER">
@@ -211,7 +211,7 @@
                                   <RowConstraints vgrow="NEVER" />
                                 </rowConstraints>
                                  <children>
-                                    <Button fx:id="btnPlantillaTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Insertar tag" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                    <Button fx:id="btnPlantillaTag" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#insertarTag" text="Insertar tag" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
@@ -221,8 +221,8 @@
                                           <Insets />
                                        </GridPane.margin>
                                     </ComboBox>
-                                    <Button fx:id="btnExportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Exportar plantilla" GridPane.columnIndex="2" />
-                                    <Button fx:id="btnImportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Importar plantilla" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnExportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exportarPlantilla" text="Exportar plantilla" GridPane.columnIndex="2" />
+                                    <Button fx:id="btnImportar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarPlantilla" text="Importar plantilla" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
