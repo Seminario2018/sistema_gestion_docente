@@ -14,14 +14,4 @@
     <!--Usar conexión protegida por TLS-->
     <tls>true</tls>
     
-    <!--Pie del mensaje, colocado al final de cada mail enviado-->
-    <post-mensaje>
-Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.
-NO intente responder a este mensaje
-
-Plumas 2 - Sistema de Gestión Docente @2018
-Departamento de Ciencias Básicas
-Universidad Nacional de Luján
-    </post-mensaje>
-    
 </mail>

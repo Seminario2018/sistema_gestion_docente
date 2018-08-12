@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
+    <asunto>[Plumas 2] Se han actualizado Cargos en la División $division</asunto>
+    
+    <encabezado>
+Al docente:
+        Legajo: $legajo
+        Apellido: $apellido
+        Nombre: $nombre
+    </encabezado>
+    
+    <mensaje>
+Se le $operacion el siguiente cargo:
+        Cargo: $cargo
+        Área: $area
+        División: $division
+        Tipo de cargo: $tipocargo
+        Estado de cargo: $estadocargo
+    </mensaje>
+    
+    <pie>
+Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.
+NO intente responder a este mensaje
+
+Plumas 2 - Sistema de Gestión Docente @2018
+Departamento de Ciencias Básicas
+Universidad Nacional de Luján
+    </pie>
+</plantilla>

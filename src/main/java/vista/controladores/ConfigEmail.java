@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import javax.xml.transform.TransformerException;
 import org.w3c.dom.Document;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +19,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     private static final String TITULO = "Configuración E-mail";
     private static final String ARCHIVO_CONFIG = "Mail.xml";
-    private static final String ARCHIVO_PLANTILLA = "PlantillaNotificacion.txt";
+    private static final String ARCHIVO_PLANTILLA = "Plantilla.xml";
 
     private Document configuracionXML;
     private Document plantillaXML;
@@ -28,7 +27,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     /**
      * Importa de un archivo seleccionado la configuración del
      * servidor de mail.
-     * @param archivo Nombre del archivo a importar
+     * @param archivo Archivo a importar
      */
     private void importarArchivoConfig(File archivo) {
         configuracionXML = Utilidades.leerXML(archivo);
@@ -38,14 +37,6 @@ public class ConfigEmail extends ControladorVista implements Initializable {
         String smtp = configuracionXML.getElementsByTagName("puerto").item(0).getTextContent();
         String tls = configuracionXML.getElementsByTagName("tls").item(0).getTextContent();
 
-        System.out.println("=================================================");
-        System.out.println("Importando de " + archivo + ":");
-        System.out.println("    > Email:       " + email);
-        System.out.println("    > Contraseña:  " + contraseña);
-        System.out.println("    > Puerto SMTP: " + smtp);
-        System.out.println("    > TLS:         " + tls);
-        System.out.println("=================================================");
-
         txtServidorEmail.setText(email);
         txtServidorContraseña.setText(contraseña);
         txtServidorSmtp.setText(smtp);
@@ -53,13 +44,48 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     }
 
     /**
-     *
-     * @param archivo
+     * Exporta a un archivo seleccionado la configuración del
+     * servidor de mail.
+     * @param archivo Archivo a donde exportar
      */
     private void exportarArchivoConfig(File archivo) {
         try {
             Utilidades.guardarXML(archivo, configuracionXML);
-        } catch (TransformerException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
+        }
+    }
+
+    /**
+     * Importa de un archivo seleccionado la plantilla del mail de
+     * notificación de cargo.
+     * Recorta los espacios en blanco adelante y atrás del contenido
+     * de cada parte de la plantilla en el XML.
+     * @param archivo Archivo a importar
+     */
+    private void importarArchivoPlantilla(File archivo) {
+        plantillaXML = Utilidades.leerXML(archivo);
+
+        String asunto = plantillaXML.getElementsByTagName("asunto").item(0).getTextContent().trim();
+        String encabezado = plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent().trim();
+        String mensaje = plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent().trim();
+        String pie = plantillaXML.getElementsByTagName("pie").item(0).getTextContent().trim();
+
+        txtPlantillaAsunto.setText(asunto);
+        txtPlantillaEncabezado.setText(encabezado);
+        txtPlantillaMensaje.setText(mensaje);
+        txtPlantillaPie.setText(pie);
+    }
+
+    /**
+     * Exporta a un archivo seleccionado la plantilla del mail.
+     * @param archivo Archivo a donde exportar
+     */
+    private void exportarArchivoPlantilla(File archivo) {
+        try {
+            Utilidades.guardarXML(archivo, plantillaXML);
+        } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
         }
@@ -68,6 +94,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         importarArchivoConfig(new File(ARCHIVO_CONFIG));
+        importarArchivoPlantilla(new File(ARCHIVO_PLANTILLA));
     }
 
     // General:
@@ -80,8 +107,8 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @FXML
     private void aceptar(ActionEvent event) {
-        // TODO Aceptar
         exportarArchivoConfig(new File(ARCHIVO_CONFIG));
+        exportarArchivoPlantilla(new File(ARCHIVO_PLANTILLA));
         this.gestorPantalla.cerrarPantalla(TITULO);
     }
 
@@ -92,8 +119,8 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @FXML
     private void aplicar(ActionEvent event) {
-        // TODO Aplicar
         exportarArchivoConfig(new File(ARCHIVO_CONFIG));
+        exportarArchivoPlantilla(new File(ARCHIVO_PLANTILLA));
     }
 
     // Pestaña Servidor
@@ -126,12 +153,18 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @FXML
     private void importarPlantilla(ActionEvent event) {
-        // TODO Importar plantilla
+        File archivo = this.elegirArchivo("Elegir archivo de plantilla", "Archivos XML", Arrays.asList("*.xml"));
+        if (archivo != null) {
+            importarArchivoPlantilla(archivo);
+        }
     }
 
     @FXML
     private void exportarPlantilla(ActionEvent event) {
-        // TODO Exportar plantilla
+        File archivo = this.elegirArchivo("Elegir archivo de plantilla", "Archivos XML", Arrays.asList("*.xml"));
+        if (archivo != null) {
+            exportarArchivoPlantilla(archivo);
+        }
     }
 
     @FXML
