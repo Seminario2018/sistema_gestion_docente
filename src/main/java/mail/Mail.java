@@ -31,7 +31,11 @@ public class Mail implements IMail {
         this.servidor = document.getElementsByTagName("servidor").item(0).getTextContent();
         this.port = document.getElementsByTagName("puerto").item(0).getTextContent();
         this.tls = document.getElementsByTagName("tls").item(0).getTextContent();
-        this.postMensaje = document.getElementsByTagName("post-mensaje").item(0).getTextContent();
+//        this.postMensaje = document.getElementsByTagName("post-mensaje").item(0).getTextContent();
+
+        // Obtener el pie del mensaje de la plantilla:
+        Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
+        this.postMensaje = plantillaXML.getElementsByTagName("pie").item(0).getTextContent();
     }
 
     /* (non-Javadoc)

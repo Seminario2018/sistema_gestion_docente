@@ -1,9 +1,11 @@
 package mail;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.w3c.dom.Document;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
@@ -34,7 +36,7 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-    	private static final int MILISEGUNDOS = 60000;
+        private static final int MILISEGUNDOS = 60000;
     	private NotificacionCargo2 noti;
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
@@ -158,7 +160,12 @@ public class NotificacionCargo2 {
     	parametros.put("tipocargo", cargo.getTipoCargo().getDescripcion());
     	parametros.put("estadocargo", cargo.getEstado().getDescripcion());
 
-    	mensaje = Plantilla.armar("PlantillaNotificacion.txt", parametros);
+    	// Obtengo plantilla para el mensaje:
+    	Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
+    	String plantilla =
+    	    plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent()
+    	    + plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent();
+    	mensaje = Plantilla.armar(plantilla, parametros);
 
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO, asunto);
