@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -131,13 +135,13 @@ public class Utilidades {
 	 * @param nombreArchivo Nombre del archivo XML
 	 * @return Objeto que representa el contenido del archivo XML
 	 */
-	public static Document leerXML(String nombreArchivo) {
+	public static Document leerXML(File archivo) {
 	    try {
             Document documento = DocumentBuilderFactory
                 .newInstance()
                 .newDocumentBuilder()
                 .parse(
-                    new File(nombreArchivo));
+                    archivo);
             documento.getDocumentElement().normalize();
             return documento;
 
@@ -145,5 +149,16 @@ public class Utilidades {
             e.printStackTrace();
             return null;
         }
+	}
+
+	public static void guardarXML(File archivo, Document documento)
+	    throws TransformerException {
+
+        TransformerFactory
+            .newInstance()
+            .newTransformer()
+            .transform(
+                new DOMSource(documento),
+                new StreamResult(archivo));
 	}
 }

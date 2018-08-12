@@ -33,7 +33,7 @@
                 <RowConstraints minHeight="30.0" />
               </rowConstraints>
                <children>
-                  <CheckBox fx:id="chkHabilitar" mnemonicParsing="false" text="Habilitar notificaciones por e-mail" />
+                  <CheckBox fx:id="chkHabilitar" mnemonicParsing="false" selected="true" text="Habilitar notificaciones por e-mail" />
                   <Button fx:id="btnServidorPrueba" alignment="CENTER" contentDisplay="TOP" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#pruebaConfiguracion" text="Prueba de configuración" textAlignment="CENTER" GridPane.columnIndex="1" />
                </children>
                <GridPane.margin>

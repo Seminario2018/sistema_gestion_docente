@@ -1,5 +1,6 @@
 package persistencia;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ public class Conexion {
 
 	private void leerXML() {
 		try {
-            Document documento = Utilidades.leerXML("Base.xml");
+            Document documento = Utilidades.leerXML(new File("Base.xml"));
             this.driver = documento.getElementsByTagName("driver").item(0).getTextContent();
             this.user = documento.getElementsByTagName("usr").item(0).getTextContent();
             this.pass = documento.getElementsByTagName("password").item(0).getTextContent();

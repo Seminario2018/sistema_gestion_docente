@@ -1,5 +1,6 @@
 package mail;
 
+import java.io.File;
 import java.util.Properties;
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -23,7 +24,7 @@ public class Mail implements IMail {
 
     public Mail() {
         // Leo los parámetros desde el XML:
-        Document document = Utilidades.leerXML("mail.xml");
+        Document document = Utilidades.leerXML(new File("mail.xml"));
 
         this.usuario = document.getElementsByTagName("usuario").item(0).getTextContent();
         this.contraseña = document.getElementsByTagName("contraseña").item(0).getTextContent();
