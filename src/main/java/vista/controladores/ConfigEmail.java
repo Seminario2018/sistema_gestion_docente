@@ -83,6 +83,11 @@ public class ConfigEmail extends ControladorVista implements Initializable {
      * @param archivo Archivo a donde exportar
      */
     private void exportarArchivoPlantilla(File archivo) {
+        plantillaXML.getElementsByTagName("asunto").item(0).setTextContent(txtPlantillaAsunto.getText());
+        plantillaXML.getElementsByTagName("encabezado").item(0).setTextContent(txtPlantillaEncabezado.getText());
+        plantillaXML.getElementsByTagName("mensaje").item(0).setTextContent(txtPlantillaMensaje.getText());
+        plantillaXML.getElementsByTagName("pie").item(0).setTextContent(txtPlantillaPie.getText());
+
         try {
             Utilidades.guardarXML(archivo, plantillaXML);
         } catch (Exception e) {

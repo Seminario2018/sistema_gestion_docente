@@ -1,28 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
     <asunto>[Plumas 2] Se han actualizado Cargos en la División $division</asunto>
     
-    <encabezado>
-Al docente:
-        Legajo: $legajo
-        Apellido: $apellido
-        Nombre: $nombre
-    </encabezado>
+    <encabezado>&lt;div&gt;
+    Estimado/a Sr/a. $APELLIDOJEFE,&lt;br&gt;
+    &lt;br&gt;
+        Se le informa que se han realizado actualizaciones en los siguientes Cargos de la División $DIVISION:
     
-    <mensaje>
-Se le $operacion el siguiente cargo:
-        Cargo: $cargo
-        Área: $area
-        División: $division
-        Tipo de cargo: $tipocargo
-        Estado de cargo: $estadocargo
-    </mensaje>
+            
+        &lt;/div&gt;</encabezado>
     
-    <pie>
-Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.
-NO intente responder a este mensaje
-
-Plumas 2 - Sistema de Gestión Docente @2018
-Departamento de Ciencias Básicas
-Universidad Nacional de Luján
-    </pie>
+    <mensaje>&lt;div&gt;
+            Al docente:
+            &lt;div style="padding-left: 50px"&gt;
+                Legajo: $LEGAJO&lt;br&gt;
+                Apellido: $APELLIDO&lt;br&gt;
+                Nombre: $NOMBRE&lt;br&gt;
+            &lt;/div&gt;
+            &lt;br&gt;
+            Se le $OPERACION el siguiente cargo:
+            &lt;div style="padding-left: 50px"&gt;
+                Cargo: $CARGO&lt;br&gt;
+                Área: $AREA&lt;br&gt;
+                División: $DIVISION&lt;br&gt;
+                Tipo de cargo: $TIPOCARGO&lt;br&gt;
+                Estado de cargo: $ESTADO&lt;br&gt;
+            &lt;/div&gt;
+            --------------------------------------------------
+        &lt;/div&gt;</mensaje>
+    
+    <pie>&lt;div&gt;
+            Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.&lt;br&gt;
+            NO intente responder a este mensaje&lt;br&gt;
+            &lt;br&gt;
+            Plumas 2 - Sistema de Gestión Docente @2018&lt;br&gt;
+            Departamento de Ciencias Básicas&lt;br&gt;
+            Universidad Nacional de Luján
+        &lt;/div&gt;</pie>
 </plantilla>

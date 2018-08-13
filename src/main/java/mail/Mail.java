@@ -20,7 +20,7 @@ public class Mail implements IMail {
     private String servidor = null;
     private String port = null;
     private String tls = null;
-    private String postMensaje = null;
+    private String pie = null;
 
     public Mail() {
         // Leo los parámetros desde el XML:
@@ -31,11 +31,10 @@ public class Mail implements IMail {
         this.servidor = document.getElementsByTagName("servidor").item(0).getTextContent();
         this.port = document.getElementsByTagName("puerto").item(0).getTextContent();
         this.tls = document.getElementsByTagName("tls").item(0).getTextContent();
-//        this.postMensaje = document.getElementsByTagName("post-mensaje").item(0).getTextContent();
 
         // Obtener el pie del mensaje de la plantilla:
         Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
-        this.postMensaje = plantillaXML.getElementsByTagName("pie").item(0).getTextContent();
+        this.pie = plantillaXML.getElementsByTagName("pie").item(0).getTextContent();
     }
 
     /* (non-Javadoc)
@@ -79,7 +78,7 @@ public class Mail implements IMail {
            mensajeMime.setSubject(asunto);
 
            // Mensaje:
-           mensajeMime.setText(mensaje + this.postMensaje, "utf-8", "plain");
+           mensajeMime.setText(mensaje + this.pie, "utf-8", "html");
 
            // Enviar mensaje:
            Transport.send(mensajeMime);
