@@ -662,6 +662,7 @@ public class Docentes extends ControladorVista implements Initializable {
     			cargosModoModificar();
 
     		} catch (Exception e) {
+    		    e.printStackTrace();
     			mensajeEstado(e.getMessage());
     		}
     		cargosActualizarTabla();

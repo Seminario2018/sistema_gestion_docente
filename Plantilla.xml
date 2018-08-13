@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
-    <asunto>[Plumas 2] Se han actualizado Cargos en la División $division</asunto>
+    <asunto>[Plumas 2] Se han actualizado Cargos en la División $DIVISION</asunto>
     
     <encabezado>&lt;div&gt;
     Estimado/a Sr/a. $APELLIDOJEFE,&lt;br&gt;
     &lt;br&gt;
         Se le informa que se han realizado actualizaciones en los siguientes Cargos de la División $DIVISION:
-    
-            
+        &lt;br&gt;
+        &lt;br&gt;
         &lt;/div&gt;</encabezado>
     
     <mensaje>&lt;div&gt;
@@ -25,7 +25,7 @@
                 Tipo de cargo: $TIPOCARGO&lt;br&gt;
                 Estado de cargo: $ESTADO&lt;br&gt;
             &lt;/div&gt;
-            --------------------------------------------------
+            &lt;hr&gt;
         &lt;/div&gt;</mensaje>
     
     <pie>&lt;div&gt;

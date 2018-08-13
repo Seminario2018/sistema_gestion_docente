@@ -36,7 +36,8 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-        private static final int MILISEGUNDOS = 60000;
+//        private static final int MILISEGUNDOS = 60000;
+        private static final int MILISEGUNDOS = 1000;
     	private NotificacionCargo2 noti;
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
@@ -86,6 +87,7 @@ public class NotificacionCargo2 {
      * @param estadoOperacion el resultado de la operación.
      */
     public void notificar(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
+        System.out.println("<NotificacionCargo2> notificar");
     	String destinos = null;
     	try {
     		List<IContacto> contactos = cargo.getArea()
@@ -131,24 +133,14 @@ public class NotificacionCargo2 {
     	// Si se crea un nuevo mail, agregar asunto y saludo
     	if (mailActual == null || mailActual.isEmpty()) {
 			mailActual = new HashMap<String, String>();
-
-			asunto = Plantilla.armar(
-			    plantillaXML
-			        .getElementsByTagName("asunto")
-			        .item(0)
-			        .getTextContent(),
-		        parametros);
+			asunto = armarAsunto(plantillaXML, parametros);
 
     	} else {
     		asunto = mailActual.get(NotificacionCargo2.KEY_ASUNTO);
     		mensaje = mailActual.get(NotificacionCargo2.KEY_MENSAJE);
     	}
 
-    	// Armo el mensaje con la plantilla:
-    	String plantilla =
-    	    plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent()
-    	    + plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent();
-    	mensaje = Plantilla.armar(plantilla, parametros);
+    	mensaje = armarMensaje(plantillaXML, parametros);
 
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO, asunto);
@@ -170,7 +162,7 @@ public class NotificacionCargo2 {
      * @param cargo CargoDocente
      * @return Mapa con los parámetros
      */
-    private Map<String, String> armarParametrosPlantilla(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
+    public static Map<String, String> armarParametrosPlantilla(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
         Map<String, String> parametros = new HashMap<>();
 
         // Datos docente:
@@ -180,6 +172,7 @@ public class NotificacionCargo2 {
         parametros.put("NOMBRE", docente.getPersona().getNombre());
 
         // Datos cargo:
+
         parametros.put("APELLIDOJEFE", cargo.getArea().getDivision().getJefe().getPersona().getApellido());
         parametros.put("DIVISION", cargo.getArea().getDivision().getDescripcion());
         parametros.put("AREA", cargo.getArea().getDescripcion());
@@ -187,13 +180,38 @@ public class NotificacionCargo2 {
         parametros.put("TIPOCARGO", cargo.getTipoCargo().getDescripcion());
         parametros.put("ESTADO", cargo.getEstado().getDescripcion());
         parametros.put("DISPOSICION", cargo.getDisposicion());
-        parametros.put("DISPOSICIONDESDE", cargo.getDispDesde().toString());
-        parametros.put("DISPOSICIONHASTA", cargo.getDispHasta().toString());
+
+        if (cargo.getDispDesde() == null) {
+            parametros.put("DISPOSICIONDESDE", "");
+        } else {
+            parametros.put("DISPOSICIONDESDE", cargo.getDispDesde().toString());
+        }
+        if (cargo.getDispHasta() == null) {
+            parametros.put("DISPOSICIONHASTA", "");
+        } else {
+            parametros.put("DISPOSICIONHASTA", cargo.getDispHasta().toString());
+        }
+
         parametros.put("RESOLUCION", cargo.getResolucion());
-        parametros.put("RESOLUCIONDESDE", cargo.getResDesde().toString());
-        parametros.put("RESOLUCIONHASTA", cargo.getResHasta().toString());
+
+        if (cargo.getResDesde() == null) {
+            parametros.put("RESOLUCIONDESDE", "");
+        } else {
+            parametros.put("RESOLUCIONDESDE", cargo.getResDesde().toString());
+        }
+        if (cargo.getResHasta() == null) {
+            parametros.put("RESOLUCIONHASTA", "");
+        } else {
+            parametros.put("RESOLUCIONHASTA", cargo.getResHasta().toString());
+        }
+
         parametros.put("ULTIMOCOSTO", String.valueOf(cargo.getUltimoCosto()));
-        parametros.put("ULTIMOCOSTOFECHA", cargo.getFechaUltCost().toString());
+
+        if (cargo.getFechaUltCost() == null) {
+            parametros.put("ULTIMOCOSTOFECHA", "");
+        } else {
+            parametros.put("ULTIMOCOSTOFECHA", cargo.getFechaUltCost().toString());
+        }
 
         String operacionMensaje;
         switch (estado.getEstado()) {
@@ -209,5 +227,21 @@ public class NotificacionCargo2 {
         parametros.put("OPERACION", operacionMensaje);
 
         return parametros;
+    }
+
+    public static String armarAsunto(Document plantillaXML, Map<String, String> parametros) {
+        return Plantilla.armar(
+            plantillaXML
+                .getElementsByTagName("asunto")
+                .item(0)
+                .getTextContent(),
+            parametros);
+    }
+
+    public static String armarMensaje(Document plantillaXML, Map<String, String> parametros) {
+        String plantilla =
+            plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent()
+            + plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent();
+        return Plantilla.armar(plantilla, parametros);
     }
 }
