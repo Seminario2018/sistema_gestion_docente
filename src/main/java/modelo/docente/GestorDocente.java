@@ -23,9 +23,9 @@ public class GestorDocente {
 			ArrayList<String> st = new ArrayList<String>();
 
 			IDocenteg docente = (IDocenteg) doc;
-			
+
 			IPersona persona = docente.getPersona2();
-			
+
 			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
@@ -45,15 +45,15 @@ public class GestorDocente {
 				campos += ", `Estado`";
 				valores += ", " + persona.getEstado().getId();
 			}
-			
+
 			st.add(md.insertQuery(table, campos, valores));
-			
+
 			if (persona.getContactos() != null && !persona.getContactos().isEmpty()) {
 				for (IContacto contacto : persona.getContactos()) {
 					st.add(this.insertarContactos(persona, contacto));
 				}
 			}
-			
+
 			if (persona.getDomicilios() != null && !persona.getDomicilios().isEmpty()) {
 				for(IDomicilio domicilio : persona.getDomicilios()) {
 					st.add(this.insertarDomicilios(persona, domicilio));
@@ -69,8 +69,8 @@ public class GestorDocente {
 
 				}
 			}
-			
-			
+
+
 			docente.getEstado2().guardar();
 
 			table = "Docentes";
@@ -88,10 +88,10 @@ public class GestorDocente {
 				campos += ", CategoriaInvestigacion";
 				valores += ", " + docente.getCategoriaInvestigacion2().getId();
 			}
-			
-			
+
+
 			st.add(md.insertQuery(table, campos, valores));
-			
+
 			if (docente.getIncentivos2() != null) {
 				for (IIncentivo incentivo : docente.getIncentivos2()) {
 					st.add(this.agregarIncentivo2((IDocente) docente, incentivo));
@@ -103,17 +103,17 @@ public class GestorDocente {
 					st.add(this.agregarCargoDocente2(docente, cargoDocente));
 				}
 			}
-			
+
 			if (docente.getCargosDocentes2() != null) {
 				for (ICargoDocente cargoDocente : docente.getCargosDocentes2()) {
 					ICargoDocenteg cd = (ICargoDocenteg) cargoDocente;
 					for (Costo c : cd.getCostos()) {
 						st.add(c.guardar2(cd));
 					}
-					
+
 				}
 			}
-			
+
 			if (md.ejecutarQuerys(st)) {
 				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "El docente se creó correctamente");
 			} else {
@@ -170,7 +170,7 @@ public class GestorDocente {
 			campos += ", ResHasta";
 			valores += ", '" + Date.valueOf(cargoDocente.getResHasta()) + "'";
 		}
-		
+
 		return md.insertQuery("cargosdocentes", campos, valores);
 	}
 
@@ -179,9 +179,9 @@ public class GestorDocente {
 		String tabla = "Incentivos";
 		String campos = "`Fecha`, `Legajo`";
 		String valores = "'" + incentivo.getFecha().toString() + "', " + docente.getLegajo();
-		
+
 		return md.insertQuery(tabla, campos, valores);
-		
+
 	}
 
 	private String insertarTitulos(IPersona persona, ITitulo titulo) {
@@ -220,7 +220,7 @@ public class GestorDocente {
 
 	private String insertarContactos(IPersona persona, IContacto contacto) {
 		ManejoDatos md = new ManejoDatos();
-		
+
 		contacto.getTipo().guardar();
 
 		if (contacto.getId() == -1) {
@@ -232,9 +232,9 @@ public class GestorDocente {
 		String valores = contacto.getId() + ", "
 				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', "
 				+ contacto.getTipo().getId() + ", '" + contacto.getDato() + "'";
-		
+
 		return md.insertQuery(table, campos, valores);
-		
+
 	}
 
 	private int getMax(String tabla,String campo) {
@@ -593,7 +593,7 @@ public class GestorDocente {
 		}
 
 	}
-	
+
 
 	public EstadoOperacion modificarCargoDocente(IDocente docente, ICargoDocente cd) {
 		try {
@@ -878,6 +878,30 @@ public class GestorDocente {
 
 	}
 
+	/**
+	 * Determina si un docente tiene cargos docentes activos.
+	 * @param docente El docente
+	 * @return true si el docente tiene cargos activos.
+	 */
+	public boolean tieneCargosActivos(IDocente docente) throws NullPointerException {
+	    if (docente == null || docente.getLegajo() == -1) {
+	        throw new NullPointerException("El docente no puede ser nulo.");
+	    }
+
+	    String tabla = "CargosDocentes CD";
+	    String campos = "*";
+	    String condicion = "((CD.Legajo = " + docente.getLegajo() + ") And (CD.EstadoCargo = 0)) Limit 1";
+
+	    try {
+	        ManejoDatos md = new ManejoDatos();
+	        List<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
+	        return !res.isEmpty();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 
 	// Plantillas vacías ======================================================
 	/**

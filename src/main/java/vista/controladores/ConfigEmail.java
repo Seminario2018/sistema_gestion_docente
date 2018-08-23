@@ -167,8 +167,6 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     @FXML private CheckBox chkHabilitar;
 
     @FXML private void pruebaConfiguracion(ActionEvent event) {
-        // TODO Prueba de configuración
-
         // Ingresar dirección de e-mail de destino:
         String direccionDestino = "";
         while (true) {

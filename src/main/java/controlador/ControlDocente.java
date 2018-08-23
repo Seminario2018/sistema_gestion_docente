@@ -3,6 +3,7 @@ package controlador;
 import java.util.List;
 import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoCargo;
+import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.cargo.GestorCargo;
@@ -97,6 +98,7 @@ public class ControlDocente {
                 NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
             }
             return resultado;
+
         } else {
             // Obtengo una referencia al cargoDocente antes de ser modificado:
             ICargoDocente cargoDocenteBusqueda = gestorDocente.getICargoDocente();
@@ -116,6 +118,7 @@ public class ControlDocente {
                 EstadoCargo estadoCargoNuevo = cargoDocente.getEstado();
                 if (!estadoCargoNuevo.equals(estadoCargoReferencia)) {
                     NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
+                    pasarAInactivo(docente);
                 }
             }
             return resultado;
@@ -136,7 +139,45 @@ public class ControlDocente {
         }
         return resultado;
         //*/
-        return gestorDocente.quitarCargoDocente(docente, cargoDocente);
+
+        EstadoOperacion resultado = gestorDocente.quitarCargoDocente(docente, cargoDocente);
+        switch (resultado.getEstado()) {
+            case DELETE_OK:
+                pasarAInactivo(docente);
+                break;
+
+            default:
+                throw new RuntimeException("Estado de eliminación de cargoDocente no esperado: " + resultado.getMensaje());
+        }
+        return resultado;
+    }
+
+    /**
+     * Comprueba si a un docente no le quedan cargos activos y
+     * pregunta al usuario si cambia el estado del docente a inactivo.
+     * @param docente El docente
+     */
+    public void pasarAInactivo(IDocente docente) {
+        if (!gestorDocente.tieneCargosActivos(docente)) {
+            // Compruebo que el docente no tenga cargos activos
+             if (vista.dialogoConfirmacion(
+                 "Quitar cargo docente",
+                 "A este docente no le quedan cargos activos",
+                 "¿Desea cambiar su estado a inactivo?")) {
+
+                 EstadoDocente estadoActual = docente.getEstado();
+                 if (estadoActual.getId() != 1) {
+                     // Cambio el estado del docente a "Inactivo"
+                     EstadoDocente estadoNuevo = new EstadoDocente();
+                     estadoNuevo.setId(1);
+                     estadoNuevo.setDescripcion("Inactivo");
+                     docente.setEstado(estadoNuevo);
+
+                     // Aplico el cambio a la base de datos
+                     gestorDocente.modificarDocente(docente);
+                 }
+             }
+        }
     }
 
     public List<ICargoDocente> listarCargosDocente(IDocente docente, ICargoDocente cargoDocente) {

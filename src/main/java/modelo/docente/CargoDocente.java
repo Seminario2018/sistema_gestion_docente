@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.TipoCargo;
 import modelo.cargo.Cargo;
@@ -92,11 +91,13 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 				);
 	}
 
-	public int getId() {
+	@Override
+    public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	@Override
+    public void setId(int id) {
 		this.id = id;
 	}
 
@@ -192,7 +193,9 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		if (costos == null || costos.isEmpty()) {
 			this.obtenerCostos();
 		}
-		return this.costos.get(this.costos.size()-1).getCosto();
+		return (this.costos.isEmpty()) ?
+		    0 :
+	        this.costos.get(this.costos.size()-1).getCosto();
 	}
 
 	@Override
@@ -231,11 +234,14 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		if (costos == null || costos.isEmpty()) {
 			this.obtenerCostos();
 		}
-		return this.costos.get(this.costos.size()-1).getFechaCosto();
+
+		return (this.costos.isEmpty()) ?
+		    null :
+	        this.costos.get(this.costos.size()-1).getFechaCosto();
 	}
 
 	@Override
-	public void setFechaUltCost(LocalDate fechaUltCost) {	
+	public void setFechaUltCost(LocalDate fechaUltCost) {
 		if (costos == null || costos.isEmpty()) {
 			this.obtenerCostos();
 		}
@@ -311,8 +317,9 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		return this.estado;
 	}
 
-	public IDocente getDocente() {
-		IDocente docente = new Docente(); 
+	@Override
+    public IDocente getDocente() {
+		IDocente docente = new Docente();
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "CargosDocentes";
@@ -329,19 +336,22 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		}
 		return docente;
 	}
-	
-	public void setDocente(IDocente docente) {
+
+	@Override
+    public void setDocente(IDocente docente) {
 		this.docente = docente;
 	}
-	
-	public List<Costo> getCostos(){
+
+	@Override
+    public List<Costo> getCostos(){
 		if (costos == null || costos.isEmpty()) {
 			this.obtenerCostos();
 		}
 		return costos;
 	}
 
-	public void setCostos(List<Costo> costos) {
+	@Override
+    public void setCostos(List<Costo> costos) {
 		this.costos = costos;
 	}
 }

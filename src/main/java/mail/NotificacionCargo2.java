@@ -36,8 +36,7 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-//        private static final int MILISEGUNDOS = 60000;
-        private static final int MILISEGUNDOS = 1000;
+        private static final int MILISEGUNDOS = 60000;
     	private NotificacionCargo2 noti;
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
@@ -87,7 +86,6 @@ public class NotificacionCargo2 {
      * @param estadoOperacion el resultado de la operación.
      */
     public void notificar(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
-        System.out.println("<NotificacionCargo2> notificar");
     	String destinos = null;
     	try {
     		List<IContacto> contactos = cargo.getArea()

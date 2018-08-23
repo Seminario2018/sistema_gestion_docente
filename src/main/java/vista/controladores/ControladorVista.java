@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
@@ -215,14 +215,16 @@ public abstract class ControladorVista implements Initializable {
      * @param encabezado Encabezado del mensaje
      * @param contenido Contenido del mensaje
      */
-	public void dialogoConfirmacion(String titulo, String encabezado, String contenido) {
+	public boolean dialogoConfirmacion(String titulo, String encabezado, String contenido) {
 	    Alert alerta = new Alert(AlertType.CONFIRMATION);
 	    alerta.setTitle(titulo);
 	    alerta.setHeaderText(encabezado);
         alerta.setContentText(contenido);
-        alerta.showAndWait();
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        return (resultado.get() == ButtonType.OK);
 	}
-	
+
 	/**
      * Lanza un diálogo de información para el usuario.
      * @param titulo Título del mensaje
@@ -236,7 +238,7 @@ public abstract class ControladorVista implements Initializable {
         alerta.setContentText(contenido);
         alerta.showAndWait();
 	}
-	
+
 	/**
 	 * Lanza un diálogo de entrada para el usuario.
 	 * @param titulo Título del mensaje.
@@ -270,7 +272,7 @@ public abstract class ControladorVista implements Initializable {
 	    fileChooser.getExtensionFilters().add(extensionFilter);
 	    return fileChooser.showOpenDialog(new Stage());
 	}
-	
+
 	/**
 	 * Abre una ventana para permitir seleccionar una ruta para guardar un archivo.
 	 * @param titulo Título de la ventana
@@ -334,4 +336,5 @@ public abstract class ControladorVista implements Initializable {
 	public void mensajeEstado(String mensaje) {
 	    gestorPantalla.mensajeEstado(mensaje);
 	}
+
 }
