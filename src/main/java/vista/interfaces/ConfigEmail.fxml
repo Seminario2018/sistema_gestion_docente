@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.web.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.media.*?>
@@ -232,15 +233,11 @@
                         </GridPane>
                      </content>
                   </Tab>
-                  <Tab text="Vista previa">
+                  <Tab onSelectionChanged="#mostrarVistaPrevia" text="Vista previa">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>
-                              <TextArea fx:id="txtVistaprevia" BorderPane.alignment="CENTER">
-                                 <BorderPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </BorderPane.margin>
-                              </TextArea>
+                              <WebView fx:id="webVistaPrevia" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                            </center>
                         </BorderPane>
                      </content>

@@ -24,6 +24,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.web.HTMLEditor;
+import javafx.scene.web.WebView;
 import mail.IMail;
 import mail.Mail;
 import mail.NotificacionCargo2;
@@ -318,6 +320,12 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
 
     // Pestaña Vista previa
-    @FXML private TextArea txtVistaprevia;
+    @FXML private WebView webVistaPrevia;
 
+    @FXML private void mostrarVistaPrevia() {
+        webVistaPrevia.getEngine().loadContent(
+            txtPlantillaEncabezado.getText() +
+            txtPlantillaMensaje.getText() +
+            txtPlantillaPie.getText());
+    }
 }
