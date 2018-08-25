@@ -33,6 +33,14 @@ public class GestorImportarCosto {
 	public static final int COL_CODIGO_CARGO = 4;
 	public static final int COL_COSTO = 14;
 	
+	private LocalDate fechaImportada;
+	
+	public LocalDate getFechaImportada() {
+		return fechaImportada;
+	}
+	public void setFechaImportadal(LocalDate fechaImportada) {
+		this.fechaImportada = fechaImportada;
+	}
 	public enum TipoAlta {
 		DOCENTE, CARGO, ESTADO;
 	}
@@ -83,7 +91,7 @@ public class GestorImportarCosto {
 	        	cargo.setNombre(fila.get(COL_NOMBRE));
 	        	cargo.setCodigoCargo(Integer.parseInt(fila.get(COL_CODIGO_CARGO)));
 	        	cargo.setUltimoCosto(Utilidades.stringToFloat(fila.get(COL_COSTO)));
-	        	cargo.setFechaUltimoCosto(LocalDate.now());
+	        	cargo.setFechaUltimoCosto(this.fechaImportada);
 	        	this.cargosImportados.add(cargo);
 	        }
 	        
@@ -113,8 +121,10 @@ public class GestorImportarCosto {
 		for (ICargoFaltante cargoActual : this.cargosImportados) {
 			ICargoDocente cargoAnterior = getCargo(cargoActual.getCodigoCargo());
 			if (cargoAnterior != null) {
-				FilaCostoComparar fila = new FilaCostoComparar(cargoAnterior, cargoActual);
-				listaComparar.add(fila);
+				if (cargoAnterior.getUltimoCosto() != cargoActual.getUltimoCosto()) {
+					FilaCostoComparar fila = new FilaCostoComparar(cargoAnterior, cargoActual);
+					listaComparar.add(fila);
+				}
 			}
 		}
 		
@@ -240,7 +250,7 @@ public class GestorImportarCosto {
 				faltante.setNombre(faltanteCosteo.getDocente().getPersona().getNombre());
 				faltante.setCodigoCargo(faltanteCosteo.getId());
 				faltante.setUltimoCosto(faltanteCosteo.getUltimoCosto());
-				faltante.setFechaUltimoCosto(LocalDate.now());
+				faltante.setFechaUltimoCosto(this.fechaImportada);
 				faltante.setTipo(CargoFaltante.FALTA_COSTEO);
 				this.gestorCargosFaltantes.agregarCargoFaltante(faltante);
 			}

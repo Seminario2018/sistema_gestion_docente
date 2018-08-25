@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.poi.EncryptedDocumentException;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.costeo.FilaCostoComparar;
 import modelo.costeo.GestorImportarCosto;
 import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
@@ -35,7 +36,7 @@ public class ControlImportarCosto {
 		return this.gestorImportarCosto.getFaltantesCosteo();
 	}
 
-	public boolean importar() {
+	public boolean importar(LocalDate fechaImportada) {
 		String titulo = "Elegir la hoja de cálculo a importar";
     	String error = "Error al importar los datos";
 	    try {
@@ -44,6 +45,7 @@ public class ControlImportarCosto {
 	    	extensiones.add("*.xlsx");
 	        File archivo = this.vista.elegirArchivo(titulo, "Hojas de cálculo", extensiones);
 	        if (archivo != null) {
+	        	this.gestorImportarCosto.setFechaImportadal(fechaImportada);
 	        	EstadoOperacion eo = this.gestorImportarCosto.importar(archivo);
 	        	switch (eo.getEstado()) {
 	        	case OP_OK:
@@ -90,5 +92,9 @@ public class ControlImportarCosto {
 	 */
 	public LocalDate getUltimaFecha() {
 		return this.gestorImportarCosto.getUltimaFecha();
+	}
+	
+	public List<FilaCostoComparar> listarComparacion() {
+		return this.gestorImportarCosto.listarComparacion();
 	}
 }

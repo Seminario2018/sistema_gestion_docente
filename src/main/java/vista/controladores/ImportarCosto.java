@@ -1,7 +1,10 @@
 package vista.controladores;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import controlador.ControlImportarCosto;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,6 +48,7 @@ public class ImportarCosto extends ControladorVista {
 		if (ultima != null)
 			fecha = ultima.toString();
 		this.lblUltima.setText("Última actualización: " + fecha);
+		this.dtpFecha.setValue(LocalDate.now());
 		actualizarTablas();
 	}
 	
@@ -72,12 +77,15 @@ public class ImportarCosto extends ControladorVista {
 
     @FXML protected Button btnListar;
     @FXML public void listarCostos(ActionEvent event) {
-//    	this.gestorPantalla.lanzarPantalla(ListaCosto.TITULO, null);
+    	Map<String, Object> args = new HashMap<String, Object>();
+    	args.put(ListaCosto.LISTA, this.control.listarComparacion());
+    	this.gestorPantalla.lanzarPantalla(ListaCosto.TITULO, args);
     }
     
     @FXML protected Button btnImportar;
     @FXML public void importar(ActionEvent event) {
-    	if (this.control.importar()) {
+    	LocalDate fechaImportada = this.dtpFecha.getValue();
+    	if (this.control.importar(fechaImportada)) {
     		actualizarTablas();
     	}
     }
@@ -91,6 +99,8 @@ public class ImportarCosto extends ControladorVista {
 		this.control.descartar();
 		resetGeneral();
 	}
+	
+	@FXML protected DatePicker dtpFecha;
 
 	public class FilaCosteo {
 		private ICargoDocente cargo;
