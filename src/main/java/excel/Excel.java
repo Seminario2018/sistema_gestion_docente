@@ -1,6 +1,7 @@
 package excel;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,8 +28,10 @@ public class Excel {
 
 	public static List<List<String>> importar(File archivo) throws EncryptedDocumentException, InvalidFormatException, IOException {
 
+		FileInputStream fis = new FileInputStream(archivo);
+		
 		// Creating a Workbook from an Excel file (.xls or .xlsx)
-		Workbook workbook = WorkbookFactory.create(archivo);
+		Workbook workbook = WorkbookFactory.create(fis);
 
 		 // Getting the Sheet at index zero
         Sheet sheet = workbook.getSheetAt(0);
@@ -51,6 +54,8 @@ public class Excel {
 
 			i++;
 		}
+		
+		fis.close();
 
 		return data;
 	}
