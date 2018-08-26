@@ -222,4 +222,9 @@ public class Programa implements IPrograma, IProgramag {
         this.proyectos = proyectos;
     }
 
+	@Override
+	public List<IProyecto> getProyectos2() {
+		return this.proyectos;
+	}
+
 }

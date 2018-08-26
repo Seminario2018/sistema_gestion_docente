@@ -12,10 +12,15 @@ import persistencia.ManejoDatos;
 
 public class GestorProyecto {
 
-	public GestorProyecto() {}
-
-	public EstadoOperacion nuevoProyecto(IProyecto proyecto) {
+	public GestorProyecto() {};
+	
+	public EstadoOperacion guardarTodo(IProyecto p) {
 		try {
+
+			IProyectog proyecto = (IProyectog) p;
+
+			ArrayList<String> st = new ArrayList<String>();
+
 			if (proyecto.getId() == -1) {
 				proyecto.setId(GestorProyecto.getMaxID("Proyectos", "id") + 1);
 			}
@@ -25,7 +30,7 @@ public class GestorProyecto {
 			String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
 			String valores = proyecto.getId() + ", '" + proyecto.getNombre() + "', "
 					+ "'" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
-					+ "" + proyecto.getDirector().getLegajo() + ", " + proyecto.getEstado().getId();
+					+ "" + proyecto.getDirector2().getLegajo() + ", " + proyecto.getEstado2().getId();
 
 			if (proyecto.getResumen() != null && !proyecto.getResumen().equals("")) {
 				campos += ", `Resumen`";
@@ -41,7 +46,7 @@ public class GestorProyecto {
 			}
 			if (((IProyectog) proyecto).getCodirector2() != null) {
 				campos += ", `Codirector`";
-				valores += ", " + proyecto.getCodirector().getLegajo();
+				valores += ", " + proyecto.getCodirector2().getLegajo();
 			}
 			if (proyecto.getFechaInicio() != null) {
 				campos += ", `FechaInicio`";
@@ -52,25 +57,200 @@ public class GestorProyecto {
 				valores += ", '" + Date.valueOf(proyecto.getFechaFin()) + "'";
 			}
 
-			for (IIntegrante i : proyecto.getIntegrantes()) {
-				this.agregarIntegrante(proyecto, i);
+			for (IIntegrante i : proyecto.getIntegrantes2()) {
+				st.add(this.agregarIntegrante(proyecto, i));
 			}
-			for (ISubsidio s: proyecto.getSubsidios()) {
-				this.agregarSubsidio(proyecto, s);
+			for (ISubsidio s: proyecto.getSubsidios2()) {
+				st.add(this.agregarSubsidio(proyecto, s));
+				ISubsidiog subsidio = (ISubsidiog) s;
+				
+				for (IRendicion rendicion : subsidio.getRendiciones2()) {
+					st.add(this.agregarRendicion(rendicion, proyecto, subsidio));
+				}
 			}
-			for (IProrroga p : proyecto.getProrrogas()) {
-				this.agregarProrroga(proyecto, p);
+			for (IProrroga pro : proyecto.getProrrogas2()) {
+				st.add(this.agregarProrroga(proyecto, pro));
 			}
 
-			md.insertar(table, campos, valores);
+			st.add(md.insertQuery(table, campos, valores));
+			
+			md.ejecutarQuerys(st);
+			
 			return md.isEstado() ?
-			    new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente") :
-		        new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente") :
+						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
 		}
+	}
+
+	public EstadoOperacion nuevoProyecto(IProyecto p) {
+		try {
+
+			IProyectog proyecto = (IProyectog) p;
+
+
+			if (proyecto.getId() == -1) {
+				proyecto.setId(GestorProyecto.getMaxID("Proyectos", "id") + 1);
+			}
+
+			ManejoDatos md = new ManejoDatos();
+			String table = "Proyectos";
+			String campos = "`id`, `Nombre`, `FechaPresentacion`, `Director`,  `Estado`";
+			String valores = proyecto.getId() + ", '" + proyecto.getNombre() + "', "
+					+ "'" + Date.valueOf(proyecto.getFechaPresentacion()) + "', "
+					+ "" + proyecto.getDirector2().getLegajo() + ", " + proyecto.getEstado2().getId();
+
+			if (proyecto.getResumen() != null && !proyecto.getResumen().equals("")) {
+				campos += ", `Resumen`";
+				valores += ", '" + proyecto.getResumen() + "'";
+			}
+			if (proyecto.getFechaAprobacion() != null) {
+				campos += ", `FechaAprobacion`";
+				valores += ", '" + Date.valueOf(proyecto.getFechaAprobacion()) + "'";
+			}
+			if (proyecto.getDescripcion() != null && !proyecto.getDescripcion().equals("")) {
+				campos += ", `Descripcion`";
+				valores += ", '" + proyecto.getDescripcion() + "'";
+			}
+			if (((IProyectog) proyecto).getCodirector2() != null) {
+				campos += ", `Codirector`";
+				valores += ", " + proyecto.getCodirector2().getLegajo();
+			}
+			if (proyecto.getFechaInicio() != null) {
+				campos += ", `FechaInicio`";
+				valores += ", '" + Date.valueOf(proyecto.getFechaInicio()) + "'";
+			}
+			if (proyecto.getFechaFin() != null) {
+				campos += ", `Fecha_Fin`";
+				valores += ", '" + Date.valueOf(proyecto.getFechaFin()) + "'";
+			}
+
+			for (IIntegrante i : proyecto.getIntegrantes2()) {
+				this.agregarIntegrante2(proyecto, i);
+			}
+			for (ISubsidio s: proyecto.getSubsidios2()) {
+				this.agregarSubsidio2(proyecto, s);
+			}
+			for (IProrroga pro : proyecto.getProrrogas2()) {
+				this.agregarProrroga2(proyecto, pro);
+			}
+
+			
+			md.insertar(table, campos, valores);
+			
+			return md.isEstado() ?
+					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente") :
+						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+		}
+	}
+
+	private void agregarProrroga2(IProyectog proyecto, IProrroga pro) {
+		ManejoDatos md = new ManejoDatos();
+		String table = "Prorrogas";
+		String campos = "`Proyecto`, `Disposicion`";
+		String valores = proyecto.getId() + ", '" + pro.getDisposicion() + "'";
+
+		if (pro.getFechaFin() != null) {
+			campos += ", FechaFin";
+			valores += ", '" + Date.valueOf(pro.getFechaFin()) + "'";
+		}
+
+		md.insertar(table, campos, valores);
+	}
+
+	private void agregarSubsidio2(IProyectog proyecto, ISubsidio subsidio) {
+		ManejoDatos md = new ManejoDatos();
+		String table = "Subsidios";
+		String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
+		String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
+				+ subsidio.getMontoTotal();
+
+		if (subsidio.getObservaciones() != null && !subsidio.getObservaciones().equals("")) {
+			campos += ", Observaciones";
+			valores += ", '" + subsidio.getObservaciones() + "'";
+		}
+
+		for (IRendicion rendicion : subsidio.getRendiciones()) {
+			this.agregarRendicion2(rendicion, proyecto, subsidio);
+		}
+
+		md.insertar(table, campos, valores);
+		
+	}
+
+	private EstadoOperacion agregarRendicion2(IRendicion rendicion, IProyectog proyecto, ISubsidio subsidio) {
+		try {
+			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "rendiciones";
+			String campos = "`id`, `Proyecto`, `YearSubsidio`, `Fecha`, `Monto`";
+			String valores = rendicion.getId() + ", " + proyecto.getId() + ", " + subsidio.getFecha()  + ", "
+					+ "'" + Date.valueOf(rendicion.getFecha()) + "', " + rendicion.getMonto();
+
+			if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
+				campos += ", Observaciones";
+				valores += ", '" + rendicion.getObservaciones() + "'";
+			}
+
+			md.insertar(tabla, campos, valores);
+
+			if (md.isEstado()) {
+				subsidio.setRendiciones(new ArrayList<IRendicion>());
+				return new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente");
+			} else {
+				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
+		}
+	}
+
+	private void agregarIntegrante2(IProyectog proyecto, IIntegrante i) {
+		IIntegranteg integrante = (IIntegranteg) i;
+		if (integrante.getId() == -1) {
+			integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
+		}
+		ManejoDatos md = new ManejoDatos();
+		String table = "Integrantes";
+		String campos = "`id`, `Proyecto`";
+		String valores = integrante.getId() + ", " + proyecto.getId();
+
+		if (integrante.getCargoDocente2() != null) {
+			campos += ", CargoDocente";
+			valores += ", " + integrante.getCargoDocente2().getId();
+		}
+		if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
+			campos += ", Apellido";
+			valores += ", '" + integrante.getApellido() + "'";
+		}
+		if (integrante.getNombre() != null && !integrante.getApellido().equals("")) {
+			campos += ", Nombre";
+			valores += ", '" + integrante.getNombre() + "'";
+		}
+		if (integrante.getCargo() != null && !integrante.getCargo().equals("")) {
+			campos += ", Cargo";
+			valores += ", '" + integrante.getCargo() + "'";
+		}
+		if (integrante.getInstitucion() != null && !integrante.getInstitucion().equals("")) {
+			campos += ", Institucion";
+			valores += ", '" + integrante.getInstitucion() + "'";
+		}
+		if (integrante.getHorasSemanales() != -1) {
+			campos += ", HorasSemanales";
+			valores += ", " + integrante.getHorasSemanales();
+		}
+		
+		md.insertar(table, campos, valores);
+		
 	}
 
 	public EstadoOperacion modificarProyecto(IProyecto proyecto) {
@@ -142,8 +322,8 @@ public class GestorProyecto {
 			String condicion = "`Id` = " + proyecto.getId();
 			md.update(tabla, campos, condicion);
 			return (md.isEstado()) ?
-                new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente") :
-                new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se modificó");
+					new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente") :
+						new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se modificó");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,8 +340,8 @@ public class GestorProyecto {
 			md.delete("`Subsidios`", condicion);
 			md.delete("`Proyectos`", "id = " + proyecto.getId());
 			return (md.isEstado()) ?
-			    new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminó correctamente") :
-			    new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El proyecto no se eliminó");
+					new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminó correctamente") :
+						new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El proyecto no se eliminó");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -209,54 +389,42 @@ public class GestorProyecto {
 		}
 	}
 
-	public EstadoOperacion agregarIntegrante(IProyecto proyecto, IIntegrante i) {
-		try {
-			IIntegranteg integrante = (IIntegranteg) i;
-			if (integrante.getId() == -1) {
-				integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
-			}
-			ManejoDatos md = new ManejoDatos();
-			String table = "Integrantes";
-			String campos = "`id`, `Proyecto`";
-			String valores = integrante.getId() + ", " + proyecto.getId();
-
-			if (integrante.getCargoDocente2() != null) {
-				campos += ", CargoDocente";
-				valores += ", " + integrante.getCargoDocente2().getId();
-			}
-			if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
-				campos += ", Apellido";
-				valores += ", '" + integrante.getApellido() + "'";
-			}
-			if (integrante.getNombre() != null && !integrante.getApellido().equals("")) {
-				campos += ", Nombre";
-				valores += ", '" + integrante.getNombre() + "'";
-			}
-			if (integrante.getCargo() != null && !integrante.getCargo().equals("")) {
-				campos += ", Cargo";
-				valores += ", '" + integrante.getCargo() + "'";
-			}
-			if (integrante.getInstitucion() != null && !integrante.getInstitucion().equals("")) {
-				campos += ", Institucion";
-				valores += ", '" + integrante.getInstitucion() + "'";
-			}
-			if (integrante.getHorasSemanales() != -1) {
-				campos += ", HorasSemanales";
-				valores += ", " + integrante.getHorasSemanales();
-			}
-			md.insertar(table, campos, valores);
-
-			if (md.isEstado()) {
-				proyecto.setIntegrantes(new ArrayList<IIntegrante>());
-				return new EstadoOperacion(CodigoEstado.INSERT_OK, "El integrante se agregó correctamente");
-			} else {
-				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el integrante");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
+	public String agregarIntegrante(IProyectog proyecto, IIntegrante i) {
+		IIntegranteg integrante = (IIntegranteg) i;
+		if (integrante.getId() == -1) {
+			integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
 		}
+		ManejoDatos md = new ManejoDatos();
+		String table = "Integrantes";
+		String campos = "`id`, `Proyecto`";
+		String valores = integrante.getId() + ", " + proyecto.getId();
+
+		if (integrante.getCargoDocente2() != null) {
+			campos += ", CargoDocente";
+			valores += ", " + integrante.getCargoDocente2().getId();
+		}
+		if (integrante.getApellido() != null && !integrante.getApellido().equals("")) {
+			campos += ", Apellido";
+			valores += ", '" + integrante.getApellido() + "'";
+		}
+		if (integrante.getNombre() != null && !integrante.getApellido().equals("")) {
+			campos += ", Nombre";
+			valores += ", '" + integrante.getNombre() + "'";
+		}
+		if (integrante.getCargo() != null && !integrante.getCargo().equals("")) {
+			campos += ", Cargo";
+			valores += ", '" + integrante.getCargo() + "'";
+		}
+		if (integrante.getInstitucion() != null && !integrante.getInstitucion().equals("")) {
+			campos += ", Institucion";
+			valores += ", '" + integrante.getInstitucion() + "'";
+		}
+		if (integrante.getHorasSemanales() != -1) {
+			campos += ", HorasSemanales";
+			valores += ", " + integrante.getHorasSemanales();
+		}
+		return md.insertQuery(table, campos, valores);
+
 	}
 
 	public EstadoOperacion modificarIntegrante(IProyecto proyecto, IIntegrante i) {
@@ -304,10 +472,10 @@ public class GestorProyecto {
 			md.update(tabla, campos, condicion);
 
 			if (md.isEstado()) {
-			    proyecto.setIntegrantes(new ArrayList<IIntegrante>());
-			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizó correctamente");
+				proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizó correctamente");
 			} else {
-			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
 			}
 
 		} catch (Exception e) {
@@ -326,10 +494,10 @@ public class GestorProyecto {
 			md.delete(tabla, condicion);
 
 			if (md.isEstado()) {
-			    proyecto.setIntegrantes(new ArrayList<IIntegrante>());
-			    return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminó correctamente");
+				proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminó correctamente");
 			} else {
-			    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El integrante no se eliminó");
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El integrante no se eliminó");
 			}
 
 		} catch (Exception e) {
@@ -369,7 +537,7 @@ public class GestorProyecto {
 			return integrantes;
 
 		} catch (NumberFormatException e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 			return new ArrayList<IIntegrante>();
 		}
 	}
@@ -411,75 +579,64 @@ public class GestorProyecto {
 		return new Subsidio();
 	}
 
-	public EstadoOperacion agregarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
+	public String agregarSubsidio(IProyectog proyecto, ISubsidio s) {
+		ManejoDatos md = new ManejoDatos();
+		
+		ISubsidiog subsidio = (ISubsidiog) s;
+		
+		String table = "Subsidios";
+		String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
+		String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
+				+ subsidio.getMontoTotal();
+
+		if (subsidio.getObservaciones() != null && !subsidio.getObservaciones().equals("")) {
+			campos += ", Observaciones";
+			valores += ", '" + subsidio.getObservaciones() + "'";
+		}
+
+		
+
+		return md.insertQuery(table, campos, valores);
+
+	}
+
+	public EstadoOperacion quitarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
 		try {
 			ManejoDatos md = new ManejoDatos();
-			String table = "Subsidios";
-			String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
-			String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
-					+ subsidio.getMontoTotal();
+			String tabla = "`Subsidios`";
+			String condicion =
+					"Proyecto=" + proyecto.getId() + " AND " +
+							"Year = '" + subsidio.getFecha().toString() + "'";
 
-			if (subsidio.getObservaciones() != null && !subsidio.getObservaciones().equals("")) {
-				campos += ", Observaciones";
-				valores += ", '" + subsidio.getObservaciones() + "'";
-			}
-
+			// Borrar las rendiciones del subsidio:
 			for (IRendicion rendicion : subsidio.getRendiciones()) {
-				this.agregarRendicion(rendicion, proyecto, subsidio);
+				EstadoOperacion resultado = quitarRendicion(proyecto, subsidio, rendicion);
+				switch (resultado.getEstado()) {
+				case DELETE_ERROR:
+					return new EstadoOperacion(CodigoEstado.DELETE_ERROR,
+							"No se pudo quitar una rendición del subsidio [id: " + rendicion.getId() + "]");
+				case DELETE_OK:
+					// Seguir iterando
+					break;
+				default:
+					throw new RuntimeException("Estado de modificación no esperado: "
+							+ resultado.getEstado().toString() + ": " + resultado.getMensaje());
+				}
 			}
 
-			md.insertar(table, campos, valores);
+			md.delete(tabla, condicion);
 
 			if (md.isEstado()) {
 				proyecto.setSubsidios(new ArrayList<ISubsidio>());
-				return new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agregó correctamente");
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio se quitó correctamente");
 			} else {
-				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar el subsidio");
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El subsidio no se pudo quitar");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el subsidio");
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar el subsidio");
 		}
-	}
-
-	public EstadoOperacion quitarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
-	    try {
-    		ManejoDatos md = new ManejoDatos();
-    		String tabla = "`Subsidios`";
-    		String condicion =
-		        "Proyecto=" + proyecto.getId() + " AND " +
-	            "Year = '" + subsidio.getFecha().toString() + "'";
-
-    		// Borrar las rendiciones del subsidio:
-    		for (IRendicion rendicion : subsidio.getRendiciones()) {
-    		    EstadoOperacion resultado = quitarRendicion(proyecto, subsidio, rendicion);
-    		    switch (resultado.getEstado()) {
-                    case DELETE_ERROR:
-                        return new EstadoOperacion(CodigoEstado.DELETE_ERROR,
-                            "No se pudo quitar una rendición del subsidio [id: " + rendicion.getId() + "]");
-                    case DELETE_OK:
-                        // Seguir iterando
-                        break;
-                    default:
-                        throw new RuntimeException("Estado de modificación no esperado: "
-                            + resultado.getEstado().toString() + ": " + resultado.getMensaje());
-    		    }
-    		}
-
-    		md.delete(tabla, condicion);
-
-    		if (md.isEstado()) {
-    		    proyecto.setSubsidios(new ArrayList<ISubsidio>());
-                return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio se quitó correctamente");
-    		} else {
-    		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El subsidio no se pudo quitar");
-    		}
-
-	    } catch (Exception e) {
-            e.printStackTrace();
-            return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar el subsidio");
-        }
 	}
 
 	public EstadoOperacion modificarSubsidio(IProyecto proyecto, ISubsidio subsidio) {
@@ -511,10 +668,10 @@ public class GestorProyecto {
 			md.update(tabla, campos, condicion);
 
 			if (md.isEstado()) {
-			    proyecto.setSubsidios(new ArrayList<ISubsidio>());
-			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizó correctamente");
+				proyecto.setSubsidios(new ArrayList<ISubsidio>());
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizó correctamente");
 			} else {
-			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
 			}
 
 		} catch (Exception e) {
@@ -542,7 +699,7 @@ public class GestorProyecto {
 			return subsidios;
 
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 			return new ArrayList<ISubsidio>();
 		}
 	}
@@ -570,31 +727,21 @@ public class GestorProyecto {
 		return condicion;
 	}
 
-	public EstadoOperacion agregarProrroga(IProyecto proyecto, IProrroga prorroga) {
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String table = "Prorrogas";
-			String campos = "`Proyecto`, `Disposicion`";
-			String valores = proyecto.getId() + ", '" + prorroga.getDisposicion() + "'";
+	public String agregarProrroga(IProyectog proyecto, IProrroga pro) {
 
-			if (prorroga.getFechaFin() != null) {
-				campos += ", FechaFin";
-				valores += ", '" + Date.valueOf(prorroga.getFechaFin()) + "'";
-			}
+		ManejoDatos md = new ManejoDatos();
+		String table = "Prorrogas";
+		String campos = "`Proyecto`, `Disposicion`";
+		String valores = proyecto.getId() + ", '" + pro.getDisposicion() + "'";
 
-			md.insertar(table, campos, valores);
-
-			if (md.isEstado()) {
-				proyecto.setProrrogas(new ArrayList<IProrroga>());
-				return new EstadoOperacion(CodigoEstado.INSERT_OK, "La prorroga se agregó correctamente");
-			} else {
-				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la prorroga");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la prorroga");
+		if (pro.getFechaFin() != null) {
+			campos += ", FechaFin";
+			valores += ", '" + Date.valueOf(pro.getFechaFin()) + "'";
 		}
+
+		return md.insertQuery(table, campos, valores);
+
+
 	}
 
 	public IProrroga getIProrroga() {
@@ -611,10 +758,10 @@ public class GestorProyecto {
 			md.update(tabla, campos, condicion);
 
 			if (md.isEstado()) {
-			    proyecto.setProrrogas(new ArrayList<IProrroga>());
-			    return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prórroga se actualizó correctamente");
+				proyecto.setProrrogas(new ArrayList<IProrroga>());
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prórroga se actualizó correctamente");
 			} else {
-			    return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
 			}
 
 		} catch (Exception e) {
@@ -624,28 +771,28 @@ public class GestorProyecto {
 	}
 
 	public EstadoOperacion quitarProrroga(IProyecto proyecto, IProrroga prorroga) {
-	    try {
-    		ManejoDatos md = new ManejoDatos();
+		try {
+			ManejoDatos md = new ManejoDatos();
 
-    		String tabla = "`Prorrogas`";
-    		String condicion =
-    		    "`Proyecto`=" + proyecto.getId() + " AND " +
-    		    "`Disposicion` = '" + prorroga.getDisposicion() + "'";
+			String tabla = "`Prorrogas`";
+			String condicion =
+					"`Proyecto`=" + proyecto.getId() + " AND " +
+							"`Disposicion` = '" + prorroga.getDisposicion() + "'";
 
-    		md.delete(tabla, condicion);
+			md.delete(tabla, condicion);
 
-    		if (md.isEstado()) {
-    		    proyecto.setProrrogas(new ArrayList<IProrroga>());
-                return new EstadoOperacion(CodigoEstado.DELETE_OK, "La prórroga se quitó correctamente");
+			if (md.isEstado()) {
+				proyecto.setProrrogas(new ArrayList<IProrroga>());
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La prórroga se quitó correctamente");
 
-    		} else {
-    		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
-    		}
+			} else {
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+			}
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-            return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+		}
 	}
 
 	public List<IProrroga> listarProrrogas(IProyecto proyecto, IProrroga prorroga){
@@ -669,7 +816,7 @@ public class GestorProyecto {
 			return prorrogas;
 
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 			return new ArrayList<IProrroga>();
 		}
 	}
@@ -734,7 +881,7 @@ public class GestorProyecto {
 		return condicion;
 	}
 
-	private static int getMaxID(String tabla, String campo) {
+	static int getMaxID(String tabla, String campo) {
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String c = "MAX("+ campo + ")";
@@ -743,19 +890,18 @@ public class GestorProyecto {
 
 			String salida = reg.get(c);
 			if (salida.equals("")) {
-			    return 0;
+				return 0;
 			} else {
-			    return Integer.parseInt(salida);
+				return Integer.parseInt(salida);
 			}
 
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 			return 0;
 		}
 	}
 
-	public EstadoOperacion agregarRendicion(IRendicion rendicion, IProyecto proyecto, ISubsidio subsidio) {
-		try {
+	public String agregarRendicion(IRendicion rendicion, IProyectog proyecto, ISubsidiog subsidio) {
 			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "rendiciones";
@@ -768,19 +914,8 @@ public class GestorProyecto {
 				valores += ", '" + rendicion.getObservaciones() + "'";
 			}
 
-			md.insertar(tabla, campos, valores);
+			return md.insertQuery(tabla, campos, valores);
 
-			if (md.isEstado()) {
-				subsidio.setRendiciones(new ArrayList<IRendicion>());
-				return new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente");
-			} else {
-				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
-		}
 	}
 
 	public IRendicion getIRendicion() {
@@ -789,98 +924,98 @@ public class GestorProyecto {
 
 	public EstadoOperacion quitarRendicion(IProyecto proyecto,ISubsidio subsidio, IRendicion rendicion ) {
 		try {
-    	    ManejoDatos md = new ManejoDatos();
+			ManejoDatos md = new ManejoDatos();
 
-    	    String tabla = "`Rendiciones`";
-    	    // yearSubsidio lo puse con ''
-    	    String condicion =
-    	        "Proyecto=" + proyecto.getId() + " AND " +
-	            "id=" + rendicion.getId() + " AND " +
-	            "YearSubsidio = '" + subsidio.getFecha() + "'";
-    		md.delete(tabla, condicion);
+			String tabla = "`Rendiciones`";
+			// yearSubsidio lo puse con ''
+			String condicion =
+					"Proyecto=" + proyecto.getId() + " AND " +
+							"id=" + rendicion.getId() + " AND " +
+							"YearSubsidio = '" + subsidio.getFecha() + "'";
+			md.delete(tabla, condicion);
 
-    		if (md.isEstado()) {
-    		    subsidio.setRendiciones(new ArrayList<IRendicion>());
-    		    return new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendición se quitó correctamente");
-    		} else {
-    		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
-    		}
+			if (md.isEstado()) {
+				subsidio.setRendiciones(new ArrayList<IRendicion>());
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendición se quitó correctamente");
+			} else {
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
+			}
 
 		} catch (Exception e) {
-		    e.printStackTrace();
-		    return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
 		}
 	}
 
 	public EstadoOperacion modificarRendicion(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion) {
-        try {
-            ManejoDatos md =  new ManejoDatos();
-            String tabla = "Rendiciones";
-            String condicion =
-                "Proyecto = " + proyecto.getId() + " AND " +
-                "YearSubsidio = " + subsidio.getFecha().toString() + " AND " +
-                "id = " + rendicion.getId();
-            String campos = "";
+		try {
+			ManejoDatos md =  new ManejoDatos();
+			String tabla = "Rendiciones";
+			String condicion =
+					"Proyecto = " + proyecto.getId() + " AND " +
+							"YearSubsidio = " + subsidio.getFecha().toString() + " AND " +
+							"id = " + rendicion.getId();
+			String campos = "";
 
-            if (rendicion.getFecha() != null) {
-                if (!campos.equals("")) {
-                    campos += ", ";
-                }
-                campos += "Fecha = '" + Date.valueOf(rendicion.getFecha()) + "'";
-            }
+			if (rendicion.getFecha() != null) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "Fecha = '" + Date.valueOf(rendicion.getFecha()) + "'";
+			}
 
-            if (!campos.equals("")) {
-                campos += ", ";
-            }
-            campos += "Monto = " + rendicion.getMonto();
+			if (!campos.equals("")) {
+				campos += ", ";
+			}
+			campos += "Monto = " + rendicion.getMonto();
 
-            if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
-                if (!campos.equals("")) {
-                    campos += ", ";
-                }
-                campos += "Observaciones = '" + rendicion.getObservaciones() + "'";
-            }
+			if (rendicion.getObservaciones() != null && !rendicion.getObservaciones().equals("")) {
+				if (!campos.equals("")) {
+					campos += ", ";
+				}
+				campos += "Observaciones = '" + rendicion.getObservaciones() + "'";
+			}
 
-            md.update(tabla, campos, condicion);
+			md.update(tabla, campos, condicion);
 
-            if (md.isEstado()) {
-                proyecto.setSubsidios(new ArrayList<ISubsidio>());
-                return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La rendición se actualizó correctamente");
-            } else {
-                return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
-            }
+			if (md.isEstado()) {
+				proyecto.setSubsidios(new ArrayList<ISubsidio>());
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La rendición se actualizó correctamente");
+			} else {
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+			}
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
-        }
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+		}
+	}
 
 	public List<IRendicion> listarRendiciones(IProyecto proyecto, ISubsidio subsidio, IRendicion rendicion){
 		List<IRendicion> rendiciones = new ArrayList<IRendicion>();
 		try {
-    		ManejoDatos md = new ManejoDatos();
-    		String tabla = "Rendiciones";
-    		String condicion = this.armarCondicion(proyecto, subsidio, rendicion);
+			ManejoDatos md = new ManejoDatos();
+			String tabla = "Rendiciones";
+			String condicion = this.armarCondicion(proyecto, subsidio, rendicion);
 
-    		List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
-    		for (Hashtable<String, String> reg : res) {
-    			Rendicion r = new Rendicion();
-    			r.setId(Integer.parseInt(reg.get("id")));
+			List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			for (Hashtable<String, String> reg : res) {
+				Rendicion r = new Rendicion();
+				r.setId(Integer.parseInt(reg.get("id")));
 
-    			r.setFecha(Date.valueOf(reg.get("Fecha")).toLocalDate());
-    			r.setMonto(Float.parseFloat(reg.get("Monto")));
-    			if (!reg.get("Observaciones").equals("")) {
-    				r.setObservaciones(reg.get("Observaciones"));
-    			}
-    			rendiciones.add(r);
-    		}
+				r.setFecha(Date.valueOf(reg.get("Fecha")).toLocalDate());
+				r.setMonto(Float.parseFloat(reg.get("Monto")));
+				if (!reg.get("Observaciones").equals("")) {
+					r.setObservaciones(reg.get("Observaciones"));
+				}
+				rendiciones.add(r);
+			}
 
-    		return rendiciones;
+			return rendiciones;
 
 		} catch (Exception e) {
-		    e.printStackTrace();
-		    return new ArrayList<IRendicion>();
+			e.printStackTrace();
+			return new ArrayList<IRendicion>();
 		}
 	}
 
@@ -888,11 +1023,11 @@ public class GestorProyecto {
 		String condicion = "TRUE";
 
 		if (proyecto != null && proyecto.getId() != -1) {
-		    condicion += " AND Proyecto = " + proyecto.getId();
+			condicion += " AND Proyecto = " + proyecto.getId();
 		}
 
 		if (subsidio != null && subsidio.getFecha() != null) {
-		    condicion += " AND YearSubsidio = '" + subsidio.getFecha() + "'";
+			condicion += " AND YearSubsidio = '" + subsidio.getFecha() + "'";
 		}
 
 		if (rendicion != null) {

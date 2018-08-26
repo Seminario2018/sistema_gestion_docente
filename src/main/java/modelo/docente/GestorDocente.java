@@ -8,7 +8,7 @@ import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.persona.IContacto;
 import modelo.persona.IDomicilio;
-import modelo.persona.IPersona;
+import modelo.persona.IPersonag;
 import modelo.persona.ITitulo;
 import persistencia.ManejoDatos;
 
@@ -24,9 +24,9 @@ public class GestorDocente {
 
 			IDocenteg docente = (IDocenteg) doc;
 
-			IPersona persona = docente.getPersona2();
+			IPersonag persona = (IPersonag) docente.getPersona2();
 
-			String tipoDoc = String.valueOf(persona.getTipoDocumento().getId());
+			String tipoDoc = String.valueOf(persona.getTipoDocumento2().getId());
 			String nroDoc = String.valueOf(persona.getNroDocumento());
 
 			String table = "Personas";
@@ -40,30 +40,30 @@ public class GestorDocente {
 				valores += ", '" + fechaNac + "'";
 			}
 
-			if (persona.getEstado() != null) {
-				persona.getEstado().guardar();
+			if (persona.getEstado2() != null) {
+				persona.getEstado2().guardar();
 				campos += ", `Estado`";
-				valores += ", " + persona.getEstado().getId();
+				valores += ", " + persona.getEstado2().getId();
 			}
 
 			st.add(md.insertQuery(table, campos, valores));
 
-			if (persona.getContactos() != null && !persona.getContactos().isEmpty()) {
-				for (IContacto contacto : persona.getContactos()) {
+			if (persona.getContactos2() != null && !persona.getContactos2().isEmpty()) {
+				for (IContacto contacto : persona.getContactos2()) {
 					st.add(this.insertarContactos(persona, contacto));
 				}
 			}
 
-			if (persona.getDomicilios() != null && !persona.getDomicilios().isEmpty()) {
-				for(IDomicilio domicilio : persona.getDomicilios()) {
+			if (persona.getDomicilios2() != null && !persona.getDomicilios2().isEmpty()) {
+				for(IDomicilio domicilio : persona.getDomicilios2()) {
 					st.add(this.insertarDomicilios(persona, domicilio));
 				}
 
 			}
 
-			if (persona.getTitulos() != null) {
-				if (!persona.getTitulos().isEmpty()) {
-					for(ITitulo titulo : persona.getTitulos()) {
+			if (persona.getTitulos2() != null) {
+				if (!persona.getTitulos2().isEmpty()) {
+					for(ITitulo titulo : persona.getTitulos2()) {
 						st.add(this.insertarTitulos(persona, titulo));
 					}
 
@@ -184,7 +184,7 @@ public class GestorDocente {
 
 	}
 
-	private String insertarTitulos(IPersona persona, ITitulo titulo) {
+	private String insertarTitulos(IPersonag persona, ITitulo titulo) {
 		ManejoDatos md = new ManejoDatos();
 		int esMayor = titulo.isEsMayor() ? 1 : 0;
 
@@ -195,13 +195,13 @@ public class GestorDocente {
 		String table = "Titulos";
 		String campos = "`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
 		String valores = titulo.getId() + ", "
-				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', "
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', "
 				+ "'" + titulo.getNombre() + "', " + esMayor;
 
 		return md.insertQuery(table, campos, valores);
 	}
 
-	private String insertarDomicilios(IPersona persona, IDomicilio domicilio) {
+	private String insertarDomicilios(IPersonag persona, IDomicilio domicilio) {
 		ManejoDatos md = new ManejoDatos();
 
 		if (domicilio.getId() == -1) {
@@ -211,14 +211,14 @@ public class GestorDocente {
 		String table = "Domicilios";
 		String campos =	"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`, `CodigoPostal`, `Direccion`";
 		String valores =domicilio.getId() + ", "
-				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', '"
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', '"
 				+ domicilio.getProvincia() + "', '" + domicilio.getCiudad() + "', "
 				+ "'" + domicilio.getCodigoPostal() + "', '" + domicilio.getDireccion() + "'";
 
 		return md.insertQuery(table, campos, valores);
 	}
 
-	private String insertarContactos(IPersona persona, IContacto contacto) {
+	private String insertarContactos(IPersonag persona, IContacto contacto) {
 		ManejoDatos md = new ManejoDatos();
 
 		contacto.getTipo().guardar();
@@ -230,7 +230,7 @@ public class GestorDocente {
 		String table = "Contactos";
 		String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
 		String valores = contacto.getId() + ", "
-				+ persona.getTipoDocumento().getId() + ", '" + persona.getNroDocumento() + "', "
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', "
 				+ contacto.getTipo().getId() + ", '" + contacto.getDato() + "'";
 
 		return md.insertQuery(table, campos, valores);

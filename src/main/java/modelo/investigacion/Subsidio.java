@@ -4,7 +4,7 @@ import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Subsidio implements ISubsidio {
+public class Subsidio implements ISubsidio, ISubsidiog {
 	private Year fecha; // Solo año
 	private String disposicion;
 	private float montoTotal;
@@ -107,5 +107,10 @@ public class Subsidio implements ISubsidio {
     public void setRendiciones(List<IRendicion> rendiciones) {
         this.rendiciones = rendiciones;
     }
+
+	@Override
+	public List<IRendicion> getRendiciones2() {
+		return this.rendiciones;
+	}
 
 }

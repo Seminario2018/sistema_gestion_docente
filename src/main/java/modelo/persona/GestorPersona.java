@@ -12,6 +12,126 @@ import modelo.auxiliares.TipoDocumento;
 import persistencia.ManejoDatos;
 
 public class GestorPersona {
+	
+	
+	public EstadoOperacion guardarTodo(IPersona p) {
+		try {
+			
+			ManejoDatos md = new ManejoDatos();
+			
+			ArrayList<String> st = new ArrayList<String>();
+			
+			IPersonag persona = (IPersonag) p;
+			
+			String tipoDoc = String.valueOf(persona.getTipoDocumento2().getId());
+			String nroDoc = String.valueOf(persona.getNroDocumento());
+
+			String table = "Personas";
+			String campos =	"`TipoDocumento`, `NroDocumento`, `Apellido`, `Nombre`";
+			String valores = tipoDoc + ", '" + nroDoc + "', "
+					+ "'" + persona.getApellido() + "', '" + persona.getNombre() + "'";
+
+			if (persona.getFechaNacimiento() != null) {
+				String fechaNac = Date.valueOf(persona.getFechaNacimiento()).toString();
+				campos += ", `FechaNacimiento`";
+				valores += ", '" + fechaNac + "'";
+			}
+
+			if (persona.getEstado2() != null) {
+				persona.getEstado2().guardar();
+				campos += ", `Estado`";
+				valores += ", " + persona.getEstado2().getId();
+			}
+
+			st.add(md.insertQuery(table, campos, valores));
+
+			if (persona.getContactos2() != null && !persona.getContactos2().isEmpty()) {
+				for (IContacto contacto : persona.getContactos2()) {
+					st.add(this.insertarContactos(persona, contacto));
+				}
+			}
+
+			if (persona.getDomicilios2() != null && !persona.getDomicilios2().isEmpty()) {
+				for(IDomicilio domicilio : persona.getDomicilios2()) {
+					st.add(this.insertarDomicilios(persona, domicilio));
+				}
+
+			}
+
+			if (persona.getTitulos2() != null) {
+				if (!persona.getTitulos2().isEmpty()) {
+					for(ITitulo titulo : persona.getTitulos2()) {
+						st.add(this.insertarTitulos(persona, titulo));
+					}
+
+				}
+			}
+			
+			if (md.isEstado()) {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_OK, "La persona se creó correctamente");
+			} else {
+				return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear la persona");
+			}
+
+		} catch (Exception e) {
+		    e.printStackTrace();
+			return new EstadoOperacion(EstadoOperacion.CodigoEstado.INSERT_ERROR, "No se pudo crear la persona");
+
+		}
+	}
+
+	private String insertarTitulos(IPersonag persona, ITitulo titulo) {
+		ManejoDatos md = new ManejoDatos();
+		int esMayor = titulo.isEsMayor() ? 1 : 0;
+
+		if (titulo.getId() == -1) {
+			titulo.setId(this.getMax("Titulos", "id") + 1);
+		}
+
+		String table = "Titulos";
+		String campos = "`id`, `TipoDocumento`, `NroDocumento`, `Nombre`, `EsMayor`";
+		String valores = titulo.getId() + ", "
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', "
+				+ "'" + titulo.getNombre() + "', " + esMayor;
+
+		return md.insertQuery(table, campos, valores);
+	}
+
+	private String insertarDomicilios(IPersonag persona, IDomicilio domicilio) {
+		ManejoDatos md = new ManejoDatos();
+
+		if (domicilio.getId() == -1) {
+			domicilio.setId(this.getMax("Domicilios", "iddomicilios") + 1);
+		}
+
+		String table = "Domicilios";
+		String campos =	"`iddomicilios`, `TipoDocumento`, `NroDocumento`, `Provincia`, `Ciudad`, `CodigoPostal`, `Direccion`";
+		String valores =domicilio.getId() + ", "
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', '"
+				+ domicilio.getProvincia() + "', '" + domicilio.getCiudad() + "', "
+				+ "'" + domicilio.getCodigoPostal() + "', '" + domicilio.getDireccion() + "'";
+
+		return md.insertQuery(table, campos, valores);
+	}
+
+	private String insertarContactos(IPersonag persona, IContacto contacto) {
+		ManejoDatos md = new ManejoDatos();
+
+		contacto.getTipo().guardar();
+
+		if (contacto.getId() == -1) {
+			contacto.setId(this.getMax("Contactos", "idcontacto") + 1);
+		}
+
+		String table = "Contactos";
+		String campos = "`idcontacto`, `TipoDocumento`, `NroDocumento`, `Tipo`, `Valor`";
+		String valores = contacto.getId() + ", "
+				+ persona.getTipoDocumento2().getId() + ", '" + persona.getNroDocumento() + "', "
+				+ contacto.getTipo().getId() + ", '" + contacto.getDato() + "'";
+
+		return md.insertQuery(table, campos, valores);
+
+	}
 
 	public EstadoOperacion nuevaPersona(IPersona persona) {
 		try {
