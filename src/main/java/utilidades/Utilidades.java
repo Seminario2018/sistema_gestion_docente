@@ -2,6 +2,7 @@ package utilidades;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,6 +40,22 @@ public class Utilidades {
 					+ "a un número con decimal (e.g. 0,1 o 1.2)");
 		}
 	}
+	
+	/**
+	 * Convierte LocalDate a String con formato dd-mm-yyyy
+	 * @param fecha la fecha a convertir
+	 */
+	public static String localDateToString(LocalDate fecha) {
+		return fecha.toString();
+	}
+	
+	/**
+	 * Convierte float a String con formato .2f
+	 * @param f el float a convertir
+	 */
+	public static String floatToString(float f) {
+		return String.format("%.2f", f);
+	}
 
 	/**
 	 * Verifica si un String representa un número con decimal.
@@ -59,6 +76,17 @@ public class Utilidades {
 	        return original;
 	    }
 	    return original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+	
+	/**
+	 * @param original el String que se quiere modificar.
+	 * @return el String con la primer letra en minúscula.
+	 */
+	public static String primeraMinuscula(String original) {
+	    if (original == null || original.length() == 0) {
+	        return original;
+	    }
+	    return original.substring(0, 1).toLowerCase() + original.substring(1);
 	}
 
 	/**

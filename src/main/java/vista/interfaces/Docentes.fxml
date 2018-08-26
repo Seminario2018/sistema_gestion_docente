@@ -64,36 +64,36 @@
                   <Insets bottom="5.0" top="5.0" />
                </GridPane.margin>
             </GridPane>
-            <GridPane alignment="BOTTOM_LEFT" GridPane.rowIndex="1">
+            <GridPane alignment="BOTTOM_LEFT" hgap="5.0" vgap="5.0" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="btnDocentesBuscar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buscarDocente" text="Buscar docente">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                   <Button fx:id="btnDocentesNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoDocente" text="Nuevo docente" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                   <Button fx:id="btnDocentesEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarDocente" text="Eliminar docente" GridPane.columnIndex="2">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                   <Button fx:id="btnDocentesCosto" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarUltimoCosto" text="Importar último costo" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                   <Button fx:id="btnDocentesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDocente" text="Guardar cambios" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                   <Button fx:id="btnDocentesDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarDocente" text="Descartar todo" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets left="10.0" right="10.0" />
+                        <Insets />
                      </GridPane.margin>
                   </Button>
                </children>
@@ -109,6 +109,9 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
             </GridPane>
             <TabPane fx:id="tabpDocentes" prefHeight="448.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
