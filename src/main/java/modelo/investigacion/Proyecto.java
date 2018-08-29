@@ -300,4 +300,28 @@ public class Proyecto implements IProyecto, IProyectog {
     public void setProrrogas(List<IProrroga> prorrogas) {
         this.prorrogas = prorrogas;
     }
+	@Override
+	public List<IIntegrante> getIntegrantes2() {
+		return this.integrantes;
+	}
+	@Override
+	public List<ISubsidio> getSubsidios2() {
+		return this.subsidios;
+	}
+	@Override
+	public void setProrrogas(ArrayList<IProrroga> p) {
+		this.prorrogas = p;
+	}
+	@Override
+	public List<IProrroga> getProrrogas2() {
+		return this.prorrogas;
+	}
+	@Override
+	public void setIntegrantes(ArrayList<IIntegrante> i) {
+		this.integrantes = i;
+	}
+	@Override
+	public void setSubsidios(ArrayList<ISubsidio> s) {
+		this.subsidios = s;
+	}
 }

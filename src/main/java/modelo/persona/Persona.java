@@ -152,6 +152,9 @@ public class Persona implements IPersona, IPersonag {
 		}
 		return this.contactos;
 	}
+	
+	
+	
 
 	@Override
 	public void setContactos(List<IContacto> contactos) {
@@ -196,6 +199,21 @@ public class Persona implements IPersona, IPersonag {
 	@Override
 	public EstadoPersona getEstado2() {
 		return this.estado;
+	}
+
+	@Override
+	public List<IContacto> getContactos2() {
+		return this.contactos;
+	}
+
+	@Override
+	public List<IDomicilio> getDomicilios2() {
+		return this.domicilios;
+	}
+
+	@Override
+	public List<ITitulo> getTitulos2() {
+		return this.titulos;
 	}
 
 }
