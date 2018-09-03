@@ -50,8 +50,7 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-//        private static final int MILISEGUNDOS = 60000;
-        private static final int MILISEGUNDOS = 1000;
+        private static final int MILISEGUNDOS = 60000;
     	private NotificacionCargo2 noti;
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
@@ -74,9 +73,7 @@ public class NotificacionCargo2 {
 						);
 
     					mail.put(KEY_RESULTADO, (exito)? "Enviado" : "Falló");
-
-    					mail.put(KEY_EMISOR, mailSend.getUsuario());
-
+    					mail.put(KEY_EMISOR,    mailSend.getUsuario());
     					loggearMail(mail);
     				}
     				System.out.println("Se han enviado todos los mails");
@@ -210,7 +207,11 @@ public class NotificacionCargo2 {
     		this.mails.add(mailActual);
     	}
     	System.out.println("Se agregó el mail a la lista");
-    	if (this.threadMail == null) {
+
+    	if (this.threadMail == null ||
+    	    this.threadMail.getState() == Thread.State.TERMINATED) {
+    	     /* Compruebo si el hilo de mail no se inicio o si ya
+                terminó su ejecución. */
     		this.threadMail = new Thread(new ThreadMail(this));
     		threadMail.start();
     	}
