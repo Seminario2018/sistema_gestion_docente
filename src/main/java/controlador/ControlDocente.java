@@ -95,7 +95,13 @@ public class ControlDocente {
                 /* Notifico por mail cuando hay un nuevo cargo (si se insertó
                  * exitosamente):
                  */
-                NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
+                NotificacionCargo2.getInstance().notificar(
+                    vista.getUsuario(),
+                    docente,
+                    cargoDocente,
+                    EstadoCargo.getEstadoNuevo(),
+                    cargoDocente.getEstado(),
+                    resultado);
             }
             return resultado;
 
@@ -117,7 +123,13 @@ public class ControlDocente {
                  */
                 EstadoCargo estadoCargoNuevo = cargoDocente.getEstado();
                 if (!estadoCargoNuevo.equals(estadoCargoReferencia)) {
-                    NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
+                    NotificacionCargo2.getInstance().notificar(
+                        vista.getUsuario(),
+                        docente,
+                        cargoDocente,
+                        estadoCargoReferencia,
+                        estadoCargoNuevo,
+                        resultado);
                     pasarAInactivo(docente);
                 }
             }

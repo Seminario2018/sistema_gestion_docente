@@ -41,7 +41,7 @@ public class Mail implements IMail {
      * @see mail.IMail#enviarEmail(mail.IDocente, mail.ICargo)
      */
     @Override
-    public void enviarEmail(
+    public boolean enviarEmail(
         String destino,
         String asunto,
         String mensaje) {
@@ -83,9 +83,17 @@ public class Mail implements IMail {
            // Enviar mensaje:
            Transport.send(mensajeMime);
 
+           return true;
+
         } catch (MessagingException e) {
            e.printStackTrace();
+           return false;
         }
+    }
+
+    @Override
+    public String getUsuario() {
+        return this.usuario;
     }
 
 }

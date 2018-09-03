@@ -1,7 +1,10 @@
 package utilidades;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -40,7 +43,7 @@ public class Utilidades {
 					+ "a un número con decimal (e.g. 0,1 o 1.2)");
 		}
 	}
-	
+
 	/**
 	 * Convierte LocalDate a String con formato dd-mm-yyyy
 	 * @param fecha la fecha a convertir
@@ -48,7 +51,7 @@ public class Utilidades {
 	public static String localDateToString(LocalDate fecha) {
 		return fecha.toString();
 	}
-	
+
 	/**
 	 * Convierte float a String con formato .2f
 	 * @param f el float a convertir
@@ -77,7 +80,7 @@ public class Utilidades {
 	    }
 	    return original.substring(0, 1).toUpperCase() + original.substring(1);
 	}
-	
+
 	/**
 	 * @param original el String que se quiere modificar.
 	 * @return el String con la primer letra en minúscula.
@@ -188,5 +191,37 @@ public class Utilidades {
             .transform(
                 new DOMSource(documento),
                 new StreamResult(archivo));
+	}
+
+	/**
+	 * Guarda el texto en el archivo, grabándolo al final.
+	 * @param archivo Archivo a donde grabar el texto
+	 * @param texto Texo a grabar
+	 */
+	public static void guardarTexto(File archivo, String texto) {
+	    FileWriter fw = null;
+	    PrintWriter pw = null;
+	    BufferedWriter bw = null;
+	    try {
+	        fw = new FileWriter(archivo, true);
+	        bw = new BufferedWriter(fw);
+	        pw = new PrintWriter(bw);
+
+	        pw.println(texto);
+	        pw.flush();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+
+	    } finally {
+	        try {
+    	        pw.close();
+    	        bw.close();
+    	        fw.close();
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 }
