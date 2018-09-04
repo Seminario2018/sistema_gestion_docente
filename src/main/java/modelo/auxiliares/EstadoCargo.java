@@ -25,7 +25,7 @@ public class EstadoCargo {
 		this.id = -1;
 		this.descripcion = null;
 	}
-	
+
 	@Override
 	public EstadoCargo clone() {
 		return new EstadoCargo(this.id, this.descripcion);
@@ -178,4 +178,13 @@ public class EstadoCargo {
 	    return estadoCargo.id == this.id;
 	}
 
+	/**
+	 * Crea un estado de cargo "nuevo" que representa cuando un
+	 * cargo docente es creado y tiene que ser notificado al jefe
+	 * de división.
+	 * @return EstadoCargo nuevo
+	 */
+	public static EstadoCargo getEstadoNuevo() {
+	    return new EstadoCargo(-1, "<<nuevo>>");
+	}
 }

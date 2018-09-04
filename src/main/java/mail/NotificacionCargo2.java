@@ -1,15 +1,19 @@
 package mail;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.w3c.dom.Document;
+import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.persona.IContacto;
+import modelo.usuario.IUsuario;
 import utilidades.Plantilla;
 import utilidades.Utilidades;
 
@@ -21,6 +25,16 @@ public class NotificacionCargo2 {
     public static final String KEY_DESTINO = "destino";
     public static final String KEY_ASUNTO = "asunto";
     public static final String KEY_MENSAJE = "mensaje";
+
+    public static final String KEY_RESULTADO = "resultado";
+    public static final String KEY_USUARIO = "usuario";
+    public static final String KEY_EMISOR = "emisor";
+    public static final String KEY_LEGAJO = "legajo";
+    public static final String KEY_CARGO = "cargo";
+    public static final String KEY_ESTANTERIOR = "estanterior";
+    public static final String KEY_ESTNUEVO = "estnuevo";
+
+
 
     private NotificacionCargo2() {
     }
@@ -52,11 +66,15 @@ public class NotificacionCargo2 {
     				IMail mailSend = new Mail();
     				for (Map<String, String> mail : mails) {
     					System.out.println("Enviando un mail");
-    					mailSend.enviarEmail(
+    					boolean exito = mailSend.enviarEmail(
 							mail.get(NotificacionCargo2.KEY_DESTINO),
 							mail.get(NotificacionCargo2.KEY_ASUNTO),
 							mail.get(NotificacionCargo2.KEY_MENSAJE)
 						);
+
+    					mail.put(KEY_RESULTADO, (exito)? "Enviado" : "Falló");
+    					mail.put(KEY_EMISOR,    mailSend.getUsuario());
+    					loggearMail(mail);
     				}
     				System.out.println("Se han enviado todos los mails");
     				this.noti.setMails(new ArrayList<Map<String, String>>());
@@ -65,6 +83,33 @@ public class NotificacionCargo2 {
 				e.printStackTrace();
 			}
 		}
+
+        private void loggearMail(Map<String, String> mail) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
+            sb.append("] [");
+            sb.append(mail.get(KEY_RESULTADO));
+            sb.append("] ");
+            sb.append(mail.get(KEY_USUARIO));
+            sb.append(" - ");
+            sb.append(mail.get(KEY_EMISOR));
+            sb.append(" - ");
+            sb.append(mail.get(KEY_DESTINO));
+            sb.append(" - Legajo ");
+            sb.append(mail.get(KEY_LEGAJO));
+            sb.append(" - Codigo Cargo ");
+            sb.append(mail.get(KEY_CARGO));
+            sb.append(" - Estado: ");
+            sb.append(mail.get(KEY_ESTANTERIOR));
+            sb.append(" -> ");
+            sb.append(mail.get(KEY_ESTNUEVO));
+
+            System.out.println("Log: " + sb.toString());
+
+            Utilidades.guardarTexto(
+                new File("logMail.txt"), sb.toString());
+        }
     }
 
     public void setMails(List<Map<String, String>> mails) {
@@ -85,7 +130,14 @@ public class NotificacionCargo2 {
      * {@code mails}.
      * @param estadoOperacion el resultado de la operación.
      */
-    public void notificar(IDocente docente, ICargoDocente cargo, EstadoOperacion estado) {
+    public void notificar(
+        IUsuario usuario,
+        IDocente docente,
+        ICargoDocente cargo,
+        EstadoCargo estAnterior,
+        EstadoCargo estNuevo,
+        EstadoOperacion estado) {
+
     	String destinos = null;
     	try {
     		List<IContacto> contactos = cargo.getArea()
@@ -141,14 +193,25 @@ public class NotificacionCargo2 {
     	mensaje = armarMensaje(plantillaXML, parametros);
 
     	// Guardar el mail para enviar
-    	mailActual.put(NotificacionCargo2.KEY_ASUNTO, asunto);
-    	mailActual.put(NotificacionCargo2.KEY_MENSAJE, mensaje);
-    	mailActual.put(NotificacionCargo2.KEY_DESTINO, destinos);
+    	mailActual.put(NotificacionCargo2.KEY_ASUNTO,      asunto);
+    	mailActual.put(NotificacionCargo2.KEY_MENSAJE,     mensaje);
+    	mailActual.put(NotificacionCargo2.KEY_DESTINO,     destinos);
+
+    	mailActual.put(NotificacionCargo2.KEY_USUARIO,     usuario.getUser());
+    	mailActual.put(NotificacionCargo2.KEY_LEGAJO,      String.valueOf(docente.getLegajo()));
+    	mailActual.put(NotificacionCargo2.KEY_CARGO,       String.valueOf(cargo.getId()));
+    	mailActual.put(NotificacionCargo2.KEY_ESTANTERIOR, estAnterior.getDescripcion());
+    	mailActual.put(NotificacionCargo2.KEY_ESTNUEVO,    estNuevo.getDescripcion());
+
     	if (mailNuevo) {
     		this.mails.add(mailActual);
     	}
     	System.out.println("Se agregó el mail a la lista");
-    	if (this.threadMail == null) {
+
+    	if (this.threadMail == null ||
+    	    this.threadMail.getState() == Thread.State.TERMINATED) {
+    	     /* Compruebo si el hilo de mail no se inicio o si ya
+                terminó su ejecución. */
     		this.threadMail = new Thread(new ThreadMail(this));
     		threadMail.start();
     	}

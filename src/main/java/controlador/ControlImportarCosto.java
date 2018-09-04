@@ -28,7 +28,7 @@ public class ControlImportarCosto {
 		super();
 		this.vista = vista;
 	}
-	
+
 	public List<ICargoFaltante> getFaltantesSistema() {
 		return this.gestorImportarCosto.getFaltantesSistema();
 	}
@@ -65,7 +65,7 @@ public class ControlImportarCosto {
 	}
 
 	public void guardar() {
-		EstadoOperacion resultado = this.gestorImportarCosto.guardar();
+		EstadoOperacion resultado = this.gestorImportarCosto.guardar(vista);
 		switch (resultado.getEstado()) {
     		case UPDATE_OK:
     		    vista.mensajeEstado(resultado.getMensaje());
@@ -93,7 +93,7 @@ public class ControlImportarCosto {
 	public LocalDate getUltimaFecha() {
 		return this.gestorImportarCosto.getUltimaFecha();
 	}
-	
+
 	public List<FilaCostoComparar> listarComparacion() {
 		return this.gestorImportarCosto.listarComparacion();
 	}

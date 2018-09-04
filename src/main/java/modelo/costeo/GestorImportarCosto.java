@@ -7,9 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
 import excel.Excel;
 import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoCargo;
@@ -19,6 +17,7 @@ import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 import utilidades.Utilidades;
+import vista.controladores.ControladorVista;
 
 /**
  * @author Martín Tomás Juran
@@ -32,9 +31,9 @@ public class GestorImportarCosto {
 	public static final int COL_TIPO_CARGO = 3;
 	public static final int COL_CODIGO_CARGO = 4;
 	public static final int COL_COSTO = 14;
-	
+
 	private LocalDate fechaImportada;
-	
+
 	public LocalDate getFechaImportada() {
 		return fechaImportada;
 	}
@@ -44,7 +43,7 @@ public class GestorImportarCosto {
 	public enum TipoAlta {
 		DOCENTE, CARGO, ESTADO;
 	}
-	
+
 	// Cargos que faltan en el sistema pero aparecen en el costeo
 	private List<ICargoFaltante> faltantesSistema = new ArrayList<ICargoFaltante>();
 	// Cargos que faltan en el costeo pero aparecen en el sistema como "activos"
@@ -53,10 +52,10 @@ public class GestorImportarCosto {
 	private List<ICargoDocente> faltantesCosteoModificados = new ArrayList<ICargoDocente>();
 	// Cargos importados de la planilla
 	private List<ICargoFaltante> cargosImportados = new ArrayList<ICargoFaltante>();
-	
+
 	private GestorDocente gestorDocente = new GestorDocente();
 	private GestorCargosFaltantes gestorCargosFaltantes = new GestorCargosFaltantes();
-	
+
 	public List<ICargoFaltante> getFaltantesSistema() {
 		actualizarListas();
 		return faltantesSistema;
@@ -68,7 +67,7 @@ public class GestorImportarCosto {
 	public List<ICargoFaltante> getCargosImportados() {
 		return cargosImportados;
 	}
-	
+
 	/**
 	 * Importa los datos de la planilla de costeos, permitiendo al usuario
 	 * analizar diferencias entre los datos importados y los del sistema.
@@ -81,9 +80,9 @@ public class GestorImportarCosto {
 	        grilla.remove(0);
 	        grilla.remove(0);
 	        grilla.remove(grilla.size() - 1);
-	        
+
 	        this.cargosImportados = new ArrayList<ICargoFaltante>();
-	        
+
 	        for (List<String> fila : grilla) {
 	        	ICargoFaltante cargo = this.gestorCargosFaltantes.getICargoFaltante();
 	        	cargo.setLegajo(Integer.parseInt(fila.get(COL_LEGAJO)));
@@ -94,7 +93,7 @@ public class GestorImportarCosto {
 	        	cargo.setFechaUltimoCosto(this.fechaImportada);
 	        	this.cargosImportados.add(cargo);
 	        }
-	        
+
 	        return new EstadoOperacion(EstadoOperacion.CodigoEstado.OP_OK,
 	        		"La importación del costeo se ha realizado con éxito.");
 		} catch (InvalidFormatException | NumberFormatException e) {
@@ -108,7 +107,7 @@ public class GestorImportarCosto {
         			+ " y que no está siendo usado por otro programa.");
         }
 	}
-	
+
 	/**
 	 * Listar comparación de costos actualizados con anteriores
 	 */
@@ -117,7 +116,7 @@ public class GestorImportarCosto {
 			return null;
 		}
 		List<FilaCostoComparar> listaComparar = new ArrayList<FilaCostoComparar>();
-		
+
 		for (ICargoFaltante cargoActual : this.cargosImportados) {
 			ICargoDocente cargoAnterior = getCargo(cargoActual.getCodigoCargo());
 			if (cargoAnterior != null) {
@@ -127,25 +126,27 @@ public class GestorImportarCosto {
 				}
 			}
 		}
-		
+
 		return listaComparar;
 	}
-	
+
 	/**
 	 * Guarda los cambios realizados, actualizando los costos de los cargos y sus estados.
 	 */
-	public EstadoOperacion guardar() {
+	public EstadoOperacion guardar(ControladorVista vista) {
 		// No hay datos para importar
-		if (this.cargosImportados == null || this.cargosImportados.isEmpty())
-			// No hay datos para actualizar
-			if (this.faltantesCosteoModificados == null || this.faltantesCosteoModificados.isEmpty())
-				return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
+		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
+            // No hay datos para actualizar
+			if (this.faltantesCosteoModificados == null || this.faltantesCosteoModificados.isEmpty()) {
+                return new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
 						"No se han importado datos y no hay datos para actualizar."
 						+ " Intente importar una planilla o modificar el Estado de un Cargo.");
-			else
-				return guardarEstado();
-			
-		EstadoOperacion eo = guardarEstado();
+            } else {
+                return guardarEstado(vista);
+            }
+        }
+
+		EstadoOperacion eo = guardarEstado(null);
 		switch (eo.getEstado()) {
 		case UPDATE_OK:
 			EstadoOperacion eo2 = guardarCostos();
@@ -160,12 +161,13 @@ public class GestorImportarCosto {
 			return eo;
 		}
 	}
-	
+
 	/**
 	 * Actualiza el Estado de los CargosDocentes en la Base de Datos
+	 * @param vista TODO
 	 * @return
 	 */
-	private EstadoOperacion guardarEstado() {
+	private EstadoOperacion guardarEstado(ControladorVista vista) {
 		EstadoOperacion eo = new EstadoOperacion(EstadoOperacion.CodigoEstado.UPDATE_ERROR,
 				"Ha ocurrido un error al intentar actualizar los estados de los cargos.");
 		try {
@@ -182,7 +184,12 @@ public class GestorImportarCosto {
 						switch (eo2.getEstado()) {
 						case UPDATE_OK:
 							NotificacionCargo2.getInstance().notificar(
-									cargoActual.getDocente(), cargoActual, eo2);
+							    vista.getUsuario(),
+							    cargoActual.getDocente(),
+							    cargoActual,
+							    cargoFaltanteSistema.getEstado(),
+							    cargoActual.getEstado(),
+							    eo2);
 							break;
 						default:
 							throw new Exception(eo2.getMensaje());
@@ -192,13 +199,13 @@ public class GestorImportarCosto {
 			}
 			// Todo salió bien
 			eo.setEstado(EstadoOperacion.CodigoEstado.UPDATE_OK);
-			eo.setMensaje("La actualización se realizó con éxito");	
+			eo.setMensaje("La actualización se realizó con éxito");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return eo;
 	}
-	
+
 	/**
 	 * Actualiza los costos en la Base de Datos
 	 * @return
@@ -231,7 +238,7 @@ public class GestorImportarCosto {
 		}
 		return eo;
 	}
-	
+
 	/**
 	 * Actualiza los CargosFaltantes en la Base de Datos
 	 */
@@ -254,7 +261,7 @@ public class GestorImportarCosto {
 				faltante.setTipo(CargoFaltante.FALTA_COSTEO);
 				this.gestorCargosFaltantes.agregarCargoFaltante(faltante);
 			}
-				
+
 			// Todo salió bien
 			eo.setEstado(EstadoOperacion.CodigoEstado.UPDATE_OK);
 			eo.setMensaje("La actualización se realizó con éxito");
@@ -263,7 +270,7 @@ public class GestorImportarCosto {
 		}
 		return eo;
 	}
-	
+
 	/**
 	 * Descarta los cambios realizados, volviendo al estado anterior a importar.
 	 */
@@ -271,7 +278,7 @@ public class GestorImportarCosto {
 		this.cargosImportados = new ArrayList<ICargoFaltante>();
 		actualizarListas();
 	}
-	
+
 	/**
 	 * Actualiza las listas, cargando los cargos faltantes tanto en el sistema
 	 * como en la planilla importada
@@ -283,48 +290,50 @@ public class GestorImportarCosto {
 		if (this.cargosImportados == null || this.cargosImportados.isEmpty()) {
 			// Sólo cargar los últimos
 			LocalDate ultimaFecha = this.gestorCargosFaltantes.getMaxFechaUltimoCosto();
-			
+
 			for (ICargoFaltante faltanteCosteo : this.gestorCargosFaltantes.listarCargosEnSistema()) {
 				if (!faltanteCosteo.getFechaUltimoCosto().isBefore(ultimaFecha)) {
 					// Chequear que esté en el sistema
 					ICargoDocente cargo = getCargo(faltanteCosteo.getCodigoCargo());
-					if (cargo != null)
-						this.faltantesCosteo.add(cargo);
+					if (cargo != null) {
+                        this.faltantesCosteo.add(cargo);
+                    }
 				}
 			}
-			
+
 			for (ICargoFaltante faltanteSistema : this.gestorCargosFaltantes.listarCargosEnCosteo()) {
 				if (!faltanteSistema.getFechaUltimoCosto().isBefore(ultimaFecha)) {
 					this.faltantesSistema.add(faltanteSistema);
 				}
 			}
-			
+
 		} else {
 			// Recuperar todos los cargos del sistema, para luego agregarlos
 			// a los faltantes del costeo
 			List<ICargoDocente> cargosSistema = this.gestorDocente.listarCargo(null, null);
-			
+
 			for (ICargoFaltante cargoImportado : this.cargosImportados) {
 				ICargoDocente cargoActual = buscarCargo(
 						cargoImportado.getCodigoCargo(), cargosSistema);
-				
+
 				// El cargo no está en el sistema, o está pero no activo
 				if (cargoActual == null || cargoActual.getEstado().getId() != 0) {
 					this.faltantesSistema.add(cargoImportado);
-					
+
 					// Sacarlo de los faltantes en el Costeo si está pero no activo
-					if (cargoActual != null) 
-						cargosSistema.remove(cargoActual);
-					
+					if (cargoActual != null) {
+                        cargosSistema.remove(cargoActual);
+                    }
+
 				// El cargo está activo en el sistema y en el costeo,
-				// por lo que no hará falta agregarlo a los faltantes del costeo 
+				// por lo que no hará falta agregarlo a los faltantes del costeo
 				} else {
 					cargosSistema.remove(cargoActual);
 				}
-			}	
-			// Agregar a los faltantes del costeo los que están activos 
+			}
+			// Agregar a los faltantes del costeo los que están activos
 			// en el sistema y no aparecen en el costeo
-			for (ICargoDocente cargo : cargosSistema) { 
+			for (ICargoDocente cargo : cargosSistema) {
 				if (cargo.getEstado().getId() == 0) {
 					this.faltantesCosteo.add(cargo);
 				}
@@ -333,21 +342,23 @@ public class GestorImportarCosto {
 		// Actualizar los cargos que fueron modificados por el usuario
 		for (ICargoDocente modificado : this.faltantesCosteoModificados) {
 			ICargoDocente anterior = buscarCargo(modificado.getId(), this.faltantesCosteo);
-			if (anterior != null)
-				anterior.setEstado(modificado.getEstado());
+			if (anterior != null) {
+                anterior.setEstado(modificado.getEstado());
+            }
 		}
 	}
-	
+
 	/**
 	 * Método auxiliar que busca un CargoDocente en una lista de CargosFaltantes
-	 * @return 
+	 * @return
 	 */
 	private ICargoDocente buscarCargo(int codigoCargo, List<ICargoDocente> lista) {
 		ICargoDocente encontrado = null;
 		int i = 0;
 		while (encontrado == null && i < lista.size()) {
-			if (lista.get(i).getId() == codigoCargo)
-				encontrado = lista.get(i);
+			if (lista.get(i).getId() == codigoCargo) {
+                encontrado = lista.get(i);
+            }
 			i++;
 		}
 		return encontrado;
@@ -356,17 +367,18 @@ public class GestorImportarCosto {
 	/**
 	 * Modifica el Estado del CargoDocente en memoria
 	 * @param cargo El CargoDocente a modificar
-	 * @param estado El nuevo Estado del CargoDocente 
+	 * @param estado El nuevo Estado del CargoDocente
 	 */
 	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
 		ICargoDocente cargoActualizar = buscarCargo(cargo.getId(), this.faltantesCosteoModificados);
-		if (cargoActualizar != null)
-			cargoActualizar.setEstado(estado);
-		else
-			cargo.setEstado(estado);
+		if (cargoActualizar != null) {
+            cargoActualizar.setEstado(estado);
+        } else {
+            cargo.setEstado(estado);
+        }
 			this.faltantesCosteoModificados.add(cargo);
 	}
-	
+
 	/**
 	 * Chequear cómo manejar el alta de un cargo, dependiendo de la situación:
 	 * <ul>
@@ -376,12 +388,16 @@ public class GestorImportarCosto {
 	 * </ul>
 	 */
 	public TipoAlta getTipoAlta(ICargoFaltante cargo) {
-		if (getCargo(cargo.getCodigoCargo()) != null) return TipoAlta.ESTADO;
-		
+		if (getCargo(cargo.getCodigoCargo()) != null) {
+            return TipoAlta.ESTADO;
+        }
+
 		IDocente docente = this.gestorDocente.getIDocente();
 		docente.setLegajo(cargo.getLegajo());
-		if (GestorDocente.existeDocente(docente)) return TipoAlta.CARGO;
-		
+		if (GestorDocente.existeDocente(docente)) {
+            return TipoAlta.CARGO;
+        }
+
 		return TipoAlta.DOCENTE;
 	}
 
@@ -392,14 +408,15 @@ public class GestorImportarCosto {
 	 */
 	private ICargoDocente getCargo(int codigo) {
 		ICargoDocente cargo = null;
-		
+
 		ICargoDocente cargoSelect = this.gestorDocente.getICargoDocente();
 		cargoSelect.setId(codigo);
 		List<ICargoDocente> listSelect = this.gestorDocente.listarCargo(null, cargoSelect);
-		
-		if (listSelect != null && !listSelect.isEmpty())
-			cargo = listSelect.get(0);
-		
+
+		if (listSelect != null && !listSelect.isEmpty()) {
+            cargo = listSelect.get(0);
+        }
+
 		return cargo;
 	}
 	/**
@@ -412,8 +429,9 @@ public class GestorImportarCosto {
 			List<Hashtable<String, String>> res = md.select("cargosdocentes", "MAX(FechaUltimoCosto)");
 			if (res != null && !res.isEmpty()) {
 				Hashtable<String, String> reg = res.get(0);
-				if (!reg.isEmpty() && !reg.get("MAX(FechaUltimoCosto)").equals(""))
-					ultima = Date.valueOf(reg.get("MAX(FechaUltimoCosto)")).toLocalDate();
+				if (!reg.isEmpty() && !reg.get("MAX(FechaUltimoCosto)").equals("")) {
+                    ultima = Date.valueOf(reg.get("MAX(FechaUltimoCosto)")).toLocalDate();
+                }
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
