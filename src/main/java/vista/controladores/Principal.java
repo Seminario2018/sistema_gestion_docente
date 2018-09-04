@@ -6,22 +6,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
-import javafx.fxml.Initializable;
 
 /**
  * @author Martín Tomás Juran
  * @version 1.0, 4 de may. de 2018
  */
 public class Principal extends ControladorVista implements Initializable {
-	
+
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
 	 */
@@ -34,28 +33,28 @@ public class Principal extends ControladorVista implements Initializable {
 			this.lblMensajes.setText(mensaje);
 		}
 	}
-	
+
 	public void setLabelUsuario(String usuario) {
 		if (usuario != null && !usuario.equals("")) {
 			this.lblUsuario.setText("Usuario logueado: " + usuario);
 		}
 	}
-	
+
 	@Override
 	public void inicializar() {
 		for (IRol rol : this.usuario.getRoles()) {
 			for (IPermiso p : rol.getPermisos()) {
-				if (p.getListar())
-					switch (p.getModulo()) {
+				if (p.getListar()) {
+                    switch (p.getModulo()) {
 					case USUARIOS:
 						this.mnuUsuarios.setDisable(false);
 						break;
 					case ROLES:
 						this.mnuRoles.setDisable(false);
 						break;
-					case PERSONAS:
-						this.mnuPersonas.setDisable(false);
-						break;
+//					case PERSONAS:
+//						this.mnuPersonas.setDisable(false);
+//						break;
 					case DOCENTES:
 						this.mnuDocentes.setDisable(false);
 						break;
@@ -70,22 +69,23 @@ public class Principal extends ControladorVista implements Initializable {
 						break;
 					default:
 					}
+                }
 			}
 		}
 	}
-	
+
 	@FXML
     private MenuItem mnuUsuarios;
 
-    @FXML
-    private MenuItem mnuPersonas;
+//    @FXML
+//    private MenuItem mnuPersonas;
 
     @FXML
     private MenuItem mnuInformes;
 
     @FXML
     private Label lblMensajes;
-    
+
     @FXML
     private Label lblUsuario;
 
@@ -138,7 +138,7 @@ public class Principal extends ControladorVista implements Initializable {
     void pantallaListaInformes(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("ListaInformes", null);
     }
-	
+
     @FXML
     void manualUsuarios(ActionEvent event) {
 		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
@@ -156,7 +156,7 @@ public class Principal extends ControladorVista implements Initializable {
 					+ " la carpeta donde instaló este programa.");
 		}
     }
-    
+
     @FXML
     void about(ActionEvent event) {
     	dialogoInformacion("Acerca de...", "Plumas 2 - Sistema de Gestión Docente",
@@ -166,5 +166,5 @@ public class Principal extends ControladorVista implements Initializable {
     			+ "\r\n"
     			+ "Para obtener soporte, contáctese con semint2018@gmail.com");
     }
-    
+
 }

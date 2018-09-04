@@ -30,9 +30,9 @@
               </rowConstraints>
                <children>
                   <Label text="Documento" GridPane.halignment="RIGHT" />
-                  <TextField editable="false" GridPane.columnIndex="1" />
+                  <TextField fx:id="txtDocumento" editable="false" GridPane.columnIndex="1" />
                   <Label text="Usuario" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                  <TextField GridPane.columnIndex="3" />
+                  <TextField fx:id="txtUsuario" GridPane.columnIndex="3" />
                </children>
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
@@ -389,25 +389,25 @@
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField fx:id="txtUsuario" promptText="Ingrese el nombre de usuario" GridPane.columnIndex="1" />
+                              <TextField fx:id="txtUsuarioUsuario" promptText="Ingrese el nombre de usuario" GridPane.columnIndex="1" />
                               <Label text="Contraseña" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <PasswordField fx:id="txtContrasena" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <PasswordField fx:id="txtUsuarioContrasena" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label text="Confirmar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                                  <padding>
                                     <Insets left="10.0" right="10.0" />
                                  </padding>
                               </Label>
-                              <PasswordField fx:id="txtConfirmar" promptText="Confirme la contraseña" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <PasswordField fx:id="txtUsuarioConfirmar" promptText="Confirme la contraseña" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                               <Label text="Descripción" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets right="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <TextField fx:id="txtDescripcion" promptText="Ingrese una descripción para el usuario" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+                              <TextField fx:id="txtUsuarioDescripcion" promptText="Ingrese una descripción para el usuario" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -430,30 +430,30 @@
                             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TableView fx:id="tblDisponibles" GridPane.rowSpan="2147483647">
+                              <TableView fx:id="tblRolesDisponibles" GridPane.rowSpan="2147483647">
                                 <columns>
-                                  <TableColumn fx:id="colDisponiblesRol" prefWidth="75.0" text="Roles disponibles" />
+                                  <TableColumn fx:id="colRolesDisponiblesRol" prefWidth="75.0" text="Roles disponibles" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <Button fx:id="btnAgregar" ellipsisString="" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarRol" styleClass="button-agregar" text="Agregar &gt;&gt;" textOverrun="LEADING_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <Button fx:id="btnRolesAgregar" ellipsisString="" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarRol" styleClass="button-agregar" text="Agregar &gt;&gt;" textOverrun="LEADING_WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button fx:id="btnQuitar" ellipsisString="" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#quitarRol" styleClass="button-quitar" text="&lt;&lt; Quitar" textOverrun="WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <Button fx:id="btnRolesQuitar" ellipsisString="" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#quitarRol" styleClass="button-quitar" text="&lt;&lt; Quitar" textOverrun="WORD_ELLIPSIS" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets left="10.0" right="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <TableView fx:id="tblUsuario" GridPane.columnIndex="2" GridPane.rowSpan="2147483647">
+                              <TableView fx:id="tblRolesUsuario" GridPane.columnIndex="2" GridPane.rowSpan="2147483647">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                                  <columns>
-                                    <TableColumn fx:id="colUsuarioRol" prefWidth="75.0" text="Roles del usuario" />
+                                    <TableColumn fx:id="colRolesUsuarioRol" prefWidth="75.0" text="Roles del usuario" />
                                  </columns>
                               </TableView>
                            </children>

@@ -1,14 +1,12 @@
 package vista.controladores;
 
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.time.DateTimeException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import controlador.ControlAuxiliar;
 import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
@@ -69,19 +67,14 @@ public class Docentes extends ControladorVista implements Initializable {
     // Claves de pestañas:
     public static final String KEY_TAB = "pestaña";
     public static final int TAB_DATOS = 0;
-    public static final int TAB_CARGOS = 1;
-    public static final int TAB_INVESTIGACION = 2;
-    public static final int TAB_INCENTIVOS = 3;
-    public static final int TAB_OBSERVACIONES = 4;
-
-    public Docentes() {
-        // TODO Docentes_Combinado.Docentes_Combinado
-    }
-
-    @Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-        // TODO Docentes_Combinado.initialize
-    }
+    public static final int TAB_CONTACTOS = 1;
+    public static final int TAB_DOMICILIOS = 2;
+    public static final int TAB_TITULOS = 3;
+    public static final int TAB_DOCENTE = 4;
+    public static final int TAB_CARGOS = 5;
+    public static final int TAB_INVESTIGACION = 6;
+    public static final int TAB_INCENTIVOS = 7;
+    public static final int TAB_OBSERVACIONES = 8;
 
 // ----------------------------- Área General ------------------------------- //
 
@@ -90,6 +83,7 @@ public class Docentes extends ControladorVista implements Initializable {
         generalVaciarControles();
         if (docenteSeleccion != null) {
 
+            // Área General:
             if (docenteSeleccion.getPersona() != null) {
                 txtDocumento.setText(String.valueOf(
                     docenteSeleccion.getPersona().getNroDocumento()));
@@ -215,8 +209,8 @@ public class Docentes extends ControladorVista implements Initializable {
 
             exitoGuardado(controlPersona.guardarPersona(docenteSeleccion.getPersona()), TITULO, "Guardar Persona");
             exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
-            generalMostrarDocente();
 
+            generalMostrarDocente();
             modoModificar();
         }
     }
@@ -239,7 +233,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
     /** Inicializa los controles de la pestaña "Datos" */
     @FXML private void inicializarDatos() {
-//        datosMostrarPersona();
+
     }
 
     /** Muestra los datos de la persona del docente seleccionado: */
@@ -1133,7 +1127,8 @@ public class Docentes extends ControladorVista implements Initializable {
         }
     }
 
-    public void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
+    @SuppressWarnings("unused")
+    private void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
         if (docenteSeleccion instanceof IDocente) {
             this.docenteSeleccion = (IDocente) docenteSeleccion;
             modoModificar();
@@ -1141,7 +1136,8 @@ public class Docentes extends ControladorVista implements Initializable {
         }
     }
 
-    public void setAreaSeleccion(Object areaSeleccion, String tipo) {
+    @SuppressWarnings("unused")
+    private void setAreaSeleccion(Object areaSeleccion, String tipo) {
         if (areaSeleccion instanceof IArea) {
             this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
             this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
@@ -1149,7 +1145,8 @@ public class Docentes extends ControladorVista implements Initializable {
         }
     }
 
-    public void setCargoSeleccion(Object cargoSeleccion, String tipo) {
+    @SuppressWarnings("unused")
+    private void setCargoSeleccion(Object cargoSeleccion, String tipo) {
         if (cargoSeleccion instanceof ICargo) {
             this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
             this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
@@ -1263,7 +1260,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
         modoVer();
 
-// =================== Inicializar controles: ====================
+        // =================== Inicializar controles: ====================
         // Pestaña "Datos":
         cmbDatosTipoDocumento.setItems(
             FXCollections.observableArrayList(
@@ -1369,7 +1366,6 @@ public class Docentes extends ControladorVista implements Initializable {
                 incentivosModoModificar();
             }
         });
-        // Pestaña "Observaciones":
     }
 
     @Override
