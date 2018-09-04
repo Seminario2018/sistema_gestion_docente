@@ -95,6 +95,7 @@ public class GestorPantalla {
 			this.pantallaPrincipal = loader.getController();
 			this.pantallaPrincipal.setGestorPantalla(this);
 			this.pantallaPrincipal.setUsuario(this.usuario);
+			this.pantallaPrincipal.setLabelUsuario(this.usuario.getUser());
 			this.internalPane = (Pane) loader.getNamespace().get(ID_MAIN_PANE);
 
 			Scene scene = new Scene(root);

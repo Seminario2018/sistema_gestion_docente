@@ -35,6 +35,12 @@ public class Principal extends ControladorVista implements Initializable {
 		}
 	}
 	
+	public void setLabelUsuario(String usuario) {
+		if (usuario != null && !usuario.equals("")) {
+			this.lblUsuario.setText("Usuario logueado: " + usuario);
+		}
+	}
+	
 	@Override
 	public void inicializar() {
 		for (IRol rol : this.usuario.getRoles()) {
@@ -79,6 +85,9 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     private Label lblMensajes;
+    
+    @FXML
+    private Label lblUsuario;
 
     @FXML
     private MenuItem mnuRoles;
