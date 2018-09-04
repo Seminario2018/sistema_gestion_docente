@@ -34,15 +34,18 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
+            <Menu mnemonicParsing="false" text="Configuración">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Configuración de conexión" />
+                  <MenuItem mnemonicParsing="false" text="Configuración de informes" />
+                  <MenuItem mnemonicParsing="false" text="Configuración de mails" />
+                  <MenuItem mnemonicParsing="false" text="Salir" />
+              </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Usuarios">
                <items>
                   <MenuItem fx:id="mnuUsuarios" disable="true" mnemonicParsing="false" onAction="#pantallaUsuarios" text="Administrar Usuarios" />
                   <MenuItem fx:id="mnuRoles" disable="true" mnemonicParsing="false" onAction="#pantallaRoles" text="Administrar Roles" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="RR HH">
-               <items>
-                  <MenuItem fx:id="mnuPersonas" disable="true" mnemonicParsing="false" onAction="#pantallaPersonas" text="Personas" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Docencia">
