@@ -26,6 +26,8 @@
          <children>
             <GridPane VBox.vgrow="NEVER">
               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="NEVER" />
                   <ColumnConstraints hgrow="ALWAYS" maxWidth="-Infinity" prefWidth="100.0" />
                   <ColumnConstraints hgrow="NEVER" />
@@ -36,26 +38,28 @@
                   <RowConstraints fillHeight="false" vgrow="NEVER" />
               </rowConstraints>
                <children>
-                  <Label text="Legajo" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
+                  <Label text="Legajo" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="txtDocentesLegajo" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1">
+                  <TextField fx:id="txtLegajo" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="3">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label text="Apellido y nombre" GridPane.columnIndex="2">
+                  <Label text="Apellido y nombre" GridPane.columnIndex="4">
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField fx:id="txtDocentesNombre" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="3">
+                  <TextField fx:id="txtNombre" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="5">
                      <GridPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </TextField>
+                  <Label text="Documento" />
+                  <TextField fx:id="txtDocumento" editable="false" GridPane.columnIndex="1" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
@@ -64,36 +68,36 @@
                   <Insets bottom="5.0" top="5.0" />
                </GridPane.margin>
             </GridPane>
-            <GridPane alignment="BOTTOM_LEFT" hgap="5.0" vgap="5.0" GridPane.rowIndex="1">
+            <GridPane alignment="BOTTOM_LEFT" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="btnDocentesBuscar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buscarDocente" text="Buscar docente">
+                  <Button fx:id="btnBuscar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buscarDocente" text="Buscar docente">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoDocente" text="Nuevo docente" GridPane.columnIndex="1">
+                  <Button fx:id="btnNuevo" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoDocente" text="Nuevo docente" GridPane.columnIndex="1">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarDocente" text="Eliminar docente" GridPane.columnIndex="2">
+                  <Button fx:id="btnEliminar" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarDocente" text="Eliminar docente" GridPane.columnIndex="2">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesCosto" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarUltimoCosto" text="Importar último costo" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Button fx:id="btnCosto" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importarUltimoCosto" text="Importar último costo" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDocente" text="Guardar cambios" GridPane.rowIndex="1">
+                  <Button fx:id="btnGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDocente" text="Guardar cambios" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnDocentesDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarDocente" text="Descartar todo" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Button fx:id="btnDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarDocente" text="Descartar todo" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets left="10.0" right="10.0" />
                      </GridPane.margin>
                   </Button>
                </children>
@@ -109,13 +113,289 @@
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
-               <GridPane.margin>
-                  <Insets left="10.0" right="10.0" />
-               </GridPane.margin>
             </GridPane>
             <TabPane fx:id="tabpDocentes" prefHeight="448.0" prefWidth="798.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
-                  <Tab closable="false" onSelectionChanged="#inicializarDatos" text="Datos">
+                  <Tab onSelectionChanged="#inicializarDatos" text="Datos">
+                     <content>
+                        <GridPane vgap="10.0">
+                           <children>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="Apellido">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtDatosApellido" editable="false" focusTraversable="false" promptText="Ingrese el apellido" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Nombre" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtDatosNombre" editable="false" focusTraversable="false" promptText="Ingrese el nombre" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Tipo de documento" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <ComboBox fx:id="cmbDatosTipoDocumento" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </ComboBox>
+                                    <Label text="Documento" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtDatosDocumento" editable="false" focusTraversable="false" promptText="Ingrese el número de documento" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </TextField>
+                                    <Label text="Fecha de nacimiento" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <DatePicker fx:id="dtpDatosFechaNacimiento" maxWidth="105.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </DatePicker>
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" minWidth="50.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <rowConstraints>
+                              <RowConstraints vgrow="NEVER" />
+                              <RowConstraints vgrow="NEVER" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab onSelectionChanged="#inicializarContactos" text="Contactos">
+                     <content>
+                        <GridPane vgap="10.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" />
+                            <RowConstraints minHeight="10.0" />
+                            <RowConstraints minHeight="10.0" />
+                          </rowConstraints>
+                           <children>
+                              <GridPane hgap="10.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                </rowConstraints>
+                                 <children>
+                                    <Button fx:id="btnContactosNuevo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoContacto" text="Nuevo contacto" />
+                                    <Button fx:id="btnContactosGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarContacto" text="Guardar contacto" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnContactosDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarContacto" text="Descartar contacto" GridPane.columnIndex="2" />
+                                    <Button fx:id="btnContactosEliminar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarContacto" text="Eliminar contacto" GridPane.columnIndex="3" />
+                                 </children>
+                              </GridPane>
+                              <TableView fx:id="tblContactos" minHeight="-Infinity" prefHeight="150.0" GridPane.rowIndex="1">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn fx:id="colContactosTipo" prefWidth="253.0" text="Tipo" />
+                                    <TableColumn fx:id="colContactosDato" prefWidth="523.0" text="Dato" />
+                                 </columns>
+                              </TableView>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label text="Tipo" />
+                                    <ComboBox fx:id="cmbContactosTipo" prefHeight="49.0" prefWidth="332.0" GridPane.columnIndex="1" />
+                                    <Label text="Dato" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtContactosDato" promptText="Ingrese el contacto" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" minWidth="50.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab onSelectionChanged="#inicializarDomicilios" text="Domicilios">
+                     <content>
+                        <GridPane vgap="10.0">
+                           <children>
+                              <GridPane hgap="10.0">
+                                 <children>
+                                    <Button fx:id="btnDomiciliosNuevo" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#nuevoDomicilio" text="Nuevo domicilio" />
+                                    <Button fx:id="btnDomiciliosGuardar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarDomicilio" text="Guardar domicilio" GridPane.columnIndex="1">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="btnDomicilioDescartar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#descartarDomicilio" text="Descartar domicilio" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="btnDomiciliosEliminar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarDomicilio" text="Eliminar domicilio" GridPane.columnIndex="3" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                              </GridPane>
+                              <TableView fx:id="tblDomicilios" minHeight="-Infinity" prefHeight="150.0" GridPane.rowIndex="1">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn fx:id="colDomiciliosProvincia" prefWidth="253.0" text="Provincia" />
+                                    <TableColumn fx:id="colDomiciliosCiudad" prefWidth="523.0" text="Ciudad" />
+                                    <TableColumn fx:id="colDomiciliosCP" prefWidth="253.0" text="CP" />
+                                    <TableColumn fx:id="colDomiciliosDireccion" prefWidth="253.0" text="Dirección" />
+                                 </columns>
+                              </TableView>
+                              <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label text="Provinicia" />
+                                    <ComboBox fx:id="cmbDomiciliosProvincia" prefWidth="150.0" GridPane.columnIndex="1" />
+                                    <Label text="Ciudad" GridPane.rowIndex="1" />
+                                    <TextField fx:id="txtDomiciliosCiudad" promptText="Ingrese la ciudad" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label text="Código postal" GridPane.rowIndex="2" />
+                                    <TextField fx:id="txtDomiciliosCP" promptText="Ingrese el código postal" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Dirección" GridPane.rowIndex="3" />
+                                    <TextField fx:id="txtDomiciliosDireccion" promptText="Ingrese la dirección" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="NEVER" minWidth="50.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints />
+                              <RowConstraints />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab onSelectionChanged="#inicializarTitulos" text="Títulos">
+                     <content>
+                        <GridPane vgap="10.0">
+                           <children>
+                              <GridPane hgap="10.0">
+                                 <children>
+                                    <Label text="Título" GridPane.hgrow="NEVER">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Label>
+                                    <TextField fx:id="txtTitulosTitulo" minWidth="200.0" promptText="Ingrese el nombre del título que desea agregar" GridPane.columnIndex="1" GridPane.hgrow="SOMETIMES" />
+                                    <Button fx:id="btnTitulosAgregar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#agregarTitulo" text="Agregar título" GridPane.columnIndex="2">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="btnTitulosQuitar" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#quitarTitulo" text="Quitar título" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                                       <GridPane.margin>
+                                          <Insets />
+                                       </GridPane.margin>
+                                    </Button>
+                                    <Button fx:id="btnTitulosMayor" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mayorTitulo" text="Seleccionar mayor grado" GridPane.columnIndex="4" />
+                                 </children>
+                                 <columnConstraints>
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                    <ColumnConstraints />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                              <TableView fx:id="tblTitulos" maxHeight="200.0" GridPane.rowIndex="1">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                                 <columns>
+                                    <TableColumn fx:id="colTitulosTitulo" minWidth="-1.0" prefWidth="-1.0" text="Título" />
+                                    <TableColumn fx:id="colTitulosMayor" maxWidth="1000.0" minWidth="-1.0" prefWidth="-1.0" text="Mayor grado" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <rowConstraints>
+                              <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="200.0" />
+                           </rowConstraints>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab closable="false" onSelectionChanged="#inicializarDocente" text="Docente">
                      <content>
                         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" prefHeight="5000.0">
                            <content>
@@ -126,59 +406,28 @@
                                  <rowConstraints>
                                     <RowConstraints vgrow="NEVER" />
                                     <RowConstraints vgrow="NEVER" />
-                                    <RowConstraints vgrow="NEVER" />
                                  </rowConstraints>
                                  <children>
-                                    <GridPane hgap="10.0">
+                                    <GridPane alignment="CENTER" hgap="10.0" vgap="5.0">
                                        <children>
-                                          <Button fx:id="btnDatosDatos" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarDatos" text="Ver datos personales" GridPane.columnIndex="1" />
-                                       </children>
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="30.0" />
-                                       </rowConstraints>
-                                    </GridPane>
-                                    <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.rowIndex="1">
-                                       <children>
-                                          <Label text="Documento" />
-                                          <TextField fx:id="txtDatosDocumento" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1">
+                                          <Label text="Legajo" />
+                                          <TextField fx:id="txtDocenteLegajo" promptText="Ingrese el legajo" GridPane.columnIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                           </TextField>
-                                          <Label text="Apellido y nombre" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField fx:id="txtDatosNombre" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Button fx:id="btnDatosPersona" mnemonicParsing="false" onAction="#seleccionarPersona" prefHeight="30.0" prefWidth="307.0" text="Buscar Documento" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label text="Legajo" GridPane.rowIndex="3" />
-                                          <TextField fx:id="txtDatosLegajo" promptText="Ingrese el legajo" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <Label text="Estado" GridPane.rowIndex="4" />
-                                          <ComboBox fx:id="cmbDatosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                          <Label text="Estado" GridPane.rowIndex="1" />
+                                          <ComboBox fx:id="cmbDocenteEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                           </ComboBox>
-                                          <Label text="Categoría de investigación" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                          <Label text="Categoría de investigación" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
                                           </Label>
-                                          <ComboBox fx:id="cmbDatosCategoria" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                          <ComboBox fx:id="cmbDocenteCategoria" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets />
                                              </GridPane.margin>
@@ -189,9 +438,6 @@
                                           <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="200.0" />
                                        </columnConstraints>
                                        <rowConstraints>
-                                          <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                          <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                          <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                           <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                           <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                           <RowConstraints minHeight="30.0" vgrow="NEVER" />
@@ -487,7 +733,7 @@
                         </ScrollPane>
                      </content>
                   </Tab>
-                  <Tab closable="false" onSelectionChanged="#observacionesMostrarObservaciones" text="Observaciones">
+                  <Tab closable="false" onSelectionChanged="#inicializarObservaciones" text="Observaciones">
                      <content>
                         <BorderPane prefHeight="200.0" prefWidth="200.0">
                            <center>

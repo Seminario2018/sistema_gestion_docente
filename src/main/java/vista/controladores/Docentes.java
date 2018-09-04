@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.time.DateTimeException;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,10 @@ import java.util.ResourceBundle;
 import controlador.ControlAuxiliar;
 import controlador.ControlDocente;
 import controlador.ControlInvestigacion;
+import controlador.ControlPersona;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -26,7 +29,11 @@ import javafx.scene.control.TextField;
 import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoDocente;
+import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.auxiliares.TipoCargo;
+import modelo.auxiliares.TipoContacto;
+import modelo.auxiliares.TipoDocumento;
 import modelo.cargo.ICargo;
 import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
@@ -34,490 +41,675 @@ import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
 import modelo.investigacion.IIntegrante;
 import modelo.investigacion.IProyecto;
-import modelo.persona.IPersona;
+import modelo.persona.IContacto;
+import modelo.persona.IDomicilio;
+import modelo.persona.ITitulo;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
 import utilidades.Utilidades;
 import vista.GestorPantalla;
 
-/**
- * @author Martín Tomás Juran
- * @version 1.0, 1 de may. de 2018
- */
+
 public class Docentes extends ControladorVista implements Initializable {
 
-	public void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
-		if (docenteSeleccion instanceof IDocente) {
-			this.docenteSeleccion = (IDocente) docenteSeleccion;
-			modoModificar();
-	        generalMostrarDocente();
-		}
-	}
+    private IDocente docenteSeleccion;
+    public static final String TITULO = "Docentes";
 
-	public void setPersonaSeleccion(Object personaSeleccion, String tipo) {
-		if (personaSeleccion instanceof IPersona) {
-		    IPersona persona = (IPersona) personaSeleccion;
-			this.docenteSeleccion.setPersona(persona);
-			txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
-            txtDatosNombre.setText(persona.getNombreCompleto());
-		}
-	}
+    // Controladores:
+    private ControlPersona controlPersona = new ControlPersona();
+    private ControlDocente controlDocente = new ControlDocente(this);
+    private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
 
-	public void setAreaSeleccion(Object areaSeleccion, String tipo) {
-		if (areaSeleccion instanceof IArea) {
-			this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
-			this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
-			this.btnCargosCargo.requestFocus();
-		}
-	}
+    // Tipos respuesta:
+    private static final String TIPO_AREA = "area";
+    private static final String TIPO_CARGO = "cargo";
+    private static final String TIPO_DOCENTE = "docente";
 
-	public void setCargoSeleccion(Object cargoSeleccion, String tipo) {
-		if (cargoSeleccion instanceof ICargo) {
-			this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
-			this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
-			this.cmbCargosEstado.requestFocus();
-		}
-	}
+    // Claves de pestañas:
+    public static final String KEY_TAB = "pestaña";
+    public static final int TAB_DATOS = 0;
+    public static final int TAB_CARGOS = 1;
+    public static final int TAB_INVESTIGACION = 2;
+    public static final int TAB_INCENTIVOS = 3;
+    public static final int TAB_OBSERVACIONES = 4;
 
-	@Override
-    public void initialize(URL arg0, ResourceBundle arg1) {
-
-	}
-
-	private ControlDocente controlDocente = new ControlDocente(this);
-	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
-	public IDocente docenteSeleccion;
-
-	public static final String TITULO = "Docentes";
-
-	// Tipos respuesta:
-	private static final String TIPO_AREA = "area";
-	private static final String TIPO_CARGO = "cargo";
-	private static final String TIPO_DOCENTE = "docente";
-	private static final String TIPO_PERSONA = "persona";
-
-	public static final String KEY_TAB = "pestaña";
-	public static final int TAB_DATOS = 0;
-	public static final int TAB_CARGOS = 1;
-	public static final int TAB_INVESTIGACION = 2;
-	public static final int TAB_INCENTIVOS = 3;
-	public static final int TAB_OBSERVACIONES = 4;
-
-	@Override
-    public void inicializar() {
-        /* Ocultar controles según roles del usuario: */
-        boolean crear = false;
-        boolean modificar = false;
-        boolean eliminar = false;
-        boolean listar = false;
-
-        for (IRol rol : this.usuario.getRoles()) {
-            for (IPermiso permiso : rol.getPermisos()) {
-                if (permiso.getModulo() == Modulo.DOCENTES) {
-                    this.permiso = permiso;
-                    crear |= permiso.getCrear();
-                    modificar |= permiso.getModificar();
-                    eliminar |= permiso.getEliminar();
-                    listar |= permiso.getListar();
-                }
-            }
-        }
-
-        if (!crear) {
-            btnDocentesNuevo.setVisible(false);
-            btnDatosPersona.setVisible(false);
-        }
-
-        if (!modificar) {
-            // General:
-            btnDocentesCosto.setVisible(false);
-            btnDocentesDescartar.setVisible(false);
-            btnDocentesGuardar.setVisible(false);
-
-            // Pestaña Datos:
-//            btnDatosGuardar.setVisible(false);
-//            btnDatosDescartar.setVisible(false);
-
-            txtDatosLegajo.setEditable(false);
-            cmbDatosEstado.setDisable(true);
-            cmbDatosCategoria.setDisable(true);
-
-            // Pestaña Cargos:
-            btnCargosNuevo.setVisible(false);
-            btnCargosGuardar.setVisible(false);
-            btnCargosDescartar.setVisible(false);
-            btnCargosEliminar.setVisible(false);
-
-            btnCargosArea.setVisible(false);
-            btnCargosCargo.setVisible(false);
-            cmbCargosEstado.setDisable(true);
-            cmbCargosTipo.setDisable(true);
-            txtCargosDisp.setEditable(false);
-            dtpCargosDispDesde.setEditable(false);
-            dtpCargosDispHasta.setEditable(false);
-            txtCargosRes.setEditable(false);
-            dtpCargosResDesde.setEditable(false);
-            dtpCargosResHasta.setEditable(false);
-
-            // Pestaña Incentivos:
-            btnIncentivosNuevo.setVisible(false);
-            btnIncentivosGuardar.setVisible(false);
-            btnIncentivosDescartar.setVisible(false);
-            txtIncentivosAnio.setEditable(false);
-
-            // Pestaña Observaciones:
-//            btnObservacionesGuardar.setVisible(false);
-//            btnObservacionesDescartar.setVisible(false);
-            txtaObservaciones.setEditable(false);
-        }
-
-        if (!eliminar) {
-            btnDocentesEliminar.setVisible(false);
-            btnCargosEliminar.setVisible(false);
-        }
-
-        if (!listar) {
-        }
-
-        modoVer();
+    public Docentes() {
+        // TODO Docentes_Combinado.Docentes_Combinado
     }
 
-	@Override
-    public void modoModificar() {
-	    if (this.permiso.getModificar()) {
-	        // General:
-	        btnDocentesCosto.setVisible(true);
-	        btnDocentesDescartar.setVisible(true);
-	        btnDocentesGuardar.setVisible(true);
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        // TODO Docentes_Combinado.initialize
+    }
 
-	        // Pestaña Datos:
-//	        btnDatosGuardar.setVisible(true);
-//	        btnDatosDescartar.setVisible(true);
-	        txtDatosLegajo.setEditable(true);
-	        cmbDatosEstado.setDisable(false);
-	        cmbDatosCategoria.setDisable(false);
+// ----------------------------- Área General ------------------------------- //
 
-	        // Pestaña Cargos:
-	        cargosModoVer();
-	        btnCargosNuevo.setVisible(true);
-
-	        // Pestaña Incentivos:
-	        incentivosModoVer();
-	        btnIncentivosNuevo.setVisible(true);
-
-	        // Pestaña Observaciones:
-//	        btnObservacionesGuardar.setVisible(true);
-//	        btnObservacionesDescartar.setVisible(true);
-	        txtaObservaciones.setEditable(true);
-	    }
-
-	    if (this.permiso.getEliminar()) {
-	        btnDocentesEliminar.setVisible(true);
-	    }
-
-	    this.window.setTitle(TITULO + " - Modificar Docente");
-	    if (this.docenteSeleccion != null) {
-	        this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
-	    }
-	}
-
-	@Override
-    public void modoNuevo() {
-	    if (this.permiso.getCrear()) {
-	        // General:
-	        btnDocentesDescartar.setVisible(true);
-	        btnDocentesGuardar.setVisible(true);
-	        btnDocentesNuevo.setVisible(true);
-
-	        // Pestaña Datos:
-//	        btnDatosDescartar.setVisible(true);
-//	        btnDatosGuardar.setVisible(true);
-	        btnDatosPersona.setVisible(true);
-	        txtDatosLegajo.setEditable(true);
-	        cmbDatosEstado.setDisable(false);
-	        cmbDatosCategoria.setDisable(false);
-
-	        this.window.setTitle(TITULO + " - Nuevo Docente");
-	        this.gestorPantalla.mensajeEstado("Nuevo Docente ");
-        }
-	}
-
-	@Override
-	public void modoVer() {
-	    // General:
-	    btnDocentesDescartar.setVisible(false);
-	    btnDocentesEliminar.setVisible(false);
-        btnDocentesGuardar.setVisible(false);
-	    btnDocentesCosto.setVisible(true);
-
-	    // Pestaña Datos:
-//	    btnDatosGuardar.setVisible(false);
-//	    btnDatosDescartar.setVisible(false);
-	    btnDatosPersona.setVisible(false);
-	    txtDatosLegajo.setEditable(false);
-	    cmbDatosEstado.setDisable(true);
-	    cmbDatosCategoria.setDisable(true);
-
-	    // Pestaña Cargos:
-	    cargosModoVer();
-	    btnCargosNuevo.setVisible(false);
-
-	    // Pestaña Incentivos:
-	    incentivosModoVer();
-	    btnIncentivosNuevo.setVisible(false);
-
-	    // Pestaña Observaciones:
-//	    btnObservacionesGuardar.setVisible(false);
-//	    btnObservacionesDescartar.setVisible(false);
-	    txtaObservaciones.setEditable(false);
-
-	    this.window.setTitle(TITULO);
-	    this.gestorPantalla.mensajeEstado("");
-	}
-
-// -------------------------------- General --------------------------------- //
-	@FXML public TextField txtDocentesLegajo;
-	@FXML public TextField txtDocentesNombre;
-
-	private void generalMostrarDocente() {
+    /** Muestra los datos del docente seleccionado en todos los controles */
+    private void generalMostrarDocente() {
         generalVaciarControles();
         if (docenteSeleccion != null) {
-            txtDocentesLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
-            txtDocentesNombre.setText(docenteSeleccion.getPersona().getNombreCompleto());
 
-            datosMostrarDocente();
-            cargosActualizarTabla();
-            investigacionActualizarTabla();
-            incentivosActualizarTabla();
-            observacionesMostrarObservaciones();
+            if (docenteSeleccion.getPersona() != null) {
+                txtDocumento.setText(String.valueOf(
+                    docenteSeleccion.getPersona().getNroDocumento()));
+                txtNombre.setText(
+                    docenteSeleccion.getPersona().getNombreCompleto());
+            }
+
+            txtLegajo.setText(String.valueOf(
+                docenteSeleccion.getLegajo()));
+
+            datosMostrarPersona();                // Datos
+            contactosActualizarTabla();           // Contactos
+            domiciliosActualizarTabla();          // Domicilios
+            titulosActualizarTabla();             // Títulos
+            docenteMostrarDocente();              // Docente
+            cargosActualizarTabla();              // Cargos
+            investigacionActualizarTabla();       // Investigación
+            incentivosActualizarTabla();          // Incentivos
+            observacionesMostrarObservaciones();  // Observaciones
         }
     }
 
-	/** Vacía los controles generales y los de todas las pestañas */
+    /** Vacía los controles generales y los de todas las pestañas */
     private void generalVaciarControles() {
-        this.txtDocentesLegajo.clear();
-        this.txtDocentesNombre.clear();
+        txtDocumento.clear();
+        txtLegajo.clear();
+        txtNombre.clear();
 
         // Vaciar controles de las pestañas:
         vaciarTablas();
-        datosVaciarControles();
-        cargosVaciarControles();
-        observacionesVaciarControles();
+        datosVaciarControles();         // Datos
+        contactosVaciarControles();     // Contactos
+        domiciliosVaciarControles();    // Domicilios
+        titulosVaciarControles();       // Títulos
+        docenteVaciarControles();       // Docente
+        cargosVaciarControles();        // Cargos
+        incentivosVaciarControles();    // Incentivos
+        observacionesVaciarControles(); // Observaciones
 
         this.gestorPantalla.mensajeEstado("");
     }
 
-    @FXML Button btnDocentesBuscar;
-	@FXML private void buscarDocente() {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(Busqueda.KEY_NUEVO, false);
-		args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
-		args.put(Busqueda.KEY_CONTROLADOR, this);
-		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DOCENTE);
-		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
+    @FXML private Button btnBuscar;
+    @FXML private void buscarDocente() {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, Docentes.TITULO);
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_DOCENTE);
+        args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Docentes.TITULO, args);
+    }
+
+    @FXML private Button btnNuevo;
+    @FXML private void nuevoDocente() {
+        docenteSeleccion = controlDocente.getIDocente();
+        docenteSeleccion.setPersona(controlPersona.getIPersona());
+        generalVaciarControles();
+        modoNuevo();
+    }
+
+    @FXML private Button btnEliminar;
+    @FXML private void eliminarDocente() {
+        if (docenteSeleccion != null) {
+            if (exitoEliminar(controlDocente.eliminarDocente(docenteSeleccion), TITULO, "Eliminar Docente")) {
+                docenteSeleccion = null;
+                modoVer();
+                generalVaciarControles();
+            }
+        }
+    }
+
+    @FXML private Button btnGuardar;
+    @FXML private void guardarDocente() {
+        if (docenteSeleccion != null) {
+            // Extracción de valores numéricos:
+            int legajo, nroDocumento;
+
+            try {
+                legajo = Integer.parseInt(txtDocenteLegajo.getText());
+            } catch (NumberFormatException e) {
+                alertaError(TITULO,
+                    "Guardar Docente",
+                    "El número de legajo tiene que ser numérico");
+                return;
+            }
+
+            try {
+                nroDocumento = Integer.parseInt(txtDatosDocumento.getText());
+            } catch (NumberFormatException e) {
+                alertaError(TITULO,
+                    "Guardar Docente",
+                    "El número de documento tiene que ser numérico");
+                return;
+            }
+
+            // Pestaña Datos:
+            if (docenteSeleccion.getPersona() == null) {
+                docenteSeleccion.setPersona(controlPersona.getIPersona());
+            }
+
+            docenteSeleccion.getPersona().setNroDocumento(
+                nroDocumento);
+            docenteSeleccion.getPersona().setApellido(
+                txtDatosApellido.getText());
+            docenteSeleccion.getPersona().setNombre(
+                txtDatosNombre.getText());
+            docenteSeleccion.getPersona().setTipoDocumento(
+                cmbDatosTipoDocumento.getSelectionModel().getSelectedItem());
+            docenteSeleccion.getPersona().setFechaNacimiento(
+                dtpDatosFechaNacimiento.getValue());
+
+            // Pestaña "Docente"
+            docenteSeleccion.setLegajo(
+                legajo);
+            docenteSeleccion.setEstado(
+                cmbDocenteEstado.getSelectionModel().getSelectedItem());
+            docenteSeleccion.setCategoriaInvestigacion(
+                cmbDocenteCategoria.getSelectionModel().getSelectedItem());
+
+            // Pestaña "Observaciones"
+            docenteSeleccion.setObservaciones(txtaObservaciones.getText());
+
+            exitoGuardado(controlPersona.guardarPersona(docenteSeleccion.getPersona()), TITULO, "Guardar Persona");
+            exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
+            generalMostrarDocente();
+
+            modoModificar();
+        }
+    }
+
+    @FXML private Button btnDescartar;
+    @FXML private void descartarDocente() {
+        generalMostrarDocente();
+    }
+
+    @FXML private Button btnCosto;
+    @FXML private void importarUltimoCosto() {
+        this.gestorPantalla.lanzarPantalla(ImportarCosto.TITULO, null);
+    }
+
+    @FXML private TextField txtDocumento;
+    @FXML private TextField txtLegajo;
+    @FXML private TextField txtNombre;
+
+ // ----------------------------- Pestaña Datos ------------------------------ //
+
+    /** Inicializa los controles de la pestaña "Datos" */
+    @FXML private void inicializarDatos() {
+//        datosMostrarPersona();
+    }
+
+    /** Muestra los datos de la persona del docente seleccionado: */
+    private void datosMostrarPersona() {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+            txtDatosApellido.setText(
+                docenteSeleccion.getPersona().getApellido());
+            txtDatosNombre.setText(
+                docenteSeleccion.getPersona().getNombre());
+            cmbDatosTipoDocumento.getSelectionModel().select(
+                docenteSeleccion.getPersona().getTipoDocumento());
+            txtDatosDocumento.setText(String.valueOf(
+                docenteSeleccion.getPersona().getNroDocumento()));
+            dtpDatosFechaNacimiento.setValue(
+                docenteSeleccion.getPersona().getFechaNacimiento());
+        }
+    }
+
+    /** Vacía los controles de datos */
+    private void datosVaciarControles() {
+        txtDatosApellido.clear();
+        txtDatosNombre.clear();
+        cmbDatosTipoDocumento.getSelectionModel().clearSelection();
+        txtDatosDocumento.clear();
+        dtpDatosFechaNacimiento.setValue(null);
+    }
+
+    // Controles de la pestaña "Datos":
+    @FXML private TextField txtDatosApellido;
+    @FXML private TextField txtDatosNombre;
+    @FXML private ComboBox<TipoDocumento> cmbDatosTipoDocumento;
+    @FXML private TextField txtDatosDocumento;
+    @FXML private DatePicker dtpDatosFechaNacimiento;
+
+// --------------------------- Pestaña Contactos ---------------------------- //
+
+	private IContacto contactoSeleccion = null;
+	protected ObservableList<FilaContacto> filasContactos = FXCollections.observableArrayList();
+
+	public class FilaContacto {
+	    private IContacto contacto;
+	    public FilaContacto(IContacto contacto) {
+	        this.contacto = contacto;
+	    }
+	    public String getTipo() {
+	        return this.contacto.getTipo().getDescripcion();
+	    }
+	    public String getDato() {
+	        return this.contacto.getDato();
+	    }
+	    public IContacto getInstanciaContacto() {
+	        return this.contacto;
+	    }
 	}
 
-	@FXML Button btnDocentesNuevo;
-	@FXML private void nuevoDocente() {
-		docenteSeleccion = controlDocente.getIDocente();
-		generalVaciarControles();
-//		modoModificar();
-		modoNuevo();
-//		this.window.setTitle(TITULO + " - Nuevo Docente");
-//		this.gestorPantalla.mensajeEstado("Nuevo Docente");
-    }
-
-	@FXML Button btnDocentesEliminar;
-	@FXML private void eliminarDocente() {
-	    if (docenteSeleccion != null) {
-	        if (exitoEliminar(controlDocente.eliminarDocente(docenteSeleccion), TITULO, "Eliminar Docente")) {
-	            docenteSeleccion = null;
-	            modoVer();
-	            generalVaciarControles();
-	        }
-	    }
-    }
-
-	@FXML Button btnDocentesCosto;
-	@FXML private void importarUltimoCosto() {
-		this.gestorPantalla.lanzarPantalla(ImportarCosto.TITULO, null);
-    }
-
-	@FXML Button btnDocentesGuardar;
-	@FXML private void guardarDocente() {
-	    if (docenteSeleccion != null) {
-            try {
-                int legajo = Integer.parseInt(txtDatosLegajo.getText());
-
-                // Pestaña "Datos"
-                docenteSeleccion.setLegajo(legajo);
-                docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
-                docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
-
-                // Pestaña "Observaciones"
-                docenteSeleccion.setObservaciones(txtaObservaciones.getText());
-
-                exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
-                generalMostrarDocente();
-
-                modoModificar();
-
-            } catch (NumberFormatException e) {
-                alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
+	/** Refresca la tabla de contactos */
+	private void contactosActualizarTabla() {
+	    filasContactos.clear();
+	    if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+            for (IContacto contacto : docenteSeleccion.getPersona().getContactos()) {
+                filasContactos.add(
+                    new FilaContacto(contacto));
             }
         }
 	}
 
-	@FXML Button btnDocentesDescartar;
-	@FXML private void descartarDocente() {
-	    generalMostrarDocente();
+	/** Muestra los datos del contacto seleccionado: */
+    private void contactosMostrarContacto() {
+        if (contactoSeleccion != null) {
+            cmbContactosTipo.getSelectionModel().select(contactoSeleccion.getTipo());;
+            txtContactosDato.setText(contactoSeleccion.getDato());
+        }
+    }
+
+	/** Vacía los controles de datos del contacto */
+    private void contactosVaciarControles() {
+        cmbContactosTipo.getSelectionModel().clearSelection();
+        txtContactosDato.clear();
+    }
+
+    private void contactosModoModificar() {
+        if (this.permiso.getModificar()) {
+            btnContactosGuardar.setVisible(true);
+            btnContactosDescartar.setVisible(true);
+            btnContactosEliminar.setVisible(true);
+
+            cmbContactosTipo.setDisable(false);
+            txtContactosDato.setEditable(true);
+        }
+    }
+
+    private void contactosModoNuevo() {
+        if (this.permiso.getModificar()) {
+            contactosModoModificar();
+            btnContactosEliminar.setVisible(false);
+        }
+    }
+
+    private void contactosModoVer() {
+        btnContactosDescartar.setVisible(false);
+        btnContactosEliminar.setVisible(false);
+        btnContactosGuardar.setVisible(false);
+        cmbContactosTipo.setDisable(true);
+        txtContactosDato.setEditable(false);
+    }
+
+	@FXML private void inicializarContactos() {
+//	    contactosActualizarTabla();
 	}
 
-	/**
-	 * Recibir parámetros de la pantalla de búsqueda
-	 */
-	@Override
-    public void recibirParametros(Map<String, Object> args) {
-		Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
-		if (oSeleccion != null) {
-			String seleccion = (String) oSeleccion;
-			Object valor = args.get(Busqueda.KEY_VALOR);
-			String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
-			try {
-			    String metodo = "set" + seleccion + "Seleccion";
-				Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
-				m.invoke(this, valor, tipo_respuesta);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		Object pestana = args.get(KEY_TAB);
-		if (pestana != null) {
-		    tabpDocentes.getSelectionModel().select((Integer) pestana);
-		}
+	@FXML private Button btnContactosNuevo;
+	@FXML private void nuevoContacto(ActionEvent event) {
+	    if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+    	    contactoSeleccion = controlPersona.getIContacto();
+    	    contactosVaciarControles();
+    	    contactosModoNuevo();
+	    }
 	}
 
-// ----------------------------- Pestaña Datos ------------------------------ //
-	@FXML public TextField txtDatosDocumento;
-	@FXML public TextField txtDatosNombre;
-	@FXML public TextField txtDatosLegajo;
-	@FXML public ComboBox<EstadoDocente> cmbDatosEstado;
-	@FXML public ComboBox<CategoriaInvestigacion> cmbDatosCategoria;
+	@FXML private Button btnContactosGuardar;
+	@FXML public void guardarContacto(ActionEvent event) {
+	    if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && contactoSeleccion != null) {
+    	    contactoSeleccion.setTipo(
+    	        cmbContactosTipo.getSelectionModel().getSelectedItem());
+    	    contactoSeleccion.setDato(
+    	        txtContactosDato.getText());
 
-	/** Muestra los datos de la persona seleccionada: */
-	private void datosMostrarDocente() {
-	    if (docenteSeleccion != null) {
-            IPersona persona = docenteSeleccion.getPersona();
-            txtDatosDocumento.setText(String.valueOf(persona.getNroDocumento()));
-            txtDatosNombre.setText(persona.getApellido() + " " + persona.getNombre());
-            txtDatosLegajo.setText(String.valueOf(docenteSeleccion.getLegajo()));
-            cmbDatosEstado.getSelectionModel().select(docenteSeleccion.getEstado());
-            cmbDatosCategoria.getSelectionModel().select(docenteSeleccion.getCategoriaInvestigacion());
+    	    EstadoOperacion resultado = controlPersona.guardarContacto(
+    	        docenteSeleccion.getPersona(), contactoSeleccion);
+            exitoGuardado(resultado, TITULO, "Guardar Contacto");
+            contactosModoModificar();
+    	    contactosActualizarTabla();
+	    }
+	}
+
+	@FXML private Button btnContactosDescartar;
+	@FXML public void descartarContacto(ActionEvent event) {
+	    contactosMostrarContacto();
+	}
+
+	@FXML private Button btnContactosEliminar;
+	@FXML public void eliminarContacto(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && contactoSeleccion != null) {
+            EstadoOperacion resultado = controlPersona.quitarContacto(docenteSeleccion.getPersona(), contactoSeleccion);
+            if (exitoEliminar(resultado, TITULO, "Eliminar Contacto")) {
+                contactoSeleccion = null;
+                contactosModoVer();
+                contactosVaciarControles();
+            }
+            contactosActualizarTabla();
         }
 	}
 
-	/** Vacía los controles de datos */
-	private void datosVaciarControles() {
-        txtDatosDocumento.clear();
-        txtDatosNombre.clear();
-        txtDatosLegajo.clear();
-        cmbDatosEstado.getSelectionModel().clearSelection();
-        cmbDatosCategoria.getSelectionModel().clearSelection();
+	@FXML protected TableView<FilaContacto> tblContactos;
+	@FXML protected TableColumn<FilaContacto, String> colContactosTipo;
+	@FXML protected TableColumn<FilaContacto, String> colContactosDato;
+
+	@FXML private ComboBox<TipoContacto> cmbContactosTipo;
+	@FXML private TextField txtContactosDato;
+
+ // -------------------------- Pestaña Domicilios ---------------------------- //
+
+    private IDomicilio domicilioSeleccion = null;
+    protected ObservableList<FilaDomicilio> filasDomicilios = FXCollections.observableArrayList();
+
+    public class FilaDomicilio {
+        private IDomicilio domicilio;
+        public FilaDomicilio(IDomicilio domicilio) {
+            this.domicilio = domicilio;
+        }
+        public String getProvincia() {
+            return this.domicilio.getProvincia();
+        }
+        public String getCiudad() {
+            return this.domicilio.getCiudad();
+        }
+        public String getCP() {
+            return this.domicilio.getCodigoPostal();
+        }
+        public String getDireccion() {
+            return this.domicilio.getDireccion();
+        }
+        public IDomicilio getInstanciaDomicilio() {
+            return this.domicilio;
+        }
     }
 
-	@FXML private void inicializarDatos() {
-	    this.cmbDatosEstado.setItems(
-            FXCollections.observableArrayList(
-                ControlAuxiliar.listarEstadosDocente()));
+    /** Refresca la tabla de domicilios */
+    private void domiciliosActualizarTabla() {
+        filasDomicilios.clear();
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+            for (IDomicilio domicilio: docenteSeleccion.getPersona().getDomicilios()) {
+                filasDomicilios.add(new FilaDomicilio(domicilio));
+            }
+        }
+    }
 
-	    this.cmbDatosCategoria.setItems(
-	        FXCollections.observableArrayList(
-                ControlAuxiliar.listarCategoriasInvestigacion()));
-	}
+    /** Muestra los datos del domicilio seleccionado: */
+    private void domiciliosMostrarDomicilio() {
+        if (domicilioSeleccion != null) {
+            cmbDomiciliosProvincia.getSelectionModel().select(
+                domicilioSeleccion.getProvincia());
+            txtDomiciliosCiudad.setText(
+                domicilioSeleccion.getCiudad());
+            txtDomiciliosCP.setText(
+                domicilioSeleccion.getCodigoPostal());
+            txtDomiciliosDireccion.setText(
+                domicilioSeleccion.getDireccion());
+        }
+    }
 
-	@FXML private Button btnDatosDatos;
-	@FXML private void mostrarDatos() {
-	    Map<String, Object> args = new HashMap<String, Object>();
-        args.put(Busqueda.KEY_NUEVO, false);
-        args.put(Busqueda.KEY_TIPO, Personas.TITULO);
-        args.put(Busqueda.KEY_CONTROLADOR, this);
-        args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-        args.put(Busqueda.KEY_VALOR, docenteSeleccion.getPersona());
-        args.put(Busqueda.KEY_SELECCION, "Persona");
-        this.gestorPantalla.lanzarPantalla(Personas.TITULO, args);
-	}
+    /** Vacía los controles de datos del domicilio */
+    private void domiciliosVaciarControles() {
+        cmbDomiciliosProvincia.getSelectionModel().clearSelection();
+        txtDomiciliosCiudad.clear();
+        txtDomiciliosCP.clear();
+        txtDomiciliosDireccion.clear();
+    }
 
-//	@FXML private Button btnDatosGuardar;
-//	@FXML private void guardarDatos() {
-//	    if (docenteSeleccion != null) {
-//	        try {
-//	            int legajo = Integer.parseInt(txtDatosLegajo.getText());
-//
-//    	        docenteSeleccion.setLegajo(legajo);
-//    	        docenteSeleccion.setEstado(cmbDatosEstado.getSelectionModel().getSelectedItem());
-//    	        docenteSeleccion.setCategoriaInvestigacion(cmbDatosCategoria.getSelectionModel().getSelectedItem());
-//
-//    	        exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Docente");
-//    	        generalMostrarDocente();
-//
-//    	        modoModificar();
-//
-//	        } catch (NumberFormatException e) {
-//	            alertaError(TITULO, "Guardar Docente", "El legajo tiene que ser numérico");
-//	        }
-//	    }
-//	}
+    private void domiciliosModoModificar() {
+        if (this.permiso.getModificar()) {
+            btnDomiciliosGuardar.setVisible(true);
+            btnDomicilioDescartar.setVisible(true);
+            btnDomiciliosEliminar.setVisible(true);
+            cmbDomiciliosProvincia.setDisable(false);
+            txtDomiciliosCiudad.setEditable(true);
+            txtDomiciliosCP.setEditable(true);
+            txtDomiciliosDireccion.setEditable(true);
+        }
+    }
 
-//	@FXML private Button btnDatosDescartar;
-//	@FXML private void descartarDatos() {
-//	    datosMostrarDocente();
-//	}
+    private void domiciliosModoNuevo() {
+        if (this.permiso.getModificar()) {
+            domiciliosModoModificar();
+            btnDomiciliosEliminar.setVisible(false);
+        }
+    }
 
-	@FXML private Button btnDatosPersona;
-	@FXML private void seleccionarPersona() {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(Busqueda.KEY_NUEVO, true);
-		args.put(Busqueda.KEY_TIPO, Personas.TITULO);
-		args.put(Busqueda.KEY_CONTROLADOR, this);
-		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_PERSONA);
-		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " " + Personas.TITULO, args);
-	}
+    private void domiciliosModoVer() {
+        btnDomiciliosGuardar.setVisible(false);
+        btnDomicilioDescartar.setVisible(false);
+        btnDomiciliosEliminar.setVisible(false);
 
-// ----------------------------- Pestaña Cargos ----------------------------- //
-	private ICargoDocente cargoDocenteSeleccion;
+        cmbDomiciliosProvincia.setDisable(true);
+        txtDomiciliosCiudad.setEditable(false);
+        txtDomiciliosCP.setEditable(false);
+        txtDomiciliosDireccion.setEditable(false);
+    }
+
+    @FXML private void inicializarDomicilios() {
+//        domiciliosActualizarTabla();
+    }
+
+    @FXML private Button btnDomiciliosNuevo;
+    @FXML public void nuevoDomicilio(ActionEvent event) {
+        domicilioSeleccion = controlPersona.getIDomicilio();
+        domiciliosVaciarControles();
+        domiciliosModoNuevo();
+    }
+
+    @FXML private Button btnDomiciliosGuardar;
+    @FXML public void guardarDomicilio(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && domicilioSeleccion != null) {
+            domicilioSeleccion.setProvincia(cmbDomiciliosProvincia.getSelectionModel().getSelectedItem());
+            domicilioSeleccion.setCiudad(txtDomiciliosCiudad.getText());
+            domicilioSeleccion.setCodigoPostal(txtDomiciliosCP.getText());
+            domicilioSeleccion.setDireccion(txtDomiciliosDireccion.getText());
+
+            exitoGuardado(controlPersona.guardarDomicilio(docenteSeleccion.getPersona(), domicilioSeleccion), TITULO, "Guardar Domicilio");
+            domiciliosModoModificar();
+            domiciliosActualizarTabla();
+        }
+    }
+
+    @FXML private Button btnDomicilioDescartar;
+    @FXML public void descartarDomicilio(ActionEvent event) {
+        domiciliosMostrarDomicilio();
+    }
+
+    @FXML private Button btnDomiciliosEliminar;
+    @FXML public void eliminarDomicilio(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && domicilioSeleccion != null) {
+            if (exitoEliminar(controlPersona.quitarDomicilio(docenteSeleccion.getPersona(), domicilioSeleccion), TITULO, "Eliminar Domicilio")) {
+                domicilioSeleccion = null;
+                domiciliosModoVer();
+                domiciliosVaciarControles();
+            }
+            domiciliosActualizarTabla();
+        }
+    }
+
+    @FXML protected TableView<FilaDomicilio> tblDomicilios;
+    @FXML protected TableColumn<FilaDomicilio, String> colDomiciliosProvincia;
+    @FXML protected TableColumn<FilaDomicilio, String> colDomiciliosCiudad;
+    @FXML protected TableColumn<FilaDomicilio, String> colDomiciliosCP;
+    @FXML protected TableColumn<FilaDomicilio, String> colDomiciliosDireccion;
+
+    @FXML private ComboBox<String> cmbDomiciliosProvincia;
+    @FXML private TextField txtDomiciliosCiudad;
+    @FXML private TextField txtDomiciliosCP;
+    @FXML private TextField txtDomiciliosDireccion;
+
+ // ---------------------------- Pestaña Títulos ----------------------------- //
+
+    private ITitulo tituloSeleccion = null;
+    protected ObservableList<FilaTitulo> filasTitulos = FXCollections.observableArrayList();
+
+    public class FilaTitulo {
+        private ITitulo titulo;
+        public FilaTitulo(ITitulo titulo) {
+            this.titulo = titulo;
+        }
+        public String getMayor() {
+            return this.titulo.isEsMayor() ? "Mayor" : "";
+        }
+        public String getTitulo() {
+            return this.titulo.getNombre();
+        }
+        public ITitulo getInstanciaTitulo() {
+            return this.titulo;
+        }
+    }
+
+    /** Refresca la tabla de títulos */
+    private void titulosActualizarTabla() {
+        filasTitulos.clear();
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+            for (ITitulo titulo : docenteSeleccion.getPersona().getTitulos()) {
+                filasTitulos.add(new FilaTitulo(titulo));
+            }
+        }
+    }
+
+    /** Muestra los datos del titulo seleccionado: */
+    private void titulosMostrarTitulo() {
+        if (tituloSeleccion != null) {
+            txtTitulosTitulo.setText(tituloSeleccion.getNombre());
+        }
+    }
+
+    /** Vacía los campos de datos del título */
+    private void titulosVaciarControles() {
+        txtTitulosTitulo.clear();
+    }
+
+    @FXML private void inicializarTitulos() {
+//        titulosActualizarTabla();
+    }
+
+    @FXML private TextField txtTitulosTitulo;
+
+    @FXML private Button btnTitulosAgregar;
+    @FXML public void agregarTitulo(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null) {
+            tituloSeleccion = controlPersona.getITitulo();
+            tituloSeleccion.setNombre(txtTitulosTitulo.getText());
+
+            exitoGuardado(controlPersona.guardarTitulo(docenteSeleccion.getPersona(), tituloSeleccion), TITULO, "Guardar Título");
+            titulosActualizarTabla();
+        }
+    }
+
+    @FXML private Button btnTitulosQuitar;
+    @FXML public void quitarTitulo(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && tituloSeleccion != null) {
+            if (exitoEliminar(controlPersona.quitarTitulo(docenteSeleccion.getPersona(), tituloSeleccion), TITULO, "Eliminar Título")) {
+                tituloSeleccion = null;
+                titulosVaciarControles();
+            }
+            titulosActualizarTabla();
+        }
+    }
+
+    @FXML private Button btnTitulosMayor;
+    @FXML public void mayorTitulo(ActionEvent event) {
+        if (docenteSeleccion != null && docenteSeleccion.getPersona() != null && tituloSeleccion != null) {
+            if (!tituloSeleccion.isEsMayor()) {
+                /* Si el título seleccionado no es el mayor entonces desmarco
+                   todos los títulos. */
+                for (ITitulo titulo : docenteSeleccion.getPersona().getTitulos()) {
+                    titulo.setEsMayor(false);
+                }
+
+                // Y marco el título actual como el mayor:
+                tituloSeleccion.setEsMayor(true);
+
+                // Y persisto los cambios en todos los títulos:
+                boolean exito = true;
+                for (ITitulo titulo : docenteSeleccion.getPersona().getTitulos()) {
+                    EstadoOperacion resultado = controlPersona.guardarTitulo(docenteSeleccion.getPersona(), titulo);
+                    if (resultado.getEstado() != CodigoEstado.UPDATE_OK) {
+                        exito = false;
+                    }
+                }
+
+                if (exito) {
+                    gestorPantalla.mensajeEstado("El título fue seleccionado como el mayor.");
+                } else {
+                    alertaError(TITULO, "Seleccionar mayor título", "El título no pudo modificarse.");
+                }
+
+                titulosActualizarTabla();
+            }
+        }
+    }
+
+    @FXML protected TableView<FilaTitulo> tblTitulos;
+    @FXML protected TableColumn<FilaTitulo, String> colTitulosTitulo;
+    @FXML protected TableColumn<FilaTitulo, String> colTitulosMayor;
+
+// ----------------------------- Pestaña Docente ------------------------------ //
+    @FXML public TextField txtDocenteLegajo;
+    @FXML public ComboBox<EstadoDocente> cmbDocenteEstado;
+    @FXML public ComboBox<CategoriaInvestigacion> cmbDocenteCategoria;
+
+    /** Muestra los datos del docente seleccionado: */
+    private void docenteMostrarDocente() {
+        if (docenteSeleccion != null) {
+            txtDocenteLegajo.setText(String.valueOf(
+                docenteSeleccion.getLegajo()));
+            cmbDocenteEstado.getSelectionModel().select(
+                docenteSeleccion.getEstado());
+            cmbDocenteCategoria.getSelectionModel().select(
+                docenteSeleccion.getCategoriaInvestigacion());
+        }
+    }
+
+    /** Vacía los controles de datos */
+    private void docenteVaciarControles() {
+        txtDocenteLegajo.clear();
+        cmbDocenteEstado.getSelectionModel().clearSelection();
+        cmbDocenteCategoria.getSelectionModel().clearSelection();
+    }
+
+    @FXML private void inicializarDocente() {
+//        docenteMostrarDocente();
+    }
+
+ // ----------------------------- Pestaña Cargos ----------------------------- //
+    private ICargoDocente cargoDocenteSeleccion;
     protected ObservableList<FilaCargo> filasCargos = FXCollections.observableArrayList();
 
-	public class FilaCargo {
-	    private ICargoDocente cargoDocente;
+    public class FilaCargo {
+        private ICargoDocente cargoDocente;
 
-		/**
-		 * Crea una FilaCargo a partir de un cargoDocente.
-		 * @param cd Cargo docente
-		 */
-		public FilaCargo(ICargoDocente cd) {
-		    this.cargoDocente = cd;
-		}
-		public int getId() {
-		    return this.cargoDocente.getId();
-		}
-		public String getArea() {
-		    return this.cargoDocente.getArea().getDescripcion();
-		}
-		public String getCargo() {
-		    return this.cargoDocente.getCargo().getDescripcion();
-		}
-		public String getEstado() {
-		    return this.cargoDocente.getEstado().getDescripcion();
-		}
-		public ICargoDocente getInstanciaCargoDocente() {
-		    return this.cargoDocente;
-		}
-	}
+        /**
+         * Crea una FilaCargo a partir de un cargoDocente.
+         * @param cd Cargo docente
+         */
+        public FilaCargo(ICargoDocente cd) {
+            this.cargoDocente = cd;
+        }
+        public int getId() {
+            return this.cargoDocente.getId();
+        }
+        public String getArea() {
+            return this.cargoDocente.getArea().getDescripcion();
+        }
+        public String getCargo() {
+            return this.cargoDocente.getCargo().getDescripcion();
+        }
+        public String getEstado() {
+            return this.cargoDocente.getEstado().getDescripcion();
+        }
+        public ICargoDocente getInstanciaCargoDocente() {
+            return this.cargoDocente;
+        }
+    }
 
-	/** Refresca la tabla de cargos */
+    /** Refresca la tabla de cargos */
     public void cargosActualizarTabla() {
         filasCargos.clear();
         if (docenteSeleccion != null) {
@@ -547,24 +739,23 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
     /** Vacía los controles de datos del cargo */
-	private void cargosVaciarControles() {
-		txtCargosArea.clear();
-		txtCargosCargo.clear();
-		cmbCargosEstado.getSelectionModel().clearSelection();
-		cmbCargosTipo.getSelectionModel().clearSelection();
-		txtCargosDisp.clear();
-		dtpCargosDispDesde.setValue(null);
-		dtpCargosDispHasta.setValue(null);
-		txtCargosRes.clear();
-		dtpCargosResDesde.setValue(null);
-		dtpCargosResHasta.setValue(null);
-		txtCargosCosto.clear();
-		dtpCargosCosto.setValue(null);
-	}
+    private void cargosVaciarControles() {
+        txtCargosArea.clear();
+        txtCargosCargo.clear();
+        cmbCargosEstado.getSelectionModel().clearSelection();
+        cmbCargosTipo.getSelectionModel().clearSelection();
+        txtCargosDisp.clear();
+        dtpCargosDispDesde.setValue(null);
+        dtpCargosDispHasta.setValue(null);
+        txtCargosRes.clear();
+        dtpCargosResDesde.setValue(null);
+        dtpCargosResHasta.setValue(null);
+        txtCargosCosto.clear();
+        dtpCargosCosto.setValue(null);
+    }
 
-	private void cargosModoModificar() {
-	    if (this.permiso.getModificar()) {
-//	        btnCargosNuevo.setVisible(true);
+    private void cargosModoModificar() {
+        if (this.permiso.getModificar()) {
             btnCargosGuardar.setVisible(true);
             btnCargosDescartar.setVisible(true);
             btnCargosEliminar.setVisible(true);
@@ -579,18 +770,17 @@ public class Docentes extends ControladorVista implements Initializable {
 
             cmbCargosEstado.setDisable(false);
             cmbCargosTipo.setDisable(false);
-	    }
-	}
+        }
+    }
 
-	private void cargosModoNuevo() {
+    private void cargosModoNuevo() {
         if (this.permiso.getModificar()) {
             cargosModoModificar();
             btnCargosEliminar.setVisible(false);
         }
-	}
+    }
 
-	private void cargosModoVer() {
-//	    btnCargosNuevo.setVisible(false);
+    private void cargosModoVer() {
         btnCargosGuardar.setVisible(false);
         btnCargosDescartar.setVisible(false);
         btnCargosEliminar.setVisible(false);
@@ -605,189 +795,175 @@ public class Docentes extends ControladorVista implements Initializable {
 
         cmbCargosEstado.setDisable(true);
         cmbCargosTipo.setDisable(true);
-	}
+    }
 
-	@FXML public void inicializarTablaCargos() {
-		inicializarTabla("Cargos");
-		tblCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-		    if (newSelection != null) {
-		        cargoDocenteSeleccion = newSelection.getInstanciaCargoDocente();
-		        cargosMostrarCargoDocente();
-		        cargosModoModificar();
-		    }
-		});
+    @FXML private void inicializarTablaCargos() {
+//        cargosActualizarTabla();
+    }
 
-		cargosActualizarTabla();
+    @FXML private Button btnCargosNuevo;
+    @FXML private void nuevoCargo() {
+        if (docenteSeleccion != null) {
+            cargoDocenteSeleccion = controlDocente.getICargoDocente();
+            cargosVaciarControles();
+            cargosModoNuevo();
+        }
+    }
 
-	    // Popular estados de cargo y tipos de cargo:
-	    cmbCargosEstado.setItems(
-                FXCollections.observableArrayList(
-                        ControlAuxiliar.listarEstadosCargo()));
+    @FXML private Button btnCargosGuardar;
+    @FXML private void guardarCargo() {
+        if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
+            try {
+                float ultimoCosto = Utilidades.stringToFloat(txtCargosCosto.getText());
 
-        cmbCargosTipo.setItems(
-                FXCollections.observableArrayList(
-                        ControlAuxiliar.listarTiposCargo()));
-	}
+                cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
+                cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
+                cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
+                cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
+                cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
+                cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
+                cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
+                cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
 
-	@FXML public Button btnCargosNuevo;
-	@FXML public void nuevoCargo() {
-	    if (docenteSeleccion != null) {
-    		cargoDocenteSeleccion = controlDocente.getICargoDocente();
-    		cargosVaciarControles();
-    		cargosModoNuevo();
-	    }
-	}
+                cargoDocenteSeleccion.setUltimoCosto(ultimoCosto);
+                cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
 
-	@FXML public Button btnCargosGuardar;
-	@FXML public void guardarCargo() {
-	    if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
-    		try {
+                exitoGuardado(controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Guardar Cargo");
 
-    		    float ultimoCosto = Utilidades.stringToFloat(txtCargosCosto.getText());
+                cargosModoModificar();
 
-    			cargoDocenteSeleccion.setEstado(cmbCargosEstado.getValue());
-    			cargoDocenteSeleccion.setTipoCargo(cmbCargosTipo.getValue());
-    			cargoDocenteSeleccion.setDisposicion(txtCargosDisp.getText());
-    			cargoDocenteSeleccion.setDispDesde(dtpCargosDispDesde.getValue());
-    			cargoDocenteSeleccion.setDispHasta(dtpCargosDispHasta.getValue());
-    			cargoDocenteSeleccion.setResolucion(txtCargosRes.getText());
-    			cargoDocenteSeleccion.setResDesde(dtpCargosResDesde.getValue());
-    			cargoDocenteSeleccion.setResHasta(dtpCargosResHasta.getValue());
+            } catch (Exception e) {
+                e.printStackTrace();
+                mensajeEstado(e.getMessage());
+            }
+            cargosActualizarTabla();
+        }
+    }
 
-    			cargoDocenteSeleccion.setUltimoCosto(ultimoCosto);
-    			cargoDocenteSeleccion.setFechaUltCost(dtpCargosCosto.getValue());
+    @FXML private Button btnCargosDescartar;
+    @FXML private void descartarCargo() {
+        cargosMostrarCargoDocente();
+    }
 
-    			exitoGuardado(controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Guardar Cargo");
-
-    			cargosModoModificar();
-
-    		} catch (Exception e) {
-    		    e.printStackTrace();
-    			mensajeEstado(e.getMessage());
-    		}
-    		cargosActualizarTabla();
-	    }
-	}
-
-	@FXML public Button btnCargosDescartar;
-	@FXML public void descartarCargo() {
-	    cargosMostrarCargoDocente();
-	}
-
-	@FXML public Button btnCargosEliminar;
-	@FXML public void eliminarCargo() {
-	    if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
-	        if (exitoEliminar(controlDocente.quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Eliminar Cargo")) {
-	            cargoDocenteSeleccion = null;
+    @FXML private Button btnCargosEliminar;
+    @FXML private void eliminarCargo() {
+        if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
+            if (exitoEliminar(controlDocente.quitarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Eliminar Cargo")) {
+                cargoDocenteSeleccion = null;
                 cargosVaciarControles();
                 cargosModoVer();
-	        }
+            }
             cargosActualizarTabla();
-	    }
-	}
-
-	@FXML public TextField txtCargosArea;
-	@FXML public Button btnCargosArea;
-	@FXML private void seleccionarArea() {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(Busqueda.KEY_NUEVO, false);
-		args.put(Busqueda.KEY_TIPO, "Areas");
-		args.put(Busqueda.KEY_CONTROLADOR, this);
-		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_AREA);
-		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
+        }
     }
 
-	@FXML public TextField txtCargosCargo;
-	@FXML public Button btnCargosCargo;
-	@FXML private void seleccionarCargo() {
-		Map<String, Object> args = new HashMap<String, Object>();
-		args.put(Busqueda.KEY_NUEVO, false);
-		args.put(Busqueda.KEY_TIPO, "Cargos");
-		args.put(Busqueda.KEY_CONTROLADOR, this);
-		args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGO);
-		args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
-		this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Cargos", args);
+    @FXML private TextField txtCargosArea;
+    @FXML private Button btnCargosArea;
+    @FXML private void seleccionarArea() {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, "Areas");
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_AREA);
+        args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Areas", args);
     }
 
-	@FXML public TableView<FilaCargo> tblCargos;
-    @FXML public TableColumn<FilaCargo, Integer> colCargosId;
-    @FXML public TableColumn<FilaCargo, String> colCargosArea;
-    @FXML public TableColumn<FilaCargo, String> colCargosCargo;
-    @FXML public TableColumn<FilaCargo, String> colCargosEstado;
+    @FXML private TextField txtCargosCargo;
+    @FXML private Button btnCargosCargo;
+    @FXML private void seleccionarCargo() {
+        Map<String, Object> args = new HashMap<String, Object>();
+        args.put(Busqueda.KEY_NUEVO, false);
+        args.put(Busqueda.KEY_TIPO, "Cargos");
+        args.put(Busqueda.KEY_CONTROLADOR, this);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGO);
+        args.put(GestorPantalla.KEY_PADRE, Docentes.TITULO);
+        this.gestorPantalla.lanzarPantalla(Busqueda.TITULO + " Cargos", args);
+    }
 
-	@FXML public ComboBox<EstadoCargo> cmbCargosEstado;
+    @FXML protected TableView<FilaCargo> tblCargos;
+    @FXML protected TableColumn<FilaCargo, Integer> colCargosId;
+    @FXML protected TableColumn<FilaCargo, String> colCargosArea;
+    @FXML protected TableColumn<FilaCargo, String> colCargosCargo;
+    @FXML protected TableColumn<FilaCargo, String> colCargosEstado;
 
-	@FXML public ComboBox<TipoCargo> cmbCargosTipo;
+    @FXML private ComboBox<EstadoCargo> cmbCargosEstado;
 
-	@FXML public TextField txtCargosDisp;
-	@FXML public DatePicker dtpCargosDispDesde;
-	@FXML public DatePicker dtpCargosDispHasta;
+    @FXML private ComboBox<TipoCargo> cmbCargosTipo;
 
-	@FXML public TextField txtCargosRes;
-	@FXML public DatePicker dtpCargosResDesde;
-	@FXML public DatePicker dtpCargosResHasta;
+    @FXML private TextField txtCargosDisp;
+    @FXML private DatePicker dtpCargosDispDesde;
+    @FXML private DatePicker dtpCargosDispHasta;
 
-	@FXML public TextField txtCargosCosto;
-	@FXML public DatePicker dtpCargosCosto;
+    @FXML private TextField txtCargosRes;
+    @FXML private DatePicker dtpCargosResDesde;
+    @FXML private DatePicker dtpCargosResHasta;
 
-// ----------------------------- Pestaña Investigación ---------------------- //
-	protected ObservableList<FilaInvestigacion> filasInvestigacion = FXCollections.observableArrayList();
+    @FXML private TextField txtCargosCosto;
+    @FXML private DatePicker dtpCargosCosto;
 
-	public class FilaInvestigacion {
-	    private IIntegrante integrante;
-	    private IProyecto proyecto;
+ // ----------------------------- Pestaña Investigación ---------------------- //
+    protected ObservableList<FilaInvestigacion> filasInvestigacion = FXCollections.observableArrayList();
 
-	    public FilaInvestigacion(IProyecto proyecto, IIntegrante integrante) {
-	        this.integrante = integrante;
-	        this.proyecto = proyecto;
-	    }
+    public class FilaInvestigacion {
+        private IIntegrante integrante;
+        private IProyecto proyecto;
 
-	    public int getId() {
-	        return this.proyecto.getId();
-	    }
+        public FilaInvestigacion(IProyecto proyecto, IIntegrante integrante) {
+            this.integrante = integrante;
+            this.proyecto = proyecto;
+        }
 
-	    public String getNombre() {
-	        return this.proyecto.getNombre();
-	    }
+        public int getId() {
+            return this.proyecto.getId();
+        }
 
-		public String getArea() {
-			return this.integrante.getCargoDocente().getArea().getDescripcion();
-		}
+        public String getNombre() {
+            return this.proyecto.getNombre();
+        }
 
-		public String getCargo() {
-		    return integrante.getCargoDocente().getCargo().getDescripcion();
-		}
-	}
+        public String getArea() {
+            return this.integrante.getCargoDocente().getArea().getDescripcion();
+        }
 
-	/** Refresca la tabla de investigación */
-	private void investigacionActualizarTabla() {
-	    filasInvestigacion.clear();
-	    if (docenteSeleccion != null) {
-	        // Lista con todos los proyectos (?):
-	        List<IProyecto> listaProyectos = controlInvestigacion.listarProyecto(null);
-	        for (IProyecto proyecto : listaProyectos) {
-	            for (IIntegrante integrante : proyecto.getIntegrantes()) {
-	                if (integrante.getCargoDocente().getDocente().getLegajo() == docenteSeleccion.getLegajo()) {
-	                    filasInvestigacion.add(new FilaInvestigacion(proyecto, integrante));
-	                    break;
-	                }
-	            }
-	        }
-	    }
-	}
+        public String getCargo() {
+            return integrante.getCargoDocente().getCargo().getDescripcion();
+        }
+    }
 
-	@FXML private void inicializarInvestigacion() {
-	    inicializarTabla("Investigacion");
-	    if (docenteSeleccion != null) {
-	        CategoriaInvestigacion ci = docenteSeleccion.getCategoriaInvestigacion();
-	        txtInvestigacionCategoria.setText(ci.getDescripcion());
-	    }
-	    investigacionActualizarTabla();
-	}
+    /** Refresca la tabla de investigación */
+    private void investigacionActualizarTabla() {
+        filasInvestigacion.clear();
+        if (docenteSeleccion != null) {
+            // Muestro la categoría del docente:
+            txtInvestigacionCategoria.setText(
+                docenteSeleccion.getCategoriaInvestigacion().getDescripcion());
 
-	@FXML private TextField txtInvestigacionCategoria;
-	@FXML protected TableView<FilaInvestigacion> tblInvestigacion;
+            // Lista con todos los proyectos (?):
+            List<IProyecto> listaProyectos = controlInvestigacion.listarProyecto(null);
+            for (IProyecto proyecto : listaProyectos) {
+                for (IIntegrante integrante : proyecto.getIntegrantes()) {
+                    if (integrante.getCargoDocente().getDocente().getLegajo() == docenteSeleccion.getLegajo()) {
+                        filasInvestigacion.add(new FilaInvestigacion(proyecto, integrante));
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @FXML private void inicializarInvestigacion() {
+        /*
+        if (docenteSeleccion != null) {
+            CategoriaInvestigacion ci = docenteSeleccion.getCategoriaInvestigacion();
+            txtInvestigacionCategoria.setText(ci.getDescripcion());
+        }
+        investigacionActualizarTabla();
+        */
+    }
+
+    @FXML private TextField txtInvestigacionCategoria;
+    @FXML protected TableView<FilaInvestigacion> tblInvestigacion;
     @FXML protected TableColumn<FilaInvestigacion, Integer> colInvestigacionId;
     @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionNombre;
     @FXML protected TableColumn<FilaInvestigacion, String> colInvestigacionArea;
@@ -854,109 +1030,475 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
     private void incentivosModoVer() {
-//        btnIncentivosNuevo.setVisible(false);
         btnIncentivosGuardar.setVisible(false);
         btnIncentivosDescartar.setVisible(false);
         txtIncentivosAnio.setEditable(false);
         btnIncentivosEliminar.setVisible(false);
     }
 
-	@FXML public void inicializarTablaIncentivos() {
-		inicializarTabla("Incentivos");
-		tblIncentivos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+    @FXML public void inicializarTablaIncentivos() {
+//        incentivosActualizarTabla();
+    }
+
+    @FXML private Button btnIncentivosNuevo;
+    @FXML private void nuevoIncentivo() {
+        if (docenteSeleccion != null) {
+            incentivoSeleccion = controlDocente.getIIncentivo();
+            incentivosVaciarControles();
+            incentivosModoNuevo();
+        }
+    }
+
+    @FXML private Button btnIncentivosGuardar;
+    @FXML private void guardarIncentivo() {
+        if (docenteSeleccion != null && incentivoSeleccion != null) {
+            try {
+                incentivoSeleccion.setFecha(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
+                exitoGuardado(controlDocente.guardarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Guardar Incentivo");
+                incentivosActualizarTabla();
+                incentivosModoModificar();
+
+            } catch (DateTimeException e) {
+                alertaError(TITULO, "Guardar Incentivo", "El año ingresado es inválido");
+            } catch (NumberFormatException e) {
+                alertaError(TITULO, "Guardar Incentivo", "El año debe ser numérico");
+            }
+        }
+    }
+
+    @FXML private Button btnIncentivosDescartar;
+    @FXML private void descartarIncentivo() {
+        incentivosMostrarIncentivo();
+    }
+
+    @FXML private Button btnIncentivosEliminar;
+    @FXML private void eliminarIncentivo() {
+        if (docenteSeleccion != null && incentivoSeleccion != null) {
+
+            if (exitoEliminar(controlDocente.quitarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Eliminar Incentivo")) {
+                cargoDocenteSeleccion = null;
+                incentivosVaciarControles();
+                incentivosModoVer();
+            }
+            incentivosActualizarTabla();
+        }
+    }
+
+    @FXML protected TextField txtIncentivosAnio;
+    @FXML protected TableView<FilaIncentivo> tblIncentivos;
+    @FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
+
+// ----------------------------- Pestaña Observaciones ---------------------- //
+    @FXML private TextArea txtaObservaciones;
+
+    /** Vacía los controles de observaciones */
+    private void observacionesVaciarControles() {
+        txtaObservaciones.clear();
+    }
+
+    /** Muestra las observaciones del docente */
+    private void observacionesMostrarObservaciones() {
+        txtaObservaciones.setText(
+            docenteSeleccion.getObservaciones());
+    }
+
+    @FXML private void inicializarObservaciones() {
+        /*
+        if (docenteSeleccion != null) {
+            txtaObservaciones.setText(docenteSeleccion.getObservaciones());
+        }
+        */
+    }
+
+// ----------------------------- Resultado de Búsqueda ---------------------- //
+    /** Recibir parámetros de la pantalla de búsqueda */
+    @Override
+    public void recibirParametros(Map<String, Object> args) {
+        Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
+        if (oSeleccion != null) {
+            String seleccion = (String) oSeleccion;
+            Object valor = args.get(Busqueda.KEY_VALOR);
+            String tipo_respuesta = (String) args.get(Busqueda.KEY_TIPO_RESPUESTA);
+            try {
+                String metodo = "set" + seleccion + "Seleccion";
+                Method m = this.getClass().getDeclaredMethod(metodo, Object.class, String.class);
+                m.invoke(this, valor, tipo_respuesta);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Object pestana = args.get(KEY_TAB);
+        if (pestana != null) {
+            tabpDocentes.getSelectionModel().select((Integer) pestana);
+        }
+    }
+
+    public void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
+        if (docenteSeleccion instanceof IDocente) {
+            this.docenteSeleccion = (IDocente) docenteSeleccion;
+            modoModificar();
+            generalMostrarDocente();
+        }
+    }
+
+    public void setAreaSeleccion(Object areaSeleccion, String tipo) {
+        if (areaSeleccion instanceof IArea) {
+            this.cargoDocenteSeleccion.setArea((IArea) areaSeleccion);
+            this.txtCargosArea.setText(((IArea) areaSeleccion).getDescripcion());
+            this.btnCargosCargo.requestFocus();
+        }
+    }
+
+    public void setCargoSeleccion(Object cargoSeleccion, String tipo) {
+        if (cargoSeleccion instanceof ICargo) {
+            this.cargoDocenteSeleccion.setCargo((ICargo) cargoSeleccion);
+            this.txtCargosCargo.setText(((ICargo) cargoSeleccion).getDescripcion());
+            this.cmbCargosEstado.requestFocus();
+        }
+    }
+
+// ----------------------------- Ocultamiento de controles ------------------ //
+    @Override
+    public void inicializar() {
+        // Ocultar controles según roles del usuario:
+        boolean crear = false;
+        boolean modificar = false;
+        boolean eliminar = false;
+        boolean listar = false;
+
+        for (IRol rol : this.usuario.getRoles()) {
+            for (IPermiso permiso : rol.getPermisos()) {
+                if (permiso.getModulo() == Modulo.DOCENTES) {
+                    this.permiso = permiso;
+                    crear |= permiso.getCrear();
+                    modificar |= permiso.getModificar();
+                    eliminar |= permiso.getEliminar();
+                    listar |= permiso.getListar();
+                }
+            }
+        }
+
+        if (!crear) {
+            btnNuevo.setVisible(false);
+        }
+
+        if (!modificar) {
+            // General:
+            btnCosto.setVisible(false);
+            btnDescartar.setVisible(false);
+            btnGuardar.setVisible(false);
+
+            // Pestaña Datos:
+            txtDatosApellido.setEditable(false);
+            txtDatosNombre.setEditable(false);
+            cmbDatosTipoDocumento.setDisable(true);
+            txtDatosDocumento.setEditable(false);
+            dtpDatosFechaNacimiento.setEditable(false);
+
+            // Pestaña Contactos:
+            btnContactosNuevo.setVisible(false);
+            btnContactosGuardar.setVisible(false);
+            btnContactosDescartar.setVisible(false);
+            btnContactosEliminar.setVisible(false);
+
+            cmbContactosTipo.setDisable(true);
+            txtContactosDato.setEditable(false);
+
+            // Pestaña Domicilios:
+            btnDomiciliosNuevo.setVisible(false);
+            btnDomiciliosGuardar.setVisible(false);
+            btnDomicilioDescartar.setVisible(false);
+            btnDomiciliosEliminar.setVisible(false);
+
+            cmbDomiciliosProvincia.setDisable(true);
+            txtDomiciliosCiudad.setEditable(false);
+            txtDomiciliosCP.setEditable(false);
+            txtDomiciliosDireccion.setEditable(false);
+
+            // Pestaña Títulos:
+            txtTitulosTitulo.setEditable(false);
+            btnTitulosAgregar.setVisible(false);
+            btnTitulosQuitar.setVisible(false);
+            btnTitulosMayor.setVisible(false);
+
+            // Pestaña Docente:
+            txtDocenteLegajo.setEditable(false);
+            cmbDocenteEstado.setDisable(true);
+            cmbDocenteCategoria.setDisable(true);
+
+            // Pestaña Cargos:
+            btnCargosNuevo.setVisible(false);
+            btnCargosGuardar.setVisible(false);
+            btnCargosDescartar.setVisible(false);
+            btnCargosEliminar.setVisible(false);
+
+            btnCargosArea.setVisible(false);
+            btnCargosCargo.setVisible(false);
+            cmbCargosEstado.setDisable(true);
+            cmbCargosTipo.setDisable(true);
+            txtCargosDisp.setEditable(false);
+            dtpCargosDispDesde.setEditable(false);
+            dtpCargosDispHasta.setEditable(false);
+            txtCargosRes.setEditable(false);
+            dtpCargosResDesde.setEditable(false);
+            dtpCargosResHasta.setEditable(false);
+
+            // Pestaña Incentivos:
+            btnIncentivosNuevo.setVisible(false);
+            btnIncentivosGuardar.setVisible(false);
+            btnIncentivosDescartar.setVisible(false);
+            txtIncentivosAnio.setEditable(false);
+
+            // Pestaña Observaciones:
+            txtaObservaciones.setEditable(false);
+        }
+
+        if (!eliminar) {
+            btnEliminar.setVisible(false);
+            btnCargosEliminar.setVisible(false);
+        }
+
+        if (!listar) {
+        }
+
+        modoVer();
+
+// =================== Inicializar controles: ====================
+        // Pestaña "Datos":
+        cmbDatosTipoDocumento.setItems(
+            FXCollections.observableArrayList(
+                TipoDocumento.getLista()));
+
+        // Pestaña "Contactos":
+        inicializarTabla("Contactos");
+        tblContactos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                contactoSeleccion = newSelection.getInstanciaContacto();
+                contactosMostrarContacto();
+                contactosModoModificar();
+            }
+        });
+        cmbContactosTipo.setItems(
+            FXCollections.observableArrayList(
+                TipoContacto.getLista()));
+
+        // Pestaña "Domicilios":
+        inicializarTabla("Domicilios");
+        tblDomicilios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                domicilioSeleccion = newSelection.getInstanciaDomicilio();
+                domiciliosMostrarDomicilio();
+                domiciliosModoModificar();
+            }
+        });
+
+        List<String> provincias = new ArrayList<String>();
+        provincias.add("Buenos Aires");
+        provincias.add("Catamarca");
+        provincias.add("Chaco");
+        provincias.add("Chubut");
+        provincias.add("Córdoba");
+        provincias.add("Corrientes");
+        provincias.add("Entre Ríos");
+        provincias.add("Formosa");
+        provincias.add("Jujuy");
+        provincias.add("La Pampa");
+        provincias.add("La Rioja");
+        provincias.add("Mendoza");
+        provincias.add("Misiones");
+        provincias.add("Neuquén");
+        provincias.add("Rio Negro");
+        provincias.add("Salta");
+        provincias.add("San Juan");
+        provincias.add("San Luis");
+        provincias.add("Santa Cruz");
+        provincias.add("Santa Fe");
+        provincias.add("Santiago del Estero");
+        provincias.add("Tierra del Fuego");
+        provincias.add("Tucumán");
+
+        cmbDomiciliosProvincia.setItems(
+            FXCollections.observableArrayList(
+                provincias));
+
+        // Pestaña "Títulos":
+        inicializarTabla("Titulos");
+        tblTitulos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                tituloSeleccion = newSelection.getInstanciaTitulo();
+                titulosMostrarTitulo();
+            }
+        });
+
+        // Pestaña "Docente":
+        this.cmbDocenteEstado.setItems(
+            FXCollections.observableArrayList(
+                ControlAuxiliar.listarEstadosDocente()));
+
+        this.cmbDocenteCategoria.setItems(
+            FXCollections.observableArrayList(
+                ControlAuxiliar.listarCategoriasInvestigacion()));
+
+        // Pestaña "Cargos":
+        inicializarTabla("Cargos");
+        tblCargos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                cargoDocenteSeleccion = newSelection.getInstanciaCargoDocente();
+                cargosMostrarCargoDocente();
+                cargosModoModificar();
+            }
+        });
+
+        cmbCargosEstado.setItems(
+                FXCollections.observableArrayList(
+                        ControlAuxiliar.listarEstadosCargo()));
+
+        cmbCargosTipo.setItems(
+                FXCollections.observableArrayList(
+                        ControlAuxiliar.listarTiposCargo()));
+
+        // Pestaña "Investigación":
+        inicializarTabla("Investigacion");
+
+        // Pestaña "Incentivos":
+        inicializarTabla("Incentivos");
+        tblIncentivos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 incentivoSeleccion = newSelection.getInstanciaIncentivo();
                 incentivosMostrarIncentivo();
                 incentivosModoModificar();
             }
         });
-		incentivosActualizarTabla();
-	}
+        // Pestaña "Observaciones":
+    }
 
-	@FXML private Button btnIncentivosNuevo;
-	@FXML private void nuevoIncentivo() {
-	    if (docenteSeleccion != null) {
-    	    incentivoSeleccion = controlDocente.getIIncentivo();
-    	    incentivosVaciarControles();
-    	    incentivosModoNuevo();
-	    }
-	}
+    @Override
+    public void modoModificar() {
+        if (this.permiso.getModificar()) {
+            // General:
+            btnCosto.setVisible(true);
+            btnDescartar.setVisible(true);
+            btnGuardar.setVisible(true);
 
-	@FXML private Button btnIncentivosGuardar;
-	@FXML private void guardarIncentivo() {
-	    if (docenteSeleccion != null && incentivoSeleccion != null) {
-	        try {
-	            incentivoSeleccion.setFecha(Year.of(Integer.parseInt(txtIncentivosAnio.getText())));
-	            exitoGuardado(controlDocente.guardarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Guardar Incentivo");
-	            incentivosActualizarTabla();
-	            incentivosModoModificar();
+            // Pestaña Datos:
+            txtDatosApellido.setEditable(true);
+            txtDatosNombre.setEditable(true);
+            cmbDatosTipoDocumento.setDisable(false);
+            txtDatosDocumento.setEditable(true);
+            dtpDatosFechaNacimiento.setEditable(true);
 
-	        } catch (DateTimeException e) {
-	            alertaError(TITULO, "Guardar Incentivo", "El año ingresado es inválido");
-	        } catch (NumberFormatException e) {
-	            alertaError(TITULO, "Guardar Incentivo", "El año debe ser numérico");
-	        }
-	    }
-	}
+            // Pestaña Contactos:
+            contactosModoVer();
+            btnContactosNuevo.setVisible(true);
 
-	@FXML private Button btnIncentivosDescartar;
-	@FXML private void descartarIncentivo() {
-	    incentivosMostrarIncentivo();
-	}
+            // Pestaña Domicilios:
+            domiciliosModoVer();
+            btnDomiciliosNuevo.setVisible(true);
 
-	@FXML private Button btnIncentivosEliminar;
-	@FXML private void eliminarIncentivo() {
-	    if (docenteSeleccion != null && incentivoSeleccion != null) {
+            // Pestaña Títulos:
+            txtTitulosTitulo.setEditable(true);
+            btnTitulosAgregar.setVisible(true);
+            btnTitulosQuitar.setVisible(true);
+            btnTitulosMayor.setVisible(true);
 
-	        if (exitoEliminar(controlDocente.quitarIncentivo(docenteSeleccion, incentivoSeleccion), TITULO, "Eliminar Incentivo")) {
-	            cargoDocenteSeleccion = null;
-                incentivosVaciarControles();
-                incentivosModoVer();
-	        }
-            incentivosActualizarTabla();
-	    }
-	}
+            // Pestaña Docente:
+            txtDocenteLegajo.setEditable(true);
+            cmbDocenteEstado.setDisable(false);
+            cmbDocenteCategoria.setDisable(false);
 
-	@FXML protected TextField txtIncentivosAnio;
-    @FXML protected TableView<FilaIncentivo> tblIncentivos;
-    @FXML protected TableColumn<FilaIncentivo, Integer> colIncentivosAnio;
+            // Pestaña Cargos:
+            cargosModoVer();
+            btnCargosNuevo.setVisible(true);
 
-// ----------------------------- Pestaña Observaciones ---------------------- //
-	@FXML private TextArea txtaObservaciones;
+            // Pestaña Incentivos:
+            incentivosModoVer();
+            btnIncentivosNuevo.setVisible(true);
 
-	/** Vacía los controles de observaciones */
-	private void observacionesVaciarControles() {
-	    txtaObservaciones.clear();
-	}
+            // Pestaña Observaciones:
+            txtaObservaciones.setEditable(true);
+        }
 
-	/** Muestra las observaciones del docente */
-	@FXML private void observacionesMostrarObservaciones() {
-	    if (docenteSeleccion != null) {
-	        txtaObservaciones.setText(docenteSeleccion.getObservaciones());
-	    }
-	}
+        if (this.permiso.getEliminar()) {
+            btnEliminar.setVisible(true);
+        }
 
-//	@FXML private Button btnObservacionesGuardar;
-//	@FXML private void guardarObservaciones() {
-//	    if (docenteSeleccion != null) {
-//            docenteSeleccion.setObservaciones(txtaObservaciones.getText());
-//            exitoGuardado(controlDocente.guardarDocente(docenteSeleccion), TITULO, "Guardar Observaciones");
-//        }
-//	}
-//
-//	@FXML private Button btnObservacionesMostrar;
-//	@FXML private void mostrarObservaciones() {
-//	    if (docenteSeleccion != null) {
-//	        txtaObservaciones.setText(docenteSeleccion.getObservaciones());
-//	    }
-//	}
-//
-//	@FXML private Button btnObservacionesDescartar;
-//	@FXML private void descartarObservaciones() {
-//	    if (docenteSeleccion != null) {
-//            txtaObservaciones.setText(docenteSeleccion.getObservaciones());
-//        } else {
-//            txtaObservaciones.clear();
-//        }
-//	}
+        this.window.setTitle(TITULO + " - Modificar Docente");
+        if (this.docenteSeleccion != null) {
+            this.gestorPantalla.mensajeEstado("Modificar al Docente " + this.docenteSeleccion.getLegajo());
+        }
+    }
+
+    @Override
+    public void modoNuevo() {
+        if (this.permiso.getCrear()) {
+            // General:
+            btnNuevo.setVisible(true);
+            btnGuardar.setVisible(true);
+            btnDescartar.setVisible(true);
+
+            // Pestaña "Datos":
+            txtDatosApellido.setEditable(true);
+            txtDatosNombre.setEditable(true);
+            cmbDatosTipoDocumento.setDisable(false);
+            txtDatosDocumento.setEditable(true);
+            dtpDatosFechaNacimiento.setEditable(true);
+
+            // Pestaña "Docente":
+            txtDocenteLegajo.setEditable(true);
+            cmbDocenteEstado.setDisable(false);
+            cmbDocenteCategoria.setDisable(false);
+
+            this.window.setTitle(TITULO + " - Nuevo Docente");
+            this.gestorPantalla.mensajeEstado("Nuevo Docente ");
+        }
+    }
+
+    @Override
+    public void modoVer() {
+        // General:
+        btnEliminar.setVisible(false);
+        btnGuardar.setVisible(false);
+        btnDescartar.setVisible(false);
+        btnCosto.setVisible(true);
+
+        // Pestaña Datos:
+        txtDatosApellido.setEditable(false);
+        txtDatosNombre.setEditable(false);
+        cmbDatosTipoDocumento.setDisable(true);
+        txtDatosDocumento.setEditable(false);
+        dtpDatosFechaNacimiento.setDisable(false);
+
+        // Pestaña Contactos:
+        contactosModoVer();
+        btnContactosNuevo.setVisible(false);
+
+        // Pestaña Domicilios:
+        domiciliosModoVer();
+        btnDomiciliosNuevo.setVisible(false);
+
+        // Pestaña Títulos:
+        txtTitulosTitulo.setEditable(false);
+        btnTitulosAgregar.setVisible(false);
+        btnTitulosQuitar.setVisible(false);
+        btnTitulosMayor.setVisible(false);
+
+        // Pestaña "Docente":
+        txtDocenteLegajo.setEditable(false);
+        cmbDocenteEstado.setDisable(true);
+        cmbDocenteCategoria.setDisable(true);
+
+        // Pestaña Cargos:
+        cargosModoVer();
+        btnCargosNuevo.setVisible(false);
+
+        // Pestaña Incentivos:
+        incentivosModoVer();
+        btnIncentivosNuevo.setVisible(false);
+
+        // Pestaña Observaciones:
+        txtaObservaciones.setEditable(false);
+
+        this.window.setTitle(TITULO);
+        this.gestorPantalla.mensajeEstado("");
+    }
 }
