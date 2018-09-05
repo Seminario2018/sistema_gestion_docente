@@ -77,6 +77,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             domiciliosActualizarTabla();    // Domicilios
             titulosActualizarTabla();       // Títulos
             usuarioMostrarUsuario();        // Usuario
+            actualizarTablasRoles();        // Roles
         }
     }
 
@@ -174,7 +175,9 @@ public class Usuarios extends ControladorVista implements Initializable {
                 modoModificar();
 
             } else {
-                alertaError(TITULO, "Guardar Usuario", "Las contraseñas no coinciden");
+                alertaError(TITULO,
+                    "Guardar Usuario",
+                    "Las contraseña no coincide con su confirmación.");
             }
 	    }
 	}
@@ -709,6 +712,7 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 	        List<IRol> rolesDisponibles = controlUsuario.listarGrupo(null);
 	        List<IRol> rolesUsuario = usuarioSeleccion.getRoles();
+
 	        rolesDisponibles.removeAll(rolesUsuario);
 
 	        for (IRol rol : rolesDisponibles) {
