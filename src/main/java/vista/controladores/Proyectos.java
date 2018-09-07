@@ -557,15 +557,38 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
 
         public String getApellido() {
-            return this.integrante.getApellido();
+            if (this.integrante.getCargoDocente() == null) {
+                return this.integrante.getApellido();
+            } else {
+                return this.integrante
+                    .getCargoDocente()
+                    .getDocente()
+                    .getPersona()
+                    .getApellido();
+            }
         }
 
         public String getNombre() {
-            return this.integrante.getNombre();
+            if (this.integrante.getCargoDocente() == null) {
+                return this.integrante.getNombre();
+            } else {
+                return this.integrante
+                    .getCargoDocente()
+                    .getDocente()
+                    .getPersona()
+                    .getNombre();
+            }
         }
 
         public String getCargo() {
-            return this.integrante.getCargo();
+            if (this.integrante.getCargoDocente() == null) {
+                return this.integrante.getCargo();
+            } else {
+                return this.integrante
+                    .getCargoDocente()
+                    .getCargo()
+                    .getDescripcion();
+            }
         }
 
         public String getInstitucion() {
@@ -594,9 +617,19 @@ public class Proyectos extends ControladorVista implements Initializable {
     /** Muestra los datos del integrante seleccionado: */
     private void integrantesMostrarIntegrante() {
         if (integranteSeleccion != null) {
-            txtIntegrantesApellido.setText(integranteSeleccion.getApellido());
-            txtIntegrantesNombre.setText(integranteSeleccion.getNombre());
-            txtIntegrantesCargo.setText(integranteSeleccion.getCargo());
+
+            if (integranteSeleccion.getCargoDocente() == null) {
+                txtIntegrantesApellido.setText(integranteSeleccion.getApellido());
+                txtIntegrantesNombre.setText(integranteSeleccion.getNombre());
+                txtIntegrantesCargo.setText(integranteSeleccion.getCargo());
+
+            } else {
+                ICargoDocente cargoDocente = integranteSeleccion.getCargoDocente();
+                txtIntegrantesApellido.setText(cargoDocente.getDocente().getPersona().getApellido());
+                txtIntegrantesNombre.setText(cargoDocente.getDocente().getPersona().getNombre());
+                txtIntegrantesCargo.setText(cargoDocente.getCargo().getDescripcion());
+            }
+
             txtIntegrantesInstitucion.setText(integranteSeleccion.getInstitucion());
             txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
         }

@@ -2,11 +2,9 @@ package modelo.investigacion;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-
 import modelo.docente.CargoDocente;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
-import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
 public class Integrante implements IIntegrante, IIntegranteg {
@@ -135,19 +133,23 @@ public class Integrante implements IIntegrante, IIntegranteg {
 		this.id = id;
 	}
 
-	public ICargoDocente getCargoDocente2() {
+	@Override
+    public ICargoDocente getCargoDocente2() {
 		return this.cargoDocente;
 	}
 
-	public void setCargoDocente(ICargoDocente cd) {
+	@Override
+    public void setCargoDocente(ICargoDocente cd) {
 		this.cargoDocente = cd;
 	}
 
-	public void setInstitucion(String institucion) {
+	@Override
+    public void setInstitucion(String institucion) {
 		this.institucion = institucion;
 	}
 
-	public ICargoDocente getCargoDocente() {
+	@Override
+    public ICargoDocente getCargoDocente() {
 
 		if (this.cargoDocente == null) {
 			ICargoDocente cargo = new CargoDocente();
