@@ -58,7 +58,7 @@ public class GestorProyecto {
 			}
 
 			for (IIntegrante i : proyecto.getIntegrantes2()) {
-				st.add(this.agregarIntegrante(proyecto, i));
+				st.add(this.agregarIntegrante2(proyecto, i));
 			}
 			for (ISubsidio s: proyecto.getSubsidios2()) {
 				st.add(this.agregarSubsidio(proyecto, s));
@@ -77,7 +77,7 @@ public class GestorProyecto {
 			md.ejecutarQuerys(st);
 			
 			return md.isEstado() ?
-					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente") :
+					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creÃ³ correctamente") :
 						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
 
 		} catch (Exception e) {
@@ -129,20 +129,20 @@ public class GestorProyecto {
 			}
 
 			for (IIntegrante i : proyecto.getIntegrantes2()) {
-				this.agregarIntegrante2(proyecto, i);
+				this.agregarIntegrante(p, i);
 			}
 			for (ISubsidio s: proyecto.getSubsidios2()) {
-				this.agregarSubsidio2(proyecto, s);
+				this.agregarSubsidio(p, s);
 			}
 			for (IProrroga pro : proyecto.getProrrogas2()) {
-				this.agregarProrroga2(proyecto, pro);
+				this.agregarProrroga(p, pro);
 			}
 
 			
 			md.insertar(table, campos, valores);
 			
 			return md.isEstado() ?
-					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creó correctamente") :
+					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creÃ³ correctamente") :
 						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
 
 		} catch (Exception e) {
@@ -151,7 +151,8 @@ public class GestorProyecto {
 		}
 	}
 
-	private void agregarProrroga2(IProyectog proyecto, IProrroga pro) {
+	public EstadoOperacion agregarProrroga(IProyecto p, IProrroga pro) {
+		IProyectog proyecto = (IProyectog) p;
 		ManejoDatos md = new ManejoDatos();
 		String table = "Prorrogas";
 		String campos = "`Proyecto`, `Disposicion`";
@@ -163,9 +164,15 @@ public class GestorProyecto {
 		}
 
 		md.insertar(table, campos, valores);
+		
+		return md.isEstado() ?
+				new EstadoOperacion(CodigoEstado.INSERT_OK, "La prorroga se creo correctamente") :
+					new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la prorroga");
 	}
 
-	private void agregarSubsidio2(IProyectog proyecto, ISubsidio subsidio) {
+	public  EstadoOperacion agregarSubsidio(IProyecto p, ISubsidio subsidio) {
+		IProyectog proyecto = (IProyectog) p;
+		
 		ManejoDatos md = new ManejoDatos();
 		String table = "Subsidios";
 		String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
@@ -178,14 +185,23 @@ public class GestorProyecto {
 		}
 
 		for (IRendicion rendicion : subsidio.getRendiciones()) {
-			this.agregarRendicion2(rendicion, proyecto, subsidio);
+			this.agregarRendicion(rendicion, p, subsidio);
 		}
 
 		md.insertar(table, campos, valores);
 		
+		if (md.isEstado()) {
+			proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+			return new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agrego correctamente");
+		} else {
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo agregar el subsidio");
+		}
+		
 	}
 
-	private EstadoOperacion agregarRendicion2(IRendicion rendicion, IProyectog proyecto, ISubsidio subsidio) {
+	public EstadoOperacion agregarRendicion(IRendicion rendicion, IProyecto p, ISubsidio subsidio) {
+		IProyectog proyecto = (IProyectog) p;
+		
 		try {
 			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
 			ManejoDatos md = new ManejoDatos();
@@ -203,7 +219,7 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				subsidio.setRendiciones(new ArrayList<IRendicion>());
-				return new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregó correctamente");
+				return new EstadoOperacion(CodigoEstado.INSERT_OK, "La rendicion se agregÃ³ correctamente");
 			} else {
 				return new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo agregar la rendicion");
 			}
@@ -214,7 +230,7 @@ public class GestorProyecto {
 		}
 	}
 
-	private void agregarIntegrante2(IProyectog proyecto, IIntegrante i) {
+	private String agregarIntegrante2(IProyectog proyecto, IIntegrante i) {
 		IIntegranteg integrante = (IIntegranteg) i;
 		if (integrante.getId() == -1) {
 			integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
@@ -249,7 +265,7 @@ public class GestorProyecto {
 			valores += ", " + integrante.getHorasSemanales();
 		}
 		
-		md.insertar(table, campos, valores);
+		return md.insertQuery(table, campos, valores);
 		
 	}
 
@@ -322,8 +338,8 @@ public class GestorProyecto {
 			String condicion = "`Id` = " + proyecto.getId();
 			md.update(tabla, campos, condicion);
 			return (md.isEstado()) ?
-					new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificó correctamente") :
-						new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se modificó");
+					new EstadoOperacion(CodigoEstado.UPDATE_OK, "El proyecto se modificÃ³ correctamente") :
+						new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "El proyecto no se modificÃ³");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -340,8 +356,8 @@ public class GestorProyecto {
 			md.delete("`Subsidios`", condicion);
 			md.delete("`Proyectos`", "id = " + proyecto.getId());
 			return (md.isEstado()) ?
-					new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminó correctamente") :
-						new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El proyecto no se eliminó");
+					new EstadoOperacion(CodigoEstado.DELETE_OK, "El proyecto se eliminÃ³ correctamente") :
+						new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El proyecto no se eliminÃ³");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -389,7 +405,8 @@ public class GestorProyecto {
 		}
 	}
 
-	public String agregarIntegrante(IProyectog proyecto, IIntegrante i) {
+	public EstadoOperacion agregarIntegrante(IProyecto proyecto, IIntegrante i) {
+		
 		IIntegranteg integrante = (IIntegranteg) i;
 		if (integrante.getId() == -1) {
 			integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
@@ -423,7 +440,14 @@ public class GestorProyecto {
 			campos += ", HorasSemanales";
 			valores += ", " + integrante.getHorasSemanales();
 		}
-		return md.insertQuery(table, campos, valores);
+		
+		md.insertar(table, campos, valores);
+		if (md.isEstado()) {
+			proyecto.setIntegrantes(new ArrayList<IIntegrante>());
+			return new EstadoOperacion(CodigoEstado.INSERT_OK, "El integrante se agrego correctamente");
+		} else {
+			return new EstadoOperacion(CodigoEstado.INSERT_OK, "No se pudo agregar el integrante");
+		}
 
 	}
 
@@ -473,7 +497,7 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setIntegrantes(new ArrayList<IIntegrante>());
-				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizó correctamente");
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El integrante se actualizÃ³ correctamente");
 			} else {
 				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el integrante");
 			}
@@ -495,9 +519,9 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setIntegrantes(new ArrayList<IIntegrante>());
-				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminó correctamente");
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El integrante se eliminÃ³ correctamente");
 			} else {
-				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El integrante no se eliminó");
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El integrante no se eliminÃ³");
 			}
 
 		} catch (Exception e) {
@@ -614,12 +638,12 @@ public class GestorProyecto {
 				switch (resultado.getEstado()) {
 				case DELETE_ERROR:
 					return new EstadoOperacion(CodigoEstado.DELETE_ERROR,
-							"No se pudo quitar una rendición del subsidio [id: " + rendicion.getId() + "]");
+							"No se pudo quitar una rendiciÃ³n del subsidio [id: " + rendicion.getId() + "]");
 				case DELETE_OK:
 					// Seguir iterando
 					break;
 				default:
-					throw new RuntimeException("Estado de modificación no esperado: "
+					throw new RuntimeException("Estado de modificaciÃ³n no esperado: "
 							+ resultado.getEstado().toString() + ": " + resultado.getMensaje());
 				}
 			}
@@ -628,7 +652,7 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setSubsidios(new ArrayList<ISubsidio>());
-				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio se quitó correctamente");
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "El subsidio se quitÃ³ correctamente");
 			} else {
 				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "El subsidio no se pudo quitar");
 			}
@@ -669,7 +693,7 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setSubsidios(new ArrayList<ISubsidio>());
-				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizó correctamente");
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "El subsidio se actualizÃ³ correctamente");
 			} else {
 				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar el subsidio");
 			}
@@ -759,14 +783,14 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setProrrogas(new ArrayList<IProrroga>());
-				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prórroga se actualizó correctamente");
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La prÃ³rroga se actualizÃ³ correctamente");
 			} else {
-				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prÃ³rroga");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prórroga");
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la prÃ³rroga");
 		}
 	}
 
@@ -783,15 +807,15 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setProrrogas(new ArrayList<IProrroga>());
-				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La prórroga se quitó correctamente");
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La prÃ³rroga se quitÃ³ correctamente");
 
 			} else {
-				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prÃ³rroga");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prórroga");
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "No se pudo quitar la prÃ³rroga");
 		}
 	}
 
@@ -936,14 +960,14 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				subsidio.setRendiciones(new ArrayList<IRendicion>());
-				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendición se quitó correctamente");
+				return new EstadoOperacion(CodigoEstado.DELETE_OK, "La rendiciÃ³n se quitÃ³ correctamente");
 			} else {
-				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
+				return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendiciÃ³n no se pudo quitar");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendición no se pudo quitar");
+			return new EstadoOperacion(CodigoEstado.DELETE_ERROR, "La rendiciÃ³n no se pudo quitar");
 		}
 	}
 
@@ -980,14 +1004,14 @@ public class GestorProyecto {
 
 			if (md.isEstado()) {
 				proyecto.setSubsidios(new ArrayList<ISubsidio>());
-				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La rendición se actualizó correctamente");
+				return new EstadoOperacion(CodigoEstado.UPDATE_OK, "La rendiciÃ³n se actualizÃ³ correctamente");
 			} else {
-				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+				return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendiciÃ³n");
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendición");
+			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo actualizar la rendiciÃ³n");
 		}
 	}
 
