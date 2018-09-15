@@ -8,12 +8,13 @@ import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
+import modelo.docente.IDocente;
 import persistencia.ManejoDatos;
 
 public class GestorProyecto {
 
 	public GestorProyecto() {};
-	
+
 	public EstadoOperacion guardarTodo(IProyecto p) {
 		try {
 
@@ -63,7 +64,7 @@ public class GestorProyecto {
 			for (ISubsidio s: proyecto.getSubsidios2()) {
 				st.add(this.agregarSubsidio(proyecto, s));
 				ISubsidiog subsidio = (ISubsidiog) s;
-				
+
 				for (IRendicion rendicion : subsidio.getRendiciones2()) {
 					st.add(this.agregarRendicion(rendicion, proyecto, subsidio));
 				}
@@ -73,9 +74,9 @@ public class GestorProyecto {
 			}
 
 			st.add(md.insertQuery(table, campos, valores));
-			
+
 			md.ejecutarQuerys(st);
-			
+
 			return md.isEstado() ?
 					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creÃ³ correctamente") :
 						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
@@ -138,9 +139,9 @@ public class GestorProyecto {
 				this.agregarProrroga(p, pro);
 			}
 
-			
+
 			md.insertar(table, campos, valores);
-			
+
 			return md.isEstado() ?
 					new EstadoOperacion(CodigoEstado.INSERT_OK, "El Proyecto se creÃ³ correctamente") :
 						new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear el Proyecto");
@@ -164,7 +165,7 @@ public class GestorProyecto {
 		}
 
 		md.insertar(table, campos, valores);
-		
+
 		return md.isEstado() ?
 				new EstadoOperacion(CodigoEstado.INSERT_OK, "La prorroga se creo correctamente") :
 					new EstadoOperacion(CodigoEstado.INSERT_ERROR, "No se pudo crear la prorroga");
@@ -172,7 +173,7 @@ public class GestorProyecto {
 
 	public  EstadoOperacion agregarSubsidio(IProyecto p, ISubsidio subsidio) {
 		IProyectog proyecto = (IProyectog) p;
-		
+
 		ManejoDatos md = new ManejoDatos();
 		String table = "Subsidios";
 		String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
@@ -189,19 +190,19 @@ public class GestorProyecto {
 		}
 
 		md.insertar(table, campos, valores);
-		
+
 		if (md.isEstado()) {
 			proyecto.setIntegrantes(new ArrayList<IIntegrante>());
 			return new EstadoOperacion(CodigoEstado.INSERT_OK, "El subsidio se agrego correctamente");
 		} else {
 			return new EstadoOperacion(CodigoEstado.UPDATE_ERROR, "No se pudo agregar el subsidio");
 		}
-		
+
 	}
 
 	public EstadoOperacion agregarRendicion(IRendicion rendicion, IProyecto p, ISubsidio subsidio) {
 		IProyectog proyecto = (IProyectog) p;
-		
+
 		try {
 			rendicion.setId(GestorProyecto.getMaxID("Rendiciones", "id") + 1);
 			ManejoDatos md = new ManejoDatos();
@@ -264,9 +265,9 @@ public class GestorProyecto {
 			campos += ", HorasSemanales";
 			valores += ", " + integrante.getHorasSemanales();
 		}
-		
+
 		return md.insertQuery(table, campos, valores);
-		
+
 	}
 
 	public EstadoOperacion modificarProyecto(IProyecto proyecto) {
@@ -406,7 +407,7 @@ public class GestorProyecto {
 	}
 
 	public EstadoOperacion agregarIntegrante(IProyecto proyecto, IIntegrante i) {
-		
+
 		IIntegranteg integrante = (IIntegranteg) i;
 		if (integrante.getId() == -1) {
 			integrante.setId(GestorProyecto.getMaxID("Integrantes", "id"));
@@ -440,7 +441,7 @@ public class GestorProyecto {
 			campos += ", HorasSemanales";
 			valores += ", " + integrante.getHorasSemanales();
 		}
-		
+
 		md.insertar(table, campos, valores);
 		if (md.isEstado()) {
 			proyecto.setIntegrantes(new ArrayList<IIntegrante>());
@@ -605,9 +606,9 @@ public class GestorProyecto {
 
 	public String agregarSubsidio(IProyectog proyecto, ISubsidio s) {
 		ManejoDatos md = new ManejoDatos();
-		
+
 		ISubsidiog subsidio = (ISubsidiog) s;
-		
+
 		String table = "Subsidios";
 		String campos = "`Proyecto`, `Year`, `Disposicion`, `MontoTotal`";
 		String valores = proyecto.getId() + ", '" + subsidio.getFecha() + "', '" + subsidio.getDisposicion() + "', "
@@ -618,7 +619,7 @@ public class GestorProyecto {
 			valores += ", '" + subsidio.getObservaciones() + "'";
 		}
 
-		
+
 
 		return md.insertQuery(table, campos, valores);
 
@@ -1074,5 +1075,38 @@ public class GestorProyecto {
 	public IProyecto getIProyecto() {
 		return new Proyecto();
 	}
+
+    /**
+     * Busca en la base de datos todos los proyectos en que el docente
+     * seleccionado es un integrante y devuelve filas con el ID de proyecto
+     * (P.ID), el nombre del proyecto (P.Nombre), la descripción del cargo
+     * (C.Descripcion) y la descripción del área del cargo (A.Descripcion).
+     * @param docente El docente a buscar
+     * @return Tabla con las filas de la búsqueda
+     */
+	public List<Hashtable<String,String>> integranteDe(IDocente docente) {
+        if (docente != null && docente.getLegajo() != -1) {
+            try {
+                ManejoDatos md = new ManejoDatos();
+                String campos =
+                    "P.ID, " +
+                    "P.Nombre, " +
+                    "C.Descripcion, " +
+                    "A.Descripcion";
+                String tabla = "Proyectos P " +
+                    "Join Integrantes I     On I.Proyecto = P.id " +
+                    "Join CargosDocentes CD On CD.Codigo = I.CargoDocente " +
+                    "Join Areas A           On A.Codigo = CD.Area " +
+                    "Join Cargos C          On C.Codigo = CD.Cargo";
+                String condicion = "CD.Legajo = " + docente.getLegajo();
+
+                return md.select(tabla, campos, condicion);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

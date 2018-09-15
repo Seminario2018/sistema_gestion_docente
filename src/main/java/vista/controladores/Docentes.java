@@ -5,6 +5,7 @@ import java.time.DateTimeException;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import controlador.ControlAuxiliar;
@@ -37,8 +38,6 @@ import modelo.division.IArea;
 import modelo.docente.ICargoDocente;
 import modelo.docente.IDocente;
 import modelo.docente.IIncentivo;
-import modelo.investigacion.IIntegrante;
-import modelo.investigacion.IProyecto;
 import modelo.persona.IContacto;
 import modelo.persona.IDomicilio;
 import modelo.persona.ITitulo;
@@ -900,28 +899,32 @@ public class Docentes extends ControladorVista implements Initializable {
     protected ObservableList<FilaInvestigacion> filasInvestigacion = FXCollections.observableArrayList();
 
     public class FilaInvestigacion {
-        private IIntegrante integrante;
-        private IProyecto proyecto;
+        private String id;
+        private String nombre;
+        private String cargo;
+        private String area;
 
-        public FilaInvestigacion(IProyecto proyecto, IIntegrante integrante) {
-            this.integrante = integrante;
-            this.proyecto = proyecto;
+        public FilaInvestigacion(String id, String nombre, String cargo, String area) {
+            this.id = id;
+            this.nombre = nombre;
+            this.cargo = cargo;
+            this.area = area;
         }
 
-        public int getId() {
-            return this.proyecto.getId();
+        public String getId() {
+            return id;
         }
 
         public String getNombre() {
-            return this.proyecto.getNombre();
-        }
-
-        public String getArea() {
-            return this.integrante.getCargoDocente().getArea().getDescripcion();
+            return nombre;
         }
 
         public String getCargo() {
-            return integrante.getCargoDocente().getCargo().getDescripcion();
+            return cargo;
+        }
+
+        public String getArea() {
+            return area;
         }
     }
 
@@ -933,15 +936,16 @@ public class Docentes extends ControladorVista implements Initializable {
             txtInvestigacionCategoria.setText(
                 docenteSeleccion.getCategoriaInvestigacion().getDescripcion());
 
-            // Lista con todos los proyectos (?):
-            List<IProyecto> listaProyectos = controlInvestigacion.listarProyecto(null);
-            for (IProyecto proyecto : listaProyectos) {
-                for (IIntegrante integrante : proyecto.getIntegrantes()) {
-                    if (integrante.getCargoDocente().getDocente().getLegajo() == docenteSeleccion.getLegajo()) {
-                        filasInvestigacion.add(new FilaInvestigacion(proyecto, integrante));
-                        break;
-                    }
-                }
+            // Lista con todos los proyectos donde participa el docente:
+            List<Hashtable<String,String>> integranteDe =
+                controlInvestigacion.integranteDe(docenteSeleccion);
+
+            for (Hashtable<String, String> infoProyecto : integranteDe) {
+                filasInvestigacion.add(new FilaInvestigacion(
+                    infoProyecto.get("P.ID"),
+                    infoProyecto.get("P.Nombre"),
+                    infoProyecto.get("C.Descripcion"),
+                    infoProyecto.get("A.Descripcion")));
             }
         }
     }

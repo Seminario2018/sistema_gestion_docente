@@ -2,8 +2,10 @@ package controlador;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.docente.IDocente;
 import modelo.investigacion.GestorPrograma;
 import modelo.investigacion.GestorProyecto;
 import modelo.investigacion.IIntegrante;
@@ -123,6 +125,18 @@ public class ControlInvestigacion {
 
     public IIntegrante getIIntegrante() {
         return gestorProyecto.getIIntegrante();
+    }
+
+    /**
+     * Busca en la base de datos todos los proyectos en que el docente
+     * seleccionado es un integrante y devuelve filas con el ID de proyecto
+     * (P.ID), el nombre del proyecto (P.Nombre), la descripción del cargo
+     * (C.Descripcion) y la descripción del área del cargo (A.Descripcion).
+     * @param docente El docente a buscar
+     * @return Tabla con las filas de la búsqueda
+     */
+    public List<Hashtable<String,String>> integranteDe(IDocente docente) {
+        return gestorProyecto.integranteDe(docente);
     }
 
     //    Subsidios
