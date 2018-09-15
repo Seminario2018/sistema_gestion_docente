@@ -141,8 +141,8 @@ public abstract class ControladorVista implements Initializable {
 
 			for (Field columna : columnas) {
 				TableColumn col = (TableColumn) columna.get(this);
-				String varName = columna.getName()
-						.replace("col" + nombre, "").toLowerCase();
+				String varName = Utilidades.primeraMinuscula(
+						columna.getName().replace("col" + nombre, ""));
 				col.setCellValueFactory(new PropertyValueFactory(varName));
 			}
 
