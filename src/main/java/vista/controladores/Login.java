@@ -1,5 +1,9 @@
 package vista.controladores;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -9,7 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import modelo.auxiliares.hash.PasswordUtil;
@@ -40,7 +44,23 @@ public class Login extends ControladorVista implements Initializable {
 
 	@FXML private TextField txtLoginUsuario;
 
-	@FXML private Label lblLoginAyuda;
+	@FXML private Hyperlink lnkLoginAyuda;
+	@FXML void manualUsuarios(ActionEvent event) {
+		if (Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+		    try {
+				Desktop.getDesktop().browse(new URI("https://drive.google.com/open?id=1R3yBj3QhcbKckm97Z389lqZFrshZVPfh"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		} else {
+			dialogoConfirmacion("Manual de Usuario", "Sistema no soportado",
+					"Su Sistema Operativo no soporta la navegación en línea"
+					+ " del Manual de Usuario. Puede encontrar una copia en"
+					+ " la carpeta donde instaló este programa.");
+		}
+    }
 
 	@FXML private TextField txtLoginContrasena;
 

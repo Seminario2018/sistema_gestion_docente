@@ -38,6 +38,6 @@
       <TextField fx:id="txtLoginUsuario" styleClass="login-field" GridPane.rowIndex="4" />
       <PasswordField fx:id="txtLoginContrasena" GridPane.rowIndex="7" />
       <Button fx:id="btnLoginIngresar" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#ingresar" styleClass="login-submit" text="Ingresar" GridPane.rowIndex="9" />
-      <Label fx:id="lblLoginAyuda" styleClass="login-title" text="¿Necesitas ayuda?" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Hyperlink fx:id="lnkLoginAyuda" onAction="#manualUsuarios" text="¿Necesitas ayuda?" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
    </children>
 </GridPane>
