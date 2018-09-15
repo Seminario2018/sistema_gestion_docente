@@ -22,7 +22,7 @@ import utilidades.Utilidades;
  */
 public class ConfigCon extends ControladorVista implements Initializable {
 
-    public static final String TITULO = "Configuración de conexión";
+    public static final String TITULO = "ConfigCon";
     private static final String ARCHIVO_CONFIG = "Base.xml";
 
     private Document configuracionXML;
@@ -34,7 +34,7 @@ public class ConfigCon extends ControladorVista implements Initializable {
 
     @Override
     public void inicializar() {
-        this.window.setTitle(TITULO);
+        this.window.setTitle("Configuración de conexión");
     }
 
     @FXML private TextField txtDriver;
