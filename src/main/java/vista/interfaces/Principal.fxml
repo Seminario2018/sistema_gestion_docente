@@ -36,10 +36,10 @@
          <menus>
             <Menu mnemonicParsing="false" text="Configuración">
               <items>
-                <MenuItem mnemonicParsing="false" text="Configuración de conexión" />
-                  <MenuItem mnemonicParsing="false" text="Configuración de informes" />
-                  <MenuItem mnemonicParsing="false" text="Configuración de mails" />
-                  <MenuItem mnemonicParsing="false" text="Salir" />
+                <MenuItem mnemonicParsing="false" onAction="#pantallaConfigCon" text="Configuración de conexión" />
+                  <MenuItem mnemonicParsing="false" onAction="#pantallaConfigInf" text="Configuración de informes" />
+                  <MenuItem mnemonicParsing="false" onAction="#pantallaConfigEmail" text="Configuración de mails" />
+                  <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Usuarios">

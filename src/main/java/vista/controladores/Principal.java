@@ -52,9 +52,6 @@ public class Principal extends ControladorVista implements Initializable {
 					case ROLES:
 						this.mnuRoles.setDisable(false);
 						break;
-//					case PERSONAS:
-//						this.mnuPersonas.setDisable(false);
-//						break;
 					case DOCENTES:
 						this.mnuDocentes.setDisable(false);
 						break;
@@ -76,9 +73,6 @@ public class Principal extends ControladorVista implements Initializable {
 
 	@FXML
     private MenuItem mnuUsuarios;
-
-//    @FXML
-//    private MenuItem mnuPersonas;
 
     @FXML
     private MenuItem mnuInformes;
@@ -104,6 +98,27 @@ public class Principal extends ControladorVista implements Initializable {
     @FXML
     private MenuItem mnuProgramas;
 
+    
+    @FXML
+    void pantallaConfigCon(ActionEvent event) {
+    	this.gestorPantalla.lanzarPantalla("ConfigCon", null);
+    }
+
+    @FXML
+    void pantallaConfigInf(ActionEvent event) {
+    	this.gestorPantalla.lanzarPantalla("ConfigInf", null);
+    }
+
+    @FXML
+    void pantallaConfigEmail(ActionEvent event) {
+    	this.gestorPantalla.lanzarPantalla("ConfigMail", null);
+    }
+
+    @FXML
+    void salir(ActionEvent event) {
+
+    }
+    
     @FXML
     void pantallaRoles(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("Roles", null);
@@ -112,11 +127,6 @@ public class Principal extends ControladorVista implements Initializable {
     @FXML
     void pantallaUsuarios(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("Usuarios", null);
-    }
-
-    @FXML
-    void pantallaPersonas(ActionEvent event) {
-    	this.gestorPantalla.lanzarPantalla("Personas", null);
     }
 
     @FXML
