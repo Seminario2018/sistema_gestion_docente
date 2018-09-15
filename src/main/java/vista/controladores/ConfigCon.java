@@ -13,11 +13,11 @@ import javafx.scene.control.TextField;
  */
 public class ConfigCon extends ControladorVista implements Initializable {
 	
-	public static final String TITULO = "Configuración de conexión";
+	public static final String TITULO = "ConfigCon";
 	
 	@Override
 	public void inicializar() {
-		this.window.setTitle(ConfigCon.TITULO);
+		this.window.setTitle("Configuración de conexión");
 	}
 	
 	@FXML private TextField txtDriver;
