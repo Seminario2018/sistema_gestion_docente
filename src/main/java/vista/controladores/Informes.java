@@ -173,12 +173,19 @@ public class Informes extends ControladorVista implements Initializable {
 	
 	@FXML protected Button btnInformesExcel;
 	@FXML public void exportar(ActionEvent event) {
+		// TODO Exportar usando el XML
+	}
+	
+	@FXML protected Button btnInformesExcelComo;
+	@FXML public void exportarComo(ActionEvent event) {
 		List<String> extensiones = new ArrayList<String>();
     	extensiones.add("*.xls");
     	extensiones.add("*.xlsx");
         File archivo = elegirRuta("Elija la ubicación del archivo", "Hojas de cálculo", extensiones);
 		this.control.exportar(archivo);
 	}
+	
+	
 
 // -------------------------------- Informe --------------------------------- //
 	
@@ -188,6 +195,11 @@ public class Informes extends ControladorVista implements Initializable {
     @FXML protected TableView<List<String>> tblInformes;
     
 // -------------------------------- Filtros --------------------------------- //
+    
+    @FXML protected Button btnFiltroModificar;
+    @FXML public void modificarColumna(ActionEvent event) {
+    	// TODO lanzar pantalla InformesFiltros
+    }
     
     @FXML protected Button btnFiltroVer;
     @FXML public void verColumna(ActionEvent event) {
