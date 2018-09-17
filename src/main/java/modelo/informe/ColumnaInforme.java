@@ -47,6 +47,19 @@ public class ColumnaInforme {
 		this.tipo = tipo;
 	}
 	
+	@Override
+	public ColumnaInforme clone() {
+		return new ColumnaInforme(
+				this.visible,
+				this.nombre,
+				this.atributo,
+				this.filtro,
+				this.calculo,
+				this.ordenar,
+				this.posicion,
+				this.tipo);
+	}
+	
 	public ColumnaInforme() {
 		this.ordenar = -1;
 		this.posicion = -1;

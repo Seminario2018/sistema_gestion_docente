@@ -3,6 +3,7 @@ package vista.controladores;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -16,19 +17,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import modelo.auxiliares.Calculo;
-import modelo.auxiliares.Filtro;
 import modelo.informe.ColumnaInforme;
 import modelo.informe.FiltroColumna;
 import modelo.informe.ITipoInforme;
-import modelo.informe.ColumnaInforme.TipoColumna;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
@@ -77,9 +74,6 @@ public class Informes extends ControladorVista implements Initializable {
 		}
 		
 		inicializarTablaFiltro();
-		
-		this.cmbFiltroFiltro.setItems(FXCollections.observableArrayList(Filtro.getLista()));
-		this.cmbFiltroCalculo.setItems(FXCollections.observableArrayList(Calculo.getLista()));
 	}
 	
 	@Override
@@ -198,7 +192,9 @@ public class Informes extends ControladorVista implements Initializable {
     
     @FXML protected Button btnFiltroModificar;
     @FXML public void modificarColumna(ActionEvent event) {
-    	// TODO lanzar pantalla InformesFiltros
+    	Map<String, Object> args = new HashMap<String, Object>();
+    	args.put(InformesFiltros.COLUMNA, this.columnaSeleccion);
+    	this.gestorPantalla.lanzarPantalla(InformesFiltros.TITULO, args);
     }
     
     @FXML protected Button btnFiltroVer;
@@ -245,51 +241,16 @@ public class Informes extends ControladorVista implements Initializable {
     		actualizarTablas();
     		this.tblFiltro.getSelectionModel().select(b);
     	}
-    }
-
-    @FXML protected TextField txtFiltroNombre;
-    @FXML protected ComboBox<Filtro> cmbFiltroFiltro;
-    @FXML protected DatePicker dtpFiltroCondicion;
-    @FXML protected TextField txtFiltroCondicion;
-    @FXML protected ComboBox<Calculo> cmbFiltroCalculo;
-
-    @FXML protected Button btnFiltroAplicar;
-    @FXML public void aplicarFiltro(ActionEvent event) {
-    	if (this.columnaSeleccion != null) {
-    		
-    		String nombre = this.txtFiltroNombre.getText(); 
-    		if (nombre != null && !"".equals(nombre))
-    			this.columnaSeleccion.setNombre(nombre);
-    		
-    		Filtro filtro = this.cmbFiltroFiltro.getSelectionModel().getSelectedItem();
-    		if (filtro != null) {
-    			String valor = (this.txtFiltroCondicion.isVisible())
-    					? this.txtFiltroCondicion.getText()
-    					: this.dtpFiltroCondicion.getValue().toString();
-    			if (valor != null && !"".equals(valor)) {
-    				FiltroColumna fc = new FiltroColumna(filtro, valor);
-    				this.columnaSeleccion.setFiltro(fc);
-    			}
-    		}
-    		
-    		Calculo calculo = this.cmbFiltroCalculo.getSelectionModel().getSelectedItem();
-    		if (calculo != null) {
-    			this.columnaSeleccion.setCalculo(calculo);
-    		}
-    		
-    		actualizarColumna();
-    	}
-    }
+    }    
     
-    
-    @FXML protected Button btnFiltroLimpiar;
-    @FXML public void limpiarFiltro(ActionEvent event) {
-    	if (this.columnaSeleccion != null) {
-    		this.columnaSeleccion.setFiltro(null);
-    		this.columnaSeleccion.setCalculo(null);
-    		actualizarColumna();
-    	}
-    }
+//    @FXML protected Button btnFiltroLimpiar;
+//    @FXML public void limpiarFiltro(ActionEvent event) {
+//    	if (this.columnaSeleccion != null) {
+//    		this.columnaSeleccion.setFiltro(null);
+//    		this.columnaSeleccion.setCalculo(null);
+//    		actualizarColumna();
+//    	}
+//    }
     
     
     // No se me ocurrió otra cosa
@@ -388,38 +349,6 @@ public class Informes extends ControladorVista implements Initializable {
  		// La última columna no se puede bajar
  		if (columna.getPosicion() >= this.filasFiltro.size() - 1)
  			this.btnFiltroBajar.setDisable(true);
- 		
- 		this.txtFiltroNombre.clear();
- 		String nombre = columna.getNombre();
- 		if (nombre != null && !"".equals(nombre))
- 			this.txtFiltroNombre.setText(nombre);
- 		
- 		if (this.columnaSeleccion.getTipo() == TipoColumna.DATE) {
- 			this.txtFiltroCondicion.setVisible(false);
- 			this.dtpFiltroCondicion.setVisible(true);
- 			this.dtpFiltroCondicion.getEditor().clear();
- 		} else {
- 			this.dtpFiltroCondicion.setVisible(false);
- 			this.txtFiltroCondicion.setVisible(true); 			
- 			this.txtFiltroCondicion.clear();
- 		}
- 		
- 		this.cmbFiltroFiltro.getSelectionModel().clearSelection();
- 		FiltroColumna filtro = columna.getFiltro();
- 		if (filtro != null) {
- 			if (this.columnaSeleccion.getTipo() == TipoColumna.DATE) {
- 				this.dtpFiltroCondicion.getEditor().setText(filtro.getValor());
- 			} else {
- 				this.txtFiltroCondicion.setText(filtro.getValor());
- 			}
- 			this.cmbFiltroFiltro.setValue(filtro.getTipo());
- 		}
- 		
- 		this.cmbFiltroCalculo.getSelectionModel().clearSelection();
- 		Calculo calculo = columna.getCalculo();
- 		if (calculo != null) {
- 			this.cmbFiltroCalculo.setValue(calculo);
- 		}
  	}
  	
  	private void inicializarTablaFiltro() {
@@ -439,12 +368,6 @@ public class Informes extends ControladorVista implements Initializable {
  		this.btnFiltroOrdenar.setDisable(true);
  		this.btnFiltroSubir.setDisable(true);
  		this.btnFiltroBajar.setDisable(true);
- 		this.txtFiltroNombre.setEditable(false);
- 		this.cmbFiltroFiltro.setDisable(true);
- 		this.txtFiltroCondicion.setEditable(false);
- 		this.cmbFiltroCalculo.setDisable(true);
- 		this.btnFiltroAplicar.setDisable(true);
- 		this.btnFiltroLimpiar.setDisable(true);
  	}
  	
  	private void habilitarFiltro() {
@@ -452,11 +375,5 @@ public class Informes extends ControladorVista implements Initializable {
  		this.btnFiltroOrdenar.setDisable(false);
  		this.btnFiltroSubir.setDisable(false);
  		this.btnFiltroBajar.setDisable(false);
- 		this.txtFiltroNombre.setEditable(true);
- 		this.cmbFiltroFiltro.setDisable(false);
- 		this.txtFiltroCondicion.setEditable(true);
- 		this.cmbFiltroCalculo.setDisable(false);
- 		this.btnFiltroAplicar.setDisable(false);
- 		this.btnFiltroLimpiar.setDisable(false);
  	}
 }
