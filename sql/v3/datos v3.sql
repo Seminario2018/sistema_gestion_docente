@@ -578,8 +578,9 @@ insert into permisos (id, Rol, Crear, Eliminar, Modificar, Listar, Modulo) value
 insert into personas values
 (0, 0, 's', 'u', '2018-03-10', 1);
 
+# SuperUsuario - Usuario: su | Password: semint2018
 insert into usuarios values
-('su', 'c3VwZXJ1c2Vy', 'B57myBiOuCT2UBCWlTlOOw==', 0, 0, 'Oculto');
+('su', 'c2VtaW50MjAxOA==', 'Ve3nYAXwigF2BfAU0H+1+Q==', 0, 0, 'Oculto');
 
 insert into rolesxusuario values
 ('su', 0);
