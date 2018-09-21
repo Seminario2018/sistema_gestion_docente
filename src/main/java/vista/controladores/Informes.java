@@ -364,6 +364,7 @@ public class Informes extends ControladorVista implements Initializable {
  	}
  	
  	private void deshabilitarFiltro() {
+ 		this.btnFiltroModificar.setDisable(true);
  		this.btnFiltroVer.setDisable(true);
  		this.btnFiltroOrdenar.setDisable(true);
  		this.btnFiltroSubir.setDisable(true);
@@ -371,6 +372,7 @@ public class Informes extends ControladorVista implements Initializable {
  	}
  	
  	private void habilitarFiltro() {
+ 		this.btnFiltroModificar.setDisable(false);
  		this.btnFiltroVer.setDisable(false);
  		this.btnFiltroOrdenar.setDisable(false);
  		this.btnFiltroSubir.setDisable(false);
