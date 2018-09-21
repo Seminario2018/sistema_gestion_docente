@@ -88,12 +88,23 @@ public class InformesFiltros extends ControladorVista {
 	
 	@FXML
 	protected TextField txtFiltroNombre;
+	
+	
+	@FXML
+	protected TextField txtFiltro;
 	@FXML
 	protected ComboBox<Filtro> cmbFiltroFiltro;
 	@FXML
 	protected DatePicker dtpFiltroCondicion;
 	@FXML
 	protected TextField txtFiltroCondicion;
+	@FXML
+	protected Button btnFiltroAgregar;
+	@FXML
+	public void agregarFiltro(ActionEvent event) {
+		
+	}
+	
 	@FXML
 	protected ComboBox<Calculo> cmbFiltroCalculo;
 	@FXML
