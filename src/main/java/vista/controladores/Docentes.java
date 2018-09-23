@@ -57,6 +57,10 @@ public class Docentes extends ControladorVista implements Initializable {
     private ControlPersona controlPersona = new ControlPersona();
     private ControlDocente controlDocente = new ControlDocente(this);
     private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
+    
+    // Recibir parámetros para cargar datos:
+    public static final String REC_CARGO_DOCENTE = "recibircargo";
+    public static final String REC_DOCENTE = "recibirdocente"; 
 
     // Tipos respuesta:
     private static final String TIPO_AREA = "area";
@@ -1109,7 +1113,7 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
 // ----------------------------- Resultado de Búsqueda ---------------------- //
-    /** Recibir parámetros de la pantalla de búsqueda */
+    /** Recibir parámetros de otra pantalla */
     @Override
     public void recibirParametros(Map<String, Object> args) {
         Object oSeleccion = args.get(Busqueda.KEY_SELECCION);
@@ -1124,6 +1128,17 @@ public class Docentes extends ControladorVista implements Initializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        // Se recibe un CargoDocente de otra pantalla. Llenar datos.
+        Object oCargo = args.get(REC_CARGO_DOCENTE);
+        if (oCargo != null && oCargo instanceof ICargoDocente) {
+        	ICargoDocente cargoDocente = (ICargoDocente) oCargo;
+        	this.docenteSeleccion = cargoDocente.getDocente();
+        	generalMostrarDocente();
+        	this.nuevoCargo();
+        	this.cargoDocenteSeleccion = cargoDocente;
+        	cargosMostrarCargoDocente();
+        	cargosModoModificar();
         }
         Object pestana = args.get(KEY_TAB);
         if (pestana != null) {

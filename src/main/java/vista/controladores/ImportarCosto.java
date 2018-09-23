@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import modelo.auxiliares.EstadoCargo;
+import modelo.costeo.GestorImportarCosto.TipoAlta;
 import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
 
@@ -86,6 +87,9 @@ public class ImportarCosto extends ControladorVista {
     @FXML public void importar(ActionEvent event) {
     	LocalDate fechaImportada = this.dtpFecha.getValue();
     	if (this.control.importar(fechaImportada)) {
+    		this.btnListar.setDisable(false);
+    		this.btnGuardar.setDisable(false);
+    		this.btnDescartar.setDisable(false);
     		actualizarTablas();
     	}
     }
@@ -202,11 +206,44 @@ public class ImportarCosto extends ControladorVista {
     
     @FXML protected Button btnAltaCargo;
     @FXML public void altaCargo(ActionEvent event) {
-//		TODO Lanzar pantalla Personas, luego Docentes e ir a la pestaña Cargos,
-//    	a menos que el docente ya esté dado de alta
+    	String titulo = "Dar de alta cargo";
     	FilaSistema fs = this.tblFaltantesSistema.getSelectionModel().getSelectedItem();
     	if (fs != null) {
-//    		this.gestorPantalla.lanzarPantalla(nombre, args);
+    		ICargoFaltante cargof = fs.getCargo();
+    		TipoAlta ta = this.control.getTipoAlta(cargof);
+    		switch (ta) {
+    		case ESTADO:
+    			// Cambiar el estado a activo
+    			if (dialogoConfirmacion(titulo, 
+    					"El cargo ya se encuentra en el sistema, pero está inactivo.\r\n"
+    					+ "¿Desea cambiar su estado a Activo?", "")) {
+    				if (this.control.altaEstado(cargof)) {
+    					dialogoInformacion(titulo, 
+    							"El estado del cargo se cambió a Activo.", "");
+    				} else {
+    					alertaError(titulo, "El estado del cargo no pudo "
+    							+ "ser modificado.", "");
+    				}
+    			}
+    			break;
+    		case CARGO:
+    			// El docente existe pero el cargo no, llevar a la pestaña Cargos
+    			if (dialogoConfirmacion(titulo,
+    					"El cargo no se encuentra en el sistema.\r\n"
+    					+ "¿Desea dar de alta un nuevo cargo?", "")) {
+    				Map<String, Object> args = new HashMap<String, Object>();
+    				args.put(Docentes.REC_CARGO_DOCENTE, this.control.prepararCargo(cargof));
+    				args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
+    				this.gestorPantalla.lanzarPantalla(Docentes.TITULO + " ImportarCosto", args);
+    			}
+    			break; 
+    		case DOCENTE:
+    			break;
+    		default:
+    			this.dialogoInformacion("Dar de alta cargo",
+    					"Ocurrió un error al dar de alta", "");
+    			break;
+    		}
     	}
     }    
 }

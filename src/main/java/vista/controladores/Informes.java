@@ -342,7 +342,7 @@ public class Informes extends ControladorVista implements Initializable {
  	public void setColumnaSeleccion(ColumnaInforme columna) {
  		this.columnaSeleccion = columna;
  		habilitarFiltro();
- 		
+ 		 
  		// La primer columna no se puede subir
  		if (columna.getPosicion() == 0)
  			this.btnFiltroSubir.setDisable(true);

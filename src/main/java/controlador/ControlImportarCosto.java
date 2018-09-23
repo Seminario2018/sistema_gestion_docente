@@ -9,6 +9,7 @@ import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.costeo.FilaCostoComparar;
 import modelo.costeo.GestorImportarCosto;
+import modelo.costeo.GestorImportarCosto.TipoAlta;
 import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
 import vista.controladores.ControladorVista;
@@ -96,5 +97,38 @@ public class ControlImportarCosto {
 
 	public List<FilaCostoComparar> listarComparacion() {
 		return this.gestorImportarCosto.listarComparacion();
+	}
+
+	
+	public TipoAlta getTipoAlta(ICargoFaltante cargo) {
+		return this.gestorImportarCosto.getTipoAlta(cargo);
+	}
+
+	/**
+	 * Intenta cambiar el estado del cargo a "Activo".
+	 * @param cargo - el cargo seleccionado en la vista.
+	 * @return <b>True</b> si el estado se cambió, <b>False</b> en otro caso.
+	 */
+	public boolean altaEstado(ICargoFaltante cargo) {
+		return this.gestorImportarCosto.altaEstado(this.getCargo(cargo));
+	}
+	
+	/**
+	 * 
+	 * @param cargo - el ICargoFaltante de la vista
+	 * @return el ICargoDocente correspondiente
+	 */
+	public ICargoDocente getCargo(ICargoFaltante cargo) {
+		return this.gestorImportarCosto.getCargo(cargo.getCodigoCargo());
+	}
+
+	/**
+	 * Convierte los datos de un ICargoFaltante en ICargoDocente
+	 * para enviar a la pantalla Docentes para las altas.
+	 * @param cargof
+	 * @return un ICargoDocente con los datos de cargof
+	 */
+	public ICargoDocente prepararCargo(ICargoFaltante cargof) {
+		return this.gestorImportarCosto.prepararCargo(cargof);
 	}
 }

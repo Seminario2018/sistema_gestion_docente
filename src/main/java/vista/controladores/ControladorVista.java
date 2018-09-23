@@ -267,6 +267,7 @@ public abstract class ControladorVista implements Initializable {
 	public File elegirArchivo(String titulo, String descripcion, List<String> extensiones) {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
+	    fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
 	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
 	    fileChooser.getExtensionFilters().add(extensionFilter);
@@ -281,6 +282,7 @@ public abstract class ControladorVista implements Initializable {
 	public File elegirRuta(String titulo, String descripcion, List<String> extensiones) {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
+	    fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
 	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
 	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
 	    fileChooser.getExtensionFilters().add(extensionFilter);

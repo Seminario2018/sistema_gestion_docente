@@ -12,20 +12,20 @@ public class FilaCostoComparar {
 	private String apellido;
 	private String nombre;
 	private int codigo;
-	private String costoant;
-	private String fechacostoant;
-	private String costoact;
-	private String fechacostoact;
+	private String costoAnt;
+	private String fechaCostoAnt;
+	private String costoAct;
+	private String fechaCostoAct;
 	
 	public FilaCostoComparar(ICargoDocente cargoAnterior, ICargoFaltante cargoActual) {
 		this.legajo = cargoAnterior.getDocente().getLegajo();
 		this.apellido = cargoAnterior.getDocente().getPersona().getApellido();
 		this.nombre = cargoAnterior.getDocente().getPersona().getNombre();
 		this.codigo = cargoAnterior.getId();
-		this.costoant = Utilidades.floatToString(cargoAnterior.getUltimoCosto());
-		this.fechacostoant = Utilidades.localDateToString(cargoAnterior.getFechaUltCost());
-		this.costoact = Utilidades.floatToString(cargoActual.getUltimoCosto());
-		this.fechacostoact = Utilidades.localDateToString(cargoActual.getFechaUltimoCosto());
+		this.costoAnt = Utilidades.floatToString(cargoAnterior.getUltimoCosto());
+		this.fechaCostoAnt = Utilidades.localDateToString(cargoAnterior.getFechaUltCost());
+		this.costoAct = Utilidades.floatToString(cargoActual.getUltimoCosto());
+		this.fechaCostoAct = Utilidades.localDateToString(cargoActual.getFechaUltimoCosto());
 	}
 
 	public int getLegajo() {
@@ -60,37 +60,38 @@ public class FilaCostoComparar {
 		this.codigo = codigo;
 	}
 
-	public String getCostoant() {
-		return costoant;
+	public String getCostoAnt() {
+		return costoAnt;
 	}
 
-	public void setCostoant(String costoant) {
-		this.costoant = costoant;
+	public void setCostoAnt(String costoAnt) {
+		this.costoAnt = costoAnt;
 	}
 
-	public String getFechacostoant() {
-		return fechacostoant;
+	public String getFechaCostoAnt() {
+		return fechaCostoAnt;
 	}
 
-	public void setFechacostoant(String fechacostoant) {
-		this.fechacostoant = fechacostoant;
+	public void setFechaCostoAnt(String fechaCostoAnt) {
+		this.fechaCostoAnt = fechaCostoAnt;
 	}
 
-	public String getCostoact() {
-		return costoact;
+	public String getCostoAct() {
+		return costoAct;
 	}
 
-	public void setCostoact(String costoact) {
-		this.costoact = costoact;
+	public void setCostoAct(String costoAct) {
+		this.costoAct = costoAct;
 	}
 
-	public String getFechacostoact() {
-		return fechacostoact;
+	public String getFechaCostoAct() {
+		return fechaCostoAct;
 	}
 
-	public void setFechacostoact(String fechacostoact) {
-		this.fechacostoact = fechacostoact;
+	public void setFechaCostoAct(String fechaCostoAct) {
+		this.fechaCostoAct = fechaCostoAct;
 	}
 
+	
 	
 }
