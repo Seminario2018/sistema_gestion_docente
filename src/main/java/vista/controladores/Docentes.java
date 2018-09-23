@@ -719,11 +719,15 @@ public class Docentes extends ControladorVista implements Initializable {
     /** Muestra los datos del cargo seleccionado: */
     private void cargosMostrarCargoDocente() {
         if (cargoDocenteSeleccion != null) {
-            // Si el cargo tiene asignada un área:
-            txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
-            txtCargosCargo.setText(cargoDocenteSeleccion.getCargo().getDescripcion());
-            cmbCargosEstado.getSelectionModel().select(cargoDocenteSeleccion.getEstado());
-            cmbCargosTipo.getSelectionModel().select(cargoDocenteSeleccion.getTipoCargo());
+        	if (cargoDocenteSeleccion.getArea() != null)
+        		txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
+        	if (cargoDocenteSeleccion.getCargo() != null)
+        		txtCargosCargo.setText(cargoDocenteSeleccion.getCargo().getDescripcion());
+        	if (cargoDocenteSeleccion.getEstado() != null)
+        		cmbCargosEstado.getSelectionModel().select(cargoDocenteSeleccion.getEstado());
+        	if (cargoDocenteSeleccion.getTipoCargo() != null)
+        		cmbCargosTipo.getSelectionModel().select(cargoDocenteSeleccion.getTipoCargo());
+        	
             txtCargosDisp.setText(cargoDocenteSeleccion.getDisposicion());
             dtpCargosDispDesde.setValue(cargoDocenteSeleccion.getDispDesde());
             dtpCargosDispHasta.setValue(cargoDocenteSeleccion.getDispHasta());
@@ -767,12 +771,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
             cmbCargosEstado.setDisable(false);
             cmbCargosTipo.setDisable(false);
+            
+            this.window.setTitle("Docentes - Modificar Cargo");
         }
     }
 
     private void cargosModoNuevo() {
         if (this.permiso.getModificar()) {
             cargosModoModificar();
+            this.window.setTitle("Docentes - Nuevo Cargo");
             btnCargosEliminar.setVisible(false);
         }
     }
@@ -936,20 +943,20 @@ public class Docentes extends ControladorVista implements Initializable {
     private void investigacionActualizarTabla() {
         filasInvestigacion.clear();
         if (docenteSeleccion != null) {
-            // Muestro la categoría del docente:
-            txtInvestigacionCategoria.setText(
-                docenteSeleccion.getCategoriaInvestigacion().getDescripcion());
+            if (docenteSeleccion.getCategoriaInvestigacion() != null) 
+            	txtInvestigacionCategoria.setText(
+            			docenteSeleccion.getCategoriaInvestigacion().getDescripcion());
 
-            // Lista con todos los proyectos donde participa el docente:
             List<Hashtable<String,String>> integranteDe =
                 controlInvestigacion.integranteDe(docenteSeleccion);
 
-            for (Hashtable<String, String> infoProyecto : integranteDe) {
-                filasInvestigacion.add(new FilaInvestigacion(
-                    infoProyecto.get("P.ID"),
-                    infoProyecto.get("P.Nombre"),
-                    infoProyecto.get("C.Descripcion"),
-                    infoProyecto.get("A.Descripcion")));
+            if (integranteDe != null)
+	            for (Hashtable<String, String> infoProyecto : integranteDe) {
+	                filasInvestigacion.add(new FilaInvestigacion(
+	                		infoProyecto.get("P.ID"),
+		                    infoProyecto.get("P.Nombre"),
+		                    infoProyecto.get("C.Descripcion"),
+		                    infoProyecto.get("A.Descripcion")));
             }
         }
     }
@@ -1135,11 +1142,13 @@ public class Docentes extends ControladorVista implements Initializable {
         	ICargoDocente cargoDocente = (ICargoDocente) oCargo;
         	this.docenteSeleccion = cargoDocente.getDocente();
         	generalMostrarDocente();
+        	modoModificar();
         	this.nuevoCargo();
         	this.cargoDocenteSeleccion = cargoDocente;
         	cargosMostrarCargoDocente();
-        	cargosModoModificar();
+        	cargosModoNuevo();
         }
+        
         Object pestana = args.get(KEY_TAB);
         if (pestana != null) {
             tabpDocentes.getSelectionModel().select((Integer) pestana);

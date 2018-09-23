@@ -445,17 +445,13 @@ public class GestorImportarCosto {
 	 * @param cargo - el cargo que se quiere modificar.
 	 * @return <b>True</b> si el estado se cambió, <b>False</b> en otro caso.
 	 */
-	public boolean altaEstado(ICargoDocente cargo) {
+	public EstadoOperacion altaEstado(ICargoDocente cargo) {
 		EstadoCargo ec = new EstadoCargo(0, "Activo");
 		cargo.setEstado(ec);
-		EstadoOperacion eo = this.gestorDocente.modificarCargoDocente(null, cargo);
-		switch (eo.getEstado()) {
-		case UPDATE_OK:
-			return true;
-		default:
-			return false;
-		}
+		return this.gestorDocente.modificarCargoDocente(null, cargo);
 	}
+	
+	
 	/**
 	 * Convierte un ICargoFaltante en un ICargoDocente con los datos correspondientes
 	 * @param cargof el ICargoFaltante
@@ -463,20 +459,26 @@ public class GestorImportarCosto {
 	 */
 	public ICargoDocente prepararCargo(ICargoFaltante cargof) {
 		ICargoDocente cargo = this.gestorDocente.getICargoDocente();
-		if (cargof.getLegajo() != 0) {
+		IDocente docenteBusqueda = cargo.getDocente();
+		if (GestorDocente.existeDocente(docenteBusqueda)) {
 			IDocente docenteSeleccion = this.gestorDocente.getIDocente();
 			docenteSeleccion.setLegajo(cargof.getLegajo());
 			IDocente docente = this.gestorDocente.listarDocentes(docenteSeleccion).get(0);
 			cargo.setDocente(docente);
+		} else {
+			
 		}
 		
 		if (cargof.getCodigoCargo() != 0) 
 			cargo.setId(cargof.getCodigoCargo());
 		
+		cargo.setUltimoCosto(cargof.getUltimoCosto());
+
 		if (cargof.getFechaUltimoCosto() != null)
 			cargo.setFechaUltCost(cargof.getFechaUltimoCosto());
 		
-		cargo.setUltimoCosto(cargof.getUltimoCosto());
+		cargo.setEstado(new EstadoCargo(0, "Activo"));
+		
 		return cargo;
 	}
 

@@ -238,6 +238,15 @@ public class ImportarCosto extends ControladorVista {
     			}
     			break; 
     		case DOCENTE:
+    			// No existe ni el Docente ni el Cargo
+    			if (dialogoConfirmacion(titulo,
+    					"El docente no se encuentra en el sistema.\r\n"
+    					+ "¿Desea dar de alta un nuevo docente?", "")) {
+    				Map<String, Object> args = new HashMap<String, Object>();
+    				args.put(Docentes.REC_CARGO_DOCENTE, this.control.prepararCargo(cargof));
+    				args.put(Docentes.KEY_TAB, Docentes.TAB_DATOS);
+    				this.gestorPantalla.lanzarPantalla(Docentes.TITULO + " ImportarCosto", args);
+    			}
     			break;
     		default:
     			this.dialogoInformacion("Dar de alta cargo",

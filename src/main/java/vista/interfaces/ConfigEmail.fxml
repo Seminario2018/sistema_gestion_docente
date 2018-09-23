@@ -104,39 +104,43 @@
                               </GridPane>
                               <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <children>
-                                    <Label text="Dirección de e-mail">
+                                    <Label text="Intervalo de envío de correos" GridPane.halignment="RIGHT" />
+                                    <TextField fx:id="txtIntervalo" promptText="Ingrese el intervalo (segundos)" GridPane.columnIndex="1" />
+                                    <Label text="Dirección de e-mail" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtServidorEmail" editable="false" focusTraversable="false" promptText="Ingrese la dirección que enviará las notificaciones" GridPane.columnIndex="1">
+                                    <TextField fx:id="txtServidorEmail" focusTraversable="false" promptText="Ingrese la dirección que enviará las notificaciones" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </TextField>
-                                    <Label text="Contraseña" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+                                    <Label text="Contraseña" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <PasswordField fx:id="txtServidorContraseña" editable="false" focusTraversable="false" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="2">
+                                    <PasswordField fx:id="txtServidorContraseña" focusTraversable="false" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtServidorSmtp" editable="false" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                                    <TextField fx:id="txtServidorSmtp" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </TextField>
-                                    <CheckBox fx:id="chkServidorTLS" mnemonicParsing="false" text="Utilizar conexión segura (TLS)" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+                                    <CheckBox fx:id="chkServidorTLS" mnemonicParsing="false" text="Utilizar conexión segura (TLS)" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" />
                                  </columnConstraints>
                                  <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />

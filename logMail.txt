@@ -1,2 +1,4 @@
 [2018-09-03 00-08-53] [Enviado] León - semint2018@gmail.com - deripper.1300@gmail.com - Legajo 121899 - Codigo Cargo 2002 - Estado: Inactivo -> Activo
 [2018-09-03 00-10-01] [Enviado] León - semint2018@gmail.com - deripper.1300@gmail.com - Legajo 121899 - Codigo Cargo 2001 - Estado: Activo -> Inactivo
+[2018-09-23 20:20:38] [Falló] No se pudo enviar el mail porque el Jefe de la División Biología no tiene Mail Laboral. - Usuario: pepe - [Datos del cargo] Legajo: 2924 - Código Cargo: 150
+[2018-09-23 20:48:43] [Enviado] - Usuario: pepe - Emisor: semint2018@gmail.com - Destino: tomasjuran96@gmail.com - [Datos del cargo] Legajo: 143191 - Código Cargo: 92 - Estado: Activo -> Activo

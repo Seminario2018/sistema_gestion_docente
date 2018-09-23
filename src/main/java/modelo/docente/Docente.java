@@ -80,11 +80,13 @@ public class Docente implements IDocente, IDocenteg {
 		if (this.categoriaInvestigacion == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Docentes", "CategoriaInvestigacion", "Legajo = " + this.getLegajo());
-			Hashtable<String, String> reg = res.get(0);
-			CategoriaInvestigacion cat = new CategoriaInvestigacion();
-			cat.setId(Integer.parseInt(reg.get("CategoriaInvestigacion")));
-			cat = CategoriaInvestigacion.getCategoria(cat);
-			this.setCategoriaInvestigacion(cat);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				CategoriaInvestigacion cat = new CategoriaInvestigacion();
+				cat.setId(Integer.parseInt(reg.get("CategoriaInvestigacion")));
+				cat = CategoriaInvestigacion.getCategoria(cat);
+				this.setCategoriaInvestigacion(cat);
+			}
 		}
 
 		return categoriaInvestigacion;
@@ -100,12 +102,13 @@ public class Docente implements IDocente, IDocenteg {
 		if (this.estado == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("Docentes", "Estado", "Legajo = " + this.getLegajo());
-			Hashtable<String, String> reg = res.get(0);
-
-			EstadoDocente estado = new EstadoDocente();
-			estado.setId(Integer.parseInt(reg.get("Estado")));
-			estado = EstadoDocente.getEstado(estado);
-			this.setEstado(estado);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				EstadoDocente estado = new EstadoDocente();
+				estado.setId(Integer.parseInt(reg.get("Estado")));
+				estado = EstadoDocente.getEstado(estado);
+				this.setEstado(estado);
+			}
 		}
 
 		return estado;
@@ -185,15 +188,17 @@ public class Docente implements IDocente, IDocenteg {
 	private void recuperarPersona() {
 		ManejoDatos md = new ManejoDatos();
 		ArrayList<Hashtable<String, String>> res = md.select("Docentes", "TipoDocumento, NroDocumento", "Legajo = " + this.getLegajo());
-		Hashtable<String, String> reg = res.get(0);
-		GestorPersona gp = new GestorPersona();
-		Persona p = new Persona();
-		TipoDocumento td = new TipoDocumento();
-		td.setId(Integer.parseInt(reg.get("TipoDocumento")));
-		p.setTipoDocumento(TipoDocumento.getTipo(td));
-		p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
-		p = (Persona) gp.listarPersonas(p).get(0);
-		this.setPersona(p);
+		if (!res.isEmpty()) {
+			Hashtable<String, String> reg = res.get(0);
+			GestorPersona gp = new GestorPersona();
+			Persona p = new Persona();
+			TipoDocumento td = new TipoDocumento();
+			td.setId(Integer.parseInt(reg.get("TipoDocumento")));
+			p.setTipoDocumento(TipoDocumento.getTipo(td));
+			p.setNroDocumento(Integer.parseInt(reg.get("NroDocumento")));
+			p = (Persona) gp.listarPersonas(p).get(0);
+			this.setPersona(p);
+		}
 	}
 
 	@Override

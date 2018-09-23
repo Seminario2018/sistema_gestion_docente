@@ -87,18 +87,18 @@ public class NotificacionCargo2 {
         private void loggearMail(Map<String, String> mail) {
             StringBuilder sb = new StringBuilder();
             sb.append("[");
-            sb.append(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             sb.append("] [");
             sb.append(mail.get(KEY_RESULTADO));
-            sb.append("] ");
+            sb.append("] - Usuario: ");
             sb.append(mail.get(KEY_USUARIO));
-            sb.append(" - ");
+            sb.append(" - Emisor: ");
             sb.append(mail.get(KEY_EMISOR));
-            sb.append(" - ");
+            sb.append(" - Destino: ");
             sb.append(mail.get(KEY_DESTINO));
-            sb.append(" - Legajo ");
+            sb.append(" - [Datos del cargo] Legajo: ");
             sb.append(mail.get(KEY_LEGAJO));
-            sb.append(" - Codigo Cargo ");
+            sb.append(" - Código Cargo: ");
             sb.append(mail.get(KEY_CARGO));
             sb.append(" - Estado: ");
             sb.append(mail.get(KEY_ESTANTERIOR));
@@ -153,12 +153,32 @@ public class NotificacionCargo2 {
             }
     		destinos = Utilidades.joinString(mails, ",");
     	} catch (Exception e) {
-    		System.err.println("El Jefe de la División no tiene Mail Laboral.");
-    		e.printStackTrace();
+    		
     	}
 
     	if (destinos == null || destinos.equals("")) {
-            throw new IllegalArgumentException("El Jefe de la División no tiene Mail Laboral.");
+    		String error = "No se pudo enviar el mail porque el Jefe de la División "
+            		+ cargo.getArea().getDivision().getDescripcion()
+            		+ " no tiene Mail Laboral.";
+    		
+    		StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            sb.append("] [Falló] ");
+            sb.append(error);
+            sb.append(" - Usuario: ");
+            sb.append(usuario.getUser());
+            sb.append(" - [Datos del cargo] Legajo: ");
+            sb.append(cargo.getDocente().getLegajo());
+            sb.append(" - Código Cargo: ");
+            sb.append(cargo.getId());
+
+            System.out.println("Log: " + sb.toString());
+
+            Utilidades.guardarTexto(
+                new File("logMail.txt"), sb.toString());
+    		
+            throw new IllegalArgumentException(error);
         }
 
     	// Averiguar si hay que actualizar un mail o crear uno nuevo

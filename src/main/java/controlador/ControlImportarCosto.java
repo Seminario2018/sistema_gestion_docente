@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.EncryptedDocumentException;
+
+import mail.NotificacionCargo2;
 import modelo.auxiliares.EstadoCargo;
 import modelo.auxiliares.EstadoOperacion;
+import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.costeo.FilaCostoComparar;
 import modelo.costeo.GestorImportarCosto;
 import modelo.costeo.GestorImportarCosto.TipoAlta;
@@ -110,7 +113,25 @@ public class ControlImportarCosto {
 	 * @return <b>True</b> si el estado se cambió, <b>False</b> en otro caso.
 	 */
 	public boolean altaEstado(ICargoFaltante cargo) {
-		return this.gestorImportarCosto.altaEstado(this.getCargo(cargo));
+		ICargoDocente cargoDocente = this.getCargo(cargo);
+		EstadoCargo estAnterior = cargoDocente.getEstado();
+		EstadoOperacion eo = this.gestorImportarCosto.altaEstado(cargoDocente);
+//		Notifico por mail cuando hay un nuevo cargo (si se insertó exitosamente):
+		if (eo.getEstado() == CodigoEstado.UPDATE_OK) {
+			try {
+				NotificacionCargo2.getInstance().notificar(
+						vista.getUsuario(),
+						cargoDocente.getDocente(),
+						cargoDocente,
+						estAnterior,
+						cargoDocente.getEstado(),
+						eo);
+			} catch (IllegalArgumentException e) {
+	    		this.vista.mensajeEstado(e.getMessage());
+	    	}
+			return true;
+		}
+		return false;
 	}
 	
 	/**

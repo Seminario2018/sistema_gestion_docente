@@ -128,11 +128,13 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		if (cargo == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "Cargo", "Codigo = " + this.getId());
-			Hashtable<String, String> reg = res.get(0);
-			GestorCargo gc = new GestorCargo();
-			Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
-			car = (Cargo) gc.listarCargos(car).get(0);
-			this.setCargo(car);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				GestorCargo gc = new GestorCargo();
+				Cargo car = new Cargo(Integer.parseInt(reg.get("Cargo")), null, -1);
+				car = (Cargo) gc.listarCargos(car).get(0);
+				this.setCargo(car);
+			}
 		}
 		return this.cargo;
 	}
@@ -147,8 +149,10 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		if (this.tipoCargo == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "TipoCargo", "Codigo = " + this.getId());
-			Hashtable<String, String> reg = res.get(0);
-			this.setTipoCargo(TipoCargo.getTipoCargo(new TipoCargo(Integer.parseInt(reg.get("TipoCargo")), "")));
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				this.setTipoCargo(TipoCargo.getTipoCargo(new TipoCargo(Integer.parseInt(reg.get("TipoCargo")), "")));
+			}
 		}
 		return this.tipoCargo;
 	}
@@ -283,11 +287,13 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 		if (this.estado == null) {
 			ManejoDatos md = new ManejoDatos();
 			ArrayList<Hashtable<String, String>> res = md.select("CargosDocentes", "EstadoCargo", "Codigo = " + this.getId());
-			Hashtable<String, String> reg = res.get(0);
-			EstadoCargo estado = new EstadoCargo();
-			estado.setId(Integer.parseInt(reg.get("EstadoCargo")));
-			estado = EstadoCargo.getEstadoCargo(estado);
-			this.setEstado(estado);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				EstadoCargo estado = new EstadoCargo();
+				estado.setId(Integer.parseInt(reg.get("EstadoCargo")));
+				estado = EstadoCargo.getEstadoCargo(estado);
+				this.setEstado(estado);
+			}
 		}
 		return this.estado;
 	}
@@ -319,6 +325,8 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 
 	@Override
     public IDocente getDocente() {
+		if (this.docente != null)
+			return this.docente;
 		IDocente docente = new Docente();
 		try {
 			ManejoDatos md = new ManejoDatos();
@@ -326,10 +334,12 @@ public class CargoDocente implements ICargoDocente, ICargoDocenteg {
 			String campos = "Legajo";
 			String condicion = "Codigo = " + this.id;
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
-			Hashtable<String, String> reg = res.get(0);
-			docente.setLegajo(Integer.parseInt(reg.get("Legajo")));
-			GestorDocente gd = new GestorDocente();
-			docente = gd.listarDocentes(docente).get(0);
+			if (!res.isEmpty()) {
+				Hashtable<String, String> reg = res.get(0);
+				docente.setLegajo(Integer.parseInt(reg.get("Legajo")));
+				GestorDocente gd = new GestorDocente();
+				docente = gd.listarDocentes(docente).get(0);
+			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			docente = new Docente();

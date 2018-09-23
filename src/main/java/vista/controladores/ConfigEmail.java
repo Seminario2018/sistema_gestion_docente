@@ -45,7 +45,7 @@ import utilidades.Utilidades;
 
 public class ConfigEmail extends ControladorVista implements Initializable {
 
-    private static final String TITULO = "Configuración E-mail";
+    public static final String TITULO = "ConfigEmail";
     private static final String ARCHIVO_CONFIG = "Mail.xml";
     private static final String ARCHIVO_PLANTILLA = "Plantilla.xml";
 
@@ -72,6 +72,12 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private Document configuracionXML;
     private Document plantillaXML;
 
+    @Override
+    public void inicializar() {
+    	this.window.setTitle("Configuración de correo electrónico");
+    }
+    
+    
     /**
      * Importa de un archivo seleccionado la configuración del
      * servidor de mail.
