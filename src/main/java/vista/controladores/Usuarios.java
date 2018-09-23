@@ -263,7 +263,8 @@ public class Usuarios extends ControladorVista implements Initializable {
     /** Refresca la tabla de contactos */
     private void contactosActualizarTabla() {
         filasContactos.clear();
-        if (usuarioSeleccion.getPersona() != null) {
+        if (usuarioSeleccion != null &&
+            usuarioSeleccion.getPersona() != null) {
             for (IContacto contacto : usuarioSeleccion.getPersona().getContactos()) {
                 filasContactos.add(
                     new FilaContacto(contacto));
@@ -405,7 +406,8 @@ public class Usuarios extends ControladorVista implements Initializable {
     /** Refresca la tabla de domicilios */
     private void domiciliosActualizarTabla() {
         filasDomicilios.clear();
-        if (usuarioSeleccion.getPersona() != null) {
+        if (usuarioSeleccion != null &&
+            usuarioSeleccion.getPersona() != null) {
             for (IDomicilio domicilio: usuarioSeleccion.getPersona().getDomicilios()) {
                 filasDomicilios.add(
                     new FilaDomicilio(domicilio));
@@ -577,7 +579,8 @@ public class Usuarios extends ControladorVista implements Initializable {
     /** Refresca la tabla de títulos */
     private void titulosActualizarTabla() {
         filasTitulos.clear();
-        if (usuarioSeleccion.getPersona() != null) {
+        if (usuarioSeleccion != null &&
+            usuarioSeleccion.getPersona() != null) {
             for (ITitulo titulo : usuarioSeleccion.getPersona().getTitulos()) {
                 filasTitulos.add(new FilaTitulo(titulo));
             }
