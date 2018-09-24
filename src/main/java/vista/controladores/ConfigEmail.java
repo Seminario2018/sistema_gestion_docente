@@ -238,11 +238,13 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
         Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
         Map<String, String> parametros = NotificacionCargo2.armarParametrosPlantilla(docentePrueba, cargoPrueba, estadoPrueba);
-        String asunto = NotificacionCargo2.armarAsunto(plantillaXML, parametros);
-        String mensaje = NotificacionCargo2.armarMensaje(plantillaXML, parametros);
+
+        String asunto = NotificacionCargo2.armarTextoPlantilla("asunto", plantillaXML, parametros);
+        String encabezado = NotificacionCargo2.armarTextoPlantilla("encabezado", plantillaXML, parametros);
+        String mensaje = NotificacionCargo2.armarTextoPlantilla("mensaje", plantillaXML, parametros);
 
         IMail mail = new Mail();
-        mail.enviarEmail(direccionDestino, asunto, mensaje);
+        mail.enviarEmail(direccionDestino, asunto, encabezado + mensaje);
         System.out.println("<ConfigEmail> Mail enviado a: " + direccionDestino);
     }
 

@@ -207,19 +207,20 @@ public class NotificacionCargo2 {
     	Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
 
     	String asunto;
-    	String mensaje = "";
+    	String mensaje;
 
     	// Si se crea un nuevo mail, agregar asunto y saludo
     	if (mailActual == null || mailActual.isEmpty()) {
 			mailActual = new HashMap<String, String>();
-			asunto = armarAsunto(plantillaXML, parametros);
+			asunto = armarTextoPlantilla("asunto", plantillaXML, parametros);
+			mensaje = armarTextoPlantilla("encabezado", plantillaXML, parametros);
 
     	} else {
     		asunto = mailActual.get(NotificacionCargo2.KEY_ASUNTO);
     		mensaje = mailActual.get(NotificacionCargo2.KEY_MENSAJE);
     	}
 
-    	mensaje = mensaje + armarMensaje(plantillaXML, parametros);
+    	mensaje = mensaje + armarTextoPlantilla("mensaje", plantillaXML, parametros);
 
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO,      asunto);
@@ -319,19 +320,20 @@ public class NotificacionCargo2 {
         return parametros;
     }
 
-    public static String armarAsunto(Document plantillaXML, Map<String, String> parametros) {
+    /**
+     * Arma un texto en base a la plantilla seleccionada y a los parámetros del
+     * mensaje a enviar.
+     * @param tag Plantilla a usar
+     * @param plantillaXML Plantillas a usar
+     * @param parametros Parámetros del mensaje
+     * @return
+     */
+    public static String armarTextoPlantilla(String tag, Document plantillaXML, Map<String, String> parametros) {
         return Plantilla.armar(
             plantillaXML
-                .getElementsByTagName("asunto")
+                .getElementsByTagName(tag)
                 .item(0)
                 .getTextContent(),
             parametros);
-    }
-
-    public static String armarMensaje(Document plantillaXML, Map<String, String> parametros) {
-        String plantilla =
-            plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent()
-            + plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent();
-        return Plantilla.armar(plantilla, parametros);
     }
 }
