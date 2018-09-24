@@ -105,7 +105,7 @@
                               <GridPane alignment="CENTER" hgap="10.0" vgap="5.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <children>
                                     <Label text="Intervalo de envío de correos" GridPane.halignment="RIGHT" />
-                                    <TextField fx:id="txtIntervalo" promptText="Ingrese el intervalo (segundos)" GridPane.columnIndex="1" />
+                                    <TextField fx:id="txtServidorIntervalo" promptText="Ingrese el intervalo (segundos)" GridPane.columnIndex="1" />
                                     <Label text="Dirección de e-mail" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets />

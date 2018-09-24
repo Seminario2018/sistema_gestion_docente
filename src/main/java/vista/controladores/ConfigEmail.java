@@ -85,11 +85,13 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private void importarArchivoConfig(File archivo) {
         configuracionXML = Utilidades.leerXML(archivo);
 
+        String intervalo = configuracionXML.getElementsByTagName("intervalo").item(0).getTextContent();
         String email = configuracionXML.getElementsByTagName("usuario").item(0).getTextContent();
         String contraseña = configuracionXML.getElementsByTagName("contraseña").item(0).getTextContent();
         String smtp = configuracionXML.getElementsByTagName("puerto").item(0).getTextContent();
         String tls = configuracionXML.getElementsByTagName("tls").item(0).getTextContent();
 
+        txtServidorIntervalo.setText(intervalo);
         txtServidorEmail.setText(email);
         txtServidorContraseña.setText(contraseña);
         txtServidorSmtp.setText(smtp);
@@ -263,6 +265,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     }
 
     // Pestaña Servidor
+    @FXML private TextField txtServidorIntervalo;
     @FXML private TextField txtServidorEmail;
     @FXML private TextField txtServidorContraseña;
     @FXML private TextField txtServidorSmtp;
@@ -335,6 +338,8 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     }
 
     private void actualizarConfiguracion() {
+        configuracionXML.getElementsByTagName("intervalo").item(0)
+            .setTextContent(txtServidorIntervalo.getText());
         configuracionXML.getElementsByTagName("usuario").item(0)
             .setTextContent(txtServidorEmail.getText());
         configuracionXML.getElementsByTagName("contraseña").item(0)
