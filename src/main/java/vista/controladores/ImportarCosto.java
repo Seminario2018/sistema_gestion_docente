@@ -30,15 +30,38 @@ public class ImportarCosto extends ControladorVista {
 	@Override
     public void inicializar() {
 		inicializarTablas();
+		
 		this.cmbEstado.setItems(
 				FXCollections.observableArrayList(EstadoCargo.getLista()));
+		try { this.cmbEstado.getSelectionModel().select(1); 
+		} catch (Exception e) {}		
+		
 		this.window.setTitle("Importar último costo");
 		resetGeneral();
+		// Actualizar las listas cuando se muestra la pantalla
+        this.window.focusedProperty().addListener(
+        		(observable, oldValue, newValue) ->
+        		{
+        			if (newValue == true)
+        				actualizarTablas();
+        		}
+        );
 	}
-	
+    
+    
 	private void inicializarTablas() {
 		inicializarTabla("FaltantesCosteo");
 		inicializarTabla("FaltantesSistema");
+		tblFaltantesCosteo.getSelectionModel().selectedItemProperty().addListener(
+				(obs, oldSel, newSel) -> {
+					this.btnModificarEstado.setDisable(newSel == null);
+				}
+		);
+		tblFaltantesSistema.getSelectionModel().selectedItemProperty().addListener(
+				(obs, oldSel, newSel) -> {
+					this.btnAltaCargo.setDisable(newSel == null);
+				}
+		);
 	}
 	
 	@FXML protected Label lblUltima;
@@ -50,7 +73,7 @@ public class ImportarCosto extends ControladorVista {
 			fecha = ultima.toString();
 		this.lblUltima.setText("Última actualización: " + fecha);
 		this.dtpFecha.setValue(LocalDate.now());
-		actualizarTablas();
+//		actualizarTablas();
 	}
 	
 	private void actualizarTablas() {
@@ -106,6 +129,7 @@ public class ImportarCosto extends ControladorVista {
 	@FXML public void descartar(ActionEvent event) {
 		this.control.descartar();
 		resetGeneral();
+		actualizarTablas();
 	}
 	
 	@FXML protected DatePicker dtpFecha;
@@ -224,6 +248,7 @@ public class ImportarCosto extends ControladorVista {
     				if (this.control.altaEstado(cargof)) {
     					dialogoInformacion(titulo, 
     							"El estado del cargo se cambió a Activo.", "");
+    					actualizarTablas();
     				} else {
     					alertaError(titulo, "El estado del cargo no pudo "
     							+ "ser modificado.", "");

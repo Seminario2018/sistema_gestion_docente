@@ -9,7 +9,9 @@ import java.util.Hashtable;
 import java.util.List;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import excel.Excel;
+import modelo.auxiliares.CategoriaInvestigacion;
 import modelo.auxiliares.EstadoCargo;
+import modelo.auxiliares.EstadoDocente;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.docente.GestorDocente;
 import modelo.docente.ICargoDocente;
@@ -153,9 +155,7 @@ public class GestorImportarCosto {
 
 			} else {
 				// El cargo está activo en el sistema y en el costeo
-				ICargoFaltante cf = this.gestorCargosFaltantes.getICargoFaltante();
-				cf.setCargo(cargoActual);
-				this.faltantesNinguno.add(cf);
+				this.faltantesNinguno.add(cargoImportado);
 
 				// No hará falta agregarlo a los faltantes del costeo
 				cargosSistema.remove(cargoActual);
@@ -295,9 +295,8 @@ public class GestorImportarCosto {
 	}
 
 	/**
-	 * Método auxiliar que busca un CargoDocente en una lista de CargosFaltantes
-	 * 
-	 * @return
+	 * Método auxiliar que busca un Código de Cargo en una lista de CargosDocentes.
+	 * @return El ICargoDocente si lo encontró, <b>null</b> de lo contrario.
 	 */
 	private ICargoDocente buscarCargo(int codigoCargo, List<ICargoDocente> lista) {
 		ICargoDocente encontrado = null;
@@ -372,9 +371,7 @@ public class GestorImportarCosto {
 
 	/**
 	 * Método auxiliar para obtener un CargoDocente de la Base de Datos.
-	 * 
-	 * @param codigo
-	 *            El código del cargo.
+	 * @param codigo El código del cargo.
 	 * @return El CargoDocente correspondiente.
 	 */
 	public ICargoDocente getCargo(int codigo) {
@@ -427,14 +424,18 @@ public class GestorImportarCosto {
 
 		IDocente docente = null;
 		if (GestorDocente.existeDocente(docenteSeleccion)) {
+			// Si el docente existe, cargarlo de la BD
 			docente = this.gestorDocente.listarDocentes(docenteSeleccion).get(0);
 		} else {
+			// Si el docente no existe, llenar datos para crearlo
 			docente = this.gestorDocente.getIDocente();
 			IPersona persona = this.gestorPersona.getIPersona();
 			persona.setApellido(cargof.getApellido());
 			persona.setNombre(cargof.getNombre());
 			docente.setPersona(persona);
 			docente.setLegajo(cargof.getLegajo());
+			docente.setEstado(new EstadoDocente(0, "Activo"));
+			docente.setCategoriaInvestigacion(new CategoriaInvestigacion(0, "No categorizado"));
 		}
 
 		cargo.setDocente(docente);

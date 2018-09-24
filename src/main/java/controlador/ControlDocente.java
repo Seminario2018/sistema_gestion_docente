@@ -62,7 +62,7 @@ public class ControlDocente {
     	ICargoDocente cargoDocenteBusqueda = gestorDocente.getICargoDocente();
         cargoDocenteBusqueda.setId(cargoDocente.getId());
         List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocenteBusqueda);
-        if (listaCargosDocentes.size() < 1) {
+        if (listaCargosDocentes.size() < 1 || cargoDocente.getId() < 1) {
         	// Cargo nuevo
         	EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
             if (resultado.getEstado() == CodigoEstado.INSERT_OK) {

@@ -388,8 +388,9 @@ public class GestorPersona {
 		String condicion = "TRUE";
 		if (persona != null) {
 			condicion = "";
-			condicion +=
-					" `TipoDocumento` = " + persona.getTipoDocumento().getId() + " and";
+			if (persona.getTipoDocumento() != null)
+				condicion += " `TipoDocumento` = " 
+						+ persona.getTipoDocumento().getId() + " and";
 			condicion += " `NroDocumento` = '" + persona.getNroDocumento() + "'";
 
 		}

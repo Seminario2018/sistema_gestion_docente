@@ -116,6 +116,7 @@ public class GestorPantalla {
 			// La pantalla ya existe y hay que traerla al frente
 			if (pantallasAbiertas.get(nombre) != null) {
 				pantallasAbiertas.get(nombre).toFront();
+				pantallasAbiertas.get(nombre).requestFocus();
 
 			} else {
 				FXMLLoader loader;
@@ -181,6 +182,7 @@ public class GestorPantalla {
 
 
 				this.internalPane.getChildren().add(window);
+				window.requestFocus();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -230,6 +232,11 @@ public class GestorPantalla {
 			for (Window hija : hijas) {
 				hija.close();
 			}
+		}
+		if (this.internalPane.getChildren().size() > 0) {
+			this.internalPane.getChildren().get(
+					this.internalPane.getChildren().size() - 1)
+				.requestFocus();
 		}
 	}
 
