@@ -122,7 +122,7 @@ public class Docentes extends ControladorVista implements Initializable {
         domiciliosVaciarControles();    // Domicilios
         titulosVaciarControles();       // Títulos
         docenteVaciarControles();       // Docente
-        cargosVaciarControles();        // Cargos
+//        cargosVaciarControles();        // Cargos
         incentivosVaciarControles();    // Incentivos
         observacionesVaciarControles(); // Observaciones
 
@@ -1431,7 +1431,7 @@ public class Docentes extends ControladorVista implements Initializable {
             cmbDocenteCategoria.setDisable(false);
 
             // Pestaña Cargos:
-            cargosModoVer();
+//            cargosModoVer();
             btnCargosNuevo.setVisible(true);
 
             // Pestaña Incentivos:
