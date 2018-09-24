@@ -36,7 +36,7 @@ public class ControlImportarCosto {
 	public List<ICargoFaltante> getFaltantesSistema() {
 		return this.gestorImportarCosto.getFaltantesSistema();
 	}
-	public List<ICargoDocente> getFaltantesCosteo() {
+	public List<ICargoFaltante> getFaltantesCosteo() {
 		return this.gestorImportarCosto.getFaltantesCosteo();
 	}
 
@@ -87,8 +87,51 @@ public class ControlImportarCosto {
 	 * Modificar el estado del cargo
 	 * @param estado
 	 */
-	public void modificarEstado(ICargoDocente cargo, EstadoCargo estado) {
-		this.gestorImportarCosto.modificarEstado(cargo, estado);
+	public boolean modificarEstado(ICargoDocente cargo, EstadoCargo estado) {		
+		EstadoCargo estAnterior = cargo.getEstado();
+		EstadoOperacion eo = this.gestorImportarCosto.modificarEstado(cargo, estado);
+		// Notifico por mail el cambio
+		if (eo.getEstado() == CodigoEstado.UPDATE_OK) {
+			try {
+				NotificacionCargo2.getInstance().notificar(
+						vista.getUsuario(),
+						cargo.getDocente(),
+						cargo,
+						estAnterior,
+						cargo.getEstado(),
+						eo);
+			} catch (IllegalArgumentException e) {
+	    		this.vista.mensajeEstado(e.getMessage());
+	    	}
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Intenta cambiar el estado del cargo a "Activo".
+	 * @param cargo - el cargo seleccionado en la vista.
+	 * @return <b>True</b> si el estado se cambió, <b>False</b> en otro caso.
+	 */
+	public boolean altaEstado(ICargoFaltante cargof) {
+		ICargoDocente cargo = this.getCargo(cargof);
+		EstadoOperacion eo = this.gestorImportarCosto.altaEstado(cargo);
+		// Notifico por mail el cambio
+		if (eo.getEstado() == CodigoEstado.UPDATE_OK) {
+			try {
+				NotificacionCargo2.getInstance().notificar(
+						vista.getUsuario(),
+						cargo.getDocente(),
+						cargo,
+						EstadoCargo.getEstadoNuevo(),
+						cargo.getEstado(),
+						eo);
+			} catch (IllegalArgumentException e) {
+	    		this.vista.mensajeEstado(e.getMessage());
+	    	}
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -105,33 +148,6 @@ public class ControlImportarCosto {
 	
 	public TipoAlta getTipoAlta(ICargoFaltante cargo) {
 		return this.gestorImportarCosto.getTipoAlta(cargo);
-	}
-
-	/**
-	 * Intenta cambiar el estado del cargo a "Activo".
-	 * @param cargo - el cargo seleccionado en la vista.
-	 * @return <b>True</b> si el estado se cambió, <b>False</b> en otro caso.
-	 */
-	public boolean altaEstado(ICargoFaltante cargo) {
-		ICargoDocente cargoDocente = this.getCargo(cargo);
-		EstadoCargo estAnterior = cargoDocente.getEstado();
-		EstadoOperacion eo = this.gestorImportarCosto.altaEstado(cargoDocente);
-//		Notifico por mail cuando hay un nuevo cargo (si se insertó exitosamente):
-		if (eo.getEstado() == CodigoEstado.UPDATE_OK) {
-			try {
-				NotificacionCargo2.getInstance().notificar(
-						vista.getUsuario(),
-						cargoDocente.getDocente(),
-						cargoDocente,
-						estAnterior,
-						cargoDocente.getEstado(),
-						eo);
-			} catch (IllegalArgumentException e) {
-	    		this.vista.mensajeEstado(e.getMessage());
-	    	}
-			return true;
-		}
-		return false;
 	}
 	
 	/**
