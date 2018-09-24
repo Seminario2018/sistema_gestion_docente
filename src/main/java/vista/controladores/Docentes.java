@@ -57,10 +57,10 @@ public class Docentes extends ControladorVista implements Initializable {
     private ControlPersona controlPersona = new ControlPersona();
     private ControlDocente controlDocente = new ControlDocente(this);
     private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
-    
+
     // Recibir parámetros para cargar datos:
     public static final String REC_CARGO_DOCENTE = "recibircargo";
-    public static final String REC_DOCENTE = "recibirdocente"; 
+    public static final String REC_DOCENTE = "recibirdocente";
 
     // Tipos respuesta:
     private static final String TIPO_AREA = "area";
@@ -719,15 +719,19 @@ public class Docentes extends ControladorVista implements Initializable {
     /** Muestra los datos del cargo seleccionado: */
     private void cargosMostrarCargoDocente() {
         if (cargoDocenteSeleccion != null) {
-        	if (cargoDocenteSeleccion.getArea() != null)
-        		txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
-        	if (cargoDocenteSeleccion.getCargo() != null)
-        		txtCargosCargo.setText(cargoDocenteSeleccion.getCargo().getDescripcion());
-        	if (cargoDocenteSeleccion.getEstado() != null)
-        		cmbCargosEstado.getSelectionModel().select(cargoDocenteSeleccion.getEstado());
-        	if (cargoDocenteSeleccion.getTipoCargo() != null)
-        		cmbCargosTipo.getSelectionModel().select(cargoDocenteSeleccion.getTipoCargo());
-        	
+        	if (cargoDocenteSeleccion.getArea() != null) {
+                txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
+            }
+        	if (cargoDocenteSeleccion.getCargo() != null) {
+                txtCargosCargo.setText(cargoDocenteSeleccion.getCargo().getDescripcion());
+            }
+        	if (cargoDocenteSeleccion.getEstado() != null) {
+                cmbCargosEstado.getSelectionModel().select(cargoDocenteSeleccion.getEstado());
+            }
+        	if (cargoDocenteSeleccion.getTipoCargo() != null) {
+                cmbCargosTipo.getSelectionModel().select(cargoDocenteSeleccion.getTipoCargo());
+            }
+
             txtCargosDisp.setText(cargoDocenteSeleccion.getDisposicion());
             dtpCargosDispDesde.setValue(cargoDocenteSeleccion.getDispDesde());
             dtpCargosDispHasta.setValue(cargoDocenteSeleccion.getDispHasta());
@@ -771,7 +775,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
             cmbCargosEstado.setDisable(false);
             cmbCargosTipo.setDisable(false);
-            
+
             this.window.setTitle("Docentes - Modificar Cargo");
         }
     }
@@ -834,6 +838,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
                 exitoGuardado(controlDocente.guardarCargoDocente(docenteSeleccion, cargoDocenteSeleccion), TITULO, "Guardar Cargo");
 
+                docenteMostrarDocente();
                 cargosModoModificar();
 
             } catch (Exception e) {
@@ -943,20 +948,22 @@ public class Docentes extends ControladorVista implements Initializable {
     private void investigacionActualizarTabla() {
         filasInvestigacion.clear();
         if (docenteSeleccion != null) {
-            if (docenteSeleccion.getCategoriaInvestigacion() != null) 
-            	txtInvestigacionCategoria.setText(
+            if (docenteSeleccion.getCategoriaInvestigacion() != null) {
+                txtInvestigacionCategoria.setText(
             			docenteSeleccion.getCategoriaInvestigacion().getDescripcion());
+            }
 
             List<Hashtable<String,String>> integranteDe =
                 controlInvestigacion.integranteDe(docenteSeleccion);
 
-            if (integranteDe != null)
-	            for (Hashtable<String, String> infoProyecto : integranteDe) {
+            if (integranteDe != null) {
+                for (Hashtable<String, String> infoProyecto : integranteDe) {
 	                filasInvestigacion.add(new FilaInvestigacion(
 	                		infoProyecto.get("P.ID"),
 		                    infoProyecto.get("P.Nombre"),
 		                    infoProyecto.get("C.Descripcion"),
 		                    infoProyecto.get("A.Descripcion")));
+            }
             }
         }
     }
@@ -1148,7 +1155,7 @@ public class Docentes extends ControladorVista implements Initializable {
         	cargosMostrarCargoDocente();
         	cargosModoNuevo();
         }
-        
+
         Object pestana = args.get(KEY_TAB);
         if (pestana != null) {
             tabpDocentes.getSelectionModel().select((Integer) pestana);
