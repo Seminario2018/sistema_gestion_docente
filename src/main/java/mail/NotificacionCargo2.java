@@ -92,18 +92,19 @@ public class NotificacionCargo2 {
         private void loggearMail(Mensaje mail) {
             StringBuilder sb = new StringBuilder();
 
+            sb.append("[");
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            sb.append("] [");
+            sb.append(mail.getResultado());
+            sb.append("] - Usuario: ");
+            sb.append(mail.getUsuario());
+            sb.append(" - Emisor: ");
+            sb.append(mail.getEmisor());
+            sb.append(" - Destino: ");
+            sb.append(mail.getDestino());
+            int i = 1;
             for (Mensaje.Item item : mail.getItems()) {
-                sb.append("[");
-                sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-                sb.append("] [");
-                sb.append(mail.getResultado());
-                sb.append("] - Usuario: ");
-                sb.append(mail.getUsuario());
-                sb.append(" - Emisor: ");
-                sb.append(mail.getEmisor());
-                sb.append(" - Destino: ");
-                sb.append(mail.getDestino());
-                sb.append(" - [Datos del cargo] Legajo: ");
+                sb.append(" - [Datos del cargo " + i + "] Legajo: ");
                 sb.append(item.getLegajo());
                 sb.append(" - Código Cargo: ");
                 sb.append(item.getCargo());
@@ -111,11 +112,10 @@ public class NotificacionCargo2 {
                 sb.append(item.getEstadoAnterior());
                 sb.append(" -> ");
                 sb.append(item.getEstadoNuevo());
-
-                sb.append("\n");
+                i++;
             }
 
-            System.out.print("Log:\n" + sb.toString());
+            System.out.println("Log:" + sb.toString());
             Utilidades.guardarTexto(
                 new File("logMail.txt"), sb.toString());
         }
