@@ -160,8 +160,9 @@ public class NotificacionCargo2 {
                 }
             }
     		destinos = Utilidades.joinString(mails, ",");
-    	} catch (Exception e) {
 
+    	} catch (Exception e) {
+    	    e.printStackTrace();
     	}
 
     	if (destinos == null || destinos.equals("")) {
@@ -206,7 +207,7 @@ public class NotificacionCargo2 {
     	Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
 
     	String asunto;
-    	String mensaje;
+    	String mensaje = "";
 
     	// Si se crea un nuevo mail, agregar asunto y saludo
     	if (mailActual == null || mailActual.isEmpty()) {
@@ -218,7 +219,7 @@ public class NotificacionCargo2 {
     		mensaje = mailActual.get(NotificacionCargo2.KEY_MENSAJE);
     	}
 
-    	mensaje = armarMensaje(plantillaXML, parametros);
+    	mensaje = mensaje + armarMensaje(plantillaXML, parametros);
 
     	// Guardar el mail para enviar
     	mailActual.put(NotificacionCargo2.KEY_ASUNTO,      asunto);
