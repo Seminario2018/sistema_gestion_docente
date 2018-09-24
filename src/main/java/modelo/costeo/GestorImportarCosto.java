@@ -268,6 +268,12 @@ public class GestorImportarCosto {
 		try {
 			for (ICargoFaltante cargoImportado : this.cargosImportados) {
 				cargoImportado.setTipo(CargoFaltante.FALTA_SISTEMA);
+				
+				List<ICargoFaltante> lista = this.gestorCargosFaltantes
+						.listarCargosFaltantes(cargoImportado); 
+				if(lista != null && lista.size() == 1)
+					this.gestorCargosFaltantes.eliminarCargoFaltante(cargoImportado);
+				
 				this.gestorCargosFaltantes.agregarCargoFaltante(cargoImportado);
 			}
 
@@ -392,7 +398,7 @@ public class GestorImportarCosto {
 		LocalDate ultima = null;
 		try {
 			ManejoDatos md = new ManejoDatos();
-			List<Hashtable<String, String>> res = md.select("cargosdocentes", "MAX(FechaUltimoCosto)");
+			List<Hashtable<String, String>> res = md.select("cargosfaltantes", "MAX(FechaUltimoCosto)");
 			if (res != null && !res.isEmpty()) {
 				Hashtable<String, String> reg = res.get(0);
 				if (!reg.isEmpty() && !reg.get("MAX(FechaUltimoCosto)").equals("")) {

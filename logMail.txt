@@ -4,3 +4,4 @@
 [2018-09-23 20:48:43] [Enviado] - Usuario: pepe - Emisor: semint2018@gmail.com - Destino: tomasjuran96@gmail.com - [Datos del cargo] Legajo: 143191 - Código Cargo: 92 - Estado: Activo -> Activo
 [2018-09-23 22:10:53] [Enviado] - Usuario: pepe - Emisor: semint2018@gmail.com - Destino: semint2018@gmail.com - [Datos del cargo] Legajo: 94 - Código Cargo: 2002 - Estado: Activo -> Inactivo
 [2018-09-23 22:10:59] [Enviado] - Usuario: pepe - Emisor: semint2018@gmail.com - Destino: tomasjuran96@gmail.com - [Datos del cargo] Legajo: 143191 - Código Cargo: 92 - Estado: <<nuevo>> -> Activo
+[2018-09-24 00:34:06] [Enviado] - Usuario: pepe - Emisor: semint2018@gmail.com - Destino: tomasjuran96@gmail.com - [Datos del cargo] Legajo: 143191 - Código Cargo: 91 - Estado: Activo -> Inactivo

@@ -12,7 +12,7 @@ import persistencia.ManejoDatos;
 public class GestorCargosFaltantes {
 
 	public EstadoOperacion agregarCargoFaltante(ICargoFaltante cargo) {
-		try {
+		try {			
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "cargosfaltantes";
 			String campos = "`Legajo`, `Cargo`, `FechaUltimoCosto`, `Tipo`";
@@ -74,6 +74,12 @@ public class GestorCargosFaltantes {
 			String condicion = "TRUE";
 			
 			if (cargo != null) {
+				if (cargo.getLegajo() != 0) {
+					condicion += " AND Legajo = " + cargo.getLegajo();
+				}
+				if (cargo.getCodigoCargo() != 0) {
+					condicion += " AND Cargo = " + cargo.getCodigoCargo();
+				}
 				if (cargo.getFechaUltimoCosto() != null)
 					condicion += " AND FechaUltimoCosto = '" + 
 							Date.valueOf(cargo.getFechaUltimoCosto()) + "'";

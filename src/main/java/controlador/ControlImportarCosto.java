@@ -32,6 +32,10 @@ public class ControlImportarCosto {
 		super();
 		this.vista = vista;
 	}
+	
+	public void actualizarListas() {
+		this.gestorImportarCosto.actualizarListas();
+	}
 
 	public List<ICargoFaltante> getFaltantesSistema() {
 		return this.gestorImportarCosto.getFaltantesSistema();

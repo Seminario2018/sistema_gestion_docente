@@ -54,6 +54,7 @@ public class ImportarCosto extends ControladorVista {
 	}
 	
 	private void actualizarTablas() {
+		this.control.actualizarListas();
 		actualizarTablaCosteo();
 		actualizarTablaSistema();
 	}
