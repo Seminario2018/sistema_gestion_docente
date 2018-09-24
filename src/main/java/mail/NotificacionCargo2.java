@@ -50,11 +50,19 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-        private static final int MILISEGUNDOS = 60000;
+//        private static final int MILISEGUNDOS = 60000;
+        private int MILISEGUNDOS;
     	private NotificacionCargo2 noti;
+
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
+
+    		// Importar intervalo desde xml:
+    		Document xml = Utilidades.leerXML(new File("Mail.xml"));
+    		String intervalo = xml.getElementsByTagName("intervalo").item(0).getTextContent();
+    		MILISEGUNDOS = Integer.parseInt(intervalo) * 1000;
     	}
+
 		@Override
 		public void run() {
 			System.out.println("Se prepararon mails para enviar."
@@ -153,14 +161,14 @@ public class NotificacionCargo2 {
             }
     		destinos = Utilidades.joinString(mails, ",");
     	} catch (Exception e) {
-    		
+
     	}
 
     	if (destinos == null || destinos.equals("")) {
     		String error = "No se pudo enviar el mail porque el Jefe de la División "
             		+ cargo.getArea().getDivision().getDescripcion()
             		+ " no tiene Mail Laboral.";
-    		
+
     		StringBuilder sb = new StringBuilder();
             sb.append("[");
             sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
@@ -177,7 +185,7 @@ public class NotificacionCargo2 {
 
             Utilidades.guardarTexto(
                 new File("logMail.txt"), sb.toString());
-    		
+
             throw new IllegalArgumentException(error);
         }
 
