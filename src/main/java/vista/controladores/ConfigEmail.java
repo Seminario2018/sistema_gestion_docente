@@ -24,7 +24,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import mail.IMail;
 import mail.Mail;
@@ -76,8 +75,8 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     public void inicializar() {
     	this.window.setTitle("Configuración de correo electrónico");
     }
-    
-    
+
+
     /**
      * Importa de un archivo seleccionado la configuración del
      * servidor de mail.
@@ -104,7 +103,9 @@ public class ConfigEmail extends ControladorVista implements Initializable {
      */
     private void exportarArchivoConfig(File archivo) {
         try {
+            actualizarConfiguracion();
             Utilidades.guardarXML(archivo, configuracionXML);
+
         } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
@@ -137,13 +138,10 @@ public class ConfigEmail extends ControladorVista implements Initializable {
      * @param archivo Archivo a donde exportar
      */
     private void exportarArchivoPlantilla(File archivo) {
-        plantillaXML.getElementsByTagName("asunto").item(0).setTextContent(txtPlantillaAsunto.getText());
-        plantillaXML.getElementsByTagName("encabezado").item(0).setTextContent(txtPlantillaEncabezado.getText());
-        plantillaXML.getElementsByTagName("mensaje").item(0).setTextContent(txtPlantillaMensaje.getText());
-        plantillaXML.getElementsByTagName("pie").item(0).setTextContent(txtPlantillaPie.getText());
-
+        actualizarPlantilla();
         try {
             Utilidades.guardarXML(archivo, plantillaXML);
+
         } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
@@ -309,6 +307,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private void exportarPlantilla(ActionEvent event) {
         File archivo = this.elegirArchivo("Elegir archivo de plantilla", "Archivos XML", Arrays.asList("*.xml"));
         if (archivo != null) {
+            actualizarPlantilla();
             exportarArchivoPlantilla(archivo);
         }
     }
@@ -333,5 +332,27 @@ public class ConfigEmail extends ControladorVista implements Initializable {
             txtPlantillaEncabezado.getText() +
             txtPlantillaMensaje.getText() +
             txtPlantillaPie.getText());
+    }
+
+    private void actualizarConfiguracion() {
+        configuracionXML.getElementsByTagName("usuario").item(0)
+            .setTextContent(txtServidorEmail.getText());
+        configuracionXML.getElementsByTagName("contraseña").item(0)
+            .setTextContent(txtServidorContraseña.getText());
+        configuracionXML.getElementsByTagName("puerto").item(0)
+            .setTextContent(txtServidorSmtp.getText());
+        configuracionXML.getElementsByTagName("tls").item(0)
+            .setTextContent(String.valueOf(chkServidorTLS.isSelected()));
+    }
+
+    private void actualizarPlantilla() {
+        plantillaXML.getElementsByTagName("asunto").item(0)
+            .setTextContent(txtPlantillaAsunto.getText());
+        plantillaXML.getElementsByTagName("encabezado").item(0)
+            .setTextContent(txtPlantillaEncabezado.getText());
+        plantillaXML.getElementsByTagName("mensaje").item(0)
+            .setTextContent(txtPlantillaMensaje.getText());
+        plantillaXML.getElementsByTagName("pie").item(0)
+            .setTextContent(txtPlantillaPie.getText());
     }
 }

@@ -44,6 +44,8 @@ public class ConfigCon extends ControladorVista implements Initializable {
 
     @FXML private Button btnProbar;
     @FXML void probarConexion(ActionEvent event) {
+        exportarArchivoConfig(new File(ARCHIVO_CONFIG));
+
         Conexion con = new Conexion();
         try {
             Connection connection = con.conectar();
@@ -51,6 +53,7 @@ public class ConfigCon extends ControladorVista implements Initializable {
                 dialogoInformacion(TITULO,
                     "Prueba de conexión",
                     "No pudo establecerse la conexión");
+
             } else {
                 DatabaseMetaData metadata = connection.getMetaData();
 
@@ -115,11 +118,23 @@ public class ConfigCon extends ControladorVista implements Initializable {
      */
     private void exportarArchivoConfig(File archivo) {
         try {
+            actualizarConfiguracion();
             Utilidades.guardarXML(archivo, configuracionXML);
 
         } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
         }
+    }
+
+    private void actualizarConfiguracion() {
+        configuracionXML.getElementsByTagName("driver").item(0)
+            .setTextContent(txtDriver.getText());
+        configuracionXML.getElementsByTagName("usr").item(0)
+            .setTextContent(txtUsuario.getText());
+        configuracionXML.getElementsByTagName("password").item(0)
+            .setTextContent(pwdContrasena.getText());
+        configuracionXML.getElementsByTagName("url").item(0)
+            .setTextContent(txtURL.getText());
     }
 }
