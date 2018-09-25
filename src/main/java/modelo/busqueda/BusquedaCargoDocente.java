@@ -24,11 +24,32 @@ public class BusquedaCargoDocente {
 	    String codigo,
 	    String cargo) {
 
-		this.legajo = Integer.parseInt(legajo);
+		
+		if (legajo == null) {
+			this.legajo = 0;
+		}else {
+			this.legajo = Integer.parseInt(legajo);
+		}
+		
 		this.nombre = apellido + ", " + nombre;
-		this.area = area;
-		this.codigo = Integer.parseInt(codigo);
-		this.cargo = cargo;
+		
+		if (area == null) {
+			this.area = "";
+		}else {
+			this.area = area;
+		}
+		
+		if (codigo == null) {
+			this.codigo = 0;
+		}else {
+			this.codigo = Integer.parseInt(codigo);
+		}
+		if (cargo == null) {
+			this.cargo = "";
+		}else {
+			this.cargo = cargo;
+		}
+		
 	}
 
 	public int getLegajo() {

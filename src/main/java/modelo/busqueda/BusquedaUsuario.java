@@ -6,7 +6,12 @@ public class BusquedaUsuario {
     private String usuario;
 
     public BusquedaUsuario(String usuario) {
-        this.usuario = usuario;
+    	if (usuario == null) {
+    		this.usuario = "";
+    	}else {
+    		this.usuario = usuario;
+    	}
+        
     }
 
     public String getUsuario() {
