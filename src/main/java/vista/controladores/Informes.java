@@ -191,7 +191,7 @@ public class Informes extends ControladorVista implements Initializable {
 					"Ha ocurrido un error al intentar utilizar la configuración por defecto.",
 					eo.getMensaje());
 			if (this.dialogoConfirmacion("Exportar informe a Excel",
-					"¿Desea exportar a Excel con otro nombre?", "")) {
+					"¿Desea exportar a Excel con otro nombre de archivo?", "")) {
 				this.exportarComo(null);
 			}
 			break;

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -14,7 +16,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
+
+import controlador.ControlInforme;
 
 /**
  * @author Martín Tomás Juran
@@ -223,5 +228,39 @@ public class Utilidades {
 	            e.printStackTrace();
 	        }
 	    }
+	}
+	
+	
+	/**
+	 * Crea el documento xml de configuración de informes
+	 * @return 
+	 * @throws Exception 
+	 */
+	public static Document crearXMLInformes() throws Exception {
+		try {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document xml = db.newDocument();
+			
+			Element informes = xml.createElement("informes");
+			informes.appendChild(xml.createElement(ControlInforme.XML_INFORMES_DIRECTORIO));
+			
+			Element fecha = xml.createElement("fecha");
+			fecha.appendChild(xml.createElement(ControlInforme.XML_INFORMES_FORMATO_FECHA));
+			fecha.appendChild(xml.createElement(ControlInforme.XML_INFORMES_SEPARADOR_FECHA));
+			Element hora = xml.createElement("hora");
+			hora.appendChild(xml.createElement(ControlInforme.XML_INFORMES_FORMATO_HORA));
+			hora.appendChild(xml.createElement(ControlInforme.XML_INFORMES_SEPARADOR_HORA));
+			
+			Element formato = xml.createElement("formato");
+			formato.appendChild(fecha);
+			formato.appendChild(hora);
+			informes.appendChild(formato);
+			
+			xml.appendChild(informes);
+			return xml;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 }

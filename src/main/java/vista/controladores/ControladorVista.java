@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -268,9 +269,11 @@ public abstract class ControladorVista implements Initializable {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
 	    fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
-	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
-	    fileChooser.getExtensionFilters().add(extensionFilter);
+	    if (extensiones != null && !extensiones.isEmpty()) {
+		    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
+		    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
+		    fileChooser.getExtensionFilters().add(extensionFilter);
+	    }
 	    return fileChooser.showOpenDialog(new Stage());
 	}
 
@@ -283,10 +286,20 @@ public abstract class ControladorVista implements Initializable {
 	    FileChooser fileChooser = new FileChooser();
 	    fileChooser.setTitle(titulo);
 	    fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
-	    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
-	    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
-	    fileChooser.getExtensionFilters().add(extensionFilter);
+	    if (extensiones != null && !extensiones.isEmpty()) {
+		    descripcion += " (" + Utilidades.joinString(extensiones, "; ") + ")";
+		    ExtensionFilter extensionFilter = new ExtensionFilter(descripcion, extensiones);
+		    fileChooser.getExtensionFilters().add(extensionFilter);
+	    }
 	    return fileChooser.showSaveDialog(new Stage());
+	}
+	
+	
+	public File elegirDirectorio(String titulo) {
+		DirectoryChooser dirChooser = new DirectoryChooser();
+		dirChooser.setTitle(titulo);
+		dirChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		return dirChooser.showDialog(new Stage());
 	}
 
 	/**

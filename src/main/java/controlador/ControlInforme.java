@@ -17,6 +17,7 @@ import modelo.informe.ITipoInforme;
 import utilidades.Utilidades;
 import vista.controladores.ConfigInf.FormatoFecha;
 import vista.controladores.ConfigInf.FormatoHora;
+import vista.controladores.ConfigInf.SeparadorArchivo;
 import vista.controladores.ControladorVista;
 
 public class ControlInforme {
@@ -110,7 +111,7 @@ public class ControlInforme {
 	 */
 	public EstadoOperacion getFile(String nombreInforme, String nombreUsuario) {
 		EstadoOperacion resultado = new EstadoOperacion(CodigoEstado.OP_ERROR,
-				"Ha ocurrido un error al obtener la ruta del archivo.");
+				"Ha ocurrido un error al obtener el nombre del archivo.");
 
 		Document xml = null;
 
@@ -126,6 +127,10 @@ public class ControlInforme {
 				String path = "";
 				// Directorio raíz
 				path += xml.getElementsByTagName(XML_INFORMES_DIRECTORIO).item(0).getTextContent();
+				if (!(new File(path).exists())) {
+					return new EstadoOperacion(CodigoEstado.OP_ERROR,
+							"La ruta al archivo no existe. Verifique la Configuración de Informes.");
+				}
 
 				// Usuario
 				if (nombreUsuario != null && !"".equals(nombreUsuario))
@@ -147,12 +152,14 @@ public class ControlInforme {
 				DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern(fh.getFormato());
 
 				String fecha = now.format(formatoFecha);
-				fecha = fecha.replace(" ",
+				SeparadorArchivo sepFecha = SeparadorArchivo.valueOf(
 						xml.getElementsByTagName(XML_INFORMES_SEPARADOR_FECHA).item(0).getTextContent());
+				fecha = fecha.replace(" ", sepFecha.getValor());
 
 				String hora = now.format(formatoHora);
-				hora = hora.replace(" ",
+				SeparadorArchivo sepHora = SeparadorArchivo.valueOf(
 						xml.getElementsByTagName(XML_INFORMES_SEPARADOR_HORA).item(0).getTextContent());
+				hora = hora.replace(" ", sepHora.getValor());
 
 				path += INFORMES_SEPARADOR + fecha + INFORMES_SEPARADOR + hora;
 
