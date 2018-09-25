@@ -26,7 +26,9 @@ public class TipoInformeTest {
 		GROUP BY DOCENTE.LEGAJO
 		ORDER BY DOCENTE.LEGAJO ASC, DOCENTE.APYNOM DESC
 		*/
+		List<FiltroColumna> filtros = new ArrayList<FiltroColumna>();
 		FiltroColumna filtro = new FiltroColumna("> 140000");
+		filtros.add(filtro);
 		
 		List<ColumnaInforme> columnas = new ArrayList<ColumnaInforme>();
 		
@@ -34,7 +36,8 @@ public class TipoInformeTest {
 				true,
 				"Legajo",
 				"DOCENTE.LEGAJO",
-				filtro,
+				filtros,
+				null,
 				null,
 				ColumnaInforme.ASCENDENTE,
 				1,
@@ -47,6 +50,7 @@ public class TipoInformeTest {
 				"DOCENTE.APYNOM",
 				null,
 				null,
+				null,
 				ColumnaInforme.DESCENDENTE,
 				2,
 				TipoColumna.STRING);
@@ -56,6 +60,7 @@ public class TipoInformeTest {
 				true,
 				"Último costo",
 				"PLANTA.ULTIMO_COSTO",
+				null,
 				null,
 				Calculo.SUM,
 				ColumnaInforme.SIN_ORDEN,

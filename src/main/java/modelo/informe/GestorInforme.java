@@ -302,9 +302,9 @@ public class GestorInforme {
 				campos += ", `Nombre`";
 				valores += ", '" + col.getNombre() + "'";
 			}
-			if (col.getFiltro() != null) {
+			if (col.getFiltros() != null) {
 				campos += ", `Filtros`";
-				valores += ", '" + col.getFiltro().toString() + "'";
+				valores += ", '" + col.stringFiltros(false) + "'";
 			}
 			if (col.getCalculo() != null && !col.getCalculo().equals("")) {
 				campos += ", `Calculo`";
@@ -350,7 +350,7 @@ public class GestorInforme {
 			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
 			if (col.getTipo() != null && !col.getTipo().equals(""))
 				campos.add("Tipo = '" + col.getTipo() + "'");
-			if (col.getFiltro() != null) campos.add("Filtros = '" + col.getFiltro().toString(col.getTipo()) + "'");
+			if (col.getFiltros() != null) campos.add("Filtros = '" + col.stringFiltros(false) + "'"); // TODO cambiar a false
 			if (col.getCalculo() != null && !col.getCalculo().equals(""))
 				campos.add("Calculo = '" + col.getCalculo().getCalculo() + "'");
 			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
@@ -412,7 +412,7 @@ public class GestorInforme {
 				if (reg.containsKey("Tipo")) c.setTipo(TipoColumna.valueOf(reg.get("Tipo")));
 
 				if (!reg.get("Filtros").equals("")) {
-					c.setFiltro(new FiltroColumna(reg.get("Filtros"), c.getTipo()));
+					c.setFiltros(reg.get("Filtros"), false); // TODO false
 				}
 				
 				c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
@@ -443,7 +443,7 @@ public class GestorInforme {
 			}
 			c.setAtributo(reg.get("Atributo"));
 			if (!reg.get("Filtros").equals("")) {
-				c.setFiltro(new FiltroColumna(reg.get("Filtros")));
+				c.setFiltros(reg.get("Filtros"), false); // TODO true
 			}
 			if (!reg.get("Calculo").equals("")) {
 				switch (reg.get("Calculo")) {
@@ -485,8 +485,8 @@ public class GestorInforme {
 			if (columna.getAtributo() != null && ! columna.getAtributo().equals("")) {
 				condicion += " AND Atributo = '" + columna.getAtributo() + "'";
 			}
-			if (columna.getFiltro() != null) {
-				condicion += " AND Filtros = '" + columna.getFiltro().toString() + "'";
+			if (columna.getFiltros() != null) {
+				condicion += " AND Filtros = '" + columna.stringFiltros(false) + "'";
 			}
 			if (columna.getOrdenar() != -1) {
 				condicion += " AND Ordenar = " + columna.getOrdenar();

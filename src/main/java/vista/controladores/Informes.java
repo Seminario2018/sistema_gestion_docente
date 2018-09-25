@@ -74,6 +74,15 @@ public class Informes extends ControladorVista implements Initializable {
 		}
 		
 		inicializarTablaFiltro();
+		
+		// Actualizar las tablas cuando se muestra la pantalla
+        this.window.focusedProperty().addListener(
+        		(observable, oldValue, newValue) ->
+        		{
+        			if (newValue == true)
+        				actualizarTablas();
+        		}
+        );
 	}
 	
 	@Override
@@ -308,15 +317,14 @@ public class Informes extends ControladorVista implements Initializable {
  			this.col.setOrdenar(ord);
  		}
  		public String getFiltro() {
- 			if (this.col.getFiltro() != null) {
- 				return this.col.getFiltro().getTipo().getDescripcion() + " " 
- 						+ this.col.getFiltro().getValor();
+ 			if (this.col.getFiltros() != null) {
+ 				return this.col.stringFiltrosUI();
  			} else {
  				return "";
  			}
  		}
- 		public void setFiltro(FiltroColumna filtro) {
- 			this.col.setFiltro(filtro);
+ 		public void setFiltro(List<FiltroColumna> filtros) {
+ 			this.col.setFiltros(filtros);
  		}
  		public String getCalculo() {
  			if (this.col.getCalculo() != null)
