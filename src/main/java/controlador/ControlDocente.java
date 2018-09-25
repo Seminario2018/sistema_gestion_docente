@@ -58,62 +58,33 @@ public class ControlDocente {
 	}
 
     public EstadoOperacion guardarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
-        /* DONE *
-        // NotificacionCargo2 notificacion = new NotificacionCargo2(docente, cargoDocente);
-        if (cargoDocente.getId() == -1) {
-            // Se agrega un nuevo Cargo Docente
-            EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
-            switch (resultado.getEstado()) {
-                case INSERT_OK:
-                	// notificacion.notificar(resultado);
-                    NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
-                    break;
-                default:
-                    System.out.printf("%s\n", resultado.getMensaje());
-                    vista.alertaError("Cargos", "No se pudo agregar el cargo docente", resultado.getMensaje());
-            }
-            return resultado;
-        } else {
-            // Se modifica un Cargo Docente anterior
-            EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
-            switch (resultado.getEstado()) {
-                case UPDATE_OK:
-                    // notificacion.notificar(resultado);
-                	NotificacionCargo2.getInstance().notificar(docente, cargoDocente, resultado);
-                    break;
-                default:
-                    System.out.printf("%s\n", resultado.getMensaje());
-                    vista.alertaError("Cargos", "No se pudo modificar el cargo docente", resultado.getMensaje());
-            }
-            return resultado;
-        }
-        //*/
-
-        if (cargoDocente.getId() == -1) {
-            EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
+    	// Buscar si ya existe el cargo
+    	ICargoDocente cargoDocenteBusqueda = gestorDocente.getICargoDocente();
+        cargoDocenteBusqueda.setId(cargoDocente.getId());
+        List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocenteBusqueda);
+        if (listaCargosDocentes.size() < 1 || cargoDocente.getId() < 1) {
+        	// Cargo nuevo
+        	EstadoOperacion resultado = gestorDocente.agregarCargoDocente((IDocenteg) docente, cargoDocente);
             if (resultado.getEstado() == CodigoEstado.INSERT_OK) {
                 /* Notifico por mail cuando hay un nuevo cargo (si se insertó
                  * exitosamente):
                  */
-                NotificacionCargo2.getInstance().notificar(
-                    vista.getUsuario(),
-                    docente,
-                    cargoDocente,
-                    EstadoCargo.getEstadoNuevo(),
-                    cargoDocente.getEstado(),
-                    resultado);
+            	try {
+            		NotificacionCargo2.getInstance().notificar(
+            				vista.getUsuario(),
+            				docente,
+            				cargoDocente,
+		                    EstadoCargo.getEstadoNuevo(),
+		                    cargoDocente.getEstado(),
+		                    resultado);
+            	} catch (IllegalArgumentException e) {
+            		this.vista.mensajeEstado(e.getMessage());
+            	}
             }
             return resultado;
-
+        	
         } else {
-            // Obtengo una referencia al cargoDocente antes de ser modificado:
-            ICargoDocente cargoDocenteBusqueda = gestorDocente.getICargoDocente();
-            cargoDocenteBusqueda.setId(cargoDocente.getId());
-            List<ICargoDocente> listaCargosDocentes = gestorDocente.listarCargo(docente, cargoDocenteBusqueda);
-            if (listaCargosDocentes.size() != 1) {
-                // Encontré más de un o ningún cargoDocente ???
-                throw new RuntimeException("Más de un cargoDocente no esperados");
-            }
+        	// Modificar un cargo existente 
             EstadoCargo estadoCargoReferencia = listaCargosDocentes.get(0).getEstado();
 
             EstadoOperacion resultado = gestorDocente.modificarCargoDocente(docente, cargoDocente);
@@ -123,19 +94,25 @@ public class ControlDocente {
                  */
                 EstadoCargo estadoCargoNuevo = cargoDocente.getEstado();
                 if (!estadoCargoNuevo.equals(estadoCargoReferencia)) {
-                    NotificacionCargo2.getInstance().notificar(
-                        vista.getUsuario(),
-                        docente,
-                        cargoDocente,
-                        estadoCargoReferencia,
-                        estadoCargoNuevo,
-                        resultado);
-                    pasarAInactivo(docente);
+                	try {
+	                    NotificacionCargo2.getInstance().notificar(
+	                        vista.getUsuario(),
+	                        docente,
+	                        cargoDocente,
+	                        estadoCargoReferencia,
+	                        estadoCargoNuevo,
+	                        resultado);
+                	} catch (IllegalArgumentException e) {
+                		this.vista.mensajeEstado(e.getMessage());
+                	}
+                	pasarAInactivo(docente);
                 }
             }
             return resultado;
         }
-    }
+    }            
+
+        
 
     public EstadoOperacion quitarCargoDocente(IDocente docente, ICargoDocente cargoDocente) {
         /* DONE Saqué la notificación por mail cuando se borra un cargodocente de la BD: *

@@ -24,7 +24,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 import mail.IMail;
 import mail.Mail;
@@ -45,7 +44,7 @@ import utilidades.Utilidades;
 
 public class ConfigEmail extends ControladorVista implements Initializable {
 
-    private static final String TITULO = "Configuración E-mail";
+    public static final String TITULO = "ConfigEmail";
     private static final String ARCHIVO_CONFIG = "Mail.xml";
     private static final String ARCHIVO_PLANTILLA = "Plantilla.xml";
 
@@ -72,6 +71,12 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private Document configuracionXML;
     private Document plantillaXML;
 
+    @Override
+    public void inicializar() {
+    	this.window.setTitle("Configuración de correo electrónico");
+    }
+
+
     /**
      * Importa de un archivo seleccionado la configuración del
      * servidor de mail.
@@ -80,11 +85,13 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private void importarArchivoConfig(File archivo) {
         configuracionXML = Utilidades.leerXML(archivo);
 
+        String intervalo = configuracionXML.getElementsByTagName("intervalo").item(0).getTextContent();
         String email = configuracionXML.getElementsByTagName("usuario").item(0).getTextContent();
         String contraseña = configuracionXML.getElementsByTagName("contraseña").item(0).getTextContent();
         String smtp = configuracionXML.getElementsByTagName("puerto").item(0).getTextContent();
         String tls = configuracionXML.getElementsByTagName("tls").item(0).getTextContent();
 
+        txtServidorIntervalo.setText(intervalo);
         txtServidorEmail.setText(email);
         txtServidorContraseña.setText(contraseña);
         txtServidorSmtp.setText(smtp);
@@ -98,7 +105,9 @@ public class ConfigEmail extends ControladorVista implements Initializable {
      */
     private void exportarArchivoConfig(File archivo) {
         try {
+            actualizarConfiguracion();
             Utilidades.guardarXML(archivo, configuracionXML);
+
         } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
@@ -131,13 +140,10 @@ public class ConfigEmail extends ControladorVista implements Initializable {
      * @param archivo Archivo a donde exportar
      */
     private void exportarArchivoPlantilla(File archivo) {
-        plantillaXML.getElementsByTagName("asunto").item(0).setTextContent(txtPlantillaAsunto.getText());
-        plantillaXML.getElementsByTagName("encabezado").item(0).setTextContent(txtPlantillaEncabezado.getText());
-        plantillaXML.getElementsByTagName("mensaje").item(0).setTextContent(txtPlantillaMensaje.getText());
-        plantillaXML.getElementsByTagName("pie").item(0).setTextContent(txtPlantillaPie.getText());
-
+        actualizarPlantilla();
         try {
             Utilidades.guardarXML(archivo, plantillaXML);
+
         } catch (Exception e) {
             e.printStackTrace();
             alertaError(TITULO, "No se pudo guardar el archivo", "No se pudo guardar el archivo de configuración");
@@ -232,11 +238,13 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
         Document plantillaXML = Utilidades.leerXML(new File("Plantilla.xml"));
         Map<String, String> parametros = NotificacionCargo2.armarParametrosPlantilla(docentePrueba, cargoPrueba, estadoPrueba);
-        String asunto = NotificacionCargo2.armarAsunto(plantillaXML, parametros);
-        String mensaje = NotificacionCargo2.armarMensaje(plantillaXML, parametros);
+
+        String asunto = NotificacionCargo2.armarTextoPlantilla("asunto", plantillaXML, parametros);
+        String encabezado = NotificacionCargo2.armarTextoPlantilla("encabezado", plantillaXML, parametros);
+        String mensaje = NotificacionCargo2.armarTextoPlantilla("mensaje", plantillaXML, parametros);
 
         IMail mail = new Mail();
-        mail.enviarEmail(direccionDestino, asunto, mensaje);
+        mail.enviarEmail(direccionDestino, asunto, encabezado + mensaje);
         System.out.println("<ConfigEmail> Mail enviado a: " + direccionDestino);
     }
 
@@ -259,6 +267,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     }
 
     // Pestaña Servidor
+    @FXML private TextField txtServidorIntervalo;
     @FXML private TextField txtServidorEmail;
     @FXML private TextField txtServidorContraseña;
     @FXML private TextField txtServidorSmtp;
@@ -303,6 +312,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     private void exportarPlantilla(ActionEvent event) {
         File archivo = this.elegirArchivo("Elegir archivo de plantilla", "Archivos XML", Arrays.asList("*.xml"));
         if (archivo != null) {
+            actualizarPlantilla();
             exportarArchivoPlantilla(archivo);
         }
     }
@@ -327,5 +337,29 @@ public class ConfigEmail extends ControladorVista implements Initializable {
             txtPlantillaEncabezado.getText() +
             txtPlantillaMensaje.getText() +
             txtPlantillaPie.getText());
+    }
+
+    private void actualizarConfiguracion() {
+        configuracionXML.getElementsByTagName("intervalo").item(0)
+            .setTextContent(txtServidorIntervalo.getText());
+        configuracionXML.getElementsByTagName("usuario").item(0)
+            .setTextContent(txtServidorEmail.getText());
+        configuracionXML.getElementsByTagName("contraseña").item(0)
+            .setTextContent(txtServidorContraseña.getText());
+        configuracionXML.getElementsByTagName("puerto").item(0)
+            .setTextContent(txtServidorSmtp.getText());
+        configuracionXML.getElementsByTagName("tls").item(0)
+            .setTextContent(String.valueOf(chkServidorTLS.isSelected()));
+    }
+
+    private void actualizarPlantilla() {
+        plantillaXML.getElementsByTagName("asunto").item(0)
+            .setTextContent(txtPlantillaAsunto.getText());
+        plantillaXML.getElementsByTagName("encabezado").item(0)
+            .setTextContent(txtPlantillaEncabezado.getText());
+        plantillaXML.getElementsByTagName("mensaje").item(0)
+            .setTextContent(txtPlantillaMensaje.getText());
+        plantillaXML.getElementsByTagName("pie").item(0)
+            .setTextContent(txtPlantillaPie.getText());
     }
 }

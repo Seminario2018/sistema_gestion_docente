@@ -14,7 +14,13 @@ public class CategoriaInvestigacion {
 
 	private int id;
 	private String descripcion;
-
+	
+	public CategoriaInvestigacion() {}
+	public CategoriaInvestigacion(int id, String descripcion) {
+		this.id = id;
+		this.descripcion = descripcion;
+	}
+	
 	public int getId() {
 		return this.id;
 	}

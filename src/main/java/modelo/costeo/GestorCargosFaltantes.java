@@ -12,7 +12,7 @@ import persistencia.ManejoDatos;
 public class GestorCargosFaltantes {
 
 	public EstadoOperacion agregarCargoFaltante(ICargoFaltante cargo) {
-		try {
+		try {			
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "cargosfaltantes";
 			String campos = "`Legajo`, `Cargo`, `FechaUltimoCosto`, `Tipo`";
@@ -61,52 +61,30 @@ public class GestorCargosFaltantes {
 			e.printStackTrace();
 			return new EstadoOperacion(EstadoOperacion.CodigoEstado.DELETE_ERROR, "Cargo Faltante no eliminado");
 		}
-
-
-
 	}
+	
+	
 
-	public List<ICargoFaltante> listarCargosFaltantes() {
+	public List<ICargoFaltante> listarCargosFaltantes(ICargoFaltante cargo) {
 		List<ICargoFaltante> cargos = new ArrayList<ICargoFaltante>();
 		try {
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "cargosfaltantes";
 
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*");
-			for (Hashtable<String, String> reg : res) {
-				CargoFaltante c = new CargoFaltante();
-				c.setLegajo(Integer.parseInt(reg.get("Legajo")));
-				c.setCodigoCargo(Integer.parseInt(reg.get("Cargo")));
-				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
-				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
-
-				if (!reg.get("Apellido").equals("")) {
-					c.setApellido(reg.get("Apellido"));
+			String condicion = "TRUE";
+			
+			if (cargo != null) {
+				if (cargo.getLegajo() != 0) {
+					condicion += " AND Legajo = " + cargo.getLegajo();
 				}
-				if (!reg.get("Nombre").equals("")) {
-					c.setNombre(reg.get("Nombre"));
+				if (cargo.getCodigoCargo() != 0) {
+					condicion += " AND Cargo = " + cargo.getCodigoCargo();
 				}
-				if (!reg.get("UltimoCosto").equals("")) {
-					c.setUltimoCosto(Float.parseFloat(reg.get("UltimoCosto")));
-				}
-				cargos.add(c);
+				if (cargo.getFechaUltimoCosto() != null)
+					condicion += " AND FechaUltimoCosto = '" + 
+							Date.valueOf(cargo.getFechaUltimoCosto()) + "'";
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			cargos = new ArrayList<ICargoFaltante>();
-		}
-		
-		
-		return cargos;
-	}
-
-	public List<ICargoFaltante> listarCargosEnSistema(){
-		List<ICargoFaltante> cargos = new ArrayList<ICargoFaltante>();
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "cargosfaltantes";
-			String condicion = "Tipo = 1";
-
+			
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
 			for (Hashtable<String, String> reg : res) {
 				CargoFaltante c = new CargoFaltante();
@@ -115,13 +93,13 @@ public class GestorCargosFaltantes {
 				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
 				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
 
-				if (!reg.get("Apellido").equals("")) {
+				if (!"".equals(reg.get("Apellido"))) {
 					c.setApellido(reg.get("Apellido"));
 				}
-				if (!reg.get("Nombre").equals("")) {
+				if (!"".equals(reg.get("Nombre"))) {
 					c.setNombre(reg.get("Nombre"));
 				}
-				if (!reg.get("UltimoCosto").equals("")) {
+				if (!"".equals(reg.get("UltimoCosto"))) {
 					c.setUltimoCosto(Float.parseFloat(reg.get("UltimoCosto")));
 				}
 				cargos.add(c);
@@ -131,45 +109,11 @@ public class GestorCargosFaltantes {
 			cargos = new ArrayList<ICargoFaltante>();
 		}
 		
-		return cargos;
-
-	}
-
-	public List<ICargoFaltante> listarCargosEnCosteo(){
-		List<ICargoFaltante> cargos = new ArrayList<ICargoFaltante>();
-		try {
-			ManejoDatos md = new ManejoDatos();
-			String tabla = "cargosfaltantes";
-			String condicion = "Tipo = 0";
-
-			ArrayList<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
-			for (Hashtable<String, String> reg : res) {
-				CargoFaltante c = new CargoFaltante();
-				c.setLegajo(Integer.parseInt(reg.get("Legajo")));
-				c.setCodigoCargo(Integer.parseInt(reg.get("Cargo")));
-				c.setFechaUltimoCosto(Date.valueOf(reg.get("FechaUltimoCosto")).toLocalDate());
-				c.setTipo(Integer.parseInt(reg.get("Tipo")) == 1);
-
-				if (!reg.get("Apellido").equals("")) {
-					c.setApellido(reg.get("Apellido"));
-				}
-				if (!reg.get("Nombre").equals("")) {
-					c.setNombre(reg.get("Nombre"));
-				}
-				if (!reg.get("UltimoCosto").equals("")) {
-					c.setUltimoCosto(Float.parseFloat(reg.get("UltimoCosto")));
-				}
-				cargos.add(c);
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			cargos = new ArrayList<ICargoFaltante>();
-		}
 		
 		return cargos;
-
-
 	}
+
+
 	
 	public LocalDate getMaxFechaUltimoCosto() {
 		LocalDate max = null;
@@ -192,6 +136,15 @@ public class GestorCargosFaltantes {
 	 */
 	public ICargoFaltante getICargoFaltante() {
 		return (ICargoFaltante) new CargoFaltante();
+	}
+
+	/**
+	 * @return los últimos cargos importados
+	 */
+	public List<ICargoFaltante> listarUltimosCargosFaltantes() {
+		ICargoFaltante cargo = new CargoFaltante();
+		cargo.setFechaUltimoCosto(getMaxFechaUltimoCosto());
+		return listarCargosFaltantes(cargo);
 	}
 
 }

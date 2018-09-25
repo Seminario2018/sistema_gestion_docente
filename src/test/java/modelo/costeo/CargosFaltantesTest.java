@@ -44,7 +44,7 @@ public class CargosFaltantesTest {
 	@Test
 	public void listarTest() {
 		GestorCargosFaltantes gc = new GestorCargosFaltantes();
-		System.out.println(gc.listarCargosFaltantes().get(0).getLegajo());
+		System.out.println(gc.listarCargosFaltantes(null).get(0).getLegajo());
 	}
 	
 	

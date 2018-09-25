@@ -846,6 +846,20 @@ public class GestorDocente {
 			return false;
 		}
 	}
+	
+	public static boolean existeCargoDocente(ICargoDocente cargo) {
+		if (cargo == null) return false;
+		String tabla = "CargosDocentes";
+		String condicion = "`Codigo` = " + cargo.getId();
+		try {
+			ManejoDatos md = new ManejoDatos();
+			List<Hashtable<String, String>> res = md.select(tabla, "*", condicion);
+			return !(res.isEmpty());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 
 	public List<ProyectoDocente> listarProyectosDocente(IDocente docente){

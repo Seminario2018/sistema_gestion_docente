@@ -14,4 +14,7 @@
     <!--Usar conexión protegida por TLS-->
     <tls>true</tls>
     
+    <!-- Intervalo de envío de mails en segundos -->
+    <intervalo>10</intervalo>
+    
 </mail>

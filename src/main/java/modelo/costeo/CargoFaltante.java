@@ -2,6 +2,8 @@ package modelo.costeo;
 
 import java.time.LocalDate;
 
+import modelo.docente.ICargoDocente;
+
 public class CargoFaltante implements ICargoFaltante {
 	
 	private int legajo;
@@ -16,6 +18,26 @@ public class CargoFaltante implements ICargoFaltante {
 	public static final boolean FALTA_SISTEMA = false;
 	public static final boolean FALTA_COSTEO = true;
 	
+	public CargoFaltante() {}
+	
+	public CargoFaltante(ICargoDocente cargo) {
+		this.legajo = cargo.getDocente().getLegajo();
+		this.apellido = cargo.getDocente().getPersona().getApellido();
+		this.nombre = cargo.getDocente().getPersona().getNombre();
+		this.codigoCargo = cargo.getId();
+		this.ultimoCosto = cargo.getUltimoCosto();
+		this.fechaUltimoCosto = cargo.getFechaUltCost();
+	}
+
+	public void setCargo(ICargoDocente cargo) {
+		this.legajo = cargo.getDocente().getLegajo();
+		this.apellido = cargo.getDocente().getPersona().getApellido();
+		this.nombre = cargo.getDocente().getPersona().getNombre();
+		this.codigoCargo = cargo.getId();
+		this.ultimoCosto = cargo.getUltimoCosto();
+		this.fechaUltimoCosto = cargo.getFechaUltCost();
+	}
+
 	public int getLegajo() {
 		return legajo;
 	}

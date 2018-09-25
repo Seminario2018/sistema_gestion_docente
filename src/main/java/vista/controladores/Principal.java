@@ -111,7 +111,7 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void pantallaConfigEmail(ActionEvent event) {
-    	this.gestorPantalla.lanzarPantalla("ConfigMail", null);
+    	this.gestorPantalla.lanzarPantalla(ConfigEmail.TITULO, null);
     }
 
     @FXML

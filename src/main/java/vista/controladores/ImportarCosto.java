@@ -30,15 +30,38 @@ public class ImportarCosto extends ControladorVista {
 	@Override
     public void inicializar() {
 		inicializarTablas();
+		
 		this.cmbEstado.setItems(
 				FXCollections.observableArrayList(EstadoCargo.getLista()));
+		try { this.cmbEstado.getSelectionModel().select(1); 
+		} catch (Exception e) {}		
+		
 		this.window.setTitle("Importar último costo");
 		resetGeneral();
+		// Actualizar las listas cuando se muestra la pantalla
+        this.window.focusedProperty().addListener(
+        		(observable, oldValue, newValue) ->
+        		{
+        			if (newValue == true)
+        				actualizarTablas();
+        		}
+        );
 	}
-	
+    
+    
 	private void inicializarTablas() {
 		inicializarTabla("FaltantesCosteo");
 		inicializarTabla("FaltantesSistema");
+		tblFaltantesCosteo.getSelectionModel().selectedItemProperty().addListener(
+				(obs, oldSel, newSel) -> {
+					this.btnModificarEstado.setDisable(newSel == null);
+				}
+		);
+		tblFaltantesSistema.getSelectionModel().selectedItemProperty().addListener(
+				(obs, oldSel, newSel) -> {
+					this.btnAltaCargo.setDisable(newSel == null);
+				}
+		);
 	}
 	
 	@FXML protected Label lblUltima;
@@ -50,20 +73,24 @@ public class ImportarCosto extends ControladorVista {
 			fecha = ultima.toString();
 		this.lblUltima.setText("Última actualización: " + fecha);
 		this.dtpFecha.setValue(LocalDate.now());
-		actualizarTablas();
+//		actualizarTablas();
 	}
 	
 	private void actualizarTablas() {
+		this.control.actualizarListas();
 		actualizarTablaCosteo();
 		actualizarTablaSistema();
 	}
 	
 	private void actualizarTablaCosteo() {
 		this.filasFaltantesCosteo.clear();
-		List<ICargoDocente> faltantesCosteo = this.control.getFaltantesCosteo();
-		for (ICargoDocente cargo : faltantesCosteo) {
-			FilaCosteo fc = new FilaCosteo(cargo);
-			this.filasFaltantesCosteo.add(fc);
+		List<ICargoFaltante> faltantesCosteo = this.control.getFaltantesCosteo();
+		for (ICargoFaltante cargo : faltantesCosteo) {
+			ICargoDocente cd = this.control.getCargo(cargo);
+			if (cd != null) {
+				FilaCosteo fc = new FilaCosteo(cd);
+				this.filasFaltantesCosteo.add(fc);
+			}
 		}
 	}
 	
@@ -102,6 +129,7 @@ public class ImportarCosto extends ControladorVista {
 	@FXML public void descartar(ActionEvent event) {
 		this.control.descartar();
 		resetGeneral();
+		actualizarTablas();
 	}
 	
 	@FXML protected DatePicker dtpFecha;
@@ -151,9 +179,9 @@ public class ImportarCosto extends ControladorVista {
     	if (fc != null) {
     		EstadoCargo ec = this.cmbEstado.getValue();
     		if (ec != null) {
-    			this.control.modificarEstado(fc.getCargo(), ec);
-    			this.gestorPantalla.mensajeEstado("Se ha actualizado el Cargo "
-    					+ fc.getCodigo() + " al Estado " + ec.getDescripcion());
+    			if (this.control.modificarEstado(fc.getCargo(), ec))
+	    			this.gestorPantalla.mensajeEstado("Se ha actualizado el Cargo "
+	    					+ fc.getCodigo() + " al Estado " + ec.getDescripcion());
     			actualizarTablas();
     		}
     	}
@@ -220,6 +248,7 @@ public class ImportarCosto extends ControladorVista {
     				if (this.control.altaEstado(cargof)) {
     					dialogoInformacion(titulo, 
     							"El estado del cargo se cambió a Activo.", "");
+    					actualizarTablas();
     				} else {
     					alertaError(titulo, "El estado del cargo no pudo "
     							+ "ser modificado.", "");
@@ -238,6 +267,15 @@ public class ImportarCosto extends ControladorVista {
     			}
     			break; 
     		case DOCENTE:
+    			// No existe ni el Docente ni el Cargo
+    			if (dialogoConfirmacion(titulo,
+    					"El docente no se encuentra en el sistema.\r\n"
+    					+ "¿Desea dar de alta un nuevo docente?", "")) {
+    				Map<String, Object> args = new HashMap<String, Object>();
+    				args.put(Docentes.REC_CARGO_DOCENTE, this.control.prepararCargo(cargof));
+    				args.put(Docentes.KEY_TAB, Docentes.TAB_DATOS);
+    				this.gestorPantalla.lanzarPantalla(Docentes.TITULO + " ImportarCosto", args);
+    			}
     			break;
     		default:
     			this.dialogoInformacion("Dar de alta cargo",

@@ -2,6 +2,8 @@ package modelo.costeo;
 
 import java.time.LocalDate;
 
+import modelo.docente.ICargoDocente;
+
 public interface ICargoFaltante {
 
 	public String getApellido();
@@ -13,6 +15,7 @@ public interface ICargoFaltante {
 	public boolean isTipo();
 	
 	
+	public void setCargo(ICargoDocente cargo);
 	public void setApellido(String apellido);
 	public void setCodigoCargo(int codigoCargo);
 	public void setFechaUltimoCosto(LocalDate fechaUltimoCosto);

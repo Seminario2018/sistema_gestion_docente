@@ -21,23 +21,20 @@ public class NotificacionCargo2 {
 
 	private static NotificacionCargo2 noti;
 
-    private List<Map<String, String>> mails = new ArrayList<Map<String, String>>();
-    public static final String KEY_DESTINO = "destino";
-    public static final String KEY_ASUNTO = "asunto";
-    public static final String KEY_MENSAJE = "mensaje";
+    private List<Mensaje> mails = new ArrayList<Mensaje>();
+//    public static final String KEY_DESTINO = "destino";
+//    public static final String KEY_ASUNTO = "asunto";
+//    public static final String KEY_MENSAJE = "mensaje";
+//
+//    public static final String KEY_RESULTADO = "resultado";
+//    public static final String KEY_USUARIO = "usuario";
+//    public static final String KEY_EMISOR = "emisor";
+//    public static final String KEY_LEGAJO = "legajo";
+//    public static final String KEY_CARGO = "cargo";
+//    public static final String KEY_ESTANTERIOR = "estanterior";
+//    public static final String KEY_ESTNUEVO = "estnuevo";
 
-    public static final String KEY_RESULTADO = "resultado";
-    public static final String KEY_USUARIO = "usuario";
-    public static final String KEY_EMISOR = "emisor";
-    public static final String KEY_LEGAJO = "legajo";
-    public static final String KEY_CARGO = "cargo";
-    public static final String KEY_ESTANTERIOR = "estanterior";
-    public static final String KEY_ESTNUEVO = "estnuevo";
-
-
-
-    private NotificacionCargo2() {
-    }
+    private NotificacionCargo2() {  }
 
     public static NotificacionCargo2 getInstance() {
     	if (noti == null) {
@@ -50,73 +47,85 @@ public class NotificacionCargo2 {
 
     /** Thread que envía mails después de {@code ThreadMail.MILISEGUNDOS}. */
     class ThreadMail implements Runnable {
-        private static final int MILISEGUNDOS = 60000;
+//        private static final int MILISEGUNDOS = 60000;
+        private int MILISEGUNDOS;
     	private NotificacionCargo2 noti;
+
     	public ThreadMail(NotificacionCargo2 noti) {
     		this.noti = noti;
+
+    		// Importar intervalo desde xml:
+    		Document xml = Utilidades.leerXML(new File("Mail.xml"));
+    		String intervalo = xml.getElementsByTagName("intervalo").item(0).getTextContent();
+    		MILISEGUNDOS = Integer.parseInt(intervalo) * 1000;
     	}
+
 		@Override
 		public void run() {
 			System.out.println("Se prepararon mails para enviar."
 					+ " Se enviarán después de " + (MILISEGUNDOS / 1000) + " segundos.");
 			try {
 				Thread.sleep(MILISEGUNDOS);
-    			List<Map<String, String>> mails = this.noti.getMails();
+    			List<Mensaje> mails = this.noti.getMails();
     			if (mails != null && !mails.isEmpty()) {
     				IMail mailSend = new Mail();
-    				for (Map<String, String> mail : mails) {
+    				for (Mensaje mail : mails) {
     					System.out.println("Enviando un mail");
     					boolean exito = mailSend.enviarEmail(
-							mail.get(NotificacionCargo2.KEY_DESTINO),
-							mail.get(NotificacionCargo2.KEY_ASUNTO),
-							mail.get(NotificacionCargo2.KEY_MENSAJE)
+							mail.getDestino(),
+							mail.getAsunto(),
+							mail.getMensaje()
 						);
 
-    					mail.put(KEY_RESULTADO, (exito)? "Enviado" : "Falló");
-    					mail.put(KEY_EMISOR,    mailSend.getUsuario());
+    					mail.setResultado((exito)? "Enviado" : "Falló");
+    					mail.setEmisor(mailSend.getUsuario());
     					loggearMail(mail);
     				}
     				System.out.println("Se han enviado todos los mails");
-    				this.noti.setMails(new ArrayList<Map<String, String>>());
+    				this.noti.setMails(new ArrayList<Mensaje>());
     			}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 
-        private void loggearMail(Map<String, String> mail) {
+        private void loggearMail(Mensaje mail) {
             StringBuilder sb = new StringBuilder();
+
             sb.append("[");
-            sb.append(new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             sb.append("] [");
-            sb.append(mail.get(KEY_RESULTADO));
-            sb.append("] ");
-            sb.append(mail.get(KEY_USUARIO));
-            sb.append(" - ");
-            sb.append(mail.get(KEY_EMISOR));
-            sb.append(" - ");
-            sb.append(mail.get(KEY_DESTINO));
-            sb.append(" - Legajo ");
-            sb.append(mail.get(KEY_LEGAJO));
-            sb.append(" - Codigo Cargo ");
-            sb.append(mail.get(KEY_CARGO));
-            sb.append(" - Estado: ");
-            sb.append(mail.get(KEY_ESTANTERIOR));
-            sb.append(" -> ");
-            sb.append(mail.get(KEY_ESTNUEVO));
+            sb.append(mail.getResultado());
+            sb.append("] - Usuario: ");
+            sb.append(mail.getUsuario());
+            sb.append(" - Emisor: ");
+            sb.append(mail.getEmisor());
+            sb.append(" - Destino: ");
+            sb.append(mail.getDestino());
+            int i = 1;
+            for (Mensaje.Item item : mail.getItems()) {
+                sb.append(" - [Datos del cargo " + i + "] Legajo: ");
+                sb.append(item.getLegajo());
+                sb.append(" - Código Cargo: ");
+                sb.append(item.getCargo());
+                sb.append(" - Estado: ");
+                sb.append(item.getEstadoAnterior());
+                sb.append(" -> ");
+                sb.append(item.getEstadoNuevo());
+                i++;
+            }
 
-            System.out.println("Log: " + sb.toString());
-
+            System.out.println("Log:" + sb.toString());
             Utilidades.guardarTexto(
                 new File("logMail.txt"), sb.toString());
         }
     }
 
-    public void setMails(List<Map<String, String>> mails) {
+    public void setMails(List<Mensaje> mails) {
     	this.mails = mails;
     }
 
-    public List<Map<String, String>> getMails() {
+    public List<Mensaje> getMails() {
     	return this.mails;
     }
 
@@ -152,20 +161,41 @@ public class NotificacionCargo2 {
                 }
             }
     		destinos = Utilidades.joinString(mails, ",");
+
     	} catch (Exception e) {
-    		System.err.println("El Jefe de la División no tiene Mail Laboral.");
-    		e.printStackTrace();
+    	    e.printStackTrace();
     	}
 
     	if (destinos == null || destinos.equals("")) {
-            throw new IllegalArgumentException("El Jefe de la División no tiene Mail Laboral.");
+    		String error = "No se pudo enviar el mail porque el Jefe de la División "
+            		+ cargo.getArea().getDivision().getDescripcion()
+            		+ " no tiene Mail Laboral.";
+
+    		StringBuilder sb = new StringBuilder();
+            sb.append("[");
+            sb.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            sb.append("] [Falló] ");
+            sb.append(error);
+            sb.append(" - Usuario: ");
+            sb.append(usuario.getUser());
+            sb.append(" - [Datos del cargo] Legajo: ");
+            sb.append(cargo.getDocente().getLegajo());
+            sb.append(" - Código Cargo: ");
+            sb.append(cargo.getId());
+
+            System.out.println("Log: " + sb.toString());
+
+            Utilidades.guardarTexto(
+                new File("logMail.txt"), sb.toString());
+
+            throw new IllegalArgumentException(error);
         }
 
     	// Averiguar si hay que actualizar un mail o crear uno nuevo
     	boolean mailNuevo = true;
-    	Map<String, String> mailActual = null;
-    	for (Map<String, String> mail : this.mails) {
-    		if (mail.get(NotificacionCargo2.KEY_DESTINO).equals(destinos)) {
+    	Mensaje mailActual = null;
+    	for (Mensaje mail : this.mails) {
+    		if (mail.getDestino().equals(destinos)) {
     			mailActual = mail;
     			mailNuevo = false;
     		}
@@ -181,27 +211,29 @@ public class NotificacionCargo2 {
     	String mensaje;
 
     	// Si se crea un nuevo mail, agregar asunto y saludo
-    	if (mailActual == null || mailActual.isEmpty()) {
-			mailActual = new HashMap<String, String>();
-			asunto = armarAsunto(plantillaXML, parametros);
+    	if (mailActual == null) {
+			mailActual = new Mensaje();
+			asunto = armarTextoPlantilla("asunto", plantillaXML, parametros);
+			mensaje = armarTextoPlantilla("encabezado", plantillaXML, parametros);
 
     	} else {
-    		asunto = mailActual.get(NotificacionCargo2.KEY_ASUNTO);
-    		mensaje = mailActual.get(NotificacionCargo2.KEY_MENSAJE);
+    		asunto = mailActual.getAsunto();
+    		mensaje = mailActual.getMensaje();
     	}
 
-    	mensaje = armarMensaje(plantillaXML, parametros);
+    	mensaje = mensaje + armarTextoPlantilla("mensaje", plantillaXML, parametros);
 
     	// Guardar el mail para enviar
-    	mailActual.put(NotificacionCargo2.KEY_ASUNTO,      asunto);
-    	mailActual.put(NotificacionCargo2.KEY_MENSAJE,     mensaje);
-    	mailActual.put(NotificacionCargo2.KEY_DESTINO,     destinos);
+    	mailActual.setAsunto(asunto);
+    	mailActual.setDestino(destinos);
+    	mailActual.setMensaje(mensaje);
+    	mailActual.setUsuario(usuario.getUser());
 
-    	mailActual.put(NotificacionCargo2.KEY_USUARIO,     usuario.getUser());
-    	mailActual.put(NotificacionCargo2.KEY_LEGAJO,      String.valueOf(docente.getLegajo()));
-    	mailActual.put(NotificacionCargo2.KEY_CARGO,       String.valueOf(cargo.getId()));
-    	mailActual.put(NotificacionCargo2.KEY_ESTANTERIOR, estAnterior.getDescripcion());
-    	mailActual.put(NotificacionCargo2.KEY_ESTNUEVO,    estNuevo.getDescripcion());
+    	mailActual.addItem(
+    	    String.valueOf(docente.getLegajo()),
+    	    String.valueOf(cargo.getId()),
+    	    estAnterior.getDescripcion(),
+    	    estNuevo.getDescripcion());
 
     	if (mailNuevo) {
     		this.mails.add(mailActual);
@@ -290,19 +322,20 @@ public class NotificacionCargo2 {
         return parametros;
     }
 
-    public static String armarAsunto(Document plantillaXML, Map<String, String> parametros) {
+    /**
+     * Arma un texto en base a la plantilla seleccionada y a los parámetros del
+     * mensaje a enviar.
+     * @param tag Plantilla a usar
+     * @param plantillaXML Plantillas a usar
+     * @param parametros Parámetros del mensaje
+     * @return
+     */
+    public static String armarTextoPlantilla(String tag, Document plantillaXML, Map<String, String> parametros) {
         return Plantilla.armar(
             plantillaXML
-                .getElementsByTagName("asunto")
+                .getElementsByTagName(tag)
                 .item(0)
                 .getTextContent(),
             parametros);
-    }
-
-    public static String armarMensaje(Document plantillaXML, Map<String, String> parametros) {
-        String plantilla =
-            plantillaXML.getElementsByTagName("encabezado").item(0).getTextContent()
-            + plantillaXML.getElementsByTagName("mensaje").item(0).getTextContent();
-        return Plantilla.armar(plantilla, parametros);
     }
 }

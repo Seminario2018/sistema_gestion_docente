@@ -12,7 +12,7 @@ public class FiltroColumna {
 	private Filtro tipo;
 	private String valor;
 	
-	private static final String SEPARADOR = " ";
+	public static final String SEPARADOR = " ";
 	
 	public FiltroColumna() {
 		super();
@@ -140,6 +140,7 @@ public class FiltroColumna {
 	
 	/**
 	 * Método alternativo para sanitizar la entrada dependiendo el tipo.
+	 * Sirve para persistir en la Base de Datos.
 	 * @param tipo
 	 * @return
 	 */
@@ -188,4 +189,10 @@ public class FiltroColumna {
 	public static String tipoFiltro(String filtro) {
 		return filtro.substring(0, filtro.indexOf(SEPARADOR));
 	}
+	
+	@Override
+	public FiltroColumna clone() {
+		return new FiltroColumna(this.tipo, this.valor);
+	}
+
 }
