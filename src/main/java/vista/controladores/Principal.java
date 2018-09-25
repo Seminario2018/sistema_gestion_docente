@@ -118,6 +118,7 @@ public class Principal extends ControladorVista implements Initializable {
     @FXML
     void salir(ActionEvent event) {
         ((Stage) mainPane.getScene().getWindow()).close();
+        this.gestorPantalla.lanzarPantallaLogin();
     }
 
     @FXML
