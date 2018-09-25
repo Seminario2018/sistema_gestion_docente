@@ -91,8 +91,10 @@ public class Excel {
 		}
 
 		try {
-		    libro.write(new FileOutputStream(path));
+			FileOutputStream fos= new FileOutputStream(path);
+		    libro.write(fos);
 		    libro.close();
+		    fos.close();
 		} catch (IOException e) {
 		    e.printStackTrace();
 		    return false;

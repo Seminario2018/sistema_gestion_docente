@@ -16,11 +16,19 @@ public class EstadoOperacion {
 
 	private CodigoEstado estado;
 	private String mensaje;
+	private Object respuesta;
 
 	public EstadoOperacion(CodigoEstado estado, String mensaje) {
 		super();
 		this.estado = estado;
 		this.mensaje = mensaje;
+	}
+	
+	public EstadoOperacion(CodigoEstado estado, String mensaje, Object respuesta) {
+		super();
+		this.estado = estado;
+		this.mensaje = mensaje;
+		this.respuesta = respuesta;
 	}
 
 	public CodigoEstado getEstado() {
@@ -34,6 +42,12 @@ public class EstadoOperacion {
 	}
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+	public Object getRespuesta() {
+		return respuesta;
+	}
+	public void setRespuesta(Object respuesta) {
+		this.respuesta = respuesta;
 	}
 
 	@Override

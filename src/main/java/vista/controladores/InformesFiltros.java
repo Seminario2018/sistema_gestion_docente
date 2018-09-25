@@ -91,15 +91,19 @@ public class InformesFiltros extends ControladorVista {
 	@FXML protected TextField txtFiltroCondicion;
 	@FXML protected Button btnFiltroAgregar;
 	@FXML public void agregarFiltro(ActionEvent event) {
-//		Filtro filtro = this.cmbFiltroFiltro.getSelectionModel().getSelectedItem();
-//		if (filtro != null) {
-//			String valor = (this.txtFiltroCondicion.isVisible()) ? this.txtFiltroCondicion.getText()
-//					: this.dtpFiltroCondicion.getValue().toString();
-//			if (valor != null && !"".equals(valor)) {
-//				FiltroColumna fc = new FiltroColumna(filtro, valor);
-//				this.columnaSeleccion.setFiltro(fc);
-//			}
-//		}
+		Filtro filtro = this.cmbFiltroFiltro.getSelectionModel().getSelectedItem();
+		if (filtro != null) {
+			String valor = (this.txtFiltroCondicion.isVisible()) 
+					? this.txtFiltroCondicion.getText()
+					: this.dtpFiltroCondicion.getValue().toString();
+			if (valor != null && !"".equals(valor)) {
+				this.txtFiltro.appendText("("
+						+ filtro.getDescripcion()
+						+ " "
+						+ valor
+						+ ")");
+			}
+		}
 	}
 	
 	@FXML protected ComboBox<Calculo> cmbFiltroCalculo;
@@ -141,13 +145,19 @@ public class InformesFiltros extends ControladorVista {
 	 */
 	private boolean parsearFiltro(String entrada, ColumnaInforme columna) {
 		if (columna == null || entrada == null) return false;
-		if (entrada.length() == 0) return true;
+		
+		List<FiltroColumna> filtros = new ArrayList<FiltroColumna>();
+		List<SepFiltro> sepFiltros = new ArrayList<SepFiltro>();
+
+		if (entrada.length() == 0) {
+			// Borrar los filtros
+			columna.setFiltros(filtros);
+			columna.setSepFiltros(sepFiltros);
+			return true;
+		}
 		
 		String texto = new String(entrada); 
 		boolean finCadena = false;
-		List<FiltroColumna> filtros = new ArrayList<FiltroColumna>();
-		List<SepFiltro> sepFiltros = new ArrayList<SepFiltro>();
-		
 		while (!finCadena) {
 			// Aislar la primer expresión entre paréntesis
 			String exp = null;
@@ -197,7 +207,6 @@ public class InformesFiltros extends ControladorVista {
 		
 		columna.setFiltros(filtros);
 		columna.setSepFiltros(sepFiltros);
-		
 		return true;
 	}
 	

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informes>
+	<directorio>C:\</directorio>
+	<formato>
+		<fecha>
+			<formato_fecha>aaaa_MM_dd</formato_fecha>
+			<separador_fecha>-</separador_fecha>
+		</fecha>
+		<hora>
+			<formato_hora>H_mm_ss</formato_hora>
+			<separador_hora>-</separador_hora>
+		</hora>
+	</formato>
+</informes>

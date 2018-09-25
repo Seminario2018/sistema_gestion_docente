@@ -343,14 +343,14 @@ public class GestorInforme {
 			
 			ManejoDatos md = new ManejoDatos();
 			String tabla = "Columnas";
-			String condicion = "`TipoInforme` = " + informe.getId() + " AND `Atributo` = " + col.getAtributo();
+			String condicion = "`TipoInforme` = " + informe.getId() + " AND `Atributo` = '" + col.getAtributo() + "'";
 			
 			List<String> campos = new ArrayList<String>();
 			if (col.isVisible() != null) campos.add("Visible = " + (col.isVisible() ? 1 : 0));
 			if (col.getNombre() != null) campos.add("Nombre = '" + col.getNombre() + "'");
 			if (col.getTipo() != null && !col.getTipo().equals(""))
 				campos.add("Tipo = '" + col.getTipo() + "'");
-			if (col.getFiltros() != null) campos.add("Filtros = '" + col.stringFiltros(false) + "'"); // TODO cambiar a false
+			if (col.getFiltros() != null) campos.add("Filtros = '" + col.stringFiltros(false) + "'");
 			if (col.getCalculo() != null && !col.getCalculo().equals(""))
 				campos.add("Calculo = '" + col.getCalculo().getCalculo() + "'");
 			if (col.getOrdenar() > -1) campos.add("Ordenar = " + col.getOrdenar());
@@ -412,7 +412,7 @@ public class GestorInforme {
 				if (reg.containsKey("Tipo")) c.setTipo(TipoColumna.valueOf(reg.get("Tipo")));
 
 				if (!reg.get("Filtros").equals("")) {
-					c.setFiltros(reg.get("Filtros"), false); // TODO false
+					c.setFiltros(reg.get("Filtros"), false);
 				}
 				
 				c.setOrdenar(Integer.parseInt(reg.get("Ordenar")));
@@ -443,7 +443,7 @@ public class GestorInforme {
 			}
 			c.setAtributo(reg.get("Atributo"));
 			if (!reg.get("Filtros").equals("")) {
-				c.setFiltros(reg.get("Filtros"), false); // TODO true
+				c.setFiltros(reg.get("Filtros"), false);
 			}
 			if (!reg.get("Calculo").equals("")) {
 				switch (reg.get("Calculo")) {
