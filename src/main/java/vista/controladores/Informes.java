@@ -23,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.util.Callback;
 import modelo.auxiliares.Calculo;
+import modelo.auxiliares.EstadoOperacion;
 import modelo.informe.ColumnaInforme;
 import modelo.informe.FiltroColumna;
 import modelo.informe.ITipoInforme;
@@ -176,7 +177,25 @@ public class Informes extends ControladorVista implements Initializable {
 	
 	@FXML protected Button btnInformesExcel;
 	@FXML public void exportar(ActionEvent event) {
-		// TODO Exportar usando el XML
+		EstadoOperacion eo = this.control.getFile(
+				this.txtInformesNombre.getText(),
+				this.usuario.getUser());
+		
+		switch (eo.getEstado()) {
+		case OP_OK:
+			if (eo.getRespuesta() != null && eo.getRespuesta() instanceof File) 
+				this.control.exportar((File) eo.getRespuesta());
+			break;
+		default:
+			this.alertaError("Exportar informe a Excel",
+					"Ha ocurrido un error al intentar utilizar la configuración por defecto.",
+					eo.getMensaje());
+			if (this.dialogoConfirmacion("Exportar informe a Excel",
+					"¿Desea exportar a Excel con otro nombre?", "")) {
+				this.exportarComo(null);
+			}
+			break;
+		}
 	}
 	
 	@FXML protected Button btnInformesExcelComo;

@@ -51,7 +51,7 @@ public class TipoInforme implements ITipoInforme {
 			}
 
 			// Armar el WHERE
-			if (columna.getFiltros() != null) {
+			if (columna.getFiltros() != null && !columna.getFiltros().isEmpty()) {
 
 				if (!b_where) {
 					// DOCENTE.LEGAJO > 140000

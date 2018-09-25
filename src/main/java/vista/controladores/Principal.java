@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 
@@ -98,7 +99,7 @@ public class Principal extends ControladorVista implements Initializable {
     @FXML
     private MenuItem mnuProgramas;
 
-    
+
     @FXML
     void pantallaConfigCon(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("ConfigCon", null);
@@ -116,9 +117,10 @@ public class Principal extends ControladorVista implements Initializable {
 
     @FXML
     void salir(ActionEvent event) {
-
+        ((Stage) mainPane.getScene().getWindow()).close();
+        this.gestorPantalla.lanzarPantallaLogin();
     }
-    
+
     @FXML
     void pantallaRoles(ActionEvent event) {
     	this.gestorPantalla.lanzarPantalla("Roles", null);
