@@ -112,9 +112,32 @@ public class ControlBusqueda {
 		if (fila instanceof BusquedaDocente) {
 			BusquedaDocente bd = (BusquedaDocente) fila;
 			this.gestorDocente = new GestorDocente();
-			IDocente doc = this.gestorDocente.getIDocente();
-			doc.setLegajo(Integer.parseInt(bd.getLegajo()));
-			return this.gestorDocente.listarDocentes(doc).get(0);
+			IDocente docente = this.gestorDocente.getIDocente();
+
+			try {
+    			docente.setLegajo(Integer.parseInt(bd.getLegajo()));
+    			return this.gestorDocente.listarDocentes(docente).get(0);
+
+			} catch (NumberFormatException e) {
+			    /* Se selecciona una persona sin docente, con legajo =
+			     * "-".
+			     */
+			    // e.printStackTrace();
+			    GestorPersona gestorPersona = new GestorPersona();
+			    IPersona personaBusqueda = gestorPersona.getIPersona();
+                personaBusqueda.setNroDocumento(bd.getDocumento());
+
+                for (IPersona persona : gestorPersona.listarPersonas(personaBusqueda)) {
+                    if (persona.getNombreCompleto().equals(bd.getNombre())) {
+
+                        docente.setPersona(persona);
+                        return docente;
+
+                    }
+                }
+
+                throw new RuntimeException("No hay una persona coincidente.");
+			}
 		}
 
 		if (fila instanceof BusquedaPersona) {
@@ -162,8 +185,7 @@ public class ControlBusqueda {
 		    GestorUsuario gestorUsuario = new GestorUsuario();
 		    IUsuario usuario = gestorUsuario.getIUsuario();
 
-		    String nombreUsuario = bu.getUsuario();
-		    if (nombreUsuario.equals("")) {
+		    if (bu.getUsuario().equals("")) {
 		        /* Si la persona no tiene un usuario asignado
 		         * entonces devuelvo un usuario nuevo/vacío con la
 		         * persona asignada.

@@ -1177,7 +1177,14 @@ public class Docentes extends ControladorVista implements Initializable {
     private void setDocenteSeleccion(Object docenteSeleccion, String tipo) {
         if (docenteSeleccion instanceof IDocente) {
             this.docenteSeleccion = (IDocente) docenteSeleccion;
-            modoModificar();
+            /* Si se recibe una persona sin docente entonces paso
+             * al modo nuevo docente:
+             */
+            if (this.docenteSeleccion.getLegajo() == -1) {
+                modoNuevo();
+            } else {
+                modoModificar();
+            }
             generalMostrarDocente();
         }
     }
