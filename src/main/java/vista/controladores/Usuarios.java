@@ -800,7 +800,15 @@ public class Usuarios extends ControladorVista implements Initializable {
     private void setUsuarioSeleccion(Object usuario, String tipo) {
         if (usuario instanceof IUsuario) {
             usuarioSeleccion = (IUsuario) usuario;
-            modoModificar();
+
+            /* Si se recibe una persona sin usuario entonces paso
+             * al modo nuevo usuario:
+             */
+            if (usuarioSeleccion.getUser().equals("")) {
+                modoNuevo();
+            } else {
+                modoModificar();
+            }
             generalMostrarUsuario();
         }
     }

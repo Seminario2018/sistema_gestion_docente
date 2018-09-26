@@ -161,8 +161,32 @@ public class ControlBusqueda {
 		    BusquedaUsuario bu = (BusquedaUsuario) fila;
 		    GestorUsuario gestorUsuario = new GestorUsuario();
 		    IUsuario usuario = gestorUsuario.getIUsuario();
-		    usuario.setUser(bu.getUsuario());
-		    return gestorUsuario.listarUsuario(usuario).get(0);
+
+		    String nombreUsuario = bu.getUsuario();
+		    if (nombreUsuario.equals("")) {
+		        /* Si la persona no tiene un usuario asignado
+		         * entonces devuelvo un usuario nuevo/vacío con la
+		         * persona asignada.
+		         */
+		        GestorPersona gestorPersona = new GestorPersona();
+		        IPersona personaBusqueda = gestorPersona.getIPersona();
+		        personaBusqueda.setNroDocumento(bu.getDocumento());
+
+		        for (IPersona persona : gestorPersona.listarPersonas(personaBusqueda)) {
+		            if (persona.getNombreCompleto().equals(bu.getNombre())) {
+
+		                usuario.setPersona(persona);
+		                return usuario;
+
+		            }
+		        }
+
+		        throw new RuntimeException("No hay una persona coincidente.");
+
+		    } else {
+		        usuario.setUser(bu.getUsuario());
+		        return gestorUsuario.listarUsuario(usuario).get(0);
+		    }
 		}
 
 		if (fila instanceof BusquedaRole) {
