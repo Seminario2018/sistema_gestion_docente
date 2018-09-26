@@ -52,7 +52,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	}
 
 	private String tipo_respuesta;
-
+	
 // -------------------------------- General --------------------------------- //
 
 	@FXML private TableView tblBusqueda;
@@ -79,8 +79,8 @@ public class Busqueda extends ControladorVista implements Initializable {
 					args.put(Busqueda.KEY_SELECCION, varName);
 					args.put(Busqueda.KEY_VALOR, valor);
 					args.put(Busqueda.KEY_TIPO_RESPUESTA, this.tipo_respuesta);
-					this.controladorRespuesta.recibirParametros(args);
 					this.gestorPantalla.cerrarPantalla(Busqueda.TITULO + " " + this.tipo);
+					this.controladorRespuesta.recibirParametros(args);
 				}
 
 			} catch (Exception e) {
@@ -157,7 +157,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public void inicializar(Class c) {
 		inicializarTabla(c);
 		actualizarLista();
-		this.txtBusquedaCriterio.requestFocus();
 		
 		// Actualizar la lista cuando se muestra la pantalla
         this.window.focusedProperty().addListener(
@@ -168,6 +167,12 @@ public class Busqueda extends ControladorVista implements Initializable {
         		}
         );
         
+        Platform.runLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		txtBusquedaCriterio.requestFocus();
+        	}
+        });
 	}
 
 	public void inicializarTabla(Class fila) {

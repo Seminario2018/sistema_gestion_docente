@@ -13,7 +13,7 @@ public class LogQuery {
      * @param query La consulta realizada
      */
     public static void log(String query) {
-        System.out.println(query);
+//        System.out.println(query);
     }
 
 }

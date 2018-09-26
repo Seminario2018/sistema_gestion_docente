@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import controlador.ControlBusqueda;
 import controlador.ControlDocente;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,7 +91,12 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
         		}
         );
         
-        txtCargoDocenteCriterio.requestFocus();
+        Platform.runLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		txtCargoDocenteCriterio.requestFocus();
+        	}
+        });
 	}
 
 // -------------------------------- General --------------------------------- //

@@ -384,7 +384,7 @@ public class Programas extends ControladorVista implements Initializable {
 
         this.window.setTitle(TITULO + " - Modificar Programa");
         if (this.programaSeleccion != null) {
-            this.gestorPantalla.mensajeEstado("Modificar al Programa" + this.programaSeleccion.getNombre());
+            this.gestorPantalla.mensajeEstado("Modificar al Programa " + this.programaSeleccion.getNombre());
         }
     }
 
