@@ -80,7 +80,7 @@
                   <Insets left="5.0" right="5.0" />
                </GridPane.margin>
             </GridPane>
-            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
+            <TabPane fx:id="tabpUsuarios" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
                <tabs>
                   <Tab onSelectionChanged="#inicializarDatos" text="Datos">
                      <content>

@@ -16,6 +16,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -49,6 +51,7 @@ public class Usuarios extends ControladorVista implements Initializable {
     private static final String TIPO_USUARIO = "Usuario";
 
     // Claves de pestañas:
+    @FXML private TabPane tabpUsuarios;
     public static final String KEY_TAB = "pestaña";
     public static final int TAB_DATOS = 0;
     public static final int TAB_CONTACTOS = 1;
@@ -184,7 +187,15 @@ public class Usuarios extends ControladorVista implements Initializable {
 
 	@FXML private Button btnDescartar;
 	@FXML public void descartarUsuario(ActionEvent event) {
-	    generalMostrarUsuario();
+//	    generalMostrarUsuario();
+	    if (usuarioSeleccion == null ||
+            usuarioSeleccion.getUser().equals(""))
+        {
+            usuarioSeleccion = null;
+            modoVer();
+        } else {
+            generalMostrarUsuario();
+        }
 	}
 
 	@FXML private Button btnEliminar;
@@ -1032,6 +1043,8 @@ public class Usuarios extends ControladorVista implements Initializable {
             // Pestaña Roles:
             btnRolesAgregar.setVisible(true);
             btnRolesQuitar.setVisible(true);
+
+            desactivarPestañasPersona(false);
         }
 
         if (this.permiso.getEliminar()) {
@@ -1065,6 +1078,8 @@ public class Usuarios extends ControladorVista implements Initializable {
             txtUsuarioConfirmar.setEditable(true);
             txtUsuarioDescripcion.setEditable(true);
         }
+
+        desactivarPestañasPersona(true);
 
         this.window.setTitle(TITULO + " - Nuevo Usuario");
         this.gestorPantalla.mensajeEstado("Nuevo Usuario ");
@@ -1107,8 +1122,27 @@ public class Usuarios extends ControladorVista implements Initializable {
         btnRolesAgregar.setVisible(false);
         btnRolesQuitar.setVisible(false);
 
+        desactivarPestañasPersona(false);
+
         this.window.setTitle(TITULO);
         this.gestorPantalla.mensajeEstado("");
+    }
+
+    /**
+     * Desactiva las pestañas de persona. Se usa, por ejemplo,
+     * cuando el docente seleccionado tiene una persona asignada
+     * pero no persistida todavía.
+     * @param desactivar Si desactivar la pestaña
+     */
+    private void desactivarPestañasPersona(boolean desactivar) {
+
+        ObservableList<Tab> pestañas = tabpUsuarios.getTabs();
+        // Índices de las pestañas de persona:
+        final int indicesPestañas[] = {1, 2, 3};
+
+        for (int i : indicesPestañas) {
+            pestañas.get(i).setDisable(desactivar);
+        }
     }
 }
 

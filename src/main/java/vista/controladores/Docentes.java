@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -220,7 +221,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
     @FXML private Button btnDescartar;
     @FXML private void descartarDocente() {
-        generalMostrarDocente();
+//        generalMostrarDocente();
+        if (docenteSeleccion == null ||
+            docenteSeleccion.getLegajo() == -1)
+        {
+            docenteSeleccion = null;
+            modoVer();
+        } else {
+            generalMostrarDocente();
+        }
     }
 
     @FXML private Button btnCosto;
@@ -1492,6 +1501,11 @@ public class Docentes extends ControladorVista implements Initializable {
                 incentivosModoModificar();
             }
         });
+
+//        ObservableList<Tab> pestañas = tabpDocentes.getTabs();
+//        Tab pestaña = pestañas.get(1);
+//        pestaña.setDisable(true);
+
     }
 
     @Override
@@ -1538,6 +1552,9 @@ public class Docentes extends ControladorVista implements Initializable {
 
             // Pestaña Observaciones:
             txtaObservaciones.setEditable(true);
+
+            desactivarPestañasPersona(false);
+
         }
 
         if (this.permiso.getEliminar()) {
@@ -1569,6 +1586,12 @@ public class Docentes extends ControladorVista implements Initializable {
             txtDocenteLegajo.setEditable(true);
             cmbDocenteEstado.setDisable(false);
             cmbDocenteCategoria.setDisable(false);
+
+            /* Desactivar pestañas de personas: no se pueden
+             * asignar objetos a un docente sin una persona
+             * persistida:
+             */
+            desactivarPestañasPersona(true);
 
             this.window.setTitle(TITULO + " - Nuevo Docente");
             this.gestorPantalla.mensajeEstado("Nuevo Docente ");
@@ -1620,7 +1643,26 @@ public class Docentes extends ControladorVista implements Initializable {
         // Pestaña Observaciones:
         txtaObservaciones.setEditable(false);
 
+        desactivarPestañasPersona(false);
+
         this.window.setTitle(TITULO);
         this.gestorPantalla.mensajeEstado("");
+    }
+
+    /**
+     * Desactiva las pestañas de persona. Se usa, por ejemplo,
+     * cuando el docente seleccionado tiene una persona asignada
+     * pero no persistida todavía.
+     * @param desactivar Si desactivar la pestaña
+     */
+    private void desactivarPestañasPersona(boolean desactivar) {
+
+        ObservableList<Tab> pestañas = tabpDocentes.getTabs();
+        // Índices de las pestañas de persona:
+        final int indicesPestañas[] = {1, 2, 3};
+
+        for (int i : indicesPestañas) {
+            pestañas.get(i).setDisable(desactivar);
+        }
     }
 }
