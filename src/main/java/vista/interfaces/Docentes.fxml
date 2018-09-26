@@ -514,7 +514,7 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                        <columns>
-                                          <TableColumn fx:id="colCargosId" prefWidth="75.0" text="ID cargo" />
+                                          <TableColumn fx:id="colCargosId" prefWidth="75.0" text="Código" />
                                           <TableColumn fx:id="colCargosArea" prefWidth="75.0" text="Área" />
                                           <TableColumn fx:id="colCargosCargo" prefWidth="75.0" text="Cargo" />
                                           <TableColumn fx:id="colCargosEstado" prefWidth="75.0" text="Estado" />
@@ -531,7 +531,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                           <Button fx:id="btnCargosArea" mnemonicParsing="false" onAction="#seleccionarArea" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
@@ -542,7 +542,7 @@
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           <Button fx:id="btnCargosCargo" mnemonicParsing="false" onAction="#seleccionarCargo" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />

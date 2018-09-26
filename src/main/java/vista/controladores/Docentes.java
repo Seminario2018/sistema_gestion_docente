@@ -748,6 +748,7 @@ public class Docentes extends ControladorVista implements Initializable {
 
     /** Vacía los controles de datos del cargo */
     private void cargosVaciarControles() {
+    	txtCargosCodigo.clear();
         txtCargosArea.clear();
         txtCargosCargo.clear();
         cmbCargosEstado.getSelectionModel().clearSelection();
