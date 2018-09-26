@@ -2,12 +2,10 @@ package vista.controladores;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import controlador.ControlBusqueda;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -35,6 +33,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 	public static final String KEY_CONTROLADOR = "controlador";
 	// Devuelve el tipo de dato seleccionado, por ejemplo "Area"
 	public static final String KEY_SELECCION = "seleccion";
+	// Tipo de respuesta esperado en la pantalla respuesta
 	public static final String KEY_TIPO_RESPUESTA = "tipo_respuesta";
 	// Devuelve el dato seleccionado
 	public static final String KEY_VALOR = "valor";
@@ -53,19 +52,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 	}
 
 	private String tipo_respuesta;
-
-	/* (non-Javadoc)
-	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
-	 */
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		Platform.runLater(new Runnable() {
-	        @Override
-	        public void run() {
-	            txtBusquedaCriterio.requestFocus();
-	        }
-	    });
-	}
 
 // -------------------------------- General --------------------------------- //
 
@@ -100,8 +86,6 @@ public class Busqueda extends ControladorVista implements Initializable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		} else {
-//			TODO this.gestorPantalla.mensajeEstado("Debe seleccionar una fila de la grilla");
 		}
 	}
 
@@ -125,6 +109,7 @@ public class Busqueda extends ControladorVista implements Initializable {
 			}
 		}
 	}
+	
 
 //	private Thread editThread;
 	/**
@@ -173,6 +158,16 @@ public class Busqueda extends ControladorVista implements Initializable {
 		inicializarTabla(c);
 		actualizarLista();
 		this.txtBusquedaCriterio.requestFocus();
+		
+		// Actualizar la lista cuando se muestra la pantalla
+        this.window.focusedProperty().addListener(
+        		(observable, oldValue, newValue) ->
+        		{
+        			if (newValue == true)
+        				actualizarLista();
+        		}
+        );
+        
 	}
 
 	public void inicializarTabla(Class fila) {

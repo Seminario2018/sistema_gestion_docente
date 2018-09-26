@@ -39,7 +39,6 @@ import vista.controladores.Docentes;
  */
 public class ControlBusqueda {
 
-	@SuppressWarnings("unused")
     private ControladorVista vista;
 
 	private GestorBusqueda gestorBusqueda = new GestorBusqueda();
@@ -114,7 +113,7 @@ public class ControlBusqueda {
 			BusquedaDocente bd = (BusquedaDocente) fila;
 			this.gestorDocente = new GestorDocente();
 			IDocente doc = this.gestorDocente.getIDocente();
-			doc.setLegajo(bd.getLegajo());
+			doc.setLegajo(Integer.parseInt(bd.getLegajo()));
 			return this.gestorDocente.listarDocentes(doc).get(0);
 		}
 
@@ -178,8 +177,17 @@ public class ControlBusqueda {
 		    BusquedaCargoDocente bCD = (BusquedaCargoDocente) fila;
 		    GestorDocente gestorDocente = new GestorDocente();
 		    ICargoDocente cargoDocente = gestorDocente.getICargoDocente();
-		    cargoDocente.setId(bCD.getCodigo());
-		    return gestorDocente.listarCargo(null, cargoDocente).get(0);
+		    if (bCD.getCodigo() != null && !"-".equals(bCD)) {
+		    	// Se seleccionó un CargoDocente para enviar a otra pantalla
+		    	cargoDocente.setId(Integer.parseInt(bCD.getCodigo()));
+		    	return gestorDocente.listarCargo(null, cargoDocente).get(0);
+		    } else {
+		    	// Se seleccionó un Docente para dar de Alta un CargoDocente
+		    	IDocente docente = gestorDocente.getIDocente();
+		    	docente.setLegajo(bCD.getLegajo());
+		    	cargoDocente.setDocente(gestorDocente.listarDocentes(docente).get(0));
+		    	return cargoDocente;
+		    }
 		}
 
 		return null;

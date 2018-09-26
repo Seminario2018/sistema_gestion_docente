@@ -54,9 +54,9 @@ public class GestorPantalla {
 	Map<String, ControladorVista> controladoresActivos = new HashMap<String, ControladorVista>();
 	Map<String, Window> pantallasAbiertas = new HashMap<String, Window>();
 	Map<String, List<Window>> pantallasHijas = new HashMap<String, List<Window>>();
-
-	public static final String KEY_PADRE = "padre";
 	
+	public static final String KEY_PADRE = "padre";
+
 	public void lanzarPantallaLogin() {
 		this.loginStage = new Stage();
 		try {

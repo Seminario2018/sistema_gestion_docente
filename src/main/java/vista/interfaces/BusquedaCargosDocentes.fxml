@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?scenebuilder-stylesheet Style.css?>
 
-<GridPane hgap="10.0" prefHeight="300.0" prefWidth="600.0" stylesheets="@Style.css" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.BusquedaCargoDocente">
+<GridPane hgap="10.0" prefHeight="300.0" prefWidth="600.0" stylesheets="@Style.css" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.controladores.BusquedaCargosDocentes">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />

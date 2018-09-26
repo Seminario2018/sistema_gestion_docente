@@ -1143,6 +1143,16 @@ public class Docentes extends ControladorVista implements Initializable {
                 e.printStackTrace();
             }
         }
+        
+        // Se recibe un Docente de otra pantalla. Llenar datos.
+        Object oDocente = args.get(REC_DOCENTE);
+        if (oDocente != null && oDocente instanceof IDocente) {
+        	this.docenteSeleccion = (IDocente) oDocente;
+        	generalMostrarDocente();
+        	nuevoDocente();
+        	modoNuevo();
+        }
+
         // Se recibe un CargoDocente de otra pantalla. Llenar datos.
         Object oCargo = args.get(REC_CARGO_DOCENTE);
         if (oCargo != null && oCargo instanceof ICargoDocente) {
@@ -1150,7 +1160,7 @@ public class Docentes extends ControladorVista implements Initializable {
         	this.docenteSeleccion = cargoDocente.getDocente();
         	generalMostrarDocente();
         	modoModificar();
-        	this.nuevoCargo();
+        	nuevoCargo();
         	this.cargoDocenteSeleccion = cargoDocente;
         	cargosMostrarCargoDocente();
         	cargosModoNuevo();

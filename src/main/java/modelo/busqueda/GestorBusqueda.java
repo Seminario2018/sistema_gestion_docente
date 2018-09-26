@@ -14,7 +14,7 @@ public class GestorBusqueda {
 
 	public List<BusquedaDocente> listarDocentes(String criterio) {
 		String tabla = "ViewDocente";
-		String campos = "Legajo, Apellido, Nombre";
+		String campos = "Legajo, NroDocumento, Apellido, Nombre";
 		String condicion = "TRUE";
 		List<BusquedaDocente> docentes = new ArrayList<BusquedaDocente>();
 
@@ -27,7 +27,8 @@ public class GestorBusqueda {
 			ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
 			for (Hashtable<String, String> reg : res) {
 				BusquedaDocente doc = new BusquedaDocente(
-						Integer.parseInt(reg.get("Legajo")),
+						reg.get("Legajo"),
+						Integer.parseInt(reg.get("NroDocumento")),
 						reg.get("Apellido"),
 						reg.get("Nombre"));
 				docentes.add(doc);
@@ -191,7 +192,7 @@ public class GestorBusqueda {
 
 	public List<BusquedaUsuario> listarUsuarios(String criterio) {
 	    String tabla = "ViewUsuario";
-        String campos = "Usuario";
+        String campos = "NroDocumento, Usuario, Nombre, Apellido";
         String condicion = "TRUE";
         List<BusquedaUsuario> usuarios = new ArrayList<BusquedaUsuario>();
 
@@ -203,9 +204,13 @@ public class GestorBusqueda {
             ManejoDatos md = new ManejoDatos();
             ArrayList<Hashtable<String, String>> res = md.select(tabla, campos, condicion);
             for (Hashtable<String, String> reg : res) {
-                BusquedaUsuario bUs = new BusquedaUsuario(
-                    reg.get("Usuario"));
-                usuarios.add(bUs);
+                BusquedaUsuario bu = new BusquedaUsuario(
+                		reg.get("Usuario"),
+                		Integer.parseInt(reg.get("NroDocumento")),
+                		reg.get("Nombre"),
+                		reg.get("Apellido")
+                		);
+                usuarios.add(bu);
             }
 
         } catch (Exception e) {

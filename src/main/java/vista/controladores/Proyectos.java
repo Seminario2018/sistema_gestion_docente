@@ -76,11 +76,20 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
-    @SuppressWarnings("unused")
     private void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
-        if (cargoDocente instanceof ICargoDocente) {
-            integranteSeleccion.setCargoDocente((ICargoDocente) cargoDocente);
-        }
+    	if (cargoDocente instanceof ICargoDocente) {
+    		switch (tipo) {
+    		case TIPO_INTEGRANTE:
+    			setIntegranteSeleccion((ICargoDocente) cargoDocente);
+    			break;
+    		default:
+    			throw new RuntimeException("Tipo de docente no esperado.");
+    		}
+    	}
+    }
+    
+    private void setIntegranteSeleccion(ICargoDocente integrante) {
+    	integranteSeleccion.setCargoDocente(integrante);    	
     }
 
 	@FXML private ScrollPane mainPane;
@@ -89,10 +98,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 	private ControlInvestigacion controlInvestigacion = new ControlInvestigacion(this);
 
 	// Tipos respuesta:
-	private static final String TIPO_CARGODOCENTE = "CargoDocente";
-	private static final String TIPO_CODIRECTOR = "Codirector";
-	private static final String TIPO_DIRECTOR = "Director";
-	private static final String TIPO_PROYECTO = "Proyecto";
+	public static final String TIPO_INTEGRANTE = "Integrante";
+	public static final String TIPO_CODIRECTOR = "Codirector";
+	public static final String TIPO_DIRECTOR = "Director";
+	public static final String TIPO_PROYECTO = "Proyecto";
 
 	/* (non-Javadoc)
 	 * @see javafx.fxml.Initializable#initialize(java.net.URL, java.util.ResourceBundle)
@@ -735,25 +744,10 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDocente;
 	@FXML void buscarCargoDocente(ActionEvent event) {
-	    /* TEST Integrantes: buscarCargoDocente * /
-	    if (proyectoSeleccion != null &&
-	        integranteSeleccion != null) {
-
-    	    ControlDocente cd = new ControlDocente(this);
-    	    List<ICargoDocente> cargosDocentes = cd.listarCargosDocente(null, null);
-    	    Random random = new Random();
-    	    int index = random.nextInt(cargosDocentes.size());
-    	    integranteSeleccion.setCargoDocente(cargosDocentes.get(index));
-	    }
-	    //*/
-	    /* TODO Integrantes: buscarCargoDocente */
 	    Map<String, Object> args = new HashMap<String, Object>();
-        args.put(Busqueda.KEY_NUEVO, true);
-        args.put(Busqueda.KEY_TIPO, "CargoDocentes");
         args.put(Busqueda.KEY_CONTROLADOR, this);
-        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_CARGODOCENTE);
-        args.put(GestorPantalla.KEY_PADRE, Proyectos.TITULO);
-        this.gestorPantalla.lanzarPantalla("BusquedaCargoDocente", args);
+        args.put(GestorPantalla.KEY_PADRE, TITULO);
+        this.gestorPantalla.lanzarPantalla(BusquedaCargosDocentes.TITULO, args);
 	    //*/
 	}
 

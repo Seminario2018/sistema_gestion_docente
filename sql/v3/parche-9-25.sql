@@ -1,21 +1,63 @@
 CREATE 
-     OR REPLACE ALGORITHM = UNDEFINED 
+    ALGORITHM = UNDEFINED 
     DEFINER = `root`@`localhost` 
     SQL SECURITY DEFINER
 VIEW `viewcargodocente` AS
     SELECT 
-        `cd`.`Legajo` AS `Legajo`,
+        `d`.`Legajo` AS `Legajo`,
         `p`.`Nombre` AS `Nombre`,
         `p`.`Apellido` AS `Apellido`,
         `cd`.`Area` AS `Area`,
         `cd`.`Codigo` AS `Codigo`,
         `c`.`Descripcion` AS `descripcion`
     FROM
-        ((`cargosdocentes` `cd`
-        left JOIN (`docentes` `d`
-        left JOIN `personas` `p` ON (((`d`.`TipoDocumento` = `p`.`TipoDocumento`)
-            AND (`d`.`NroDocumento` = `p`.`NroDocumento`)))) ON ((`cd`.`Legajo` = `d`.`Legajo`)))
-        left JOIN `cargos` `c` ON ((`cd`.`Cargo` = `c`.`Codigo`)));
+        (((`personas` `p`
+        JOIN `docentes` `d` ON (((`d`.`TipoDocumento` = `p`.`TipoDocumento`)
+            AND (`d`.`NroDocumento` = `p`.`NroDocumento`))))
+        LEFT JOIN `cargosdocentes` `cd` ON ((`cd`.`Legajo` = `d`.`Legajo`)))
+        LEFT JOIN `cargos` `c` ON ((`cd`.`Cargo` = `c`.`Codigo`)))
+    ORDER BY ISNULL(`d`.`Legajo`) , `d`.`Legajo`;
+
+
+
+CREATE 
+     OR REPLACE ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `viewdocente` AS
+    SELECT 
+        `docentes`.`Legajo` AS `Legajo`,
+        `personas`.`NroDocumento` AS `NroDocumento`,
+        `personas`.`Nombre` AS `Nombre`,
+        `personas`.`Apellido` AS `Apellido`
+    FROM
+        (`personas`
+        LEFT JOIN `docentes` ON (((`docentes`.`TipoDocumento` = `personas`.`TipoDocumento`)
+            AND (`docentes`.`NroDocumento` = `personas`.`NroDocumento`))))
+    WHERE
+        (`personas`.`NroDocumento` <> '0')
+	ORDER BY ISNULL(`docentes`.`Legajo`), `docentes`.`Legajo`;
+
+                
+                
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `viewusuario` AS
+    SELECT 
+        `usuarios`.`Usuario` AS `Usuario`,
+        `personas`.`NroDocumento` AS `NroDocumento`,
+        `personas`.`Nombre` AS `Nombre`,
+        `personas`.`Apellido` AS `Apellido`
+    FROM
+        (`personas`
+        LEFT JOIN `usuarios` ON (((`usuarios`.`TipoDocumentoPersona` = `personas`.`TipoDocumento`)
+            AND (`personas`.`NroDocumento` = `usuarios`.`NroDocumentoPerson`))))
+    WHERE
+        (`personas`.`NroDocumento` <> '0')
+    ORDER BY ISNULL(`usuarios`.`Usuario`) , `usuarios`.`Usuario`;
+        
 
 
 CREATE 

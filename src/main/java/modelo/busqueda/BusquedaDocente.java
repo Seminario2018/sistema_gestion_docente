@@ -5,21 +5,34 @@ package modelo.busqueda;
  * @version 1.0, 31 de may. de 2018
  */
 public class BusquedaDocente {
-	private int legajo;
+	private String legajo;
+	private int documento;
 	private String nombre;
+	
 	public BusquedaDocente() {
 		
 	}
-	public BusquedaDocente(int legajo, String apellido, String nombre) {
+	public BusquedaDocente(String legajo, int documento, String apellido, String nombre) {
 		super();
-		this.legajo = legajo;
+		if (legajo == null || "".equals(legajo)) {
+			this.legajo = "-";
+		} else {
+			this.legajo = legajo;
+		}
+		this.documento = documento;
 		this.nombre = apellido + ", " + nombre;
 	}
-	public int getLegajo() {
+	public String getLegajo() {
 		return legajo;
 	}
-	public void setLegajo(int legajo) {
+	public void setLegajo(String legajo) {
 		this.legajo = legajo;
+	}
+	public int getDocumento() {
+		return documento;
+	}
+	public void setDocumento(int documento) {
+		this.documento = documento;
 	}
 	public String getNombre() {
 		return nombre;
@@ -27,5 +40,4 @@ public class BusquedaDocente {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 }
