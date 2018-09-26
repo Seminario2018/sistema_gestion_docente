@@ -30,6 +30,7 @@ import modelo.informe.ITipoInforme;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
+import vista.GestorPantalla;
 
 
 /**
@@ -222,6 +223,7 @@ public class Informes extends ControladorVista implements Initializable {
     @FXML public void modificarColumna(ActionEvent event) {
     	Map<String, Object> args = new HashMap<String, Object>();
     	args.put(InformesFiltros.COLUMNA, this.columnaSeleccion);
+    	args.put(GestorPantalla.KEY_PADRE, TITULO);
     	this.gestorPantalla.lanzarPantalla(InformesFiltros.TITULO, args);
     }
     

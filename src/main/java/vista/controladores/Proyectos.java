@@ -76,20 +76,26 @@ public class Proyectos extends ControladorVista implements Initializable {
         }
     }
 
-    private void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
+    @SuppressWarnings("unused")
+	private void setCargoDocenteSeleccion(Object cargoDocente, String tipo) {
     	if (cargoDocente instanceof ICargoDocente) {
     		switch (tipo) {
     		case TIPO_INTEGRANTE:
     			setIntegranteSeleccion((ICargoDocente) cargoDocente);
     			break;
     		default:
-    			throw new RuntimeException("Tipo de docente no esperado.");
+    			throw new RuntimeException("Tipo de cargo no esperado.");
     		}
     	}
     }
     
     private void setIntegranteSeleccion(ICargoDocente integrante) {
-    	integranteSeleccion.setCargoDocente(integrante);    	
+    	this.integranteSeleccion.setCargoDocente(integrante);
+    	if (this.integranteSeleccion.getInstitucion() == null
+    			|| "".equals(this.integranteSeleccion.getInstitucion()))
+    		this.integranteSeleccion.setInstitucion("UNLu");
+    	this.integrantesModoModificar();
+    	this.integrantesMostrarIntegrante();
     }
 
 	@FXML private ScrollPane mainPane;
@@ -640,7 +646,10 @@ public class Proyectos extends ControladorVista implements Initializable {
             }
 
             txtIntegrantesInstitucion.setText(integranteSeleccion.getInstitucion());
-            txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
+            if (integranteSeleccion.getHorasSemanales() == -1)
+            	txtIntegrantesHoras.clear();
+            else
+            	txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
         }
     }
 
@@ -717,7 +726,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        integranteSeleccion.setNombre(txtIntegrantesNombre.getText());
 	        integranteSeleccion.setCargo(txtIntegrantesCargo.getText());
 	        integranteSeleccion.setInstitucion(txtIntegrantesInstitucion.getText());
-	        integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
+	        if ("".equals(txtIntegrantesHoras.getText()))
+	        	integranteSeleccion.setHorasSemanales(0);
+	        else
+	        	try {
+	        		integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
+	        	} catch (NumberFormatException e) {
+	        		this.alertaError("Guardar Integrante", "Los datos ingresados no son válidos.",
+	        				"\"Horas semanales ingresadas\" debe ser un número.");
+	        	}
 
 	        exitoGuardado(controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Guardar Integrante");
             integrantesModoModificar();
@@ -747,8 +764,8 @@ public class Proyectos extends ControladorVista implements Initializable {
 	    Map<String, Object> args = new HashMap<String, Object>();
         args.put(Busqueda.KEY_CONTROLADOR, this);
         args.put(GestorPantalla.KEY_PADRE, TITULO);
+        args.put(Busqueda.KEY_TIPO_RESPUESTA, TIPO_INTEGRANTE);
         this.gestorPantalla.lanzarPantalla(BusquedaCargosDocentes.TITULO, args);
-	    //*/
 	}
 
 	@FXML protected TableView<FilaIntegrante> tblIntegrantes;

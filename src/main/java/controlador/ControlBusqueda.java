@@ -177,7 +177,7 @@ public class ControlBusqueda {
 		    BusquedaCargoDocente bCD = (BusquedaCargoDocente) fila;
 		    GestorDocente gestorDocente = new GestorDocente();
 		    ICargoDocente cargoDocente = gestorDocente.getICargoDocente();
-		    if (bCD.getCodigo() != null && !"-".equals(bCD)) {
+		    if (bCD.getCodigo() != null && !"-".equals(bCD.getCodigo())) {
 		    	// Se seleccionó un CargoDocente para enviar a otra pantalla
 		    	cargoDocente.setId(Integer.parseInt(bCD.getCodigo()));
 		    	return gestorDocente.listarCargo(null, cargoDocente).get(0);

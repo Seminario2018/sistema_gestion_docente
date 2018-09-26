@@ -21,6 +21,7 @@ import modelo.docente.ICargoDocente;
 import modelo.usuario.IPermiso;
 import modelo.usuario.IRol;
 import modelo.usuario.Modulo;
+import vista.GestorPantalla;
 
 /**
  * @author Martín Tomás Juran
@@ -48,6 +49,8 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
 	
 	@Override
 	public void inicializar() {
+		this.window.setTitle("Búsqueda Cargo Docente");
+
 		// Mostrar botones si tiene permiso de crear docentes o cargos
 		this.btnCargoDocenteCargo.setVisible(false);
 		this.btnCargoDocenteDocente.setVisible(false);
@@ -66,19 +69,22 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
 			}
 		}
 		
+		
 		this.inicializarTabla("CargoDocente");
 		this.actualizarLista();
 		
 		this.tblCargoDocente.getSelectionModel().selectedItemProperty().addListener(
 				(obs, oldSel, newSel) -> {
-					if (newSel.getCodigo().equals("-")) {
-						// Seleccionó un Docente sin cargo
-						this.btnCargoDocenteSeleccionar.setDisable(true);
-						this.btnCargoDocenteCargo.setDisable(false);
-					} else {
-						// Seleccionó un cargo
-						this.btnCargoDocenteSeleccionar.setDisable(false);
-						this.btnCargoDocenteCargo.setDisable(true);
+					if (newSel != null) {
+						if (newSel.getCodigo().equals("-")) {
+							// Seleccionó un Docente sin cargo
+							this.btnCargoDocenteSeleccionar.setDisable(true);
+							this.btnCargoDocenteCargo.setDisable(false);
+						} else {
+							// Seleccionó un cargo
+							this.btnCargoDocenteSeleccionar.setDisable(false);
+							this.btnCargoDocenteCargo.setDisable(true);
+						}
 					}
 				});
 		
@@ -121,6 +127,7 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
 	
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public void actualizarLista() {
+    	this.filasCargoDocente.clear();
     	this.filasCargoDocente.addAll((List)
     			this.control.listarCargoDocentes(
     					this.txtCargoDocenteCriterio.getText()));
@@ -134,6 +141,7 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
 	@FXML public void nuevoDocente(ActionEvent event) {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put(Docentes.REC_DOCENTE, this.controlDocente.getIDocente());
+		args.put(GestorPantalla.KEY_PADRE, TITULO);
 	    this.gestorPantalla.lanzarPantalla(Docentes.TITULO, args);
 	}
 
@@ -148,6 +156,7 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
 	            Map<String, Object> args = new HashMap<String, Object>();
 	            args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
 	            args.put(Docentes.REC_CARGO_DOCENTE, cargoDocente);
+	            args.put(GestorPantalla.KEY_PADRE, TITULO);
 	            this.gestorPantalla.lanzarPantalla("Docentes", args);
 	        }
 	    }
@@ -187,7 +196,8 @@ public class BusquedaCargosDocentes extends ControladorVista implements Initiali
         switch (event.getCode()) {
             case ENTER:
                 if (!this.tblCargoDocente.getSelectionModel().isEmpty()) {
-                    seleccionarCargo(null);
+                	if (!this.btnCargoDocenteSeleccionar.isDisable())
+                		seleccionarCargo(null);
                 }
             default:
         }

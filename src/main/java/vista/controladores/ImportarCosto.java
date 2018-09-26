@@ -20,6 +20,7 @@ import modelo.auxiliares.EstadoCargo;
 import modelo.costeo.GestorImportarCosto.TipoAlta;
 import modelo.costeo.ICargoFaltante;
 import modelo.docente.ICargoDocente;
+import vista.GestorPantalla;
 
 public class ImportarCosto extends ControladorVista {
 	
@@ -107,6 +108,7 @@ public class ImportarCosto extends ControladorVista {
     @FXML public void listarCostos(ActionEvent event) {
     	Map<String, Object> args = new HashMap<String, Object>();
     	args.put(ListaCosto.LISTA, this.control.listarComparacion());
+    	args.put(GestorPantalla.KEY_PADRE, TITULO);
     	this.gestorPantalla.lanzarPantalla(ListaCosto.TITULO, args);
     }
     
@@ -263,6 +265,7 @@ public class ImportarCosto extends ControladorVista {
     				Map<String, Object> args = new HashMap<String, Object>();
     				args.put(Docentes.REC_CARGO_DOCENTE, this.control.prepararCargo(cargof));
     				args.put(Docentes.KEY_TAB, Docentes.TAB_CARGOS);
+    				args.put(GestorPantalla.KEY_PADRE, TITULO);
     				this.gestorPantalla.lanzarPantalla(Docentes.TITULO + " ImportarCosto", args);
     			}
     			break; 
@@ -274,6 +277,7 @@ public class ImportarCosto extends ControladorVista {
     				Map<String, Object> args = new HashMap<String, Object>();
     				args.put(Docentes.REC_CARGO_DOCENTE, this.control.prepararCargo(cargof));
     				args.put(Docentes.KEY_TAB, Docentes.TAB_DATOS);
+    				args.put(GestorPantalla.KEY_PADRE, TITULO);
     				this.gestorPantalla.lanzarPantalla(Docentes.TITULO + " ImportarCosto", args);
     			}
     			break;
