@@ -48,7 +48,7 @@ public class NotificacionCargo2 {
             * 1000;
         // Si los mails están habilitados:
         habilitado = Boolean.valueOf(
-            xml.getElementsByTagName("habilitado").item(0).getTextContent());
+            xml.getElementsByTagName("habilitar").item(0).getTextContent());
     }
 
     public static NotificacionCargo2 getInstance() {
