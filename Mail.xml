@@ -17,4 +17,6 @@
     <!-- Intervalo de envío de mails en segundos -->
     <intervalo>10</intervalo>
     
+    <!-- Habilitar notificaciones por mail -->
+    <habilitar>true</habilitar>
 </mail>

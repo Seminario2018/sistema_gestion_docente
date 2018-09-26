@@ -90,7 +90,9 @@ public class ConfigEmail extends ControladorVista implements Initializable {
         String contraseña = configuracionXML.getElementsByTagName("contraseña").item(0).getTextContent();
         String smtp = configuracionXML.getElementsByTagName("puerto").item(0).getTextContent();
         String tls = configuracionXML.getElementsByTagName("tls").item(0).getTextContent();
+        String habilitado = configuracionXML.getElementsByTagName("habilitar").item(0).getTextContent();
 
+        chkHabilitar.setSelected(Boolean.valueOf(habilitado));
         txtServidorIntervalo.setText(intervalo);
         txtServidorEmail.setText(email);
         txtServidorContraseña.setText(contraseña);
@@ -349,7 +351,9 @@ public class ConfigEmail extends ControladorVista implements Initializable {
         configuracionXML.getElementsByTagName("puerto").item(0)
             .setTextContent(txtServidorSmtp.getText());
         configuracionXML.getElementsByTagName("tls").item(0)
-            .setTextContent(String.valueOf(chkServidorTLS.isSelected()));
+        .setTextContent(String.valueOf(chkServidorTLS.isSelected()));
+        configuracionXML.getElementsByTagName("habilitar").item(0)
+            .setTextContent(String.valueOf(chkHabilitar.isSelected()));
     }
 
     private void actualizarPlantilla() {
