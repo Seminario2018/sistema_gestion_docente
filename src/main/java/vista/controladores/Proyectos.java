@@ -88,12 +88,13 @@ public class Proyectos extends ControladorVista implements Initializable {
     		}
     	}
     }
-    
+
     private void setIntegranteSeleccion(ICargoDocente integrante) {
     	this.integranteSeleccion.setCargoDocente(integrante);
     	if (this.integranteSeleccion.getInstitucion() == null
-    			|| "".equals(this.integranteSeleccion.getInstitucion()))
-    		this.integranteSeleccion.setInstitucion("UNLu");
+    			|| "".equals(this.integranteSeleccion.getInstitucion())) {
+            this.integranteSeleccion.setInstitucion("UNLu");
+        }
     	this.integrantesModoModificar();
     	this.integrantesMostrarIntegrante();
     }
@@ -646,10 +647,11 @@ public class Proyectos extends ControladorVista implements Initializable {
             }
 
             txtIntegrantesInstitucion.setText(integranteSeleccion.getInstitucion());
-            if (integranteSeleccion.getHorasSemanales() == -1)
-            	txtIntegrantesHoras.clear();
-            else
-            	txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
+            if (integranteSeleccion.getHorasSemanales() == -1) {
+                txtIntegrantesHoras.clear();
+            } else {
+                txtIntegrantesHoras.setText(String.valueOf(integranteSeleccion.getHorasSemanales()));
+            }
         }
     }
 
@@ -726,15 +728,16 @@ public class Proyectos extends ControladorVista implements Initializable {
 	        integranteSeleccion.setNombre(txtIntegrantesNombre.getText());
 	        integranteSeleccion.setCargo(txtIntegrantesCargo.getText());
 	        integranteSeleccion.setInstitucion(txtIntegrantesInstitucion.getText());
-	        if ("".equals(txtIntegrantesHoras.getText()))
-	        	integranteSeleccion.setHorasSemanales(0);
-	        else
-	        	try {
+	        if ("".equals(txtIntegrantesHoras.getText())) {
+                integranteSeleccion.setHorasSemanales(0);
+            } else {
+                try {
 	        		integranteSeleccion.setHorasSemanales(Integer.parseInt(txtIntegrantesHoras.getText()));
 	        	} catch (NumberFormatException e) {
 	        		this.alertaError("Guardar Integrante", "Los datos ingresados no son válidos.",
 	        				"\"Horas semanales ingresadas\" debe ser un número.");
 	        	}
+            }
 
 	        exitoGuardado(controlInvestigacion.guardarIntegrante(proyectoSeleccion, integranteSeleccion), TITULO, "Guardar Integrante");
             integrantesModoModificar();
@@ -744,7 +747,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnIntegrantesDescartar;
 	@FXML void descartarIntegrante(ActionEvent event) {
-	    integrantesMostrarIntegrante();
+//	    integrantesMostrarIntegrante();
+	    if (integranteSeleccion == null ||
+            integranteSeleccion.getId() == -1)
+        {
+	        integranteSeleccion = null;
+        } else {
+            integrantesMostrarIntegrante();
+        }
+        integrantesModoVer();
 	}
 
 	@FXML private Button btnIntegrantesEliminar;
@@ -906,7 +917,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnSubsidiosDescartar;
 	@FXML void descartarSubsidio(ActionEvent event) {
-	    subsidiosMostrarSubsidio();
+//	    subsidiosMostrarSubsidio();
+	    if (subsidioSeleccion == null ||
+	        subsidioSeleccion.getFecha() == null)
+        {
+	        subsidioSeleccion = null;
+        } else {
+            subsidiosMostrarSubsidio();
+        }
+        subsidiosModoVer();
     }
 
 	@FXML private Button btnSubsidiosEliminar;
@@ -1077,7 +1096,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 
 	@FXML private Button btnRendicionesDescartar;
 	@FXML void descartarRendicion(ActionEvent event) {
-	    rendicionesMostrarRendicion();
+//	    rendicionesMostrarRendicion();
+	    if (rendicionSeleccion == null ||
+	        rendicionSeleccion.getId() == -1)
+        {
+	        rendicionSeleccion = null;
+        } else {
+            rendicionesMostrarRendicion();
+        }
+        rendicionesModoVer();
 	}
 
     @FXML private Button btnRendicionesEliminar;
@@ -1206,7 +1233,15 @@ public class Proyectos extends ControladorVista implements Initializable {
 
     @FXML private Button btnProrrogasDescartar;
     @FXML void descartarProrroga(ActionEvent event) {
-        prorrogasMostrarProrroga();
+//        prorrogasMostrarProrroga();
+        if (prorrogaSeleccion == null ||
+            prorrogaSeleccion.getFechaFin() == null)
+        {
+            prorrogaSeleccion = null;
+        } else {
+            prorrogasMostrarProrroga();
+        }
+        prorrogasModoVer();
     }
 
     @FXML private Button btnProrrogasEliminar;

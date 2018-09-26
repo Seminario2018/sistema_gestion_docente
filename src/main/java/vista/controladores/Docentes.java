@@ -374,7 +374,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
 	@FXML private Button btnContactosDescartar;
 	@FXML public void descartarContacto(ActionEvent event) {
-	    contactosMostrarContacto();
+//	    contactosMostrarContacto();
+	    if (contactoSeleccion == null ||
+	        contactoSeleccion.getId() == -1)
+	    {
+	        contactoSeleccion = null;
+	    } else {
+	        contactosMostrarContacto();
+	    }
+	    contactosModoVer();
 	}
 
 	@FXML private Button btnContactosEliminar;
@@ -513,7 +521,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
     @FXML private Button btnDomicilioDescartar;
     @FXML public void descartarDomicilio(ActionEvent event) {
-        domiciliosMostrarDomicilio();
+//        domiciliosMostrarDomicilio();
+        if (domicilioSeleccion == null ||
+            domicilioSeleccion.getId() == -1)
+        {
+            domicilioSeleccion = null;
+        } else {
+            domiciliosMostrarDomicilio();
+        }
+        domiciliosModoVer();
     }
 
     @FXML private Button btnDomiciliosEliminar;
@@ -830,7 +846,7 @@ public class Docentes extends ControladorVista implements Initializable {
         if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
         	String titulo = "Nuevo cargo";
         	String encabezado = "Error al crear el cargo";
-        	
+
         	if ("".equals(txtCargosCodigo.getText())) {
         		alertaError(titulo, encabezado, "El código del cargo es obligatorio.");
         		return;
@@ -838,7 +854,9 @@ public class Docentes extends ControladorVista implements Initializable {
         	try {
         		int codigo = Integer.parseInt(txtCargosCodigo.getText());
         		// El código debe ser positivo
-        		if (codigo < 0) throw new NumberFormatException();
+        		if (codigo < 0) {
+                    throw new NumberFormatException();
+                }
         		cargoDocenteSeleccion.setId(codigo);
         	} catch (NumberFormatException e) {
         		alertaError(titulo, encabezado, "El código del cargo debe ser un número sin símbolos.");
@@ -846,16 +864,16 @@ public class Docentes extends ControladorVista implements Initializable {
         		alertaError(titulo, encabezado, "Hubo un error al crear el cargo.");
         		e.printStackTrace();
         	}
-        	
+
         	// Verificar que no exista si está en modo nuevo
         	if (this.txtCargosCodigo.isEditable()) {
-        		List<ICargoDocente> listCargos = this.controlDocente.listarCargosDocente(null, cargoDocenteSeleccion); 
+        		List<ICargoDocente> listCargos = this.controlDocente.listarCargosDocente(null, cargoDocenteSeleccion);
         		if (listCargos != null && !listCargos.isEmpty()) {
         			alertaError(titulo, encabezado, "El código de cargo ya está en uso");
         			return;
         		}
         	}
-        	
+
             try {
                 float ultimoCosto = Utilidades.stringToFloat(txtCargosCosto.getText());
 
@@ -888,7 +906,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
     @FXML private Button btnCargosDescartar;
     @FXML private void descartarCargo() {
-        cargosMostrarCargoDocente();
+//        cargosMostrarCargoDocente();
+        if (cargoDocenteSeleccion == null ||
+            cargoDocenteSeleccion.getId() == -1)
+        {
+            cargoDocenteSeleccion = null;
+        } else {
+            cargosMostrarCargoDocente();
+        }
+        cargosModoVer();
     }
 
     @FXML private Button btnCargosEliminar;
@@ -903,7 +929,7 @@ public class Docentes extends ControladorVista implements Initializable {
             cargosActualizarTabla();
         }
     }
-    
+
     @FXML private TextField txtCargosCodigo;
 
     @FXML private TextField txtCargosArea;
@@ -1124,7 +1150,15 @@ public class Docentes extends ControladorVista implements Initializable {
 
     @FXML private Button btnIncentivosDescartar;
     @FXML private void descartarIncentivo() {
-        incentivosMostrarIncentivo();
+//        incentivosMostrarIncentivo();
+        if (incentivoSeleccion == null ||
+            incentivoSeleccion.getFecha() == null)
+        {
+            incentivoSeleccion = null;
+        } else {
+            incentivosMostrarIncentivo();
+        }
+        incentivosModoVer();
     }
 
     @FXML private Button btnIncentivosEliminar;

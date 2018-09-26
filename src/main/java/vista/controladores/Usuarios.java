@@ -353,7 +353,15 @@ public class Usuarios extends ControladorVista implements Initializable {
 
     @FXML private Button btnContactosDescartar;
     @FXML public void descartarContacto(ActionEvent event) {
-        contactosMostrarContacto();
+//        contactosMostrarContacto();
+        if (contactoSeleccion == null ||
+            contactoSeleccion.getId() == -1)
+        {
+            contactoSeleccion = null;
+        } else {
+            contactosMostrarContacto();
+        }
+        contactosModoVer();
     }
 
     @FXML private Button btnContactosEliminar;
@@ -529,7 +537,15 @@ public class Usuarios extends ControladorVista implements Initializable {
 
     @FXML private Button btnDomicilioDescartar;
     @FXML public void descartarDomicilio(ActionEvent event) {
-        domiciliosMostrarDomicilio();
+//        domiciliosMostrarDomicilio();
+        if (domicilioSeleccion == null ||
+            domicilioSeleccion.getId() == -1)
+        {
+            domicilioSeleccion = null;
+        } else {
+            domiciliosMostrarDomicilio();
+        }
+        domiciliosModoVer();
     }
 
     @FXML private Button btnDomiciliosEliminar;
