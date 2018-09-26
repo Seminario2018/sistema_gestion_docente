@@ -506,7 +506,7 @@
                                     </GridPane>
                                  </top>
                                  <center>
-                                    <TableView fx:id="tblCargos" minHeight="-Infinity" prefHeight="129.0" prefWidth="778.0" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="tblCargos" BorderPane.alignment="CENTER">
                                        <BorderPane.margin>
                                           <Insets />
                                        </BorderPane.margin>
@@ -524,80 +524,82 @@
                                  <bottom>
                                     <GridPane alignment="CENTER" vgap="5.0" BorderPane.alignment="CENTER">
                                        <children>
-                                          <Label text="Área">
+                                          <Label text="Código" />
+                                          <TextField fx:id="txtCargosCodigo" GridPane.columnIndex="1" />
+                                          <Label text="Área" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" />
-                                          <Button fx:id="btnCargosArea" mnemonicParsing="false" onAction="#seleccionarArea" text="Seleccionar" GridPane.columnIndex="2">
+                                          <TextField fx:id="txtCargosArea" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <Button fx:id="btnCargosArea" mnemonicParsing="false" onAction="#seleccionarArea" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Label text="Cargo" GridPane.rowIndex="1">
+                                          <Label text="Cargo" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                          <Button fx:id="btnCargosCargo" mnemonicParsing="false" onAction="#seleccionarCargo" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <TextField fx:id="txtCargosCargo" editable="false" focusTraversable="false" mouseTransparent="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                          <Button fx:id="btnCargosCargo" mnemonicParsing="false" onAction="#seleccionarCargo" text="Seleccionar" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                              <GridPane.margin>
                                                 <Insets left="10.0" />
                                              </GridPane.margin>
                                           </Button>
-                                          <Label text="Estado" GridPane.rowIndex="2" />
-                                          <ComboBox fx:id="cmbCargosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                          <Label text="Tipo de cargo" GridPane.rowIndex="3" />
-                                          <ComboBox fx:id="cmbCargosTipo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                          <Label text="Disposición" GridPane.rowIndex="4">
+                                          <Label text="Estado" GridPane.rowIndex="3" />
+                                          <ComboBox fx:id="cmbCargosEstado" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                          <Label text="Tipo de cargo" GridPane.rowIndex="4" />
+                                          <ComboBox fx:id="cmbCargosTipo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                          <Label text="Disposición" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosDisp" promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                          <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                             <GridPane.margin>
-                                                <Insets left="20.0" right="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <DatePicker fx:id="dtpCargosDispDesde" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                          <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
-                                             <GridPane.margin>
-                                                <Insets left="20.0" right="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <DatePicker fx:id="dtpCargosDispHasta" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-                                          <Label text="Resolución" GridPane.rowIndex="5">
-                                             <GridPane.margin>
-                                                <Insets right="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField fx:id="txtCargosRes" promptText="Ingrese la resolución" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                          <TextField fx:id="txtCargosDisp" promptText="Ingrese la disposición" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                           <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <DatePicker fx:id="dtpCargosResDesde" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                                          <DatePicker fx:id="dtpCargosDispDesde" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                                           <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <DatePicker fx:id="dtpCargosResHasta" GridPane.columnIndex="5" GridPane.rowIndex="5" />
-                                          <Label text="Último costo" GridPane.rowIndex="6">
+                                          <DatePicker fx:id="dtpCargosDispHasta" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                                          <Label text="Resolución" GridPane.rowIndex="6">
                                              <GridPane.margin>
                                                 <Insets right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <TextField fx:id="txtCargosCosto" promptText="Ingrese el último costo del cargo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                          <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                          <TextField fx:id="txtCargosRes" promptText="Ingrese la resolución" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                          <Label text="Desde" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                                              <GridPane.margin>
                                                 <Insets left="20.0" right="10.0" />
                                              </GridPane.margin>
                                           </Label>
-                                          <DatePicker fx:id="dtpCargosCosto" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                          <DatePicker fx:id="dtpCargosResDesde" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                          <Label text="Hasta" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <DatePicker fx:id="dtpCargosResHasta" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                                          <Label text="Último costo" GridPane.rowIndex="7">
+                                             <GridPane.margin>
+                                                <Insets right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <TextField fx:id="txtCargosCosto" promptText="Ingrese el último costo del cargo" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                          <Label text="Fecha" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7">
+                                             <GridPane.margin>
+                                                <Insets left="20.0" right="10.0" />
+                                             </GridPane.margin>
+                                          </Label>
+                                          <DatePicker fx:id="dtpCargosCosto" GridPane.columnIndex="3" GridPane.rowIndex="7" />
                                        </children>
                                        <columnConstraints>
                                           <ColumnConstraints hgrow="NEVER" />
@@ -608,13 +610,14 @@
                                           <ColumnConstraints />
                                        </columnConstraints>
                                        <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
+                                          <RowConstraints />
                                        </rowConstraints>
                                        <BorderPane.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

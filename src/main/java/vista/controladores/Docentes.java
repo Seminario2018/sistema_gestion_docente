@@ -764,6 +764,7 @@ public class Docentes extends ControladorVista implements Initializable {
             btnCargosGuardar.setVisible(true);
             btnCargosDescartar.setVisible(true);
             btnCargosEliminar.setVisible(true);
+            txtCargosCodigo.setEditable(false);
             btnCargosArea.setVisible(true);
             btnCargosCargo.setVisible(true);
             txtCargosDisp.setEditable(true);
@@ -781,10 +782,11 @@ public class Docentes extends ControladorVista implements Initializable {
     }
 
     private void cargosModoNuevo() {
-        if (this.permiso.getModificar()) {
+        if (this.permiso.getCrear()) {
             cargosModoModificar();
             this.window.setTitle("Docentes - Nuevo Cargo");
             btnCargosEliminar.setVisible(false);
+            txtCargosCodigo.setEditable(true);
         }
     }
 
@@ -792,6 +794,7 @@ public class Docentes extends ControladorVista implements Initializable {
         btnCargosGuardar.setVisible(false);
         btnCargosDescartar.setVisible(false);
         btnCargosEliminar.setVisible(false);
+        txtCargosCodigo.setEditable(false);
         btnCargosArea.setVisible(false);
         btnCargosCargo.setVisible(false);
         txtCargosDisp.setEditable(false);
@@ -821,6 +824,34 @@ public class Docentes extends ControladorVista implements Initializable {
     @FXML private Button btnCargosGuardar;
     @FXML private void guardarCargo() {
         if (docenteSeleccion != null && cargoDocenteSeleccion != null) {
+        	String titulo = "Nuevo cargo";
+        	String encabezado = "Error al crear el cargo";
+        	
+        	if ("".equals(txtCargosCodigo.getText())) {
+        		alertaError(titulo, encabezado, "El código del cargo es obligatorio.");
+        		return;
+        	}
+        	try {
+        		int codigo = Integer.parseInt(txtCargosCodigo.getText());
+        		// El código debe ser positivo
+        		if (codigo < 0) throw new NumberFormatException();
+        		cargoDocenteSeleccion.setId(codigo);
+        	} catch (NumberFormatException e) {
+        		alertaError(titulo, encabezado, "El código del cargo debe ser un número sin símbolos.");
+        	} catch (Exception e) {
+        		alertaError(titulo, encabezado, "Hubo un error al crear el cargo.");
+        		e.printStackTrace();
+        	}
+        	
+        	// Verificar que no exista si está en modo nuevo
+        	if (this.txtCargosCodigo.isEditable()) {
+        		List<ICargoDocente> listCargos = this.controlDocente.listarCargosDocente(null, cargoDocenteSeleccion); 
+        		if (listCargos != null && !listCargos.isEmpty()) {
+        			alertaError(titulo, encabezado, "El código de cargo ya está en uso");
+        			return;
+        		}
+        	}
+        	
             try {
                 float ultimoCosto = Utilidades.stringToFloat(txtCargosCosto.getText());
 
@@ -841,9 +872,11 @@ public class Docentes extends ControladorVista implements Initializable {
                 docenteMostrarDocente();
                 cargosModoModificar();
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
                 mensajeEstado(e.getMessage());
+            } catch (Exception e) {
+            	alertaError(titulo, encabezado, "Hubo un error al crear el cargo.");
+            	e.printStackTrace();
             }
             cargosActualizarTabla();
         }
@@ -866,6 +899,8 @@ public class Docentes extends ControladorVista implements Initializable {
             cargosActualizarTabla();
         }
     }
+    
+    @FXML private TextField txtCargosCodigo;
 
     @FXML private TextField txtCargosArea;
     @FXML private Button btnCargosArea;
