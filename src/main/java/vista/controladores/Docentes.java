@@ -862,6 +862,7 @@ public class Docentes extends ControladorVista implements Initializable {
                 cargosVaciarControles();
                 cargosModoVer();
             }
+            docenteMostrarDocente();
             cargosActualizarTabla();
         }
     }
@@ -1143,7 +1144,7 @@ public class Docentes extends ControladorVista implements Initializable {
                 e.printStackTrace();
             }
         }
-        
+
         // Se recibe un Docente de otra pantalla. Llenar datos.
         Object oDocente = args.get(REC_DOCENTE);
         if (oDocente != null && oDocente instanceof IDocente) {
