@@ -719,6 +719,9 @@ public class Docentes extends ControladorVista implements Initializable {
     /** Muestra los datos del cargo seleccionado: */
     private void cargosMostrarCargoDocente() {
         if (cargoDocenteSeleccion != null) {
+        	if (cargoDocenteSeleccion.getId() >= 0) {
+        		txtCargosCodigo.setText(String.valueOf(cargoDocenteSeleccion.getId()));
+        	}
         	if (cargoDocenteSeleccion.getArea() != null) {
                 txtCargosArea.setText(cargoDocenteSeleccion.getArea().getDescripcion());
             }
