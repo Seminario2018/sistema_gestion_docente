@@ -12,6 +12,7 @@ import excel.Excel;
 import modelo.auxiliares.EstadoOperacion;
 import modelo.auxiliares.EstadoOperacion.CodigoEstado;
 import modelo.informe.ColumnaInforme;
+import modelo.informe.FiltroColumna;
 import modelo.informe.GestorInforme;
 import modelo.informe.ITipoInforme;
 import utilidades.Utilidades;
@@ -179,11 +180,20 @@ public class ControlInforme {
 		if (archivo != null) {
 			ITipoInforme informeActual = getInformeActual();
 			List<String> encabezados = new ArrayList<String>();
+			String subtitulo = "Usuario: " + this.vista.getUsuario().getUser() + " - Filtros: ";
+			
 			for (ColumnaInforme columna : informeActual.getColumnas()) {
 				if (columna.isVisible())
 					encabezados.add(columna.getNombre());
+				if (columna.getFiltros() != null && !columna.getFiltros().isEmpty()) {
+					subtitulo += columna.getNombre() + " " + columna.stringFiltrosUI() + " - ";
+				}
 			}
-			if (Excel.exportar(archivo.getPath(), encabezados, vistaPrevia())) {
+			
+			if (Excel.exportar(archivo.getPath(),
+					informeActual.getNombre(),
+					subtitulo,
+					encabezados, vistaPrevia())) {
 				this.vista.mensajeEstado("El informe se exportó correctamente en " + archivo.getPath());
 			} else {
 				this.vista.alertaError("Exportar a Excel",
