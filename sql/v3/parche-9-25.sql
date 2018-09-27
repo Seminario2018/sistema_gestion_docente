@@ -1,5 +1,5 @@
 CREATE 
-    ALGORITHM = UNDEFINED 
+	OR REPLACE ALGORITHM = UNDEFINED 
     DEFINER = `root`@`localhost` 
     SQL SECURITY DEFINER
 VIEW `viewcargodocente` AS
@@ -41,7 +41,7 @@ VIEW `viewdocente` AS
                 
                 
 CREATE 
-    ALGORITHM = UNDEFINED 
+    OR REPLACE ALGORITHM = UNDEFINED 
     DEFINER = `root`@`localhost` 
     SQL SECURITY DEFINER
 VIEW `viewusuario` AS
