@@ -1044,7 +1044,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             btnRolesAgregar.setVisible(true);
             btnRolesQuitar.setVisible(true);
 
-            desactivarPestañasPersona(false);
+            desactivarPestanasPersona(false);
         }
 
         if (this.permiso.getEliminar()) {
@@ -1079,7 +1079,7 @@ public class Usuarios extends ControladorVista implements Initializable {
             txtUsuarioDescripcion.setEditable(true);
         }
 
-        desactivarPestañasPersona(true);
+        desactivarPestanasPersona(true);
 
         this.window.setTitle(TITULO + " - Nuevo Usuario");
         this.gestorPantalla.mensajeEstado("Nuevo Usuario ");
@@ -1122,7 +1122,7 @@ public class Usuarios extends ControladorVista implements Initializable {
         btnRolesAgregar.setVisible(false);
         btnRolesQuitar.setVisible(false);
 
-        desactivarPestañasPersona(false);
+        desactivarPestanasPersona(false);
 
         this.window.setTitle(TITULO);
         this.gestorPantalla.mensajeEstado("");
@@ -1134,14 +1134,17 @@ public class Usuarios extends ControladorVista implements Initializable {
      * pero no persistida todavía.
      * @param desactivar Si desactivar la pestaña
      */
-    private void desactivarPestañasPersona(boolean desactivar) {
+    private void desactivarPestanasPersona(boolean desactivar) {
 
-        ObservableList<Tab> pestañas = tabpUsuarios.getTabs();
+        ObservableList<Tab> pestanas = tabpUsuarios.getTabs();
         // Índices de las pestañas de persona:
-        final int indicesPestañas[] = {1, 2, 3};
+        final int indicesPestanas[] = {
+        		TAB_CONTACTOS,
+        		TAB_DOMICILIOS,
+        	    TAB_TITULOS};
 
-        for (int i : indicesPestañas) {
-            pestañas.get(i).setDisable(desactivar);
+        for (int i : indicesPestanas) {
+            pestanas.get(i).setDisable(desactivar);
         }
     }
 }

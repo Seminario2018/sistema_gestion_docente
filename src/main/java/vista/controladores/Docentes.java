@@ -1553,7 +1553,7 @@ public class Docentes extends ControladorVista implements Initializable {
             // Pestaña Observaciones:
             txtaObservaciones.setEditable(true);
 
-            desactivarPestañasPersona(false);
+            desactivarPestanasPersona(false);
 
         }
 
@@ -1591,7 +1591,7 @@ public class Docentes extends ControladorVista implements Initializable {
              * asignar objetos a un docente sin una persona
              * persistida:
              */
-            desactivarPestañasPersona(true);
+            desactivarPestanasPersona(true);
 
             this.window.setTitle(TITULO + " - Nuevo Docente");
             this.gestorPantalla.mensajeEstado("Nuevo Docente ");
@@ -1643,7 +1643,7 @@ public class Docentes extends ControladorVista implements Initializable {
         // Pestaña Observaciones:
         txtaObservaciones.setEditable(false);
 
-        desactivarPestañasPersona(false);
+        desactivarPestanasPersona(false);
 
         this.window.setTitle(TITULO);
         this.gestorPantalla.mensajeEstado("");
@@ -1655,14 +1655,22 @@ public class Docentes extends ControladorVista implements Initializable {
      * pero no persistida todavía.
      * @param desactivar Si desactivar la pestaña
      */
-    private void desactivarPestañasPersona(boolean desactivar) {
+    private void desactivarPestanasPersona(boolean desactivar) {
 
-        ObservableList<Tab> pestañas = tabpDocentes.getTabs();
-        // Índices de las pestañas de persona:
-        final int indicesPestañas[] = {1, 2, 3};
+        ObservableList<Tab> pestanas = tabpDocentes.getTabs();
+        // Índices de las pestañas que necesitan una persona / docente en el sistema:
+        final int indicesPestanas[] = {
+        	TAB_CONTACTOS,
+        	TAB_DOMICILIOS,
+        	TAB_TITULOS,
+        	TAB_CARGOS,
+        	TAB_INVESTIGACION,
+        	TAB_INCENTIVOS,
+        	TAB_OBSERVACIONES
+        };
 
-        for (int i : indicesPestañas) {
-            pestañas.get(i).setDisable(desactivar);
+        for (int i : indicesPestanas) {
+            pestanas.get(i).setDisable(desactivar);
         }
     }
 }
