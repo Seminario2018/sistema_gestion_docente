@@ -183,8 +183,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
             try {
                 direccionDestino = this.dialogoEntrada(TITULO, "Prueba de configuración", "Ingrese el mail a donde mandar la prueba", "@");
                 if (direccionDestino == null) {
-                    // "Cancelar" cancela la prueba:
-                    throw new RuntimeException("<ConfigEmail> Operación cancelada");
+                    // "Cancelar" cancela la prueba
                 }
 
                 // Validación de la dirección de correo:
@@ -284,7 +283,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @FXML
     private void exportarConfiguracion(ActionEvent event) {
-        File archivo = this.elegirArchivo("Elegir archivo de configuración", "Archivos XML", Arrays.asList("*.xml"));
+        File archivo = this.elegirRuta("Exportar archivo de configuración de mail", "Archivos XML", Arrays.asList("*.xml"));
         if (archivo != null) {
             exportarArchivoConfig(archivo);
         }
@@ -312,7 +311,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @FXML
     private void exportarPlantilla(ActionEvent event) {
-        File archivo = this.elegirArchivo("Elegir archivo de plantilla", "Archivos XML", Arrays.asList("*.xml"));
+        File archivo = this.elegirRuta("Exportar archivo de plantilla de mail", "Archivos XML", Arrays.asList("*.xml"));
         if (archivo != null) {
             actualizarPlantilla();
             exportarArchivoPlantilla(archivo);

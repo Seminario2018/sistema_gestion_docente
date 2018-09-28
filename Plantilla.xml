@@ -1,39 +1,118 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
-    <asunto>[Plumas 2] Se han actualizado Cargos en la División $DIVISION</asunto>
+    <asunto>[Plumas 2] Actualización de Cargos en la División $DIVISION</asunto>
     
-    <encabezado>&lt;div&gt;
-    Estimado/a Sr/a. $APELLIDOJEFE,&lt;br&gt;
-    &lt;br&gt;
-        Se le informa que se han realizado actualizaciones en los siguientes Cargos de la División $DIVISION:
-        &lt;br&gt;
-        &lt;br&gt;
-        &lt;/div&gt;</encabezado>
+    <encabezado>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" &gt;
+    &lt;title&gt; Nuevo mensaje &lt;/title&gt;
+    &lt;meta name="viewport" content="width?vice-width, initial-scale=1.0"/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div style="padding: 20px; background-color: #ebebeb;"&gt;
+    &lt;!-- Marco --&gt;
+    &lt;table style="border-width: 2px; border-style:solid; border-color: #ffffff; margin:0 auto; max-width: 800px; font-family:Arial,Helvetica,sans-serif; 
+background-color: #f5f5f5;" bgcolor:"#f5f5f5" border="0" cellPadding="0" cellSpacing="0" width="100%"&gt;
+        &lt;tbody&gt;
+            &lt;tr&gt;
+                &lt;td style="background-color: #ffffff;" width="94%" bgColor="#ffffff"&gt;
+
+                    &lt;!-- Header --&gt;
+                    &lt;table style="background-color: #006633; color: #fff;" bgColor="#006633"  border="0" cellPadding="0" cellSpacing="0" width="100%"&gt;
+                        &lt;tbody&gt;
+                            &lt;tr&gt;
+                            &lt;!-- Logo --&gt;
+                                &lt;td style="padding: 10px;" align="middle" vAlign="center" width="101"&gt;
+                                    &lt;div style="padding: 5px; background-color: #fff;"&gt;
+                                        
+                                            &lt;a href="https://platdig.unlu.edu.ar/acceso.cgi?ID35&amp;IDS" title="Universidad Nacional de Luján"&gt;
+                                                &lt;img border="0" height="65" src="https://platdig.unlu.edu.ar/archivos/logos/Logo_Unlu_mail_1.png" width="101"&gt;
+                                            &lt;/a&gt;
+                                            &lt;br /&gt;
+                                        
+                                    &lt;/div&gt;
+                                &lt;/td&gt;
+                            &lt;!-- /Logo --&gt;
+                            &lt;!-- Titulo --&gt;
+                                &lt;td style="font-size: 20px;" vAlign="center"&gt;
+                                    
+                                    &lt;div style="padding: 40xp 20px 20px 35px; font-weight: bold;"&gt;
+                                    Universidad Nacional de Luján :: Plumas 2
+                                    &lt;/div&gt;
+                                    
+                                &lt;/td&gt;
+                            &lt;!-- /Titulo --&gt;
+                            &lt;/tr&gt;
+                        &lt;/tbody&gt;
+                    &lt;/table&gt;
+                    &lt;!-- /Header --&gt;
+
+                    &lt;!-- Cuerpo --&gt;
+                    &lt;table style="padding: 20px; background-color: #fff; color: #747474;" bgColor="#fff" border="0" cellPadding="0" cellSpacing="0" 
+width="100%"&gt;
+                        &lt;tbody&gt;
+                        
+                        &lt;!-- Subtitulo --&gt;
+                            &lt;tr&gt;
+                                &lt;td style="background-color: #fff; font-size: 23px; padding: 0 20px;" bgColor="#fff" vAlign="center" width="100%"&gt;
+                                    Actualización de Cargos en la División $DIVISION
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;!-- /Subtitulo --&gt;
+
+			&lt;!-- Encabezado --&gt;
+                        &lt;tr&gt;
+                            &lt;td style="padding: 7px 20px 20px; background-color: #fff;"&gt;
+                                &lt;div style="font-size: 14px"&gt;
+					&lt;div style="font-size: 14px; padding-top: 13px;"&gt;Estimado/a Sr/a. $APELLIDOJEFE,&lt;/div&gt;
+					&lt;br /&gt;
+					&lt;div style="font-size: 14px;"&gt;Se le informa que se han realizado actualizaciones en los siguientes Cargos de la División 
+$DIVISION:&lt;/div&gt;
+				&lt;/div&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+			&lt;!-- /Encabezado --&gt;</encabezado>
     
-    <mensaje>&lt;div&gt;
-            Al docente:
-            &lt;div style="padding-left: 50px"&gt;
-                Legajo: $LEGAJO&lt;br&gt;
-                Apellido: $APELLIDO&lt;br&gt;
-                Nombre: $NOMBRE&lt;br&gt;
-            &lt;/div&gt;
-            &lt;br&gt;
-            Se le $OPERACION el siguiente cargo:
-            &lt;div style="padding-left: 50px"&gt;
-                Cargo: $CARGO&lt;br&gt;
-                Área: $AREA&lt;br&gt;
-                División: $DIVISION&lt;br&gt;
-                Tipo de cargo: $TIPOCARGO&lt;br&gt;
-                Estado de cargo: $ESTADO&lt;br&gt;
-            &lt;/div&gt;
-            &lt;hr&gt;
-        &lt;/div&gt;</mensaje>
+    <mensaje>&lt;!-- Mensaje --&gt;
+			&lt;tr&gt;
+                            &lt;td&gt;
+				&lt;div style="border-top: solid 1px #AAAAAA; padding: 20px 20px 20px; font-size: 12px;"&gt;
+					Legajo: $LEGAJO	&amp;nbsp; - &amp;nbsp; Nombre: $APELLIDO, $NOMBRE &lt;br \&gt;
+					Área: $AREA &amp;nbsp; - &amp;nbsp; Cargo: $CARGO&lt;br \&gt;
+					Tipo de cargo: $TIPOCARGO &amp;nbsp; - &amp;nbsp; Estado de cargo: $ESTADO
+				&lt;/div&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+&lt;!-- /Mensaje --&gt;</mensaje>
     
-    <pie>&lt;div&gt;
-            Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2.&lt;br&gt;
-            NO intente responder a este mensaje&lt;br&gt;
-            &lt;br&gt;
-            Plumas 2 - Sistema de Gestión Docente @2018&lt;br&gt;
-            Departamento de Ciencias Básicas&lt;br&gt;
-            Universidad Nacional de Luján
-        &lt;/div&gt;</pie>
+    <pie>&lt;!-- Footer mensaje --&gt;
+
+                        &lt;/tbody&gt;
+                    &lt;/table&gt;
+                 
+		   &lt;!-- /Cuerpo --&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;tr&gt;
+                &lt;td&gt;
+                    &lt;div style="padding: 20px; font-size:13px; color: #747474; background-color: #D7D7D7; text-align: center"&gt;
+			Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2&lt;br \&gt;
+			&lt;u&gt;&lt;b&gt;NO&lt;/b&gt; intente responder a este mensaje&lt;/u&gt;&lt;br \&gt;&lt;br \&gt;
+			Plumas 2 - Sistema de Gestión Docente @2018&lt;br \&gt;
+			Departamento de Ciencias Básicas&lt;br \&gt;
+			Universidad Nacional de Luján
+                    &lt;/div&gt;
+                &lt;/td&gt;
+            &lt;/tr&gt;
+
+
+        &lt;/tbody&gt;
+        &lt;/table&gt;
+&lt;!-- Fin marco --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+
+&lt;!-- /Footer mensaje --&gt;</pie>
 </plantilla>
