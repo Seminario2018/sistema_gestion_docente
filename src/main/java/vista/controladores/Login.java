@@ -15,6 +15,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import modelo.auxiliares.hash.PasswordUtil;
 import modelo.usuario.IUsuario;
@@ -38,6 +44,22 @@ public class Login extends ControladorVista implements Initializable {
 	            txtLoginUsuario.requestFocus();
 	        }
 	    });
+		
+		try {
+			Image logo = new Image(getClass()
+					.getResource("/vista/interfaces/logoPlumas.png")
+					.toString());
+			
+			BackgroundImage bgi = new BackgroundImage(logo,
+					BackgroundRepeat.NO_REPEAT,
+					BackgroundRepeat.NO_REPEAT,
+					BackgroundPosition.DEFAULT,
+					BackgroundSize.DEFAULT);
+			
+			mainPane.setBackground(new Background(bgi));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private ControlUsuario control = new ControlUsuario(this);

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?><plantilla>
     <asunto>[Plumas 2] Actualización de Cargos en la División $DIVISION</asunto>
     
     <encabezado>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
@@ -97,7 +97,7 @@ $DIVISION:&lt;/div&gt;
             &lt;tr&gt;
                 &lt;td&gt;
                     &lt;div style="padding: 20px; font-size:13px; color: #747474; background-color: #D7D7D7; text-align: center"&gt;
-			Este mensaje ha sido enviado automáticamente por el Sistema de Gestión Docente Plumas 2&lt;br \&gt;
+			Este mensaje ha sido generado automáticamente por el Sistema de Gestión Docente Plumas 2&lt;br \&gt;
 			&lt;u&gt;&lt;b&gt;NO&lt;/b&gt; intente responder a este mensaje&lt;/u&gt;&lt;br \&gt;&lt;br \&gt;
 			Plumas 2 - Sistema de Gestión Docente @2018&lt;br \&gt;
 			Departamento de Ciencias Básicas&lt;br \&gt;

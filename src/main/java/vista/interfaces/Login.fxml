@@ -27,7 +27,7 @@
       <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
    </padding>
    <children>
-      <Label styleClass="login-title" text="Ingresar a Plumas" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <Label styleClass="login-title" text="Ingresar a Plumas 2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Button fx:id="btnLoginSalir" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#salir" prefHeight="30.0" prefWidth="30.0" text="X" GridPane.halignment="RIGHT">
          <GridPane.margin>
             <Insets />
