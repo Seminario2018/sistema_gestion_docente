@@ -73,7 +73,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
 
     @Override
     public void inicializar() {
-    	this.window.setTitle("Configuración de correo electrónico");
+    	this.window.setTitle("Configuración de mails");
     }
 
 

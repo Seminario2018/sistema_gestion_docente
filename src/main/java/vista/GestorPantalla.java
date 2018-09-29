@@ -87,6 +87,10 @@ public class GestorPantalla {
 			this.usuario = usuario;
 			this.primaryStage = new Stage();
 			this.primaryStage.setTitle("Plumas 2 - Sistema de Gestión Docente - Universidad Nacional de Luján");
+			
+			this.controladoresActivos = new HashMap<String, ControladorVista>();
+			this.pantallasAbiertas = new HashMap<String, Window>();
+			this.pantallasHijas = new HashMap<String, List<Window>>();
 
 		try {
 			FXMLLoader loader = getLoader("Principal");

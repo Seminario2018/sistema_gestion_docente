@@ -39,6 +39,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#pantallaConfigCon" text="Configuración de conexión" />
                   <MenuItem mnemonicParsing="false" onAction="#pantallaConfigInf" text="Configuración de informes" />
                   <MenuItem mnemonicParsing="false" onAction="#pantallaConfigEmail" text="Configuración de mails" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir" />
               </items>
             </Menu>
