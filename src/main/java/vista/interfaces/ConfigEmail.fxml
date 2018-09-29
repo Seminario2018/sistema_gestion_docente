@@ -122,17 +122,19 @@
                                        </GridPane.margin>
                                     </Label>
                                     <PasswordField fx:id="txtServidorContraseña" focusTraversable="false" promptText="Ingrese la contraseña" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="4">
+                                    <Label text="Dirección del servidor" GridPane.rowIndex="4" />
+                                    <TextField fx:id="txtServidorServidor" focusTraversable="false" promptText="Ingrese la dirección del servidor" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label text="Puerto (SMTP)" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </Label>
-                                    <TextField fx:id="txtServidorSmtp" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+                                    <TextField fx:id="txtServidorSmtp" focusTraversable="false" promptText="Ingrese nro. de puerto SMTP" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5">
                                        <GridPane.margin>
                                           <Insets />
                                        </GridPane.margin>
                                     </TextField>
-                                    <CheckBox fx:id="chkServidorTLS" mnemonicParsing="false" text="Utilizar conexión segura (TLS)" GridPane.columnSpan="2147483647" GridPane.rowIndex="5" />
+                                    <CheckBox fx:id="chkServidorTLS" mnemonicParsing="false" text="Utilizar conexión segura (TLS)" GridPane.columnSpan="2147483647" GridPane.rowIndex="6" />
                                  </children>
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="NEVER" />
@@ -143,9 +145,9 @@
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
-                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                     <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
+                                    <RowConstraints minHeight="30.0" vgrow="NEVER" />
                                  </rowConstraints>
                               </GridPane>
                            </children>

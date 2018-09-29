@@ -88,6 +88,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
         String intervalo = configuracionXML.getElementsByTagName("intervalo").item(0).getTextContent();
         String email = configuracionXML.getElementsByTagName("usuario").item(0).getTextContent();
         String contraseña = configuracionXML.getElementsByTagName("contraseña").item(0).getTextContent();
+        String servidor = configuracionXML.getElementsByTagName("servidor").item(0).getTextContent();
         String smtp = configuracionXML.getElementsByTagName("puerto").item(0).getTextContent();
         String tls = configuracionXML.getElementsByTagName("tls").item(0).getTextContent();
         String habilitado = configuracionXML.getElementsByTagName("habilitar").item(0).getTextContent();
@@ -96,6 +97,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
         txtServidorIntervalo.setText(intervalo);
         txtServidorEmail.setText(email);
         txtServidorContraseña.setText(contraseña);
+        txtServidorServidor.setText(servidor);
         txtServidorSmtp.setText(smtp);
         chkServidorTLS.setSelected(Boolean.valueOf(tls));
     }
@@ -271,6 +273,7 @@ public class ConfigEmail extends ControladorVista implements Initializable {
     @FXML private TextField txtServidorIntervalo;
     @FXML private TextField txtServidorEmail;
     @FXML private TextField txtServidorContraseña;
+    @FXML private TextField txtServidorServidor;
     @FXML private TextField txtServidorSmtp;
     @FXML private CheckBox chkServidorTLS;
 
@@ -347,6 +350,8 @@ public class ConfigEmail extends ControladorVista implements Initializable {
             .setTextContent(txtServidorEmail.getText());
         configuracionXML.getElementsByTagName("contraseña").item(0)
             .setTextContent(txtServidorContraseña.getText());
+        configuracionXML.getElementsByTagName("servidor").item(0)
+        	.setTextContent(txtServidorServidor.getText());
         configuracionXML.getElementsByTagName("puerto").item(0)
             .setTextContent(txtServidorSmtp.getText());
         configuracionXML.getElementsByTagName("tls").item(0)
